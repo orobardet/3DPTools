@@ -1,0 +1,13 @@
+@import "../vendor/bootstrap/stylesheets/bootstrap-compass";
+@import "bootstrap-variables";
+@import "../vendor/bootstrap/stylesheets/bootstrap";
+@import "../vendor/font-awesome/stylesheets/font-awesome";
+
+body {
+  padding-top: 50px;
+}
+
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
