@@ -6,15 +6,32 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressLayouts = require('express-ejs-layouts');
 var i18n = require("i18n");
-
-var routes = require('./routes/index');
-var about = require('./routes/about');
+var config = require("nconf");
 
 var app = express();
-
 app.locals = {
-    siteTitle: '3DPTools'
+    siteTitle: '3DPTools',
+    navModule: 'unknown'
 };
+
+// load configuration
+config.use('memory');
+config.file('default', 'config/default.json');
+config.env();
+config.argv({
+    "c": {
+        alias: 'config-file',
+        description: 'Configuration file to load',
+        required: false,
+        default: null,
+        type: 'string'
+    }
+});
+if (config.get('config-file')) {
+    config.file('user', config.get('config-file'));
+}
+app.locals.config = config;
+app.set('config',  config);
 
 // view engine setup
 app.use(expressLayouts);
@@ -43,12 +60,17 @@ i18n.configure({
     indent: "  "
 });
 app.use(i18n.init);
+app.locals.languagesList = Object.keys(i18n.getCatalog());
 
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/vendor/jquery')));
 app.use(express.static(path.join(__dirname, 'public/vendor/bootstrap')));
 app.use(express.static(path.join(__dirname, 'public/vendor/font-awesome')));
+
+// module routes
+var routes = require('./routes/index');
+var about = require('./routes/about');
 
 app.use('/', routes);
 app.use('/about', about);
@@ -70,7 +92,8 @@ if (app.get('env') === 'development') {
         res.render('error', {
             pageTitle: 'Error',
             message: err.message,
-            error: err
+            error: err,
+            navModule: "error"
         });
     });
 }
@@ -82,7 +105,8 @@ app.use(function (err, req, res, next) {
     res.render('error', {
         pageTitle: 'An error occured',
         message: err.message,
-        error: {}
+        error: {},
+        navModule: "error"
     });
 });
 

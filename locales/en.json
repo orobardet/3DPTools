@@ -1,4 +1,8 @@
 {
   "3DPTools": "3DPTools",
-  "Home": "Home"
+  "Home": "Home",
+  "About": "About",
+  "lang_fr_label": "Français",
+  "lang_en_label": "English",
+  "Auto detect": "Auto detect"
 }

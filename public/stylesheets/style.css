@@ -4027,8 +4027,8 @@ tbody.collapse.in {
       color: #fff;
       background-color: transparent; }
   .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
-    color: #fff;
-    background-color: #090909; }
+    color: #222;
+    background-color: #fff; }
   .navbar-inverse .navbar-nav > .disabled > a, .navbar-inverse .navbar-nav > .disabled > a:hover, .navbar-inverse .navbar-nav > .disabled > a:focus {
     color: #444;
     background-color: transparent; }
@@ -4042,8 +4042,8 @@ tbody.collapse.in {
   .navbar-inverse .navbar-form {
     border-color: #101010; }
   .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
-    background-color: #090909;
-    color: #fff; }
+    background-color: #fff;
+    color: #222; }
   @media (max-width: 767px) {
     .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
       border-color: #090909; }
@@ -4055,8 +4055,8 @@ tbody.collapse.in {
         color: #fff;
         background-color: transparent; }
     .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a, .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {
-      color: #fff;
-      background-color: #090909; }
+      color: #222;
+      background-color: #fff; }
     .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a, .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:hover, .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:focus {
       color: #444;
       background-color: transparent; } }
@@ -7886,8 +7886,25 @@ button.close {
 body {
   padding-top: 50px; }
 
-.starter-template {
-  padding: 40px 15px;
-  text-align: center; }
+.navbar-fixed-top {
+  border-bottom: 0; }
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+  background-color: #090909;
+  color: #fff; }
+.navbar-inverse .navbar-nav .dropdown-menu {
+  background-color: #222;
+  border-color: #090909;
+  border-top: 0; }
+  .navbar-inverse .navbar-nav .dropdown-menu > li.active > a {
+    background-color: #090909;
+    color: #fff; }
+  .navbar-inverse .navbar-nav .dropdown-menu > li > a {
+    color: #9d9d9d; }
+    .navbar-inverse .navbar-nav .dropdown-menu > li > a:hover {
+      color: #fff;
+      background-color: transparent; }
+  .navbar-inverse .navbar-nav .dropdown-menu > li.divider {
+    background-color: #090909; }
 
 /*# sourceMappingURL=style.css.map */

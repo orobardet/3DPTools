@@ -1,5 +1,10 @@
 {
   "3DPTools": "3DPTools",
   "Home": "Accueil",
-  "About": "A propos"
+  "About": "A propos",
+  "lang_fr_label": "Français",
+  "lang_en_label": "English",
+  "Error": "Erreur",
+  "An error occured": "Une erreur est survenue",
+  "Auto detect": "Détection automatique"
 }

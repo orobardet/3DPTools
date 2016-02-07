@@ -1,4 +1,5 @@
 @import "../vendor/bootstrap/stylesheets/bootstrap-compass";
+@import "../vendor/bootstrap/stylesheets/bootstrap/variables";
 @import "bootstrap-variables";
 @import "../vendor/bootstrap/stylesheets/bootstrap";
 @import "../vendor/font-awesome/stylesheets/font-awesome";
@@ -7,7 +8,41 @@ body {
   padding-top: 50px;
 }
 
-.starter-template {
-  padding: 40px 15px;
-  text-align: center;
+.navbar-fixed-top {
+  border-bottom: 0;
+}
+
+.navbar-inverse .navbar-nav {
+  > .open > a {
+    &,
+    &:hover,
+    &:focus {
+      background-color: $navbar-inverse-link-open-bg;
+      color: $navbar-inverse-link-open-color;
+    }
+  }
+
+  .dropdown-menu {
+    background-color: $navbar-inverse-bg;
+    border-color: $navbar-inverse-border;
+    border-top: 0;
+
+    > li {
+      &.active > a {
+        background-color: $navbar-inverse-bg;
+        color: $navbar-inverse-link-open-color;
+      }
+      > a {
+        color: $navbar-inverse-link-color;
+        &:hover {
+          color: $navbar-inverse-link-hover-color;
+          background-color: transparent;
+        }
+      }
+
+      &.divider {
+        background-color: $navbar-inverse-border;
+      }
+    }
+  }
 }
