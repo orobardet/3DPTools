@@ -1,5 +1,12 @@
 {
   "language": {
     "cookieName": "locale"
+  },
+  "database": {
+    "url": "mongodb://localhost/3dptools",
+    "connectOptions": {
+      "user": "3dptools",
+      "pass": "3dpt"
+    }
   }
 }

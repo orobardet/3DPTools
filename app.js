@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var expressLayouts = require('express-ejs-layouts');
 var i18n = require("i18n");
 var config = require("nconf");
+var mongoose = require('mongoose');
 
 var app = express();
 app.locals = {
@@ -32,6 +33,9 @@ if (config.get('config-file')) {
 }
 app.locals.config = config;
 app.set('config',  config);
+
+// database connection
+mongoose.connect(config.get("database:url"), config.get("database:connectOptions"));
 
 // view engine setup
 app.use(expressLayouts);
