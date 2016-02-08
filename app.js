@@ -67,6 +67,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/vendor/jquery')));
 app.use(express.static(path.join(__dirname, 'public/vendor/bootstrap')));
 app.use(express.static(path.join(__dirname, 'public/vendor/font-awesome')));
+app.use(express.static(path.join(__dirname, 'public/vendor/flag-icons')));
 
 // module routes
 var routes = require('./routes/index');

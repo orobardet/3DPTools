@@ -29,14 +29,17 @@ body {
 
     > li {
       &.active > a {
-        background-color: $navbar-inverse-bg;
+        background-color: $navbar-inverse-link-open-bg;
         color: $navbar-inverse-link-open-color;
       }
       > a {
         color: $navbar-inverse-link-color;
         &:hover {
           color: $navbar-inverse-link-hover-color;
-          background-color: transparent;
+          background-color: $navbar-inverse-link-open-bg;
+        }
+        > .fa.pull-right {
+          margin-top: 0.3em;
         }
       }
 
@@ -44,5 +47,11 @@ body {
         background-color: $navbar-inverse-border;
       }
     }
+  }
+}
+
+.dropdown.language-selector > .dropdown-menu > li.active {
+  &.active > a {
+    background-color: transparent;
   }
 }

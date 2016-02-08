@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="/images/favicon.ico">
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/flag-icon.min.css">
     <%- style %>
 </head>
 <body>
@@ -31,14 +32,14 @@
                 <li<% if (navModule == 'about') {%> class="active"<%}%>><a href="/about"><i class="fa fa-question fa-fw"></i>&nbsp;<%- __('About'); %></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-globe fa-fw"></i>&nbsp;<%- __('lang_'+getLocale()+'_label'); %> <span class="caret"></span></a>
+                <li class="dropdown language-selector">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-language fa-fw"></i>&nbsp;<%- __('lang_'+getLocale()+'_label'); %> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <% languagesList.forEach(function (lang, idx) { %>
-                        <li<% if (lang == getLocale()) {%> class="active"<%}%>><a href="/_lang/<%- lang %>"><%- __('lang_'+lang+'_label') %></a></li>
+                        <li<% if (lang == getLocale()) {%> class="active"<%}%>><a href="/_lang/<%- lang %>"><% if (lang == getLocale()) {%><i class="fa fa-check pull-right"></i><%}%><i class="fa fa-fw flag-icon flag-icon-<%- lang %>"></i>&nbsp;&nbsp;<%- __('lang_'+lang+'_label') %></a></li>
                         <% }); %>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/_lang/auto"><%- __('Auto detect') %></a></li>
+                        <li><a href="/_lang/auto"><i class="fa fa-magic fa-fw"></i>&nbsp;&nbsp;<%- __('Auto detect') %></a></li>
                     </ul>
                 </li>
             </ul>
