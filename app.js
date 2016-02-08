@@ -76,9 +76,11 @@ app.use(express.static(path.join(__dirname, 'public/vendor/flag-icons')));
 // module routes
 var routes = require('./routes/index');
 var about = require('./routes/about');
+var admin = require('./routes/admin');
 
 app.use('/', routes);
 app.use('/about', about);
+app.use('/admin', admin);
 
 // catch 404 and forward to error.ejs handler
 app.use(function (req, res, next) {
