@@ -1,0 +1,25 @@
+{
+  "mainMenu": [
+    {
+      "name": "home",
+      "label": "Home",
+      "moduleName": "home",
+      "url": "/",
+      "iconClasses": "fa fa-home"
+    },
+    {
+      "name": "admin",
+      "label": "Administration",
+      "moduleName": "admin",
+      "url": "/admin",
+      "iconClasses": "fa fa-cogs"
+    },
+    {
+      "name": "about",
+      "label": "About",
+      "moduleName": "about",
+      "url": "/about",
+      "iconClasses": "fa fa-question"
+    }
+  ]
+}

@@ -37,6 +37,16 @@ app.set('config',  config);
 // database connection
 mongoose.connect(config.get("database:url"), config.get("database:connectOptions"));
 
+// setting up i18n
+i18n.configure({
+    locales: ['en', 'fr'],
+    directory: __dirname + '/locales',
+    cookie: 'locale',
+    indent: "  "
+});
+app.use(i18n.init);
+app.locals.languagesList = Object.keys(i18n.getCatalog());
+
 // view engine setup
 app.use(expressLayouts);
 app.set('views', path.join(__dirname, 'views'));
@@ -55,17 +65,6 @@ app.use(require('node-sass-middleware')({
     indentedSyntax: true,
     sourceMap: true
 }));
-
-// setting up i18n
-i18n.configure({
-    locales: ['en', 'fr'],
-    directory: __dirname + '/locales',
-    cookie: 'locale',
-    indent: "  "
-});
-app.use(i18n.init);
-app.locals.languagesList = Object.keys(i18n.getCatalog());
-
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/vendor/jquery')));
@@ -77,10 +76,14 @@ app.use(express.static(path.join(__dirname, 'public/vendor/flag-icons')));
 var routes = require('./routes/index');
 var about = require('./routes/about');
 var admin = require('./routes/admin');
-
 app.use('/', routes);
 app.use('/about', about);
 app.use('/admin', admin);
+
+// loading navigation
+var navigation = require('./config/navigation');
+app.locals.navigation = navigation;
+app.set('navigation', navigation);
 
 // catch 404 and forward to error.ejs handler
 app.use(function (req, res, next) {
@@ -90,7 +93,6 @@ app.use(function (req, res, next) {
 });
 
 // error.ejs handlers
-
 // development error.ejs handler
 // will print stacktrace
 if (app.get('env') === 'development') {
