@@ -73,12 +73,10 @@ app.use(express.static(path.join(__dirname, 'public/vendor/font-awesome')));
 app.use(express.static(path.join(__dirname, 'public/vendor/flag-icons')));
 
 // module routes
-var routes = require('./routes/index');
-var about = require('./routes/about');
-var admin = require('./routes/admin');
-app.use('/', routes);
-app.use('/about', about);
-app.use('/admin', admin);
+config.get('modules').forEach(function (moduleName) {
+    var module = require('./modules/' + moduleName + '/module.js');
+    app.use(module.rootPath, module.router);
+});
 
 // loading navigation
 var navigation = require('./config/navigation');

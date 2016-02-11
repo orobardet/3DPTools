@@ -9,5 +9,10 @@
       "user": "3dptools",
       "pass": "3dpt"
     }
-  }
+  },
+  "modules": [
+    "app",
+    "about",
+    "admin"
+  ]
 }

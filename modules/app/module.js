@@ -29,4 +29,8 @@ router.get('/_lang/:lang', function (req, res) {
         res.redirect('/');
     }
 });
-module.exports = router;
+
+module.exports = {
+    rootPath: "/",
+    "router": router
+};
