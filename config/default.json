@@ -1,5 +1,15 @@
 {
   "version": "0.1.0",
+  "session" : {
+    "name": "3dptools",
+    "secret": [
+      "5b9d3ab6-4985-4419-b590-82d63f209d2e",
+      "1c89ce0b-56ec-4f8d-a81a-bb62c57e51e1",
+      "b1d86ef4-3f40-4bb6-b9c8-dc88ce0498a3",
+      "74a906d2-ba0d-4969-b37a-b5974ca44e1b",
+      "2bfe2cad-76b6-4f29-aad4-6304d8293d83"
+    ]
+  },
   "language": {
     "cookieName": "locale"
   },

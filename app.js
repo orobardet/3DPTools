@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var expressLayouts = require('express-ejs-layouts');
 var i18n = require("i18n");
 var config = require("nconf");
+var session = require('express-session');
+var RedisSessionStore = require('connect-redis')(session);
 var mongoose = require('mongoose');
 
 var app = express();
@@ -33,6 +35,16 @@ if (config.get('config-file')) {
 }
 app.locals.config = config;
 app.set('config',  config);
+
+// init sessions
+app.use(session({
+    name: config.get('session:name'),
+    resave: false,
+    secret: config.get('session:secret'),
+    saveUninitialized: false,
+    unset: 'destroy',
+    store: new RedisSessionStore()
+}));
 
 // database connection
 mongoose.connect(config.get("database:url"), config.get("database:connectOptions"));
