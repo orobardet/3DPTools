@@ -7,5 +7,15 @@
   "Error": "Erreur",
   "An error occured": "Une erreur est survenue",
   "Auto detect": "Détection automatique",
-  "Administration": "Administration"
+  "Administration": "Administration",
+  "Setup": "Installation",
+  "Create user": "Créer l'utilisateur",
+  "Email address": "Adresse email",
+  "Email": "Email",
+  "Password": "Mot de passe",
+  "Password verification": "Vérification du mot de passe",
+  "Create a user": "Créer un utilisateur",
+  "You need to create a first user, who'll be a administrator.": "Vous devez créer un premier utilisateur, qui sera un administrateur.",
+  "Lastname": "Nom",
+  "Firstname": "Prénom"
 }

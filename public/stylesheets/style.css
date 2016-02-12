@@ -7885,6 +7885,8 @@ button.close {
 
 body {
   padding-top: 50px; }
+  body.setup-section {
+    padding-top: 0px; }
 
 .navbar-fixed-top {
   border-bottom: 0; }
@@ -7911,5 +7913,15 @@ body {
 
 .dropdown.language-selector > .dropdown-menu > li.active.active > a {
   background-color: transparent; }
+
+.setup-section > h1 {
+  margin: 20px; }
+.setup-section .panel .instruction {
+  font-size: larger;
+  margin-bottom: 20px; }
+.setup-section .create-user {
+  max-width: 800px; }
+.setup-section #pwd1-group {
+  margin-bottom: 10px; }
 
 /*# sourceMappingURL=style.css.map */

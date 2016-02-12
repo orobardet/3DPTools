@@ -6,6 +6,10 @@
 
 body {
   padding-top: 50px;
+
+  &.setup-section {
+    padding-top: 0px;
+  }
 }
 
 .navbar-fixed-top {
@@ -53,5 +57,25 @@ body {
 .dropdown.language-selector > .dropdown-menu > li.active {
   &.active > a {
     background-color: transparent;
+  }
+}
+
+.setup-section {
+
+  > h1 {
+    margin:20px;
+  }
+
+  .panel .instruction {
+    font-size: larger;
+    margin-bottom:20px;
+  }
+
+  .create-user {
+    max-width:800px;
+  }
+
+  #pwd1-group {
+    margin-bottom:10px;
   }
 }
