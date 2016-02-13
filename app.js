@@ -86,7 +86,7 @@ app.use(express.static(path.join(__dirname, 'public/vendor/flag-icons')));
 
 // module routes
 config.get('modules').forEach(function (moduleName) {
-    var module = require('./modules/' + moduleName + '/module.js');
+    var module = require('./modules/' + moduleName + '/module');
     app.use(module.rootPath, module.router);
 });
 
