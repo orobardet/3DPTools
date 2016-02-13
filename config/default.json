@@ -1,6 +1,6 @@
 {
   "version": "0.1.0",
-  "session" : {
+  "session": {
     "name": "3dptools",
     "secret": [
       "5b9d3ab6-4985-4419-b590-82d63f209d2e",
@@ -25,5 +25,12 @@
     "setup",
     "about",
     "admin"
+  ],
+  "httpStatics": [
+    "public",
+    "public/vendor/jquery",
+    "public/vendor/bootstrap",
+    "public/vendor/font-awesome",
+    "public/vendor/flag-icons"
   ]
 }

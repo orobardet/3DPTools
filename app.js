@@ -78,11 +78,9 @@ app.use(require('node-sass-middleware')({
     sourceMap: true
 }));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'public/vendor/jquery')));
-app.use(express.static(path.join(__dirname, 'public/vendor/bootstrap')));
-app.use(express.static(path.join(__dirname, 'public/vendor/font-awesome')));
-app.use(express.static(path.join(__dirname, 'public/vendor/flag-icons')));
+config.get('httpStatics').forEach(function (staticPath) {
+    app.use(express.static(path.join(__dirname, staticPath)));
+});
 
 // module routes
 config.get('modules').forEach(function (moduleName) {
