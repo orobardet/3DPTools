@@ -2,13 +2,25 @@ var express = require('express');
 var router = express.Router();
 var form = require('express-form');
 var field = form.field;
+var User = require('../user/model/user');
 
 /* add user */
 router.post('/', form(
     field("email", "Email")
         .trim()
         .required()
-        .isEmail(),
+        .isEmail()
+        .custom(function (email, source, validatorCb) {
+            User.count({'email': email}).exec(function (err, count) {
+                if (err) {
+                    validatorCb(err);
+                } else if (count) {
+                    validatorCb(new Error("Already used"));
+                } else {
+                    validatorCb(null);
+                }
+            });
+        }, "Already used"),
     field("firstname", "Firstname")
         .trim()
         .required()
@@ -26,14 +38,25 @@ router.post('/', form(
         .equals("field::password", "Passwords does not match")
 ), function (req, res, next) {
     if (!req.form.isValid) {
-        console.log(req.form.getErrors());
         res.render('setup/index', {
             layout: 'setup/layout',
             errors: req.form.getErrors()
         });
     } else {
-        // TODO: save user
-        res.redirect("/setup/done");
+        var user = new User({
+            email: req.form.email,
+            firstname: req.form.firstname,
+            lastname: req.form.lastname,
+            passwordHash: req.form.password,
+            isAdmin: true
+        });
+        user.save(function (err) {
+            if (err) {
+                next(err);
+            } else {
+                res.redirect("/setup/done");
+            }
+        });
     }
 });
 

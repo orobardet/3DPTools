@@ -28,5 +28,6 @@
   "Passwords does not match": "Les mots de passe ne correspondent pas",
   "Setup complete": "Installation terminée",
   "Congratulation, setup is completed.": "Félicitation, l'installation est terminée.",
-  "Return to home": "Retourner à l'accueil"
+  "Return to home": "Retourner à l'accueil",
+  "Already used": "Déjà utilisé"
 }
