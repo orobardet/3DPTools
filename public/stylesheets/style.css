@@ -7914,6 +7914,9 @@ body {
 .dropdown.language-selector > .dropdown-menu > li.active.active > a {
   background-color: transparent; }
 
+.form-group > ul.help-block {
+  padding-left: 30px; }
+
 .setup-section > h1 {
   margin: 20px; }
 .setup-section .panel .instruction {

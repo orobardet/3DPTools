@@ -7,41 +7,76 @@
             <%- __("You need to create a first user, who'll be a administrator."); %>
         </p>
         <form class="create-user form-horizontal" method="post">
-            <div class="form-group">
+            <div class="form-group<%= (errors.email)?" has-error":"" %>">
                 <label for="email" class="col-sm-2 control-label"><%- __('Email address'); %></label>
                 <div class="col-sm-10">
-                    <input type="email" class="form-control" id="email" name="email" placeholder="<%- __('Email'); %>">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="<%- __('Email'); %>" value="<%- email %>">
                 </div>
+                <% if (errors.email) { %>
+                <ul class="col-sm-offset-2 col-sm-10 help-block with-errors">
+                    <% errors.email.forEach(function(msg) { %>
+                    <li><%= __(msg) %></li>
+                    <% }); %>
+                </ul>
+                <% } %>
             </div>
 
-            <div class="form-group">
-                <label for="lastname" class="col-sm-2 control-label"><%- __('Lastname'); %></label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="lastname" name="lastname"
-                           placeholder="<%- __('Lastname'); %>">
-                </div>
-            </div>
-
-            <div class="form-group">
+            <div class="form-group<%= (errors.firstname)?" has-error":"" %>">
                 <label for="firstname" class="col-sm-2 control-label"><%- __('Firstname'); %></label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="firstname" name="firstname"
-                           placeholder="<%- __('Firstname'); %>">
+                           placeholder="<%- __('Firstname'); %>" value="<%- firstname %>">
                 </div>
+                <% if (errors.firstname) { %>
+                <ul class="col-sm-offset-2 col-sm-10 help-block with-errors">
+                    <% errors.firstname.forEach(function(msg) { %>
+                    <li><%= __(msg) %></li>
+                    <% }); %>
+                </ul>
+                <% } %>
             </div>
 
-            <div class="form-group" id="pwd1-group">
+            <div class="form-group<%= (errors.lastname)?" has-error":"" %>">
+                <label for="lastname" class="col-sm-2 control-label"><%- __('Lastname'); %></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="lastname" name="lastname"
+                           placeholder="<%- __('Lastname'); %>" value="<%- lastname %>">
+                </div>
+                <% if (errors.lastname) { %>
+                <ul class="col-sm-offset-2 col-sm-10 help-block with-errors">
+                    <% errors.lastname.forEach(function(msg) { %>
+                    <li><%= __(msg) %></li>
+                    <% }); %>
+                </ul>
+                <% } %>
+            </div>
+
+            <div class="form-group<%= (errors.password)?" has-error":"" %>" id="pwd1-group">
                 <label for="password" class="col-sm-2 control-label"><%- __('Password'); %></label>
                 <div class="col-sm-10">
                     <input type="password" class="form-control" id="password" name="password"
                            placeholder="<%- __('Password'); %>">
                 </div>
+                <% if (errors.password) { %>
+                <ul class="col-sm-offset-2 col-sm-10 help-block with-errors">
+                    <% errors.password.forEach(function(msg) { %>
+                    <li><%= __(msg) %></li>
+                    <% }); %>
+                </ul>
+                <% } %>
             </div>
-            <div class="form-group" id="pwd2-group">
+            <div class="form-group<%= (errors.password2)?" has-error":"" %>" id="pwd2-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <input type="password" class="form-control" id="password2" name="password2"
                            placeholder="<%- __('Password verification'); %>">
                 </div>
+                <% if (errors.password2) { %>
+                <ul class="col-sm-offset-2 col-sm-10 help-block with-errors">
+                    <% errors.password2.forEach(function(msg) { %>
+                    <li><%= __(msg) %></li>
+                    <% }); %>
+                </ul>
+                <% } %>
             </div>
 
             <div class="form-group">

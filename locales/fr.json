@@ -17,5 +17,16 @@
   "Create a user": "Créer un utilisateur",
   "You need to create a first user, who'll be a administrator.": "Vous devez créer un premier utilisateur, qui sera un administrateur.",
   "Lastname": "Nom",
-  "Firstname": "Prénom"
+  "Firstname": "Prénom",
+  "Firstname is required": "Le prénom est obligatoire",
+  "Firstname has invalid characters": "Le prénom contient des caractères invalides",
+  "Password is required": "Le mot de passe est obligatoire",
+  "Password has invalid characters": "Le mot de passe contient des caractères invalides",
+  "Password verification is required": "La vérification du mot de passe est obligatoire",
+  "Email is required": "l'email est obligatoire",
+  "Email is not an email address": "Ce n'est pas une adresse email valide",
+  "Passwords does not match": "Les mots de passe ne correspondent pas",
+  "Setup complete": "Installation terminée",
+  "Congratulation, setup is completed.": "Félicitation, l'installation est terminée.",
+  "Return to home": "Retourner à l'accueil"
 }
