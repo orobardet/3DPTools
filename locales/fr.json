@@ -43,5 +43,6 @@
   "My user profile": "Mon profil utilisateur",
   "Administrator": "Administrateur",
   "Creation date: ": "Date de création : ",
-  "%s (%s)": "%s (%s)"
+  "%s (%s)": "%s (%s)",
+  "Not Found": "Introuvable"
 }

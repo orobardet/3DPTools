@@ -112,7 +112,7 @@ if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
-            pageTitle: 'Error',
+            pageTitle: 'An error occured',
             message: err.message,
             error: err,
             navModule: "error"
