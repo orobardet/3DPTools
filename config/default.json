@@ -20,12 +20,6 @@
       "pass": "3dpt"
     }
   },
-  "modules": [
-    "app",
-    "setup",
-    "about",
-    "admin"
-  ],
   "httpStatics": [
     "public",
     "public/vendor/jquery",

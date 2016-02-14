@@ -10,6 +10,7 @@ var config = require("nconf");
 var session = require('express-session');
 var RedisSessionStore = require('connect-redis')(session);
 var mongoose = require('mongoose');
+var consign = require('consign');
 
 var app = express();
 app.locals = {
@@ -34,7 +35,7 @@ if (config.get('config-file')) {
     config.file('user', config.get('config-file'));
 }
 app.locals.config = config;
-app.set('config',  config);
+app.set('config', config);
 
 // init sessions
 app.use(session({
@@ -53,7 +54,7 @@ mongoose.connect(config.get("database:url"), config.get("database:connectOptions
 i18n.configure({
     locales: ['en', 'fr'],
     directory: __dirname + '/locales',
-    cookie: 'locale',
+    cookie: config.get("language:cookieName"),
     indent: "  "
 });
 app.use(i18n.init);
@@ -77,11 +78,13 @@ config.get('httpStatics').forEach(function (staticPath) {
     app.use(express.static(path.join(__dirname, staticPath)));
 });
 
-// module routes
-config.get('modules').forEach(function (moduleName) {
-    var module = require('./modules/' + moduleName + '/module');
-    app.use(module.rootPath, module.router);
-});
+// autoload app components
+consign({
+    verbose: false
+}).include('models')
+    .then('controllers')
+    .then('routers')
+    .into(app);
 
 // loading navigation
 var navigation = require('./config/navigation');
