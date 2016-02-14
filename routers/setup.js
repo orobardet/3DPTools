@@ -1,83 +1,32 @@
 module.exports = function (app) {
     var express = require('express');
     var router = express.Router();
-    var form = require('express-form');
-    var field = form.field;
-    var User = app.models.user;
+    var Controller = app.controllers.setup;
+    var UserForm = app.forms.user;
+
+    router.use(function (req, res, next) {
+        if (req.isAuthenticated()) {
+            return res.redirect('/');
+        }
+
+        User.getActiveUserCount().then(function (count) {
+            if (count) {
+                return res.redirect('/');
+            }
+        });
+
+        res.locals.navModule = 'setup';
+        next();
+    });
 
     /* add user */
-    router.post('/', form(
-        field("email", "Email")
-            .trim()
-            .required()
-            .isEmail()
-            .custom(function (email, source, validatorCb) {
-                User.count({'email': email}).exec(function (err, count) {
-                    if (err) {
-                        validatorCb(err);
-                    } else if (count) {
-                        validatorCb(new Error("Already used"));
-                    } else {
-                        validatorCb(null);
-                    }
-                });
-            }, "Already used"),
-        field("firstname", "Firstname")
-            .trim()
-            .required()
-            .is(/^[a-zA-Z -']+$/),
-        field("lastname", "Lastname")
-            .trim()
-            .is(/^[a-zA-Z -']+$/),
-        field("password", "Password")
-            .trim()
-            .required()
-            .is(/^\w{6,}$/),
-        field("password2", "Password verification")
-            .trim()
-            .required()
-            .equals("field::password", "Passwords does not match")
-    ), function (req, res, next) {
-        if (!req.form.isValid) {
-            res.render('setup/index', {
-                layout: 'setup/layout',
-                errors: req.form.getErrors()
-            });
-        } else {
-            var user = new User({
-                email: req.form.email,
-                firstname: req.form.firstname,
-                lastname: req.form.lastname,
-                passwordHash: req.form.password,
-                isAdmin: true
-            });
-            user.save(function (err) {
-                if (err) {
-                    next(err);
-                } else {
-                    res.redirect("/setup/done");
-                }
-            });
-        }
-    });
+    router.post('/', UserForm.createUser, Controller.createUser);
 
     /* setup root */
-    router.get('/', function (req, res) {
-        res.render('setup/index', {
-            layout: 'setup/layout',
-            errors: [],
-            email: null,
-            firstname: null,
-            lastname: null
-        });
-    });
+    router.get('/', Controller.index);
 
     /* setup finished */
-    router.get('/done', function (req, res) {
-        res.render('setup/done', {
-            layout: 'setup/layout'
-        });
-    });
+    router.get('/done', Controller.done);
 
     app.use('/setup', router);
     return this;

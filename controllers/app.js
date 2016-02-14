@@ -1,4 +1,5 @@
-module.exports = function () {
+module.exports = function (app) {
+    var User = app.models.user;
 
     this.index = function (req, res, next) {
         res.render('index', {
@@ -25,6 +26,40 @@ module.exports = function () {
         } else {
             res.redirect('/');
         }
+    };
+
+    this.needLogin = function (req, res) {
+        if (req.isAuthenticated()) {
+            return res.redirect('/');
+        }
+
+        User.getActiveUserCount().then(function (count) {
+            if (!count) {
+                return res.redirect('/setup');
+            }
+        });
+
+        res.render('login', {
+            pageTitle: 'Login',
+            navModule: 'login',
+            showNavbar: false
+        });
+    };
+
+    this.logout = function (req, res) {
+        req.logout();
+        res.redirect('/');
+    };
+
+    this.isUserLogged = function (req, res, next) {
+        if (req.url === '/login' || req.url.match(/^\/setup*/)) {
+            return next();
+        }
+
+        if (req.isAuthenticated()) {
+            return next();
+        }
+        res.redirect('/login');
     };
 
     return this;

@@ -7917,6 +7917,10 @@ body {
 .form-group > ul.help-block {
   padding-left: 30px; }
 
+.login-section > .container {
+  margin-top: 100px;
+  max-width: 400px; }
+
 .setup-section > h1 {
   margin: 20px; }
 .setup-section .panel .instruction {

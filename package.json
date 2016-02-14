@@ -6,13 +6,16 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.2",
+    "connect-flash": "^0.1.1",
     "connect-redis": "^3.0.2",
     "consign": "^0.1.2",
     "cookie-parser": "^1.4.1",
     "ejs": "^2.4.1",
     "express": "~4.13.1",
     "express-ejs-layouts": "^2.0.0",
+    "express-flash": "0.0.2",
     "express-form": "^0.12.4",
     "express-session": "^1.13.0",
     "hjs": "~0.0.6",
@@ -22,6 +25,9 @@
     "mongoose": "^4.4.1",
     "morgan": "~1.6.1",
     "nconf": "^0.8.4",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.0.0",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {

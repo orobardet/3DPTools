@@ -29,5 +29,13 @@
   "Setup complete": "Installation terminée",
   "Congratulation, setup is completed.": "Félicitation, l'installation est terminée.",
   "Return to home": "Retourner à l'accueil",
-  "Already used": "Déjà utilisé"
+  "Already used": "Déjà utilisé",
+  "Login": "Connexion",
+  "Login to %s": "Connexion à %s",
+  "Lastname has invalid characters": "Lastname has invalid characters",
+  "Unknown user": "Utilisateur inconnu",
+  "Authentification failed": "L'authentification a échouée",
+  "Missing credentials": "Il manque des informations de connexion",
+  "Profile": "Profil",
+  "Logout": "Déconnexion"
 }

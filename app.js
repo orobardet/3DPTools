@@ -9,13 +9,15 @@ var i18n = require("i18n");
 var config = require("nconf");
 var session = require('express-session');
 var RedisSessionStore = require('connect-redis')(session);
+var flash = require('connect-flash');
 var mongoose = require('mongoose');
 var consign = require('consign');
 
 var app = express();
 app.locals = {
     siteTitle: '3DPTools',
-    navModule: 'unknown'
+    navModule: 'unknown',
+    showNavbar: true
 };
 
 // load configuration
@@ -46,6 +48,7 @@ app.use(session({
     unset: 'destroy',
     store: new RedisSessionStore()
 }));
+app.use(flash());
 
 // database connection
 mongoose.connect(config.get("database:url"), config.get("database:connectOptions"));
@@ -82,7 +85,9 @@ config.get('httpStatics').forEach(function (staticPath) {
 consign({
     verbose: false
 }).include('models')
+    .then('forms')
     .then('controllers')
+    .then('routers/app.js') // must be loaded first for main overidding routes (like auth ones)
     .then('routers')
     .into(app);
 

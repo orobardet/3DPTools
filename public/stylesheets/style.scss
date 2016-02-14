@@ -64,6 +64,13 @@ body {
   padding-left: 30px;
 }
 
+.login-section {
+  > .container {
+    margin-top: 100px;
+    max-width: 400px;
+  }
+}
+
 .setup-section {
 
   > h1 {
