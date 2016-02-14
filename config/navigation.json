@@ -12,7 +12,8 @@
       "label": "Administration",
       "moduleName": "admin",
       "url": "/admin",
-      "iconClasses": "fa fa-cogs"
+      "iconClasses": "fa fa-cogs",
+      "onlyAdmin": true
     }
   ]
 }

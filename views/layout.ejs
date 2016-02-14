@@ -32,7 +32,9 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <% navigation.mainMenu.forEach(function (page, idx) { %>
+                <% if ((page.onlyAdmin && user.isAdmin) || !page.onlyAdmin) { %>
                     <li<% if (navModule == page.moduleName) {%> class="active"<%}%>><a href="<%- page.url %>"><i class="<%- page.iconClasses %> fa-fw"></i>&nbsp;<%- __(page.label); %></a></li>
+                <% } %>
                 <% }); %>
             </ul>
             <ul class="nav navbar-nav navbar-right">

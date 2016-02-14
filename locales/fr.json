@@ -1,4 +1,5 @@
 {
+  "401": "401",
   "3DPTools": "3DPTools",
   "Home": "Accueil",
   "lang_fr_label": "Français",
@@ -44,5 +45,8 @@
   "Administrator": "Administrateur",
   "Creation date: ": "Date de création : ",
   "%s (%s)": "%s (%s)",
-  "Not Found": "Introuvable"
+  "Not Found": "Introuvable",
+  "Unexpected token ) in e:\\Developpement\\Node\\3DPTools\\views\\layout.ejs while compiling ejs": "Unexpected token ) in e:\\Developpement\\Node\\3DPTools\\views\\layout.ejs while compiling ejs",
+  "Can't set headers after they are sent.": "Can't set headers after they are sent.",
+  "Unauthorized": "Unauthorized"
 }

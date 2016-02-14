@@ -3,6 +3,11 @@ module.exports = function (app) {
     var router = express.Router();
 
     router.use(function (req, res, next) {
+        if (!req.user.isAdmin) {
+            var err = new Error('Unauthorized');
+            err.status = 401;
+            return next(err);
+        }
         res.locals.navModule = 'admin';
         next();
     });
