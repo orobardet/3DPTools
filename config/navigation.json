@@ -13,13 +13,6 @@
       "moduleName": "admin",
       "url": "/admin",
       "iconClasses": "fa fa-cogs"
-    },
-    {
-      "name": "about",
-      "label": "About",
-      "moduleName": "about",
-      "url": "/about",
-      "iconClasses": "fa fa-question"
     }
   ]
 }
