@@ -44,13 +44,7 @@ module.exports = function (app) {
 
         res.locals.isUserLogged = req.isAuthenticated();
         if (res.locals.isUserLogged) {
-            if (Array.isArray(req.user)) {
-                if (req.user.length) {
-                    res.locals.user = req.user[0];
-                }
-            } else {
-                res.locals.user = req.user;
-            }
+            res.locals.user = req.user;
         }
 
         res.locals.messages = {

@@ -34,7 +34,7 @@ module.exports = function (app) {
     };
 
     userSchema.statics.findById = function (id, cb) {
-        return this.find({_id: id}, cb);
+        return this.findOne({_id: id}, cb);
     };
 
     var User = mongoose.model('User', userSchema);
