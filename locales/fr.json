@@ -37,5 +37,12 @@
   "Authentification failed": "L'authentification a échouée",
   "Missing credentials": "Il manque des informations de connexion",
   "Profile": "Profil",
-  "Logout": "Déconnexion"
+  "Logout": "Déconnexion",
+  "Email: ": "Email : ",
+  "Firstname: ": "Prénom : ",
+  "Lastname: ": "Nom : ",
+  "My user profile": "Mon profil utilisateur",
+  "Administrator": "Administrateur",
+  "Creation date: ": "Date de création : ",
+  "%s (%s)": "%s (%s)"
 }

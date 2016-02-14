@@ -40,6 +40,8 @@ module.exports = function (app) {
     });
 
     router.use(function (req, res, next) {
+        app.locals.moment.locale(req.getLocale());
+
         res.locals.isUserLogged = req.isAuthenticated();
         if (res.locals.isUserLogged) {
             if (Array.isArray(req.user)) {
@@ -75,6 +77,9 @@ module.exports = function (app) {
 
     // set language
     router.get('/_lang/:lang', Controller.changeLanguage);
+
+    // show user profile
+    router.get('/profile', Controller.userProfile);
 
     app.use('/', router);
 };

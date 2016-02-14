@@ -12,6 +12,7 @@ var RedisSessionStore = require('connect-redis')(session);
 var flash = require('connect-flash');
 var mongoose = require('mongoose');
 var consign = require('consign');
+var moment = require('moment');
 
 var app = express();
 app.locals = {
@@ -37,6 +38,7 @@ if (config.get('config-file')) {
     config.file('user', config.get('config-file'));
 }
 app.locals.config = config;
+app.locals.moment = moment;
 app.set('config', config);
 
 // init sessions

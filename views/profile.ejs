@@ -1,0 +1,13 @@
+<h1><%- __("My user profile") %></h1>
+
+<p>
+    <% if (user.isAdmin) { %>
+    <span class="label label-info"><%- __('Administrator') %></span><br/>
+    <% } %>
+</p>
+<p>
+    <b><%- __("Email: ") %></b><%- user.email %><br/>
+    <b><%- __("Firstname: ") %></b><%- user.firstname %><br/>
+    <b><%- __("Lastname: ") %></b><%- user.lastname %><br/>
+    <b><%- __("Creation date: ") %></b><%- __("%s (%s)", moment(user.creationDate).format('LLLL'), moment(user.creationDate).fromNow()) %>
+</p>

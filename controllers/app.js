@@ -62,5 +62,9 @@ module.exports = function (app) {
         res.redirect('/login');
     };
 
+    this.userProfile = function (req, res) {
+        res.render('profile');
+    };
+
     return this;
 };
