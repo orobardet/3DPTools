@@ -1,6 +1,7 @@
 module.exports = function (app) {
     var express = require('express');
     var router = express.Router();
+    var Controller = app.controllers.admin;
 
     router.use(function (req, res, next) {
         if (!req.user.isAdmin) {
@@ -12,11 +13,7 @@ module.exports = function (app) {
         next();
     });
 
-    router.get('/', function (req, res, next) {
-        res.render('admin/index', {
-            pageTitle: 'Administration'
-        });
-    });
+    router.get('/', Controller.adminIndex);
 
     app.use('/admin', router);
     return this;

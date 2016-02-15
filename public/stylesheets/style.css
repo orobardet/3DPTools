@@ -7931,4 +7931,25 @@ body {
 .setup-section #pwd1-group {
   margin-bottom: 10px; }
 
+.panel-heading.with-button:before, .panel-heading.with-button:after {
+  content: " ";
+  display: table; }
+.panel-heading.with-button:after {
+  clear: both; }
+.panel-heading.with-button > .btn, .panel-heading.with-button .btn-group {
+  float: right !important;
+  margin-top: -7px;
+  margin-bottom: -7px;
+  margin-right: -12px; }
+.panel-heading.with-button > .btn, .panel-heading.with-button .btn-group > .btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px; }
+
+table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
+  text-align: right; }
+  table.table > tr td.table-actions a:not(:last-of-type), table.table tbody > tr td.table-actions a:not(:last-of-type) {
+    margin-right: 5px; }
+
 /*# sourceMappingURL=style.css.map */

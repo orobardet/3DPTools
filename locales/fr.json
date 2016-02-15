@@ -20,6 +20,8 @@
   "Firstname": "Prénom",
   "Firstname is required": "Le prénom est obligatoire",
   "Firstname has invalid characters": "Le prénom contient des caractères invalides",
+  "Lastname is required": "Le nom est obligatoire",
+  "Lastname has invalid characters": "Le nom contient des caractères invalides",
   "Password is required": "Le mot de passe est obligatoire",
   "Password has invalid characters": "Le mot de passe contient des caractères invalides",
   "Password verification is required": "La vérification du mot de passe est obligatoire",
@@ -32,7 +34,6 @@
   "Already used": "Déjà utilisé",
   "Login": "Connexion",
   "Login to %s": "Connexion à %s",
-  "Lastname has invalid characters": "Lastname has invalid characters",
   "Unknown user": "Utilisateur inconnu",
   "Authentification failed": "L'authentification a échouée",
   "Missing credentials": "Il manque des informations de connexion",
@@ -48,5 +49,21 @@
   "Not Found": "Introuvable",
   "Unexpected token ) in e:\\Developpement\\Node\\3DPTools\\views\\layout.ejs while compiling ejs": "Unexpected token ) in e:\\Developpement\\Node\\3DPTools\\views\\layout.ejs while compiling ejs",
   "Can't set headers after they are sent.": "Can't set headers after they are sent.",
-  "Unauthorized": "Unauthorized"
+  "Unauthorized": "Unauthorized",
+  "when is not defined": "when is not defined",
+  "Users": "Utilisateurs",
+  "No user found.": "Aucun utilisateur trouvé.",
+  "users.toArray is not a function": "users.toArray is not a function",
+  "users.count is not a function": "users.count is not a function",
+  "Unexpected token if in e:\\Developpement\\Node\\3DPTools\\views\\admin\\index.ejs while compiling ejs": "Unexpected token if in e:\\Developpement\\Node\\3DPTools\\views\\admin\\index.ejs while compiling ejs",
+  "edit": "modifier",
+  "delete": "supprimer",
+  "Creation date": "Date de création",
+  "Admin?": "Admin ?",
+  "It's me!": "C'est moi !",
+  "Add user": "Ajouter un utilisateur",
+  "%s user": {
+    "one": "Un seul utilisateur",
+    "other": "%s utilisateurs"
+  }
 }

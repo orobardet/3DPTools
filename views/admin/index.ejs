@@ -1,1 +1,48 @@
 <h1><%- pageTitle %></h1>
+
+<div class="panel panel-default">
+    <div class="panel-heading with-button">
+        <a href="/admin/user/add" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;<%- __('Add user') %></a>
+        <h3 class="panel-title"><%- __n("%s user", "%s users", users.length || 0); %></h3>
+    </div>
+    <% if (users && users.length) { %>
+    <table class="table ">
+        <tr>
+            <th><%- __('Email') %></th>
+            <th><%- __('Firstname') %></th>
+            <th><%- __('Lastname') %></th>
+            <th><%- __('Creation date') %></th>
+            <th class="text-center"><%- __('Admin?') %></th>
+            <th></th>
+        </tr>
+        <% users.forEach(function (aUser) { %>
+        <tr>
+            <td>
+                <%- aUser.email %>
+                <% if (aUser.id === user.id) { %>
+                <span class="label label-info"><%- __("It's me!"); %></span>
+                <% } %>
+            </td>
+            <td><%- aUser.firstname %></td>
+            <td><%- aUser.lastname %></td>
+            <td><%- moment(aUser.creationDate).format('LLLL') %></td>
+            <td class="text-center">
+                <% if (aUser.isAdmin) { %>
+                <i class="fa fa-check text-success"></i>
+                <% } %>
+            </td>
+            <td class="table-actions">
+                <a href="#"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
+                <% if (aUser.id !== user.id) { %>
+                <a href="#"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                <% } %>
+            </td>
+        </tr>
+        <% }); %>
+    </table>
+    <% } else { %>
+    <div class="panel-body">
+        <%- __('No user found.') %>
+    </div>
+    <% } %>
+</div>

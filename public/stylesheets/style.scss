@@ -90,3 +90,27 @@ body {
     margin-bottom:10px;
   }
 }
+
+.panel-heading.with-button {
+  @include clearfix();
+  > .btn, .btn-group {
+    float: right !important;
+    margin-top: -7px;
+    margin-bottom: -7px;
+    margin-right: -12px;
+  }
+  > .btn, .btn-group > .btn {
+    @include button-size($padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small, $btn-border-radius-small);
+  }
+}
+
+table.table {
+  > tr, tbody > tr {
+    td.table-actions {
+      text-align: right;
+      a:not(:last-of-type) {
+        margin-right: 5px;
+      }
+    }
+  }
+}
