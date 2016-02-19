@@ -1,8 +1,9 @@
-@import "../vendor/bootstrap/stylesheets/bootstrap-compass";
-@import "../vendor/bootstrap/stylesheets/bootstrap/variables";
+@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap-compass";
+@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/variables";
 @import "bootstrap-variables";
-@import "../vendor/bootstrap/stylesheets/bootstrap";
-@import "../vendor/font-awesome/stylesheets/font-awesome";
+@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "../vendor/font-awesome/scss/font-awesome";
+@import "flag-icon-alias";
 
 body {
   padding-top: 50px;

@@ -7883,6 +7883,11 @@ button.close {
 .fa-percent:before {
   content: ""; }
 
+.flag-icon-en {
+  background-image: url(../flags/4x3/gb.svg); }
+  .flag-icon-en.flag-icon-squared {
+    background-image: url(../flags/1x1/gb.svg); }
+
 body {
   padding-top: 50px; }
   body.setup-section {

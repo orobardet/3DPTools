@@ -1,0 +1,14 @@
+$flag-icon-css-path: '../flags' !default;
+$flag-icon-rect-path: '/4x3' !default;
+$flag-icon-square-path: '/1x1' !default;
+
+@mixin flag-icon-alias($alias, $country) {
+  .flag-icon-#{$alias} {
+    background-image: url(#{$flag-icon-css-path}#{$flag-icon-rect-path}/#{$country}.svg);
+    &.flag-icon-squared {
+      background-image: url(#{$flag-icon-css-path}#{$flag-icon-square-path}/#{$country}.svg);
+    }
+  }
+}
+
+@include flag-icon-alias(en, gb);

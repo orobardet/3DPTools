@@ -22,9 +22,9 @@
   },
   "httpStatics": [
     "public",
-    "public/vendor/jquery",
-    "public/vendor/bootstrap",
+    "public/vendor/jquery/dist",
+    "public/vendor/bootstrap-sass/assets",
     "public/vendor/font-awesome",
-    "public/vendor/flag-icons"
+    "public/vendor/flag-icon-css"
   ]
 }
