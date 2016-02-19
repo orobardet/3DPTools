@@ -1,0 +1,28 @@
+{
+  "name": "3DPTools",
+  "description": "3DPTools",
+  "main": "app.js",
+  "authors": [
+    "Olivier Robardet <olivier.robardet@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/orobardet/3DPTools",
+  "moduleType": [
+    "node"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.0",
+    "bootstrap-sass": "^3.3.6",
+    "font-awesome": "fontawesome#^4.5.0",
+    "flag-icon-css": "^1.2.0",
+    "jquery-ui": "^1.11.4"
+  }
+}
