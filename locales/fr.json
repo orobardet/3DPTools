@@ -65,5 +65,7 @@
   "%s user": {
     "one": "Un seul utilisateur",
     "other": "%s utilisateurs"
-  }
+  },
+  "Cancel": "Annuler",
+  "Save": "Enregistrer"
 }

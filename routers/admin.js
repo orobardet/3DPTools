@@ -14,6 +14,7 @@ module.exports = function (app) {
     });
 
     router.get('/', Controller.adminIndex);
+    router.put('/user/add', Controller.addUser);
 
     app.use('/admin', router);
     return this;

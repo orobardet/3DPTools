@@ -2,7 +2,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading with-button">
-        <a href="/admin/user/add" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;<%- __('Add user') %></a>
+        <a href="/admin/user/add" class="btn btn-primary trg-add-user"><i class="fa fa-plus"></i>&nbsp;<%- __('Add user') %></a>
         <h3 class="panel-title"><%- __n("%s user", "%s users", users.length || 0); %></h3>
     </div>
     <% if (users && users.length) { %>
@@ -46,3 +46,104 @@
     </div>
     <% } %>
 </div>
+
+
+<div class="modal modal-h-center fade" id="user-form-dlg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><%- __('Add user') %></h4>
+            </div>
+            <div class="modal-body">
+                <form class="create-user form-horizontal" method="post">
+                    <div class="form-group<%= (errors.email)?" has-error":"" %>">
+                        <label for="email" class="col-sm-3 control-label"><%- __('Email address'); %></label>
+                        <div class="col-sm-7">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="<%- __('Email'); %>" value="<%- (locals.email)?email:'' %>">
+                        </div>
+                        <% if (errors.email) { %>
+                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors">
+                            <% errors.email.forEach(function(msg) { %>
+                            <li><%= __(msg) %></li>
+                            <% }); %>
+                        </ul>
+                        <% } %>
+                    </div>
+
+                    <div class="form-group<%= (errors.firstname)?" has-error":"" %>">
+                        <label for="firstname" class="col-sm-3 control-label"><%- __('Firstname'); %></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="firstname" name="firstname"
+                                   placeholder="<%- __('Firstname'); %>" value="<%- (locals.firstname)?firstname:'' %>">
+                        </div>
+                        <% if (errors.firstname) { %>
+                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors">
+                            <% errors.firstname.forEach(function(msg) { %>
+                            <li><%= __(msg) %></li>
+                            <% }); %>
+                        </ul>
+                        <% } %>
+                    </div>
+
+                    <div class="form-group<%= (errors.lastname)?" has-error":"" %>">
+                        <label for="lastname" class="col-sm-3 control-label"><%- __('Lastname'); %></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="lastname" name="lastname"
+                                   placeholder="<%- __('Lastname'); %>" value="<%- (locals.lastname)?lastname:'' %>">
+                        </div>
+                        <% if (errors.lastname) { %>
+                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors">
+                            <% errors.lastname.forEach(function(msg) { %>
+                            <li><%= __(msg) %></li>
+                            <% }); %>
+                        </ul>
+                        <% } %>
+                    </div>
+
+                    <div class="form-group<%= (errors.password)?" has-error":"" %>" id="pwd1-group">
+                        <label for="password" class="col-sm-3 control-label"><%- __('Password'); %></label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="password" name="password"
+                                   placeholder="<%- __('Password'); %>">
+                        </div>
+                        <% if (errors.password) { %>
+                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors">
+                            <% errors.password.forEach(function(msg) { %>
+                            <li><%= __(msg) %></li>
+                            <% }); %>
+                        </ul>
+                        <% } %>
+                    </div>
+                    <div class="form-group<%= (errors.password2)?" has-error":"" %>" id="pwd2-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <input type="password" class="form-control" id="password2" name="password2"
+                                   placeholder="<%- __('Password verification'); %>">
+                        </div>
+                        <% if (errors.password2) { %>
+                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors">
+                            <% errors.password2.forEach(function(msg) { %>
+                            <li><%= __(msg) %></li>
+                            <% }); %>
+                        </ul>
+                        <% } %>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><%- __('Cancel') %></button>
+                <button type="button" class="btn btn-primary"><%- __('Save') %></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('.trg-add-user').click(function (e) {
+            e.preventDefault();
+
+            $('#user-form-dlg').modal('show');
+        });
+    });
+</script>

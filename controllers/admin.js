@@ -6,12 +6,17 @@ module.exports = function (app) {
             .then(function (users) {
                 res.render('admin/index', {
                     users: users,
-                    pageTitle: 'Administration'
+                    pageTitle: 'Administration',
+                    errors: []
                 });
             })
             .catch(function (err) {
                 next(err);
             });
+    };
+
+    this.addUser = function (req, res, next) {
+
     };
 
     return this;
