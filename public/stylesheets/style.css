@@ -7919,6 +7919,9 @@ body {
 .dropdown.language-selector > .dropdown-menu > li.active.active > a {
   background-color: transparent; }
 
+.modal-header.draggable {
+  cursor: move; }
+
 .form-group > ul.help-block {
   padding-left: 30px; }
 

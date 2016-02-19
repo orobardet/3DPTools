@@ -61,6 +61,10 @@ body {
   }
 }
 
+.modal-header.draggable {
+  cursor: move;
+}
+
 .form-group > ul.help-block {
   padding-left: 30px;
 }
