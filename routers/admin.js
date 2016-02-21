@@ -2,6 +2,7 @@ module.exports = function (app) {
     var express = require('express');
     var router = express.Router();
     var Controller = app.controllers.admin;
+    var UserForm = app.forms.user;
 
     router.use(function (req, res, next) {
         if (!req.user.isAdmin) {
@@ -13,8 +14,9 @@ module.exports = function (app) {
         next();
     });
 
+    router.put('/user/add', UserForm.createUser, Controller.addUser);
+
     router.get('/', Controller.adminIndex);
-    router.put('/user/add', Controller.addUser);
 
     app.use('/admin', router);
     return this;

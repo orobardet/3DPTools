@@ -7924,6 +7924,8 @@ body {
 
 .form-group > ul.help-block {
   padding-left: 30px; }
+  .form-group > ul.help-block.with-errors:empty {
+    display: none; }
 
 .login-section > .container {
   margin-top: 100px;

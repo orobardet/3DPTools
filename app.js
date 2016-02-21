@@ -64,6 +64,8 @@ i18n.configure({
 });
 app.use(i18n.init);
 app.locals.languagesList = Object.keys(i18n.getCatalog());
+app.set('i18n', i18n);
+app.locals.i18n = i18n;
 
 // view engine setup
 app.use(expressLayouts);
@@ -86,7 +88,8 @@ config.get('httpStatics').forEach(function (staticPath) {
 // autoload app components
 consign({
     verbose: false
-}).include('models')
+}).include('lib')
+    .then('models')
     .then('forms')
     .then('controllers')
     .then('routers/app.js') // must be loaded first for main overidding routes (like auth ones)

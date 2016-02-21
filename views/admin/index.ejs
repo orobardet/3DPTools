@@ -2,7 +2,8 @@
 
 <div class="panel panel-default">
     <div class="panel-heading with-button">
-        <a href="/admin/user/add" class="btn btn-primary trg-add-user"><i class="fa fa-plus"></i>&nbsp;<%- __('Add user') %></a>
+        <a href="/admin/user/add" class="btn btn-primary trg-add-user"><i
+                    class="fa fa-plus"></i>&nbsp;<%- __('Add user') %></a>
         <h3 class="panel-title"><%- __n("%s user", "%s users", users.length || 0); %></h3>
     </div>
     <% if (users && users.length) { %>
@@ -47,92 +48,82 @@
     <% } %>
 </div>
 
-
 <div class="modal modal-h-center fade" id="user-form-dlg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header draggable">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel"><%- __('Add user') %></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
+                <div class="status-message alert"></div>
                 <form class="create-user form-horizontal" method="post">
-                    <div class="form-group<%= (errors.email)?" has-error":"" %>">
+                    <fieldset>
+                    <div class="form-group">
                         <label for="email" class="col-sm-3 control-label"><%- __('Email address'); %></label>
                         <div class="col-sm-7">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="<%- __('Email'); %>" value="<%- (locals.email)?email:'' %>">
+                            <input type="email" class="form-control" id="email" name="email"
+                                   placeholder="<%- __('Email'); %>" value="<%- (locals.email) ? email : '' %>"
+                                   required>
                         </div>
-                        <% if (errors.email) { %>
-                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors">
-                            <% errors.email.forEach(function(msg) { %>
-                            <li><%= __(msg) %></li>
-                            <% }); %>
-                        </ul>
-                        <% } %>
+                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors"></ul>
                     </div>
 
-                    <div class="form-group<%= (errors.firstname)?" has-error":"" %>">
+                    <div class="form-group">
                         <label for="firstname" class="col-sm-3 control-label"><%- __('Firstname'); %></label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="firstname" name="firstname"
-                                   placeholder="<%- __('Firstname'); %>" value="<%- (locals.firstname)?firstname:'' %>">
+                                   placeholder="<%- __('Firstname'); %>"
+                                   value="<%- (locals.firstname) ? firstname : '' %>" required>
                         </div>
-                        <% if (errors.firstname) { %>
-                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors">
-                            <% errors.firstname.forEach(function(msg) { %>
-                            <li><%= __(msg) %></li>
-                            <% }); %>
-                        </ul>
-                        <% } %>
+                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors"></ul>
                     </div>
 
-                    <div class="form-group<%= (errors.lastname)?" has-error":"" %>">
+                    <div class="form-group">
                         <label for="lastname" class="col-sm-3 control-label"><%- __('Lastname'); %></label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="lastname" name="lastname"
-                                   placeholder="<%- __('Lastname'); %>" value="<%- (locals.lastname)?lastname:'' %>">
+                                   placeholder="<%- __('Lastname'); %>"
+                                   value="<%- (locals.lastname) ? lastname : '' %>">
                         </div>
-                        <% if (errors.lastname) { %>
-                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors">
-                            <% errors.lastname.forEach(function(msg) { %>
-                            <li><%= __(msg) %></li>
-                            <% }); %>
-                        </ul>
-                        <% } %>
+                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors"></ul>
                     </div>
 
-                    <div class="form-group<%= (errors.password)?" has-error":"" %>" id="pwd1-group">
+                    <div class="form-group" id="pwd1-group">
                         <label for="password" class="col-sm-3 control-label"><%- __('Password'); %></label>
                         <div class="col-sm-9">
                             <input type="password" class="form-control" id="password" name="password"
-                                   placeholder="<%- __('Password'); %>">
+                                   placeholder="<%- __('Password'); %>" required>
                         </div>
-                        <% if (errors.password) { %>
-                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors">
-                            <% errors.password.forEach(function(msg) { %>
-                            <li><%= __(msg) %></li>
-                            <% }); %>
-                        </ul>
-                        <% } %>
+                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors"></ul>
                     </div>
-                    <div class="form-group<%= (errors.password2)?" has-error":"" %>" id="pwd2-group">
+                    <div class="form-group" id="pwd2-group">
                         <div class="col-sm-offset-3 col-sm-9">
                             <input type="password" class="form-control" id="password2" name="password2"
-                                   placeholder="<%- __('Password verification'); %>">
+                                   placeholder="<%- __('Password verification'); %>" required>
                         </div>
-                        <% if (errors.password2) { %>
-                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors">
-                            <% errors.password2.forEach(function(msg) { %>
-                            <li><%= __(msg) %></li>
-                            <% }); %>
-                        </ul>
-                        <% } %>
+                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors"></ul>
                     </div>
+
+                    <div class="form-group" id="pwd1-group">
+                        <div class="col-sm-offset-3 col-sm-9">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="isAdmin" name="isAdmin"> <%- __('Administrator'); %>
+                                </label>
+                            </div>
+                        </div>
+                        <ul class="col-sm-offset-3 col-sm-9 help-block with-errors"></ul>
+                    </div>
+                    </fieldset>
                 </form>
             </div>
             <div class="modal-footer">
+                <fieldset>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><%- __('Cancel') %></button>
-                <button type="button" class="btn btn-primary"><%- __('Save') %></button>
+                <button type="button" class="btn btn-primary btn-validate-modal"></button>
+                </fieldset>
             </div>
         </div>
     </div>
@@ -140,10 +131,100 @@
 
 <script type="text/javascript">
     $(function () {
+        var $userFormDialog = $('#user-form-dlg');
+        var $userForm = $('form', $userFormDialog).first();
+
+        function userFormClearError() {
+            $('ul.help-block.with-errors', $userFormDialog).text('');
+            $('.form-group.has-error', $userForm).removeClass('has-error');
+            $('.status-message', $userFormDialog).hide().removeClass('alert-danger').removeClass('alert-success');
+        }
+
+        $userFormDialog.on('show.bs.modal', function() {
+            $('fieldset', $userFormDialog).removeAttr('disabled');
+            $userForm[0].reset();
+            userFormClearError();
+        });
+
+        $userForm.submit(function (e) {
+            e.preventDefault();
+            $('.status-message', $userFormDialog).hide().removeClass('alert-danger').removeClass('alert-success');
+
+            var $this = $(this);
+            var userData = {};
+            $this.serializeArray().forEach(function(field) {
+                if (field.name && field.value) {
+                    userData[field.name] = field.value;
+                }
+            });
+            userData.isAdmin = (userData.isAdmin)?true:false;
+
+            var url = '/admin/user/add';
+            var method = 'PUT';
+            if ($userFormDialog.data('type') == 'edit') {
+                var url = '/admin/user/'+userData.id+'/edit';
+                var method = 'POST';
+            }
+
+            $('fieldset', $userFormDialog).attr('disabled', 'disabled');
+            userFormClearError();
+            $.ajax({
+                type: method,
+                data: JSON.stringify(userData),
+                url: url,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.message) {
+                        $('.status-message', $userFormDialog).addClass('alert-success').text(data.message).show();
+                        setTimeout(function() {
+                            document.location = document.location;
+                        }, 1500);
+                    } else {
+                        document.location = document.location;
+                    }
+                },
+                error: function (xhr, status, errorMsg) {
+                    $('fieldset', $userFormDialog).removeAttr('disabled');
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            $('.status-message', $userFormDialog).addClass('alert-danger').text(data.message).show();
+                        }
+                        if (data.errors) {
+                            for(var field in data.errors) {
+                                if (data.errors[field].length) {
+                                    var errorBlock = $('input[name='+field+']', $userForm)
+                                            .closest('.form-group').addClass('has-error')
+                                            .find('.help-block.with-errors').first();
+                                    if (data.errors[field].length) {
+                                        data.errors[field].forEach(function(errorMsg){
+                                            $("<li>").text(errorMsg).appendTo(errorBlock);
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        $('.status-message', $userFormDialog).addClass('alert-danger').text(errorMsg).show();
+                    }
+                }
+            });
+        });
+
+        $('.btn-validate-modal', $userFormDialog).click(function (e) {
+            e.preventDefault();
+            $userForm.trigger('submit');
+        });
+
         $('.trg-add-user').click(function (e) {
             e.preventDefault();
 
-            $('#user-form-dlg').modal('show').draggable({
+            $userFormDialog.data('type', 'add');
+            $('.modal-title', $userFormDialog).text('<%- __('Add user') %>');
+            $('.btn-validate-modal', $userFormDialog).text('<%- __('Save') %>');
+
+            $userFormDialog.modal('show').draggable({
                 handle: ".modal-header"
             });
         });

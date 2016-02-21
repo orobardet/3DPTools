@@ -67,6 +67,10 @@ body {
 
 .form-group > ul.help-block {
   padding-left: 30px;
+
+  &.with-errors:empty {
+    display: none;
+  }
 }
 
 .login-section {

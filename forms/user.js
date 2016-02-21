@@ -33,7 +33,10 @@ module.exports = function (app) {
         field("password2", "Password verification")
             .trim()
             .required()
-            .equals("field::password", "Passwords does not match")
+            .equals("field::password", "Passwords does not match"),
+        field("isAdmin")
+            .ifNull(false)
+            .toBoolean()
     );
 
     return this;

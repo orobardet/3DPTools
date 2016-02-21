@@ -25,7 +25,7 @@
   "Password is required": "Le mot de passe est obligatoire",
   "Password has invalid characters": "Le mot de passe contient des caractères invalides",
   "Password verification is required": "La vérification du mot de passe est obligatoire",
-  "Email is required": "l'email est obligatoire",
+  "Email is required": "L'email est obligatoire",
   "Email is not an email address": "Ce n'est pas une adresse email valide",
   "Passwords does not match": "Les mots de passe ne correspondent pas",
   "Setup complete": "Installation terminée",
@@ -67,5 +67,6 @@
     "other": "%s utilisateurs"
   },
   "Cancel": "Annuler",
-  "Save": "Enregistrer"
+  "Save": "Enregistrer",
+  "User %s successfully added.": "Utilisateur %s ajouté avec succès."
 }

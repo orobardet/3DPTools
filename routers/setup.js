@@ -2,7 +2,6 @@ module.exports = function (app) {
     var express = require('express');
     var router = express.Router();
     var Controller = app.controllers.setup;
-    var UserForm = app.forms.user;
 
     router.use(function (req, res, next) {
         if (req.isAuthenticated()) {
@@ -20,7 +19,7 @@ module.exports = function (app) {
     });
 
     /* add user */
-    router.post('/', UserForm.createUser, Controller.createUser);
+    router.post('/', Controller.createUser);
 
     /* setup root */
     router.get('/', Controller.index);
