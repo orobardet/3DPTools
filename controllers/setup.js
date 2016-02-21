@@ -13,26 +13,26 @@ module.exports = function (app) {
 
     this.createUser = function (req, res, next) {
         if (!req.form.isValid) {
-            res.render('setup/index', {
+            return res.render('setup/index', {
                 layout: 'setup/layout',
                 errors: req.form.getErrors()
             });
-        } else {
-            var user = new User({
-                email: req.form.email,
-                firstname: req.form.firstname,
-                lastname: req.form.lastname,
-                passwordHash: User.generateHash(req.form.password),
-                isAdmin: true
-            });
-            user.save(function (err) {
-                if (err) {
-                    next(err);
-                } else {
-                    res.redirect("/setup/done");
-                }
-            });
         }
+
+        var user = new User({
+            email: req.form.email,
+            firstname: req.form.firstname,
+            lastname: req.form.lastname,
+            passwordHash: User.generateHash(req.form.password),
+            isAdmin: true
+        });
+        user.save(function (err) {
+            if (err) {
+                next(err);
+            } else {
+                res.redirect("/setup/done");
+            }
+        });
     };
 
     this.done = function (req, res) {
