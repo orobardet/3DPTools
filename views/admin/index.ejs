@@ -33,9 +33,9 @@
                 <% } %>
             </td>
             <td class="table-actions">
-                <a href="#"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
+                <a href="/admin/user/edit/<%- aUser.id %>" data-id="<%- aUser.id %>" class="trg-edit-user"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
                 <% if (aUser.id !== user.id) { %>
-                <a href="#"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                <a href="/admin/user/delete/<%- aUser.id %>" data-id="<%- aUser.id %>" class="trg-delete-user"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
                 <% } %>
             </td>
         </tr>
@@ -47,6 +47,8 @@
     </div>
     <% } %>
 </div>
+
+<div id="user-message-container"></div>
 
 <div class="modal modal-h-center fade" id="user-form-dlg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -226,6 +228,69 @@
 
             $userFormDialog.modal('show').draggable({
                 handle: ".modal-header"
+            });
+        });
+
+        function deleteUser(userId) {
+            $.ajax({
+                type: "DELETE",
+                url: '/admin/user/delete/'+userId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.message) {
+                        App3DPTools.successFlash('#user-message-container', data.message);
+                        setTimeout(function() {
+                            document.location = document.location;
+                        }, 1500);
+                    } else {
+                        document.location = document.location;
+                    }
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#user-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#user-message-container', errorMsg);
+                }
+            });
+        }
+
+        $('.trg-delete-user').click(function (e) {
+            e.preventDefault();
+
+            var $this = $(this);
+            var userId = $this.data('id');
+
+            $.ajax({
+                type: "GET",
+                url: '/admin/user/get/'+userId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.user) {
+                        App3DPTools.confirmModal(Locale3DPTools.__('Delete %s user?', data.user.name), function () {
+                            deleteUser(userId);
+                        });
+                    } else {
+                        App3DPTools.errorFlash('#user-message-container', Locale3DPTools.__('Error while retrieving data for user %s.', userId));
+                        return;
+                    }
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#user-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#user-message-container', errorMsg);
+                }
             });
         });
     });

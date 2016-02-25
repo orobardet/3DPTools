@@ -15,6 +15,8 @@ module.exports = function (app) {
     });
 
     router.put('/user/add', UserForm.createUser, Controller.addUser);
+    router.get('/user/get/:user_id', Controller.getUser);
+    router.delete('/user/delete/:user_id', Controller.deleteUser);
 
     router.get('/', Controller.adminIndex);
 

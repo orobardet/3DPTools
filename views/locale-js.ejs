@@ -1,0 +1,22 @@
+var Locale3DPTools = {
+
+    _locale: {<% localeStrings.forEach(function (message) { %>
+        '<%- message %>': "<%- __(message) %>",<% }); %>
+    },
+
+    __: function (message) {
+
+        var msg = message;
+        if (this._locale[message]) {
+            msg = this._locale[message];
+        }
+
+        var args = arguments.length >= 2 ? Array.prototype.slice.call(arguments, 1) : [];
+
+        if ((/%/).test(msg) && args && args.length > 0) {
+            msg = vsprintf(msg, args);
+        }
+
+        return msg;
+    },
+};

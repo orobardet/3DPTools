@@ -4,16 +4,16 @@ module.exports = function (app) {
     var User = app.models.user;
 
     this.adminIndex = function (req, res, next) {
-        when(app.models.user.find().sort('name').exec())
+        when(User.find().sort('name').exec())
             .then(function (users) {
-                res.render('admin/index', {
+                return res.render('admin/index', {
                     users: users,
                     pageTitle: 'Administration',
                     errors: []
                 });
             })
             .catch(function (err) {
-                next(err);
+                return next(err);
             });
     };
 
@@ -33,7 +33,7 @@ module.exports = function (app) {
         });
         user.save(function (err) {
             if (err) {
-                res.status(400);
+                res.status(500);
                 return res.json({
                     errors: res.__(err.message)
                 });
@@ -44,6 +44,42 @@ module.exports = function (app) {
             });
         });
 
+    };
+
+    this.getUser = function (req, res, next) {
+        var userId = req.params.user_id;
+
+        when(User.findById(userId).exec())
+            .then(function (user) {
+                var userData = user.toObject({ getters: false, virtuals: true, versionKey: false });
+                delete userData.passwordHash;
+                return res.json({
+                    user: userData
+                });
+            })
+            .catch(function (err) {
+                res.status(404);
+                return res.json({
+                    message: res.__('User %s not found.', userId)
+                });
+            });
+    };
+
+    this.deleteUser = function (req, res, next) {
+        var userId = req.params.user_id;
+
+        when(User.findById(userId).remove().exec())
+            .then(function (user) {
+                return res.json({
+                    message: res.__('User %s successfully deleted.', userId)
+                });
+            })
+            .catch(function (err) {
+                res.status(500);
+                return res.json({
+                    message: res.__(err.message)
+                });
+            });
     };
 
     return this;

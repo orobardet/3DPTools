@@ -26,6 +26,7 @@
     "public/vendor/jquery-ui",
     "public/vendor/bootstrap-sass/assets",
     "public/vendor/font-awesome",
-    "public/vendor/flag-icon-css"
+    "public/vendor/flag-icon-css",
+    "public/vendor/sprintf/dist"
   ]
 }

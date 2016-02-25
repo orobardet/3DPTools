@@ -69,6 +69,9 @@ module.exports = function (app) {
     /* GET home page. */
     router.get('/', Controller.index);
 
+    // Javascript locales
+    router.get('/locale.js', app.controllers['locale-js'].localeJs);
+
     // set language
     router.get('/_lang/:lang', Controller.changeLanguage);
 
