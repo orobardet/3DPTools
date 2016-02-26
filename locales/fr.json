@@ -75,5 +75,13 @@
   "Delete %s user?": "Supprimer l'utilisateur %s ?",
   "Error while retrieving data for user %s.": "Erreur lors de la récupération des données de l'utilisateur %s.",
   "User %s successfully deleted.": "User %s successfully deleted.",
-  "Filament": "Filament"
+  "Filaments": "Filaments",
+  "Settings": "Paramètres",
+  "Unexpected token { in e:\\Developpement\\Node\\3DPTools\\views\\layout.ejs while compiling ejs": "Unexpected token { in e:\\Developpement\\Node\\3DPTools\\views\\layout.ejs while compiling ejs",
+  "Maximum call stack size exceeded": "Maximum call stack size exceeded",
+  "missing ) after argument list in e:\\Developpement\\Node\\3DPTools\\views\\layout.ejs while compiling ejs": "missing ) after argument list in e:\\Developpement\\Node\\3DPTools\\views\\layout.ejs while compiling ejs",
+  "Shops": "Magasins",
+  "Brands": "Marques",
+  "Materials": "Matières",
+  "Marques": "Marques"
 }

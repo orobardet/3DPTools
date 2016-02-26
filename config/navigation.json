@@ -9,10 +9,44 @@
     },
     {
       "name": "filament",
-      "label": "Filament",
+      "label": "Filaments",
       "moduleName": "filament",
       "url": "/filament",
       "iconClasses": "fa fa-tint"
+    },
+    {
+      "name": "settings",
+      "label": "Settings",
+      "moduleNames": [
+        "settings",
+        "shop",
+        "brand",
+        "material"
+      ],
+      "iconClasses": "fa fa-wrench",
+      "pages": [
+        {
+          "name": "shop",
+          "label": "Shops",
+          "moduleName": "shop",
+          "url": "/shop",
+          "iconClasses": "fa fa-shopping-bag"
+        },
+        {
+          "name": "branch",
+          "label": "Brands",
+          "moduleName": "brand",
+          "url": "/brand",
+          "iconClasses": "fa fa-trademark"
+        },
+        {
+          "name": "material",
+          "label": "Materials",
+          "moduleName": "material",
+          "url": "/material",
+          "iconClasses": "fa fa-leaf"
+        }
+      ]
     },
     {
       "name": "admin",

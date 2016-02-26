@@ -1,0 +1,14 @@
+<li class="dropdown<% if (pageActive) {%> active<%}%>">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="<%- page.iconClasses %> fa-fw"></i>&nbsp;<%- __(page.label); %> <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <% page.pages.forEach(function (subPage, idx) { %>
+            <% if (subPage == '-') { %>
+            <li role="separator" class="divider"></li>
+            <% } else {%>
+            <li<% if (subPage.moduleName == navModule) {%> class="active"<%}%>>
+                <a href="<%- subPage.url %>"><i class="<%- subPage.iconClasses %> fa-fw"></i>&nbsp;<%- __(subPage.label); %></a>
+            </li>
+            <% } %>
+        <% }); %>
+    </ul>
+</li>

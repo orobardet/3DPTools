@@ -1,0 +1,14 @@
+<% if ((page.onlyAdmin && user.isAdmin) || !page.onlyAdmin) { %>
+<% pageActive = ((page.moduleName && (page.moduleName == navModule)) || (page.moduleNames && Array.isArray(page.moduleNames) && (page.moduleNames.indexOf(navModule) > -1))); %>
+    <% if (page.url) { %>
+    <li<% if (pageActive) {%> class="active"<%}%>>
+        <a href="<%- page.url %>"><i class="<%- page.iconClasses %> fa-fw"></i>&nbsp;<%- __(page.label); %></a>
+    </li>
+    <% } else if (page.pages && page.pages.length) { %>
+    <% include dropdownPage.ejs %>
+    <% } else { %>
+    <p class="navbar-text">
+    <i class="<%- page.iconClasses %> fa-fw"></i>&nbsp;<%- __(page.label); %>
+    </p>
+    <% } %>
+<% } %>
