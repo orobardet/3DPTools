@@ -146,6 +146,7 @@
         $userFormDialog.on('show.bs.modal', function() {
             $('fieldset', $userFormDialog).removeAttr('disabled');
             $userForm[0].reset();
+            $userForm.show();
             userFormClearError();
         });
 
@@ -179,6 +180,7 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.message) {
+                        $userForm.hide();
                         $('.status-message', $userFormDialog).addClass('alert-success').text(data.message).show();
                         setTimeout(function() {
                             document.location = document.location;
