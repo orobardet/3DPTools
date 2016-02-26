@@ -1,1 +1,36 @@
-<h2><%- __('Shops') %></h2>
+<h1><i class="fa fa-shopping-bag"></i>&nbsp;<%- __('Shops') %></h1>
+
+<div class="panel panel-default">
+    <div class="panel-heading with-button">
+        <a href="/shop/add" class="btn btn-primary trg-add-shop"><i
+                    class="fa fa-plus"></i>&nbsp;<%- __('Add shop') %></a>
+        <% if (shops && shops.length) { %>
+        <h3 class="panel-title"><%- __n("%s shop", "%s shops", shops.length || 0); %></h3>
+        <% } else { %>
+        <%- __('No shop found.') %>
+        <% } %>
+    </div>
+    <% if (shops && shops.length) { %>
+    <table class="table ">
+        <tr>
+            <th><%- __('Name') %></th>
+            <th><%- __('Url') %></th>
+            <th><%- __('Logo') %></th>
+            <th><%- __('Creation date') %></th>
+            <th class="text-center"><%- __('Admin?') %></th>
+            <th></th>
+        </tr>
+        <% shops.forEach(function (shop) { %>
+        <tr>
+            <td><%- shop.name %></td>
+            <td><a href="<%- shop.url %>" target="_blank"><%- shop.url %></a></td>
+            <td><%- moment(shop.creationDate).format('LLLL') %></td>
+            <td class="table-actions">
+                <a href="/shop/edit/<%- shop.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
+                <a href="/shop/delete/<%- shop.id %>" data-id="<%- shop.id %>" class="trg-delete-user"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+            </td>
+        </tr>
+        <% }); %>
+    </table>
+    <% } %>
+</div>

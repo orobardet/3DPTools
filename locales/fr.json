@@ -83,5 +83,11 @@
   "Shops": "Magasins",
   "Brands": "Marques",
   "Materials": "Matières",
-  "Marques": "Marques"
+  "Marques": "Marques",
+  "Add shop": "Ajouter un magasin",
+  "%s shop": {
+    "one": "%s magasin",
+    "other": "%s magasins"
+  },
+  "No shop found.": "Aucun magasin trouvé."
 }
