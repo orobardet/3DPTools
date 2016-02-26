@@ -14,7 +14,7 @@ module.exports = function (app) {
         creationDate: {type: Date, default: Date.now}
     });
 
-    userSchema.statics.findById = function (id, cb) {
+    shopSchema.statics.findById = function (id, cb) {
         return this.findOne({_id: id}, cb);
     };
 
