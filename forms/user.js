@@ -39,5 +39,28 @@ module.exports = function (app) {
             .toBoolean()
     );
 
+    this.editUser = form(
+        field("email", "Email")
+            .trim()
+            .required()
+            .isEmail(),
+        field("firstname", "Firstname")
+            .trim()
+            .required()
+            .is(/^[a-zA-Z -']+$/),
+        field("lastname", "Lastname")
+            .trim()
+            .is(/^[a-zA-Z -']+$/),
+        field("password", "Password")
+            .trim()
+            .is(/^\w{6,}$/),
+        field("password2", "Password verification")
+            .trim()
+            .equals("field::password", "Passwords does not match"),
+        field("isAdmin")
+            .ifNull(false)
+            .toBoolean()
+    );
+
     return this;
 };

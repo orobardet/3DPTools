@@ -57,6 +57,7 @@
   "Admin?": "Admin ?",
   "It's me!": "C'est moi !",
   "Add user": "Ajouter un utilisateur",
+  "Edit user": "Modifier un utilisateur",
   "%s user": {
     "one": "Un seul utilisateur",
     "other": "%s utilisateurs"
@@ -64,6 +65,7 @@
   "Cancel": "Annuler",
   "Save": "Enregistrer",
   "User %s successfully added.": "Utilisateur %s ajouté avec succès.",
+  "User %s successfully edited.": "Utilisateur %s modifié avec succès.",
   "User %s not found.": "Utilisateur %s introuvable.",
   "Cannot find module 'js'": "Cannot find module 'js'",
   "Unexpected token ) in e:\\Developpement\\Node\\3DPTools\\views\\locale-js.ejs while compiling ejs": "Unexpected token ) in e:\\Developpement\\Node\\3DPTools\\views\\locale-js.ejs while compiling ejs",

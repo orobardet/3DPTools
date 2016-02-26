@@ -62,6 +62,7 @@
                 <div class="status-message alert"></div>
                 <form class="create-user form-horizontal" method="post">
                     <fieldset>
+                    <input type="hidden" name="id" id="id"/>
                     <div class="form-group">
                         <label for="email" class="col-sm-3 control-label"><%- __('Email address'); %></label>
                         <div class="col-sm-7">
@@ -96,14 +97,14 @@
                         <label for="password" class="col-sm-3 control-label"><%- __('Password'); %></label>
                         <div class="col-sm-9">
                             <input type="password" class="form-control" id="password" name="password"
-                                   placeholder="<%- __('Password'); %>" required>
+                                   placeholder="<%- __('Password'); %>">
                         </div>
                         <ul class="col-sm-offset-3 col-sm-9 help-block with-errors"></ul>
                     </div>
                     <div class="form-group" id="pwd2-group">
                         <div class="col-sm-offset-3 col-sm-9">
                             <input type="password" class="form-control" id="password2" name="password2"
-                                   placeholder="<%- __('Password verification'); %>" required>
+                                   placeholder="<%- __('Password verification'); %>">
                         </div>
                         <ul class="col-sm-offset-3 col-sm-9 help-block with-errors"></ul>
                     </div>
@@ -164,7 +165,7 @@
             var url = '/admin/user/add';
             var method = 'PUT';
             if ($userFormDialog.data('type') == 'edit') {
-                var url = '/admin/user/'+userData.id+'/edit';
+                var url = '/admin/user/edit/'+userData.id;
                 var method = 'POST';
             }
 
@@ -228,6 +229,52 @@
 
             $userFormDialog.modal('show').draggable({
                 handle: ".modal-header"
+            });
+        });
+
+        $('.trg-edit-user').click(function(e) {
+            e.preventDefault();
+
+            var $this = $(this);
+            var userId = $this.data('id');
+
+            $.ajax({
+                type: "GET",
+                url: '/admin/user/get/'+userId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.user) {
+                        var user = data.user;
+                        $userFormDialog.data('type', 'edit');
+                        $('.modal-title', $userFormDialog).text('<%- __('Edit user') %>');
+                        $('.btn-validate-modal', $userFormDialog).text('<%- __('Save') %>');
+
+                        $userFormDialog.modal('show').draggable({
+                            handle: ".modal-header"
+                        });
+                        $('#id', $userFormDialog).val(userId);
+                        $('#email', $userFormDialog).val(user.email);
+                        $('#firstname', $userFormDialog).val(user.firstname);
+                        $('#lastname', $userFormDialog).val(user.lastname);
+                        if (user.isAdmin) {
+                            $('#isAdmin', $userFormDialog).prop('checked', true);
+                        }
+                    } else {
+                        App3DPTools.errorFlash('#user-message-container', Locale3DPTools.__('Error while retrieving data for user %s.', userId));
+                        return;
+                    }
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#user-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#user-message-container', errorMsg);
+                }
             });
         });
 

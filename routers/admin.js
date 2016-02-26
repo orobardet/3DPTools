@@ -16,6 +16,7 @@ module.exports = function (app) {
 
     router.put('/user/add', UserForm.createUser, Controller.addUser);
     router.get('/user/get/:user_id', Controller.getUser);
+    router.post('/user/edit/:user_id', UserForm.editUser, Controller.editUser);
     router.delete('/user/delete/:user_id', Controller.deleteUser);
 
     router.get('/', Controller.adminIndex);

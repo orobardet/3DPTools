@@ -65,6 +65,47 @@ module.exports = function (app) {
             });
     };
 
+    this.editUser = function (req, res, next) {
+        if (!req.form.isValid) {
+            res.status(400);
+            return res.json({
+                errors: libLocale.localizeFormErrors(res, req.form.getErrors())
+            });
+        }
+
+        var userId = req.params.user_id;
+
+        when(User.findById(userId).exec())
+            .then(function (user) {
+                user.email = req.form.email;
+                user.lastname = req.form.lastname;
+                user.firstname = req.form.firstname;
+                user.isAdmin = req.form.isAdmin;
+                if (req.form.password && req.form.password != '') {
+                    user.passwordHash = User.generateHash(req.form.password);
+                }
+
+                user.save(function (err) {
+                    if (err) {
+                        res.status(500);
+                        return res.json({
+                            errors: res.__(err.message)
+                        });
+                    }
+
+                    return res.json({
+                        message: res.__('User %s successfully edited.', user.name)
+                    });
+                });
+            })
+            .catch(function (err) {
+                res.status(404);
+                return res.json({
+                    message: res.__('User %s not found.', userId)
+                });
+            });
+    };
+
     this.deleteUser = function (req, res, next) {
         var userId = req.params.user_id;
 
