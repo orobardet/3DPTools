@@ -8,6 +8,13 @@
       "iconClasses": "fa fa-home"
     },
     {
+      "name": "filament",
+      "label": "Filament",
+      "moduleName": "filament",
+      "url": "/filament",
+      "iconClasses": "fa fa-tint"
+    },
+    {
       "name": "admin",
       "label": "Administration",
       "moduleName": "admin",
