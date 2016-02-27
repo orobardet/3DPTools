@@ -145,3 +145,24 @@ table.table {
   bottom: 0em;
   text-shadow: -1px -1px white, -1px 1px white, 1px 1px white, 1px -1px white;
 }
+
+table.shop-list {
+  & > tbody > tr > td {
+    vertical-align: middle;
+  }
+  td.table-actions > .actions-block {
+    display: inline-block;
+    text-align: left;
+  }
+
+  .shop-name {
+    margin: 5px 0;
+    font-size: larger;
+    font-weight: bold;
+  }
+
+  .shop-logo {
+    max-heigh: 100px;
+    max-width: 300px;
+  }
+}

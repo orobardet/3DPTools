@@ -7980,4 +7980,17 @@ table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
   bottom: 0em;
   text-shadow: -1px -1px white, -1px 1px white, 1px 1px white, 1px -1px white; }
 
+table.shop-list > tbody > tr > td {
+  vertical-align: middle; }
+table.shop-list td.table-actions > .actions-block {
+  display: inline-block;
+  text-align: left; }
+table.shop-list .shop-name {
+  margin: 5px 0;
+  font-size: larger;
+  font-weight: bold; }
+table.shop-list .shop-logo {
+  max-heigh: 100px;
+  max-width: 300px; }
+
 /*# sourceMappingURL=style.css.map */
