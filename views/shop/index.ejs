@@ -17,13 +17,17 @@
             <th><%- __('Url') %></th>
             <th><%- __('Logo') %></th>
             <th><%- __('Creation date') %></th>
-            <th class="text-center"><%- __('Admin?') %></th>
             <th></th>
         </tr>
         <% shops.forEach(function (shop) { %>
         <tr>
             <td><%- shop.name %></td>
-            <td><a href="<%- shop.url %>" target="_blank"><%- shop.url %></a></td>
+            <td>
+                <% if (shop.url && (shop.url != '')) { %>
+                <a href="<%- shop.url %>" target="_blank"><%- shop.url %></a>
+                <% } %>
+            </td>
+            <td></td>
             <td><%- moment(shop.creationDate).format('LLLL') %></td>
             <td class="table-actions">
                 <a href="/shop/edit/<%- shop.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
