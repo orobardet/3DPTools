@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'p3d-font';
+    src:    url('../fonts/p3d-font.eot?4i0s6');
+    src:    url('../fonts/p3d-font.eot?4i0s6#iefix') format('embedded-opentype'),
+        url('../fonts/p3d-font.ttf?4i0s6') format('truetype'),
+        url('../fonts/p3d-font.woff?4i0s6') format('woff'),
+        url('../fonts/p3d-font.svg?4i0s6#p3d-font') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="p3di-"], [class*=" p3di-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'p3d-font' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.p3di-filament:before {
+    content: "\e900";
+}
+.p3di-printer-head:before {
+    content: "\e901";
+}
+.p3di-printer-head-heat:before {
+    content: "\e902";
+}
+.p3di-printer-bed:before {
+    content: "\e903";
+}
+.p3di-printer-bed-heat:before {
+    content: "\e904";
+}
+
