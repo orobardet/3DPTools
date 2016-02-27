@@ -16,17 +16,17 @@ module.exports = function (app) {
 
     router.get('/', Controller.index);
 
-    router.get('/get/:shop_id', Controller.getShop);
+    router.get('/get/:shop_id', Controller.get);
     router.get('/get-logo/:shop_id', Controller.getLogo);
 
-    router.post('/add', ShopForm.shop, Controller.addShop);
-    router.get('/add', Controller.addShopForm);
+    router.post('/add', ShopForm.shop, Controller.add);
+    router.get('/add', Controller.addForm);
 
     router.post('/set-logo/:shop_id', fileUpload.single('logo'), Controller.setLogo);
     router.get('/delete-logo/:shop_id', Controller.deleteLogo);
     router.get('/set-logo/:shop_id', Controller.logoForm);
 
-    router.delete('/delete/:shop_id', Controller.deleteShop);
+    router.delete('/delete/:shop_id', Controller.delete);
 
     app.use('/shop', router);
     return this;

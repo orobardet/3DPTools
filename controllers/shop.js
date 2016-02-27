@@ -17,7 +17,7 @@ module.exports = function (app) {
             });
     };
 
-    this.addShop = function (req, res, next) {
+    this.add = function (req, res, next) {
         if (!req.form.isValid) {
             return res.render('shop/add', {
                 errors: req.form.getErrors()
@@ -35,7 +35,7 @@ module.exports = function (app) {
         });
     };
 
-    this.addShopForm = function (req, res) {
+    this.addForm = function (req, res) {
         return res.render('shop/add', {
             errors: []
         });
@@ -95,7 +95,7 @@ module.exports = function (app) {
             });
     };
 
-    this.getShop = function (req, res) {
+    this.get = function (req, res) {
         var shopId = req.params.shop_id;
 
         when(Shop.findById(shopId).exec())
@@ -132,7 +132,7 @@ module.exports = function (app) {
             });
     };
 
-    this.deleteShop = function (req, res) {
+    this.delete = function (req, res) {
         var shopId = req.params.shop_id;
 
         when(Shop.findById(shopId).remove().exec())
