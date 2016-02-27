@@ -7983,40 +7983,40 @@ table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
   table.table > tr td.table-actions a:not(:last-of-type), table.table tbody > tr td.table-actions a:not(:last-of-type) {
     margin-right: 5px; }
 
-table.shop-list > tbody > tr > td {
+table.shop-list > tbody > tr > td, table.brand-list > tbody > tr > td {
   vertical-align: middle; }
-table.shop-list td.table-actions > .actions-block {
+table.shop-list td.table-actions > .actions-block, table.brand-list td.table-actions > .actions-block {
   display: inline-block;
   text-align: left; }
-table.shop-list .shop-name {
+table.shop-list .shop-name, table.shop-list .brand-name, table.brand-list .shop-name, table.brand-list .brand-name {
   margin: 5px 0;
   font-size: larger;
   font-weight: bold; }
-table.shop-list .shop-logo {
+table.shop-list .shop-logo, table.shop-list .brand-logo, table.brand-list .shop-logo, table.brand-list .brand-logo {
   max-height: 100px;
   max-width: 300px; }
 
-form.logo-shop .row-or {
+form.logo-shop .row-or, form.logo-brand .row-or {
   margin-left: -15px;
   margin-right: -15px;
   vertical-align: middle; }
-  form.logo-shop .row-or:before, form.logo-shop .row-or:after {
+  form.logo-shop .row-or:before, form.logo-shop .row-or:after, form.logo-brand .row-or:before, form.logo-brand .row-or:after {
     content: " ";
     display: table; }
-  form.logo-shop .row-or:after {
+  form.logo-shop .row-or:after, form.logo-brand .row-or:after {
     clear: both; }
-  form.logo-shop .row-or > div {
+  form.logo-shop .row-or > div, form.logo-brand .row-or > div {
     vertical-align: middle; }
-  form.logo-shop .row-or .cell-upload-logo {
+  form.logo-shop .row-or .cell-upload-logo, form.logo-brand .row-or .cell-upload-logo {
     position: relative;
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px; }
     @media (min-width: 992px) {
-      form.logo-shop .row-or .cell-upload-logo {
+      form.logo-shop .row-or .cell-upload-logo, form.logo-brand .row-or .cell-upload-logo {
         float: left;
         width: 41.66667%; } }
-  form.logo-shop .row-or .cell-or {
+  form.logo-shop .row-or .cell-or, form.logo-brand .row-or .cell-or {
     position: relative;
     min-height: 1px;
     padding-left: 15px;
@@ -8024,17 +8024,17 @@ form.logo-shop .row-or {
     font-style: italic;
     text-align: center; }
     @media (min-width: 992px) {
-      form.logo-shop .row-or .cell-or {
+      form.logo-shop .row-or .cell-or, form.logo-brand .row-or .cell-or {
         float: left;
         width: 16.66667%; } }
-  form.logo-shop .row-or .cell-remove-logo {
+  form.logo-shop .row-or .cell-remove-logo, form.logo-brand .row-or .cell-remove-logo {
     position: relative;
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px;
     text-align: right; }
     @media (min-width: 992px) {
-      form.logo-shop .row-or .cell-remove-logo {
+      form.logo-shop .row-or .cell-remove-logo, form.logo-brand .row-or .cell-remove-logo {
         float: left;
         width: 41.66667%; } }
 
@@ -8042,7 +8042,7 @@ form.logo-shop .row-or {
   margin-bottom: 20px; }
   .current-logo > h2:first-child {
     font-size: 1.5em; }
-  .current-logo .shop-logo {
+  .current-logo .shop-logo, .current-logo .brand-logo {
     max-height: 100px;
     max-width: 300px; }
 

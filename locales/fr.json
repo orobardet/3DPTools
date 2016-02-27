@@ -104,7 +104,19 @@
   "Logo": "Logo",
   "or": "ou",
   "Remove logo": "Retirer le logo",
-  "Do you really want to delete the logo? You won't be able to retrieve it.": "voulez-vous vraiment supprimer le logo ? Vous ne pourrez plus le récupérer.",
+  "Do you really want to delete the logo? You won't be able to retrieve it.": "Voulez-vous vraiment supprimer le logo ? Vous ne pourrez plus le récupérer.",
   "Current shop logo:": "Logo actuel du magasin :",
-  "Edit shop %s": "Modifier le magasin %s"
+  "Edit shop %s": "Modifier le magasin %s",
+  "Add brand": "Ajouter une marque",
+  "No brand found.": "Aucune marque trouvée.",
+  "Set %s brand's picture": "Définir l'image de la marque %s",
+  "%s brand": {
+    "one": "%s marque",
+    "other": "%s marques"
+  },
+  "Current brand logo:": "Logo actuel de la marque :",
+  "Edit brand %s": "Modifier la marque %s",
+  "Delete %s brand?": "Supprimer la marque %s ?",
+  "Error while retrieving data for brand %s.": "Erreur lors de la récupération des données de la marque %s.",
+  "Brand %s successfully deleted.": "Marque %s supprimée avec succès."
 }

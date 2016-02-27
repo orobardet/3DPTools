@@ -1,0 +1,43 @@
+<h1><span class="fa-overlay">
+    <i class="fa fa-picture-o"></i>
+    <i class="fa fa-plus fa-overlay-se" style="color:white"></i>
+    <i class="fa fa-plus-circle fa-overlay-se text-success"></i>
+</span> <%- __("Set %s brand's picture", brand.name) %></h1>
+
+<% if (brand.logo && brand.logo.size) { %>
+<div class="current-logo">
+    <h2><%- __('Current brand logo:') %></h2>
+    <img class="brand-logo" src="/brand/get-logo/<%- brand.id %>">
+</div>
+<% } %>
+
+<form class="logo-brand" method="POST" enctype="multipart/form-data">
+    <fieldset>
+        <div class="row-or">
+            <div class="cell-upload-logo">
+                <div class="form-group<%= (errors.logo) ? " has-error" : "" %>">
+                    <label for="logo"><%- __('Logo:'); %></label>
+                    <input type="file" id="logo" name="logo">
+                    <p class="help-block"><%- __('You can choose a picture to be used as logo.'); %></p>
+                    <% if (errors.logo) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.logo.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+            <div class="cell-or"><%- __('or') %></div>
+            <div class="cell-remove-logo">
+                <a href="/brand/delete-logo/<%- brandId %>" class="btn btn-danger need-confirmation"
+                   data-confirm-message="<%- __("Do you really want to delete the logo? You won't be able to retrieve it.") %>"><%- __('Remove logo') %></a>
+            </div>
+        </div>
+
+        <p class="button-bar">
+            <a href="/brand" class="btn btn-default"><%- __('Cancel') %></a>
+            <button type="submit" class="btn btn-primary"><%- __('Save') %></button>
+        </p>
+    </fieldset>
+</form>

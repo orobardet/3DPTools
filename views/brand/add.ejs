@@ -1,0 +1,42 @@
+<h1><span class="fa-overlay">
+    <i class="fa fa-trademark"></i>
+    <i class="fa fa-plus fa-overlay-se" style="color:white"></i>
+    <i class="fa fa-plus-circle fa-overlay-se text-success"></i>
+</span> <%- __('Add brand') %></h1>
+
+<form class="form-brand" method="POST">
+    <fieldset>
+        <div class="form-group<%= (errors.name)?" has-error":"" %>">
+            <label for="name" class="control-label required"><%- __('Name:'); %></label>
+            <input type="text" class="form-control" id="name" name="name"
+                   placeholder="<%- __('Name'); %>" value="<%- (locals.name) ? name : '' %>"
+                   required>
+            <% if (errors.name) { %>
+            <ul class="help-block with-errors">
+                <% errors.name.forEach(function(msg) { %>
+                <li><%= __(msg) %></li>
+                <% }); %>
+            </ul>
+            <% } %>
+        </div>
+
+        <div class="form-group<%= (errors.url)?" has-error":"" %>">
+            <label for="url" class="control-label"><%- __('Url:'); %></label>
+            <input type="text" class="form-control" id="url" name="url"
+                   placeholder="<%- __('Url'); %>"
+                   value="<%- (locals.url) ? url : '' %>">
+            <% if (errors.url) { %>
+            <ul class="help-block with-errors">
+                <% errors.url.forEach(function(msg) { %>
+                <li><%= __(msg) %></li>
+                <% }); %>
+            </ul>
+            <% } %>
+        </div>
+
+        <p class="pull-right clearfix">
+            <a href="/brand" class="btn btn-default"><%- __('Cancel') %></a>
+            <button type="submit" class="btn btn-primary"><%- __('Save') %></button>
+        </p>
+    </fieldset>
+</form>

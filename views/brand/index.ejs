@@ -1,1 +1,113 @@
-<h2><%- __('Marques') %></h2>
+<h1><i class="fa fa-trademark"></i>&nbsp;<%- __('Brands') %></h1>
+
+<div class="panel panel-default">
+    <div class="panel-heading with-button">
+        <a href="/brand/add" class="btn btn-primary trg-add-brand"><i
+                    class="fa fa-plus"></i>&nbsp;<%- __('Add brand') %></a>
+        <% if (brands && brands.length) { %>
+        <h3 class="panel-title"><%- __n("%s brand", "%s brands", brands.length || 0); %></h3>
+        <% } else { %>
+        <%- __('No brand found.') %>
+        <% } %>
+    </div>
+    <% if (brands && brands.length) { %>
+    <table class="table brand-list">
+        <tr>
+            <th><%- __('Name / Url') %></th>
+            <th><%- __('Logo') %></th>
+            <th><%- __('Creation date') %></th>
+            <th></th>
+        </tr>
+        <% brands.forEach(function (brand) { %>
+        <tr>
+            <td>
+                <span class="brand-name"><%- brand.name %></span>
+                <% if (brand.url && (brand.url != '')) { %>
+                <br/>
+                <a href="<%- brand.url %>" target="_blank"><%- brand.url %></a>
+                <% } %>
+            </td>
+            <td>
+                <% if (brand.logo && brand.logo.size) { %>
+                <img class="brand-logo" src="/brand/get-logo/<%- brand.id %>">
+                <% } %>
+            </td>
+            <td><%- moment(brand.creationDate).format('LLLL') %></td>
+            <td class="table-actions">
+                <div class="actions-block">
+                    <a href="/brand/set-logo/<%- brand.id %>"><i class="fa fa-picture-o"></i>&nbsp;<%- __("change picture") %></a>
+                    <br/>
+                    <a href="/brand/edit/<%- brand.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
+                    <a href="/brand/delete/<%- brand.id %>" data-id="<%- brand.id %>" class="trg-delete-brand"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                </div>
+            </td>
+        </tr>
+        <% }); %>
+    </table>
+    <% } %>
+</div>
+
+<div id="brand-message-container"></div>
+
+<script type="text/javascript">
+    $(function () {
+        function deleteBrand(brandId) {
+            $.ajax({
+                type: "DELETE",
+                url: '/brand/delete/'+brandId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.message) {
+                        App3DPTools.successFlash('#brand-message-container', data.message);
+                    }
+                    document.location = document.location;
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#brand-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#brand-message-container', errorMsg);
+                }
+            });
+        }
+
+        $('.trg-delete-brand').click(function (e) {
+            e.preventDefault();
+
+            var $this = $(this);
+            var brandId = $this.data('id');
+
+            $.ajax({
+                type: "GET",
+                url: '/brand/get/'+brandId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.brand) {
+                        App3DPTools.confirmModal(Locale3DPTools.__('Delete %s brand?', data.brand.name), function () {
+                            deleteBrand(brandId);
+                        });
+                    } else {
+                        App3DPTools.errorFlash('#brand-message-container', Locale3DPTools.__('Error while retrieving data for brand %s.', brandId));
+                        return;
+                    }
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#brand-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#brand-message-container', errorMsg);
+                }
+            });
+        });
+    });
+</script>

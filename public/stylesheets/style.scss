@@ -150,7 +150,7 @@ table.table {
   }
 }
 
-table.shop-list {
+table.shop-list,table.brand-list {
   & > tbody > tr > td {
     vertical-align: middle;
   }
@@ -159,18 +159,18 @@ table.shop-list {
     text-align: left;
   }
 
-  .shop-name {
+  .shop-name, .brand-name {
     margin: 5px 0;
     font-size: larger;
     font-weight: bold;
   }
 
-  .shop-logo {
+  .shop-logo, .brand-logo {
     max-height: 100px;
     max-width: 300px;
   }
 }
-form.logo-shop {
+form.logo-shop, form.logo-brand {
   .row-or {
     @include make-row();
     vertical-align: middle;
@@ -201,7 +201,7 @@ form.logo-shop {
     font-size: 1.5em;
   }
 
-  .shop-logo {
+  .shop-logo, .brand-logo {
     max-height: 100px;
     max-width: 300px;
   }
