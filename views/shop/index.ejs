@@ -31,10 +31,75 @@
             <td><%- moment(shop.creationDate).format('LLLL') %></td>
             <td class="table-actions">
                 <a href="/shop/edit/<%- shop.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
-                <a href="/shop/delete/<%- shop.id %>" data-id="<%- shop.id %>" class="trg-delete-user"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                <a href="/shop/delete/<%- shop.id %>" data-id="<%- shop.id %>" class="trg-delete-shop"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
             </td>
         </tr>
         <% }); %>
     </table>
     <% } %>
 </div>
+
+<div id="shop-message-container"></div>
+
+<script type="text/javascript">
+    $(function () {
+        function deleteShop(shopId) {
+            $.ajax({
+                type: "DELETE",
+                url: '/shop/delete/'+shopId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.message) {
+                        App3DPTools.successFlash('#shop-message-container', data.message);
+                    }
+                    document.location = document.location;
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#shop-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#shop-message-container', errorMsg);
+                }
+            });
+        }
+
+        $('.trg-delete-shop').click(function (e) {
+            e.preventDefault();
+
+            var $this = $(this);
+            var shopId = $this.data('id');
+
+            $.ajax({
+                type: "GET",
+                url: '/shop/get/'+shopId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.shop) {
+                        App3DPTools.confirmModal(Locale3DPTools.__('Delete %s shop?', data.shop.name), function () {
+                            deleteShop(shopId);
+                        });
+                    } else {
+                        App3DPTools.errorFlash('#shop-message-container', Locale3DPTools.__('Error while retrieving data for shop %s.', shopId));
+                        return;
+                    }
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#shop-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#shop-message-container', errorMsg);
+                }
+            });
+        });
+    });
+</script>

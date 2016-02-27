@@ -8,7 +8,9 @@ module.exports = function (app) {
                 'No',
                 'Confirm',
                 'Delete %s user?',
-                'Error while retrieving data for user %s.'
+                'Error while retrieving data for user %s.',
+                'Delete %s shop?',
+                'Error while retrieving data for shop %s.'
             ]
         });
     };

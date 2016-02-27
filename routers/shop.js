@@ -11,8 +11,12 @@ module.exports = function (app) {
 
     router.get('/', Controller.index);
 
+    router.get('/get/:shop_id', Controller.getShop);
+
     router.post('/add', ShopForm.shop, Controller.addShop);
     router.get('/add', Controller.addShopForm);
+
+    router.delete('/delete/:shop_id', Controller.deleteShop);
 
     app.use('/shop', router);
     return this;

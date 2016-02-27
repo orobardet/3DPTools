@@ -40,5 +40,41 @@ module.exports = function (app) {
         });
     };
 
+    this.getShop = function (req, res) {
+        var shopId = req.params.shop_id;
+
+        when(Shop.findById(shopId).exec())
+            .then(function (shop) {
+                var shopData = shop.toObject({ getters: false, virtuals: true, versionKey: false });
+                return res.json({
+                    shop: shopData
+                });
+            })
+            .catch(function (err) {
+                res.status(404);
+                return res.json({
+                    message: res.__('Shop %s not found.', shopId)
+                });
+            });
+    };
+
+    this.deleteShop = function (req, res) {
+        var shopId = req.params.shop_id;
+
+        when(Shop.findById(shopId).remove().exec())
+            .then(function () {
+                return res.json({
+                    message: res.__('Shop %s successfully deleted.', shopId)
+                });
+            })
+            .catch(function (err) {
+                res.status(500);
+                return res.json({
+                    message: res.__(err.message)
+                });
+            });
+    };
+
+
     return this;
 };
