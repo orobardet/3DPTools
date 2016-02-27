@@ -27,7 +27,11 @@
                 <a href="<%- shop.url %>" target="_blank"><%- shop.url %></a>
                 <% } %>
             </td>
-            <td></td>
+            <td>
+                <% if (shop.logo) { %>
+                <img src="/shop/get-logo/<%- shop.id %>">
+                <% } %>
+            </td>
             <td><%- moment(shop.creationDate).format('LLLL') %></td>
             <td class="table-actions">
                 <a href="/shop/set-logo/<%- shop.id %>"><i class="fa fa-picture-o"></i>&nbsp;<%- __("change picture") %></a>

@@ -88,6 +88,25 @@ module.exports = function (app) {
             });
     };
 
+    this.getLogo = function (req, res) {
+        var shopId = req.params.shop_id;
+
+        when(Shop.findById(shopId).exec())
+            .then(function (shop) {
+                if (shop.logo) {
+                    res.set('Content-Type', shop.logo.mimeType);
+                    res.set('Content-Length', shop.logo.size);
+                    return res.send(shop.logo.data);
+                }
+            })
+            .catch(function (err) {
+                res.status(404);
+                return res.json({
+                    message: res.__('Shop %s not found.', shopId)
+                });
+            });
+    };
+
     this.deleteShop = function (req, res) {
         var shopId = req.params.shop_id;
 
