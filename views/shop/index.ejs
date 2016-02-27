@@ -15,7 +15,7 @@
         <tr>
             <th><%- __('Name') %></th>
             <th><%- __('Url') %></th>
-            <th><%- __('Logo') %></th>
+            <th><%- __('Picture') %></th>
             <th><%- __('Creation date') %></th>
             <th></th>
         </tr>
@@ -30,6 +30,7 @@
             <td></td>
             <td><%- moment(shop.creationDate).format('LLLL') %></td>
             <td class="table-actions">
+                <a href="/shop/set-logo/<%- shop.id %>"><i class="fa fa-picture-o"></i>&nbsp;<%- __("change picture") %></a>
                 <a href="/shop/edit/<%- shop.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
                 <a href="/shop/delete/<%- shop.id %>" data-id="<%- shop.id %>" class="trg-delete-shop"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
             </td>

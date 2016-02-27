@@ -1,0 +1,28 @@
+<h1><span class="fa-overlay">
+    <i class="fa fa-picture-o"></i>
+    <i class="fa fa-plus fa-overlay-se" style="color:white"></i>
+    <i class="fa fa-plus-circle fa-overlay-se text-success"></i>
+</span> <%- __("Set shop's picture") %></h1>
+
+<form class="logo-shop" method="POST" enctype="multipart/form-data">
+    <fieldset>
+
+        <div class="form-group<%= (errors.logo)?" has-error":"" %>">
+            <label for="logo"><%- __('Logo:'); %></label>
+            <input type="file" id="logo" name="logo">
+            <p class="help-block"><%- __('You can choose a picture to be used as logo.'); %></p>
+            <% if (errors.logo) { %>
+            <ul class="help-block with-errors">
+                <% errors.logo.forEach(function(msg) { %>
+                <li><%= __(msg) %></li>
+                <% }); %>
+            </ul>
+            <% } %>
+        </div>
+
+        <p class="pull-right clearfix">
+            <a href="/shop" class="btn btn-default"><%- __('Cancel') %></a>
+            <button type="submit" class="btn btn-primary"><%- __('Save') %></button>
+        </p>
+    </fieldset>
+</form>

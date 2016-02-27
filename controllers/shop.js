@@ -1,6 +1,7 @@
 module.exports = function (app) {
     var when = require('when');
     var Shop = app.models.shop;
+    var fs = require('fs');
 
     this.index = function (req, res, next) {
         when(Shop.find().sort('name').exec())
@@ -36,6 +37,35 @@ module.exports = function (app) {
 
     this.addShopForm = function (req, res) {
         return res.render('shop/add', {
+            errors: []
+        });
+    };
+
+    this.setLogo = function (req, res) {
+        var shopId = req.params.shop_id;
+        var logo = req.file;
+
+        when(Shop.findById(shopId).exec())
+            .then(function (shop) {
+                shop.logo.name = logo.originalname;
+                shop.logo.size = logo.size;
+                shop.logo.mimeType = logo.mimetype;
+                shop.logo.data = fs.readFileSync(logo.path);
+
+                fs.unlink(logo.path);
+
+                shop.save(function (err) {
+                    if (err) {
+                        return next(err);
+                    }
+                    return res.redirect("/shop");
+                });
+            })
+    };
+
+    this.logoForm = function (req, res) {
+        return res.render('shop/logo', {
+            shopId: req.params.shop_id,
             errors: []
         });
     };

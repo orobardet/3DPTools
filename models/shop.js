@@ -7,7 +7,7 @@ module.exports = function (app) {
         url: String,
         logo: {
             name: String,
-            contentType: String,
+            mimeType: String,
             size: Number,
             data: Buffer
         },

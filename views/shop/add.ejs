@@ -34,19 +34,6 @@
             <% } %>
         </div>
 
-        <div class="form-group<%= (errors.logo)?" has-error":"" %>">
-            <label for="logo"><%- __('Logo:'); %></label>
-            <input type="file" id="logo" name="logo">
-            <p class="help-block"><%- __('You can choose a picture to be used as logo.'); %></p>
-            <% if (errors.logo) { %>
-            <ul class="help-block with-errors">
-                <% errors.logo.forEach(function(msg) { %>
-                <li><%= __(msg) %></li>
-                <% }); %>
-            </ul>
-            <% } %>
-        </div>
-
         <p class="pull-right clearfix">
             <a href="/shop" class="btn btn-default"><%- __('Cancel') %></a>
             <button type="submit" class="btn btn-primary"><%- __('Save') %></button>

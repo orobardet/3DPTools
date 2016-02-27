@@ -20,6 +20,9 @@
       "pass": "3dpt"
     }
   },
+  "upload": {
+    "tmpPath":"tmp/uploads"
+  },
   "httpStatics": [
     "public",
     "public/vendor/jquery/dist",
