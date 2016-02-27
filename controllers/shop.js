@@ -31,7 +31,7 @@ module.exports = function (app) {
             if (err) {
                 return next(err);
             }
-            return res.redirect("/shop");
+            return res.redirect("/shop/set-logo/" + shop.id);
         });
     };
 
