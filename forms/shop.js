@@ -5,8 +5,7 @@ module.exports = function (app) {
     this.shop = form(
         field("name", "Name")
             .trim()
-            .required()
-            .isAlphanumeric(),
+            .required(),
         field("url", "Url")
             .trim()
             .isUrl()
