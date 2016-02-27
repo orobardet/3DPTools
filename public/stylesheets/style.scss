@@ -13,6 +13,10 @@ body {
   }
 }
 
+h1 {
+  margin-bottom:30px;
+}
+
 .navbar-fixed-top {
   border-bottom: 0;
 }
@@ -73,14 +77,14 @@ body {
   }
 }
 
-h1 {
-  margin-bottom:30px;
-}
-
 .control-label.required:after {
   content: '*';
   margin-left: 5px;
   color: $brand-warning;
+}
+
+.button-bar {
+  text-align: right;
 }
 
 .login-section {
@@ -123,17 +127,6 @@ h1 {
   }
 }
 
-table.table {
-  > tr, tbody > tr {
-    td.table-actions {
-      text-align: right;
-      a:not(:last-of-type) {
-        margin-right: 5px;
-      }
-    }
-  }
-}
-
 .fa-overlay {
   position: relative;
 }
@@ -144,6 +137,17 @@ table.table {
   right: 0.5em;
   bottom: 0em;
   text-shadow: -1px -1px white, -1px 1px white, 1px 1px white, 1px -1px white;
+}
+
+table.table {
+  > tr, tbody > tr {
+    td.table-actions {
+      text-align: right;
+      a:not(:last-of-type) {
+        margin-right: 5px;
+      }
+    }
+  }
 }
 
 table.shop-list {
@@ -159,6 +163,42 @@ table.shop-list {
     margin: 5px 0;
     font-size: larger;
     font-weight: bold;
+  }
+
+  .shop-logo {
+    max-heigh: 100px;
+    max-width: 300px;
+  }
+}
+form.logo-shop {
+  .row-or {
+    @include make-row();
+    vertical-align: middle;
+
+    & > div {
+      vertical-align: middle;
+    }
+
+    .cell-upload-logo{
+      @include make-md-column(5);
+    }
+    .cell-or {
+      @include make-md-column(2);
+      font-style: italic;
+      text-align: center;
+    }
+    .cell-remove-logo{
+      @include make-md-column(5);
+      text-align: right;
+    }
+  }
+}
+
+.current-logo {
+  margin-bottom: 20px;
+
+  & > h2:first-child {
+    font-size: 1.5em;
   }
 
   .shop-logo {

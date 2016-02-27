@@ -7893,6 +7893,9 @@ body {
   body.setup-section {
     padding-top: 0px; }
 
+h1 {
+  margin-bottom: 30px; }
+
 .navbar-fixed-top {
   border-bottom: 0; }
 
@@ -7927,13 +7930,13 @@ body {
   .form-group > ul.help-block.with-errors:empty {
     display: none; }
 
-h1 {
-  margin-bottom: 30px; }
-
 .control-label.required:after {
   content: '*';
   margin-left: 5px;
   color: #f0ad4e; }
+
+.button-bar {
+  text-align: right; }
 
 .login-section > .container {
   margin-top: 100px;
@@ -7965,11 +7968,6 @@ h1 {
   line-height: 1.5;
   border-radius: 3px; }
 
-table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
-  text-align: right; }
-  table.table > tr td.table-actions a:not(:last-of-type), table.table tbody > tr td.table-actions a:not(:last-of-type) {
-    margin-right: 5px; }
-
 .fa-overlay {
   position: relative; }
 
@@ -7979,6 +7977,11 @@ table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
   right: 0.5em;
   bottom: 0em;
   text-shadow: -1px -1px white, -1px 1px white, 1px 1px white, 1px -1px white; }
+
+table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
+  text-align: right; }
+  table.table > tr td.table-actions a:not(:last-of-type), table.table tbody > tr td.table-actions a:not(:last-of-type) {
+    margin-right: 5px; }
 
 table.shop-list > tbody > tr > td {
   vertical-align: middle; }
@@ -7992,5 +7995,55 @@ table.shop-list .shop-name {
 table.shop-list .shop-logo {
   max-heigh: 100px;
   max-width: 300px; }
+
+form.logo-shop .row-or {
+  margin-left: -15px;
+  margin-right: -15px;
+  vertical-align: middle; }
+  form.logo-shop .row-or:before, form.logo-shop .row-or:after {
+    content: " ";
+    display: table; }
+  form.logo-shop .row-or:after {
+    clear: both; }
+  form.logo-shop .row-or > div {
+    vertical-align: middle; }
+  form.logo-shop .row-or .cell-upload-logo {
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px; }
+    @media (min-width: 992px) {
+      form.logo-shop .row-or .cell-upload-logo {
+        float: left;
+        width: 41.66667%; } }
+  form.logo-shop .row-or .cell-or {
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-style: italic;
+    text-align: center; }
+    @media (min-width: 992px) {
+      form.logo-shop .row-or .cell-or {
+        float: left;
+        width: 16.66667%; } }
+  form.logo-shop .row-or .cell-remove-logo {
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-align: right; }
+    @media (min-width: 992px) {
+      form.logo-shop .row-or .cell-remove-logo {
+        float: left;
+        width: 41.66667%; } }
+
+.current-logo {
+  margin-bottom: 20px; }
+  .current-logo > h2:first-child {
+    font-size: 1.5em; }
+  .current-logo .shop-logo {
+    max-heigh: 100px;
+    max-width: 300px; }
 
 /*# sourceMappingURL=style.css.map */

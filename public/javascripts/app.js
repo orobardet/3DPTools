@@ -1,18 +1,3 @@
-$(function () {
-    function modalHCenterReposition() {
-        var modal = $(this),
-            dialog = modal.find('.modal-dialog');
-        modal.css('display', 'block');
-
-        dialog.css("margin-top", Math.max(0, ($(window).height() - dialog.height()) / 2));
-    }
-
-    $('.modal.modal-h-center').on('show.bs.modal', modalHCenterReposition);
-    $(window).on('resize', function () {
-        $('.modal:visible').each(modalHCenterReposition);
-    });
-});
-
 var App3DPTools = {
 
     errorFlash: function (container, message) {
@@ -74,3 +59,33 @@ var App3DPTools = {
         $modal.modal('show');
     }
 };
+
+$(function () {
+    function modalHCenterReposition() {
+        var modal = $(this),
+            dialog = modal.find('.modal-dialog');
+        modal.css('display', 'block');
+
+        dialog.css("margin-top", Math.max(0, ($(window).height() - dialog.height()) / 2));
+    }
+
+    $('.modal.modal-h-center').on('show.bs.modal', modalHCenterReposition);
+    $(window).on('resize', function () {
+        $('.modal:visible').each(modalHCenterReposition);
+    });
+
+    $('a.need-confirmation').click(function(e) {
+        var $this = $(this);
+        var message =  $this.data('confirm-message');
+        var url =  $this.attr('href');
+
+        if (!message || !url) {
+            return true;
+        }
+
+        e.preventDefault();
+        App3DPTools.confirmModal(message, function () {
+            document.location = url;
+        });
+    });
+});

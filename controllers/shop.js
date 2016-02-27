@@ -41,7 +41,7 @@ module.exports = function (app) {
         });
     };
 
-    this.setLogo = function (req, res) {
+    this.setLogo = function (req, res, next) {
         var shopId = req.params.shop_id;
         var logo = req.file;
 
@@ -60,14 +60,39 @@ module.exports = function (app) {
                     }
                     return res.redirect("/shop");
                 });
-            })
+            });
     };
 
-    this.logoForm = function (req, res) {
-        return res.render('shop/logo', {
-            shopId: req.params.shop_id,
-            errors: []
-        });
+    this.deleteLogo = function (req, res, next) {
+        var shopId = req.params.shop_id;
+
+        when(Shop.findById(shopId).exec())
+            .then(function (shop) {
+                shop.logo = undefined;
+
+                shop.save(function (err) {
+                    if (err) {
+                        return next(err);
+                    }
+                    return res.redirect("/shop");
+                });
+            });
+    };
+
+    this.logoForm = function (req, res, next) {
+        var shopId = req.params.shop_id;
+
+        when(Shop.findById(shopId).exec())
+            .then(function (shop) {
+                return res.render('shop/logo', {
+                    shopId: shopId,
+                    shop: shop,
+                    errors: []
+                });
+            })
+            .catch(function (err) {
+                return next(err);
+            });
     };
 
     this.getShop = function (req, res) {

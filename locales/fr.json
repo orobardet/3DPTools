@@ -99,7 +99,11 @@
   "Name contains non alpha-numeric characters": "Le nom contient des caractères non alpha-numeriques",
   "change picture": "changer l'image",
   "Logo:": "Logo:",
-  "Set shop's picture": "Définir l'image du magasin",
+  "Set %s shop's picture": "Définir l'image du magasin %s",
   "Name / Url": "Nom / Url",
-  "Logo": "Logo"
+  "Logo": "Logo",
+  "or": "ou",
+  "Remove logo": "Retirer le logo",
+  "Do you really want to delete the logo? You won't be able to retrieve it.": "voulez-vous vraiment supprimer le logo ? Vous ne pourrez plus le récupérer.",
+  "Current shop logo:": "Logo actuel du magasin :"
 }

@@ -28,7 +28,8 @@
                 <% } %>
             </td>
             <td>
-                <% if (shop.logo) { %>
+                <script>console.log(<%- JSON.stringify(shop) %>);</script>
+                <% if (shop.logo && shop.logo.size) { %>
                 <img class="shop-logo" src="/shop/get-logo/<%- shop.id %>">
                 <% } %>
             </td>

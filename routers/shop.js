@@ -23,6 +23,7 @@ module.exports = function (app) {
     router.get('/add', Controller.addShopForm);
 
     router.post('/set-logo/:shop_id', fileUpload.single('logo'), Controller.setLogo);
+    router.get('/delete-logo/:shop_id', Controller.deleteLogo);
     router.get('/set-logo/:shop_id', Controller.logoForm);
 
     router.delete('/delete/:shop_id', Controller.deleteShop);
