@@ -52,5 +52,11 @@
   "Password": "Password",
   "Password verification": "Password verification",
   "Administrator": "Administrator",
-  "Edit user": "Edit user"
+  "Edit user": "Edit user",
+  "e:\\Developpement\\Node\\3DPTools\\views\\shop\\edit.ejs:5\n    3|     <i class=\"fa fa-pencil fa-overlay-se\" style=\"color:white\"></i>\r\n    4|     <i class=\"fa fa-pencil fa-overlay-se text-success\"></i>\r\n >> 5| </span> <%- __('Edit shop %s', shop.name) %></h1>\r\n    6| \r\n    7| <form class=\"form-shop\" method=\"POST\">\r\n    8|     <fieldset>\r\n\nshop is not defined": "e:\\Developpement\\Node\\3DPTools\\views\\shop\\edit.ejs:5\n    3|     <i class=\"fa fa-pencil fa-overlay-se\" style=\"color:white\"></i>\r\n    4|     <i class=\"fa fa-pencil fa-overlay-se text-success\"></i>\r\n >> 5| </span> <%- __('Edit shop %s', shop.name) %></h1>\r\n    6| \r\n    7| <form class=\"form-shop\" method=\"POST\">\r\n    8|     <fieldset>\r\n\nshop is not defined",
+  "An error occured": "An error occured",
+  "Edit shop %s": "Edit shop %s",
+  "Url is not a URL": "Url is not a URL",
+  "Name / Url": "Name / Url",
+  "Logo": "Logo"
 }

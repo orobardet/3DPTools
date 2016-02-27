@@ -41,6 +41,48 @@ module.exports = function (app) {
         });
     };
 
+    this.edit = function (req, res, next) {
+        var shopId = req.params.shop_id;
+
+        when(Shop.findById(shopId).exec())
+            .then(function (shop) {
+                if (!req.form.isValid) {
+                    return res.render('shop/edit', {
+                        shop: shop,
+                        errors: req.form.getErrors()
+                    });
+                }
+
+                shop.name = req.form.name;
+                shop.url = req.form.url;
+
+                shop.save(function (err) {
+                    if (err) {
+                        return next(err);
+                    }
+                    return res.redirect("/shop");
+                });
+            });
+    };
+
+    this.editForm = function (req, res) {
+        var shopId = req.params.shop_id;
+
+        when(Shop.findById(shopId).exec())
+            .then(function (shop) {
+                return res.render('shop/edit', {
+                    shop: shop,
+                    errors: []
+                });
+            })
+            .catch(function (err) {
+                res.status(404);
+                return res.json({
+                    message: res.__('Shop %s not found.', shopId)
+                });
+            });
+    };
+
     this.setLogo = function (req, res, next) {
         var shopId = req.params.shop_id;
         var logo = req.file;
@@ -100,7 +142,7 @@ module.exports = function (app) {
 
         when(Shop.findById(shopId).exec())
             .then(function (shop) {
-                var shopData = shop.toObject({ getters: false, virtuals: true, versionKey: false });
+                var shopData = shop.toObject({getters: false, virtuals: true, versionKey: false});
                 return res.json({
                     shop: shopData
                 });

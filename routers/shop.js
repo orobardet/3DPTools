@@ -26,6 +26,9 @@ module.exports = function (app) {
     router.get('/delete-logo/:shop_id', Controller.deleteLogo);
     router.get('/set-logo/:shop_id', Controller.logoForm);
 
+    router.post('/edit/:shop_id', ShopForm.shop, Controller.edit);
+    router.get('/edit/:shop_id', Controller.editForm);
+
     router.delete('/delete/:shop_id', Controller.delete);
 
     app.use('/shop', router);

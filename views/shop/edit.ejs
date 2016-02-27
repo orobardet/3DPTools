@@ -1,15 +1,15 @@
 <h1><span class="fa-overlay">
     <i class="fa fa-shopping-bag"></i>
-    <i class="fa fa-plus fa-overlay-se" style="color:white"></i>
-    <i class="fa fa-plus-circle fa-overlay-se text-primary"></i>
-</span> <%- __('Add shop') %></h1>
+    <i class="fa fa-pencil fa-overlay-se" style="color:white"></i>
+    <i class="fa fa-pencil fa-overlay-se text-success"></i>
+</span> <%- __('Edit shop %s', shop.name) %></h1>
 
 <form class="form-shop" method="POST">
     <fieldset>
         <div class="form-group<%= (errors.name)?" has-error":"" %>">
             <label for="name" class="control-label required"><%- __('Name:'); %></label>
             <input type="text" class="form-control" id="name" name="name"
-                   placeholder="<%- __('Name'); %>" value="<%- (locals.name) ? name : '' %>"
+                   placeholder="<%- __('Name'); %>" value="<%- (locals.name) ? name : shop.name %>"
                    required>
             <% if (errors.name) { %>
             <ul class="help-block with-errors">
@@ -24,7 +24,7 @@
             <label for="url" class="control-label"><%- __('Url:'); %></label>
             <input type="text" class="form-control" id="url" name="url"
                    placeholder="<%- __('Url'); %>"
-                   value="<%- (locals.url) ? url : '' %>">
+                   value="<%- (locals.url) ? url : shop.url %>">
             <% if (errors.url) { %>
             <ul class="help-block with-errors">
                 <% errors.url.forEach(function(msg) { %>

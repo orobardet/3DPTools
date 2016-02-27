@@ -105,5 +105,6 @@
   "or": "ou",
   "Remove logo": "Retirer le logo",
   "Do you really want to delete the logo? You won't be able to retrieve it.": "voulez-vous vraiment supprimer le logo ? Vous ne pourrez plus le récupérer.",
-  "Current shop logo:": "Logo actuel du magasin :"
+  "Current shop logo:": "Logo actuel du magasin :",
+  "Edit shop %s": "Modifier le magasin %s"
 }
