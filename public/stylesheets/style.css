@@ -7993,7 +7993,7 @@ table.shop-list .shop-name {
   font-size: larger;
   font-weight: bold; }
 table.shop-list .shop-logo {
-  max-heigh: 100px;
+  max-height: 100px;
   max-width: 300px; }
 
 form.logo-shop .row-or {
@@ -8043,7 +8043,7 @@ form.logo-shop .row-or {
   .current-logo > h2:first-child {
     font-size: 1.5em; }
   .current-logo .shop-logo {
-    max-heigh: 100px;
+    max-height: 100px;
     max-width: 300px; }
 
 /*# sourceMappingURL=style.css.map */
