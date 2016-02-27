@@ -16,5 +16,29 @@ module.exports = function (app) {
             });
     };
 
+    this.addShop = function (req, res, next) {
+        if (!req.form.isValid) {
+            return res.render('shop/add', {
+                errors: req.form.getErrors()
+            });
+        }
+        var shop = new Shop({
+            name: req.form.name,
+            url: req.form.url,
+        });
+        shop.save(function (err) {
+            if (err) {
+                return next(err);
+            }
+            return res.redirect("/shop");
+        });
+    };
+
+    this.addShopForm = function (req, res) {
+        return res.render('shop/add', {
+            errors: []
+        });
+    };
+
     return this;
 };

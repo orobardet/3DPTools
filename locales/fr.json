@@ -89,5 +89,13 @@
     "one": "%s magasin",
     "other": "%s magasins"
   },
-  "No shop found.": "Aucun magasin trouvé."
+  "No shop found.": "Aucun magasin trouvé.",
+  "Name": "Nom",
+  "Name:": "Nom :",
+  "Url": "Url",
+  "Url:": "Url :",
+  "Logo:": "Logo :",
+  "You can choose a picture to be used as logo.": "Vous pouvez sélectionner une image qui sera utilisée comme logo.",
+  "Url has invalid characters": "Url has invalid characters",
+  "Logo": "Logo"
 }

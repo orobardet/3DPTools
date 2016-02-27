@@ -7927,6 +7927,14 @@ body {
   .form-group > ul.help-block.with-errors:empty {
     display: none; }
 
+h1 + form {
+  margin-top: 30px; }
+
+.control-label.required:after {
+  content: '*';
+  margin-left: 5px;
+  color: #f0ad4e; }
+
 .login-section > .container {
   margin-top: 100px;
   max-width: 400px; }
@@ -7961,5 +7969,15 @@ table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
   text-align: right; }
   table.table > tr td.table-actions a:not(:last-of-type), table.table tbody > tr td.table-actions a:not(:last-of-type) {
     margin-right: 5px; }
+
+.fa-overlay {
+  position: relative; }
+
+.fa-overlay-se {
+  position: absolute;
+  font-size: 0.5em;
+  right: 0.5em;
+  bottom: 0em;
+  text-shadow: -1px -1px white, -1px 1px white, 1px 1px white, 1px -1px white; }
 
 /*# sourceMappingURL=style.css.map */

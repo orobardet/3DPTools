@@ -1,15 +1,15 @@
 module.exports = function (app) {
     var express = require('express');
     var router = express.Router();
-    var Controller = app.controllers.shop;
+    var Controller = app.controllers.brand;
 
     router.use(function (req, res, next) {
-        res.locals.navModule = 'shop';
+        res.locals.navModule = 'brand';
         next();
     });
 
     router.get('/', Controller.index);
 
-    app.use('/shop', router);
+    app.use('/brand', router);
     return this;
 };

@@ -73,6 +73,16 @@ body {
   }
 }
 
+h1 + form {
+  margin-top:30px;
+}
+
+.control-label.required:after {
+  content: '*';
+  margin-left: 5px;
+  color: $brand-warning;
+}
+
 .login-section {
   > .container {
     margin-top: 100px;
@@ -122,4 +132,16 @@ table.table {
       }
     }
   }
+}
+
+.fa-overlay {
+  position: relative;
+}
+.fa-overlay-se {
+
+  position:absolute;
+  font-size: 0.5em;
+  right: 0.5em;
+  bottom: 0em;
+  text-shadow: -1px -1px white, -1px 1px white, 1px 1px white, 1px -1px white;
 }
