@@ -7927,8 +7927,8 @@ body {
   .form-group > ul.help-block.with-errors:empty {
     display: none; }
 
-h1 + form {
-  margin-top: 30px; }
+h1 {
+  margin-bottom: 30px; }
 
 .control-label.required:after {
   content: '*';
