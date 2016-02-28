@@ -1,2 +1,48 @@
 <h1><%- __(pageTitle) %></h1>
-<p>Welcome to <%- pageTitle %></p>
+
+<div class="row">
+    <div class="col-md-8">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title"><i class="p3di p3di-filament"></i>&nbsp;<%- __('Filaments'); %></h2>
+            </div>
+            <div class="panel-body">
+                WIP
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h2 class="panel-title"><i class="fa fa-shopping-bag"></i>&nbsp;<%- __('Shops'); %></h2>
+            </div>
+            <div class="panel-body">
+                <%- __n("%s shop", shopCount); %>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h2 class="panel-title"><i class="fa fa-trademark"></i>&nbsp;<%- __('Brands'); %></h2>
+            </div>
+            <div class="panel-body">
+                <%- __n("%s brand", brandCount); %>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h2 class="panel-title"><i class="fa fa-leaf"></i>&nbsp;<%- __('Materials'); %></h2>
+            </div>
+            <div class="panel-body">
+                <%- __n("%s material", materialCount); %>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+

@@ -1,10 +1,25 @@
 module.exports = function (app) {
+    var when = require('when');
     var User = app.models.user;
+    var Shop = app.models.shop;
+    var Brand = app.models.brand;
+    var Material = app.models.material;
 
     this.index = function (req, res, next) {
-        res.render('index', {
-            pageTitle: 'Home',
-            navModule: 'home'
+        when.all([
+            Shop.count().exec(),
+            Brand.count().exec(),
+            Material.count().exec()
+        ]).spread(function (shopCount, brandCount, materialCount) {
+            return res.render('index', {
+                pageTitle: 'Home',
+                navModule: 'home',
+                shopCount: shopCount,
+                brandCount: brandCount,
+                materialCount: materialCount
+            });
+        }).otherwise(function (err) {
+            throw err;
         });
     };
 
