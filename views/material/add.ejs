@@ -1,0 +1,139 @@
+<h1><span class="fa-overlay">
+    <i class="fa fa-leaf"></i>
+    <i class="fa fa-plus fa-overlay-se" style="color:white"></i>
+    <i class="fa fa-plus-circle fa-overlay-se text-success"></i>
+</span> <%- __('Add material') %></h1>
+
+<form class="form-material" method="POST">
+    <fieldset>
+        <div class="form-group<%= (errors.name)?" has-error":"" %>">
+            <label for="name" class="control-label required"><%- __('Name:'); %></label>
+            <input type="text" class="form-control" id="name" name="name"
+                   placeholder="<%- __('Name'); %>" value="<%- (locals.name) ? name : '' %>"
+                   required>
+            <% if (errors.name) { %>
+            <ul class="help-block with-errors">
+                <% errors.name.forEach(function(msg) { %>
+                <li><%= __(msg) %></li>
+                <% }); %>
+            </ul>
+            <% } %>
+        </div>
+
+        <div class="form-group<%= (errors.description) ? " has-error" : "" %>">
+            <label for="description" class="control-label"><%- __('Description:'); %></label>
+            <textarea rows="3" class="form-control" id="description" name="description"
+                      placeholder="<%- __('Description'); %>"><%- (locals.description) ? description : '' %></textarea>
+            <% if (errors.description) { %>
+            <ul class="help-block with-errors">
+                <% errors.description.forEach(function(msg) { %>
+                <li><%= __(msg) %></li>
+                <% }); %>
+            </ul>
+            <% } %>
+        </div>
+
+        <div class="form-group<%= (errors.density) ? " has-error" : "" %>">
+            <label for="density" class="control-label required"><%- __('Density:'); %></label>
+            <div class="input-group input-density">
+                <input type="number" class="form-control" id="density" name="density"
+                       placeholder="<%- __('Density'); %>" value="<%- (locals.density) ? density : '' %>"
+                       required min="0" step="10">
+                <div class="input-group-addon"><%- __('kg/m³'); %></div>
+            </div>
+            <% if (errors.density) { %>
+            <ul class="help-block with-errors">
+                <% errors.density.forEach(function(msg) { %>
+                <li><%= __(msg) %></li>
+                <% }); %>
+            </ul>
+            <% } %>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-6">
+                <label class="control-label"><i
+                            class="p3di p3di-printer-head-heat"></i>&nbsp;<%- __('Extrusion temperature:'); %></label>
+                <div class="row form-inline">
+                    <div class="col-md-6 form-group<%= (errors.headTempMin) ? " has-error" : "" %>">
+                        <label for="headTempMin" class="control-label"><%- __('Min:'); %></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control input-temperature" id="headTempMin"
+                                   name="headTempMin"
+                                   value="<%- (locals.headTempMin) ? headTempMin : '' %>" min="0">
+                            <div class="input-group-addon"><%- __('°C'); %></div>
+                        </div>
+                        <% if (errors.headTempMin) { %>
+                        <ul class="help-block with-errors">
+                            <% errors.headTempMin.forEach(function(msg) { %>
+                            <li><%= __(msg) %></li>
+                            <% }); %>
+                        </ul>
+                        <% } %>
+                    </div>
+                    <div class="col-md-6 form-group<%= (errors.headTempMax) ? " has-error" : "" %>">
+                        <label for="headTempMax" class="control-label"><%- __('Max:'); %></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control input-temperature" id="headTempMax"
+                                   name="headTempMax"
+                                   value="<%- (locals.headTempMax) ? headTempMax : '' %>" min="0">
+                            <div class="input-group-addon"><%- __('°C'); %></div>
+                        </div>
+                        <% if (errors.headTempMax) { %>
+                        <ul class="help-block with-errors">
+                            <% errors.headTempMax.forEach(function(msg) { %>
+                            <li><%= __(msg) %></li>
+                            <% }); %>
+                        </ul>
+                        <% } %>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <label class="control-label"><i
+                            class="p3di p3di-printer-bed-heat"></i>&nbsp;<%- __('Bed temperature:'); %></label>
+                <div class="row form-inline">
+                    <div class="col-md-6 form-group<%= (errors.bedTempMin) ? " has-error" : "" %>">
+                        <label for="bedTempMin" class="control-label"><%- __('Min:'); %></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control input-temperature" id="bedTempMin"
+                                   name="bedTempMin"
+                                   value="<%- (locals.bedTempMin) ? bedTempMin : '' %>" min="0">
+                            <div class="input-group-addon"><%- __('°C'); %></div>
+                        </div>
+                        <% if (errors.bedTempMin) { %>
+                        <ul class="help-block with-errors">
+                            <% errors.bedTempMin.forEach(function(msg) { %>
+                            <li><%= __(msg) %></li>
+                            <% }); %>
+                        </ul>
+                        <% } %>
+                    </div>
+                    <div class="col-md-6 form-group<%= (errors.bedTempMax) ? " has-error" : "" %>">
+                        <label for="bedTempMax" class="control-label"><%- __('Max:'); %></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control input-temperature" id="bedTempMax"
+                                   name="bedTempMax"
+                                   value="<%- (locals.bedTempMax) ? bedTempMax : '' %>" min="0">
+                            <div class="input-group-addon"><%- __('°C'); %></div>
+                        </div>
+                        <% if (errors.bedTempMax) { %>
+                        <ul class="help-block with-errors">
+                            <% errors.bedTempMax.forEach(function(msg) { %>
+                            <li><%= __(msg) %></li>
+                            <% }); %>
+                        </ul>
+                        <% } %>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <p class="button-bar">
+            <a href="/material" class="btn btn-default"><%- __('Cancel') %></a>
+            <button type="submit" class="btn btn-primary"><%- __('Save') %></button>
+        </p>
+    </fieldset>
+</form>

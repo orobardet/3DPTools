@@ -1,1 +1,127 @@
-<h2><%- __('Materials') %></h2>
+<h1><i class="fa fa-leaf"></i>&nbsp;<%- __('Materials') %></h1>
+
+<div class="panel panel-default">
+    <div class="panel-heading with-button">
+        <a href="/material/add" class="btn btn-primary trg-add-material"><i
+                    class="fa fa-plus"></i>&nbsp;<%- __('Add material') %></a>
+        <% if (materials && materials.length) { %>
+        <h3 class="panel-title"><%- __n("%s material", "%s materials", materials.length || 0); %></h3>
+        <% } else { %>
+        <%- __('No material found.') %>
+        <% } %>
+    </div>
+    <% if (materials && materials.length) { %>
+    <table class="table material-list">
+        <tr>
+            <th><%- __('Name') %></th>
+            <th><%- __('Density') %></th>
+            <th><%- __('Extrusion temperature') %></th>
+            <th><%- __('Bed temperature') %></th>
+            <th></th>
+        </tr>
+        <% materials.forEach(function (material) { %>
+        <tr>
+            <td>
+                <span class="material-name"><%- material.name %></span>
+                <% if (material.url && (material.url != '')) { %>
+                <br/>
+                <a href="<%- material.url %>" target="_blank"><%- material.url %></a>
+                <% } %>
+            </td>
+            <td><%- __('%s kg/m³', material.density) %></td>
+            <td>
+                <% if (material.headTemp) {
+                    temp = material.headTemp;
+                    iconClass = "p3di p3di-printer-head-heat"; %>
+                <% include partial/tempRange.ejs %>
+                <% } %>
+            </td>
+            <td>
+                <% if (material.bedTemp) {
+                    temp = material.bedTemp;
+                    iconClass = "p3di p3di-printer-bed-heat"; %>
+                <% include partial/tempRange.ejs %>
+                <% } %>
+            </td>
+            <td class="table-actions">
+                <div class="actions-block">
+                    <a href="/material/edit/<%- material.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
+                    <a href="/material/delete/<%- material.id %>" data-id="<%- material.id %>"
+                       class="trg-delete-material"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                </div>
+            </td>
+        </tr>
+        <% if (material.description) { %>
+        <tr>
+            <td colspan="5" class="material-description"><%- material.description %></td>
+        </tr>
+        <% } %>
+        <% }); %>
+    </table>
+    <% } %>
+</div>
+
+<div id="material-message-container"></div>
+
+<script type="text/javascript">
+    $(function () {
+        function deleteMaterial(materialId) {
+            $.ajax({
+                type: "DELETE",
+                url: '/material/delete/'+materialId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.message) {
+                        App3DPTools.successFlash('#material-message-container', data.message);
+                    }
+                    document.location = document.location;
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#material-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#material-message-container', errorMsg);
+                }
+            });
+        }
+
+        $('.trg-delete-material').click(function (e) {
+            e.preventDefault();
+
+            var $this = $(this);
+            var materialId = $this.data('id');
+
+            $.ajax({
+                type: "GET",
+                url: '/material/get/'+materialId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.material) {
+                        App3DPTools.confirmModal(Locale3DPTools.__('Delete %s material?', data.material.name), function () {
+                            deleteMaterial(materialId);
+                        });
+                    } else {
+                        App3DPTools.errorFlash('#material-message-container', Locale3DPTools.__('Error while retrieving data for material %s.', materialId));
+                        return;
+                    }
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#material-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#material-message-container', errorMsg);
+                }
+            });
+        });
+    });
+</script>

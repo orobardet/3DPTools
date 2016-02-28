@@ -1,0 +1,10 @@
+<% if (temp.min && temp.max) { %>
+<% if (iconClass) { %><i class="<%- iconClass %>"></i> <% } %><%- __('From %s°C to %s°C', temp.min, temp.max) %>
+<% } else { %>
+<% if (temp.min) { %>
+<% if (iconClass) { %><i class="<%- iconClass %>"></i> <% } %><%- __('%s°C min', temp.min) %>
+<% } %>
+<% if (temp.max) { %>
+<% if (iconClass) { %><i class="<%- iconClass %>"></i> <% } %><%- __('%s°C max', temp.max) %>
+<% } %>
+<% } %>

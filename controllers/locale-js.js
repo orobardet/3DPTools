@@ -12,7 +12,9 @@ module.exports = function (app) {
                 'Delete %s shop?',
                 'Error while retrieving data for shop %s.',
                 'Delete %s brand?',
-                'Error while retrieving data for brand %s.'
+                'Error while retrieving data for brand %s.',
+                'Delete %s material?',
+                'Error while retrieving data for material %s.'
             ]
         });
     };

@@ -151,7 +151,7 @@ table.table {
   }
 }
 
-table.shop-list,table.brand-list {
+table.shop-list,table.brand-list, table.material-list {
   & > tbody > tr > td {
     vertical-align: middle;
   }
@@ -160,7 +160,7 @@ table.shop-list,table.brand-list {
     text-align: left;
   }
 
-  .shop-name, .brand-name {
+  .shop-name, .brand-name, .material-name {
     margin: 5px 0;
     font-size: larger;
     font-weight: bold;
@@ -205,5 +205,22 @@ form.logo-shop, form.logo-brand {
   .shop-logo, .brand-logo {
     max-height: 100px;
     max-width: 300px;
+  }
+}
+
+.form-material {
+  .input-density {
+    max-width: 200px;
+  }
+  .input-temperature {
+    max-width: 75px;
+  }
+}
+table.material-list {
+
+  & > tbody > tr > td.material-description {
+    border-top: 0;
+    padding-top: 0;
+    vertical-align: top;
   }
 }
