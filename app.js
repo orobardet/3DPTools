@@ -90,6 +90,7 @@ consign({
     verbose: false
 }).include('lib')
     .then('models')
+    .then('middlewares')
     .then('forms')
     .then('controllers')
     .then('routers/app.js') // must be loaded first for main overidding routes (like auth ones)
