@@ -148,5 +148,8 @@
   "Maximal bed temperature must be greater than 0.": "La température maximale du plateau doit être supérieure à 0.",
   "Delete %s material?": "Supprimer la matière %s ?",
   "Error while retrieving data for material %s.": "Erreur lors de la récupération des données de la matière %s.",
-  "Material %s successfully deleted.": "Material %s successfully deleted."
+  "Material %s successfully deleted.": "Material %s successfully deleted.",
+  "Description preview:": "Prévisualisation de la description :",
+  "e:\\Developpement\\Node\\3DPTools\\views\\material\\index.ejs:56\n    54|         <% if (material.description) { %>\r\n    55|         <tr>\r\n >> 56|             <td colspan=\"5\" class=\"material-description\"><%- marked(material.description) %></td>\r\n    57|         </tr>\r\n    58|         <% } %>\r\n    59|         <% }); %>\r\n\nmarked is not defined": "e:\\Developpement\\Node\\3DPTools\\views\\material\\index.ejs:56\n    54|         <% if (material.description) { %>\r\n    55|         <tr>\r\n >> 56|             <td colspan=\"5\" class=\"material-description\"><%- marked(material.description) %></td>\r\n    57|         </tr>\r\n    58|         <% } %>\r\n    59|         <% }); %>\r\n\nmarked is not defined",
+  "marked is not defined": "marked is not defined"
 }

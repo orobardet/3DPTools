@@ -20,17 +20,25 @@
             <% } %>
         </div>
 
-        <div class="form-group<%= (errors.description) ? " has-error" : "" %>">
-            <label for="description" class="control-label"><%- __('Description:'); %></label>
-            <textarea rows="3" class="form-control" id="description" name="description"
-                      placeholder="<%- __('Description'); %>"><%- (locals.description) ? description : material.description %></textarea>
-            <% if (errors.description) { %>
-            <ul class="help-block with-errors">
-                <% errors.description.forEach(function(msg) { %>
-                <li><%= __(msg) %></li>
-                <% }); %>
-            </ul>
-            <% } %>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group<%= (errors.description) ? " has-error" : "" %>">
+                    <label for="description" class="control-label"><%- __('Description:'); %></label>
+                    <textarea rows="5" class="form-control" id="description" name="description"
+                              placeholder="<%- __('Description'); %>"><%- (locals.description) ? description : material.description %></textarea>
+                    <% if (errors.description) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.description.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="description" class="control-label"><%- __('Description preview:'); %></label>
+                <div id="description-preview" class="description-preview markdown"></div>
+            </div>
         </div>
 
         <div class="form-group<%= (errors.density) ? " has-error" : "" %>">
@@ -137,3 +145,17 @@
         </p>
     </fieldset>
 </form>
+
+<script src="/marked.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('textarea#description').keyup(function () {
+            var $this = $(this);
+            var $preview = $('#description-preview');
+            if (!$preview.length) {
+                return;
+            }
+            $preview.html(marked($this.val()));
+        }).trigger('keyup');
+    });
+</script>

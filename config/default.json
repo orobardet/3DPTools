@@ -30,6 +30,7 @@
     "public/vendor/bootstrap-sass/assets",
     "public/vendor/font-awesome",
     "public/vendor/flag-icon-css",
-    "public/vendor/sprintf/dist"
+    "public/vendor/sprintf/dist",
+    "public/vendor/marked"
   ]
 }

@@ -24,6 +24,7 @@
     "font-awesome": "fontawesome#^4.5.0",
     "flag-icon-css": "^1.2.0",
     "jquery-ui": "^1.11.4",
-    "sprintf": "^1.0.3"
+    "sprintf": "^1.0.3",
+    "marked": "^0.3.5"
   }
 }
