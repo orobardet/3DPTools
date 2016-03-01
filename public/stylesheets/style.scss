@@ -224,3 +224,37 @@ table.material-list {
     vertical-align: top;
   }
 }
+
+.home-section {
+  & > .container {
+    padding-top: 30px;
+  }
+
+  .side-info .panel-body {
+     h3 {
+       margin: 0;
+       font-size: small;
+     }
+    .shop-block, .brand-block, .material-block {
+      margin: 10px 0;
+      display: block;
+      text-align: center;
+
+      .shop-logo, .brand-logo, .material-logo {
+        max-height: 100px;
+        max-width: 100%;
+      }
+      .shop-name, .brand-name, .material-name {
+        margin: 5px 0;
+        font-size: larger;
+        font-weight: bold;
+      }
+    }
+    .material-block {
+      text-align: left;
+      .material-description {
+        margin-top: 5px;
+      }
+    }
+  }
+}

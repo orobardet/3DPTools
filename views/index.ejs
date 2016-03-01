@@ -1,5 +1,3 @@
-<h1><%- __(pageTitle) %></h1>
-
 <div class="row">
     <div class="col-md-8">
 
@@ -8,40 +6,94 @@
                 <h2 class="panel-title"><i class="p3di p3di-filament"></i>&nbsp;<%- __('Filaments'); %></h2>
             </div>
             <div class="panel-body">
-                WIP
+                TODO
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 side-info">
 
+        <% if (locals.shopCount && (shopCount > 0)) { %>
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h2 class="panel-title"><i class="fa fa-shopping-bag"></i>&nbsp;<%- __('Shops'); %></h2>
+                <h2 class="panel-title"><i class="fa fa-shopping-bag"></i>&nbsp;<%- __n("%s shop", shopCount); %></h2>
             </div>
             <div class="panel-body">
-                <%- __n("%s shop", shopCount); %>
+                <% if (locals.randomShop) { var shop = randomShop %>
+                <a href="<%- shop.url %>" target="_blank" class="shop-block">
+                    <% if (shop.logo && shop.logo.size) { %>
+                    <img class="shop-logo" src="/shop/get-logo/<%- shop.id %>">
+                    <% } else { %>
+                    <div class="shop-name"><%- shop.name %></div>
+                    <% } %>
+                </a>
+                <% } %>
+                <div class="button-bar">
+                    <a href="/shop" class="btn btn-default"><i
+                                class="fa fa-shopping-bag"></i>&nbsp;<%- __('View all shops'); %></a>
+                </div>
             </div>
         </div>
+        <% } %>
 
+        <% if (locals.brandCount && (brandCount > 0)) { %>
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h2 class="panel-title"><i class="fa fa-trademark"></i>&nbsp;<%- __('Brands'); %></h2>
+                <h2 class="panel-title"><i class="fa fa-trademark"></i>&nbsp;<%- __n("%s shop", brandCount); %></h2>
             </div>
             <div class="panel-body">
-                <%- __n("%s brand", brandCount); %>
+                <% if (locals.randomBrand) { var brand = randomBrand %>
+                <a href="<%- brand.url %>" target="_blank" class="brand-block">
+                    <% if (brand.logo && brand.logo.size) { %>
+                    <img class="brand-logo" src="/brand/get-logo/<%- brand.id %>">
+                    <% } else { %>
+                    <div class="brand-name"><%- brand.name %></div>
+                    <% } %>
+                </a>
+                <% } %>
+                <div class="button-bar">
+                    <a href="/brand" class="btn btn-default"><i
+                                class="fa fa-trademark"></i>&nbsp;<%- __('View all brands'); %></a>
+                </div>
             </div>
         </div>
+        <% } %>
 
+        <% if (locals.materialCount && (materialCount > 0)) { %>
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h2 class="panel-title"><i class="fa fa-leaf"></i>&nbsp;<%- __('Materials'); %></h2>
+                <h2 class="panel-title"><i class="fa fa-leaf"></i>&nbsp;<%- __n("%s material", materialCount); %></h2>
             </div>
             <div class="panel-body">
-                <%- __n("%s material", materialCount); %>
+                <% if (locals.randomMaterial) { var material = randomMaterial %>
+                <div class="material-block">
+                    <div class="material-name"><%- material.name %></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <% if (material.headTemp) {
+                                temp = material.headTemp;
+                                iconClass = "p3di p3di-printer-head-heat"; %>
+                            <% include material/partial/tempRange.ejs %>
+                            <% } %>
+                        </div>
+                        <div class="col-md-6">
+                            <% if (material.bedTemp) {
+                                temp = material.bedTemp;
+                                iconClass = "p3di p3di-printer-bed-heat"; %>
+                            <% include material/partial/tempRange.ejs %>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="material-description"><%- marked(material.description) %></div>
+                </div>
+                <% } %>
+                <div class="button-bar">
+                    <a href="/material" class="btn btn-default"><i
+                                class="fa fa-leaf"></i>&nbsp;<%- __('View all materials'); %></a>
+                </div>
             </div>
         </div>
-
+        <% } %>
     </div>
 
 </div>

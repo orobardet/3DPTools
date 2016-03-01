@@ -8057,4 +8057,25 @@ table.material-list > tbody > tr > td.material-description {
   padding-top: 0;
   vertical-align: top; }
 
+.home-section > .container {
+  padding-top: 30px; }
+.home-section .side-info .panel-body h3 {
+  margin: 0;
+  font-size: small; }
+.home-section .side-info .panel-body .shop-block, .home-section .side-info .panel-body .brand-block, .home-section .side-info .panel-body .material-block {
+  margin: 10px 0;
+  display: block;
+  text-align: center; }
+  .home-section .side-info .panel-body .shop-block .shop-logo, .home-section .side-info .panel-body .shop-block .brand-logo, .home-section .side-info .panel-body .shop-block .material-logo, .home-section .side-info .panel-body .brand-block .shop-logo, .home-section .side-info .panel-body .brand-block .brand-logo, .home-section .side-info .panel-body .brand-block .material-logo, .home-section .side-info .panel-body .material-block .shop-logo, .home-section .side-info .panel-body .material-block .brand-logo, .home-section .side-info .panel-body .material-block .material-logo {
+    max-height: 100px;
+    max-width: 100%; }
+  .home-section .side-info .panel-body .shop-block .shop-name, .home-section .side-info .panel-body .shop-block .brand-name, .home-section .side-info .panel-body .shop-block .material-name, .home-section .side-info .panel-body .brand-block .shop-name, .home-section .side-info .panel-body .brand-block .brand-name, .home-section .side-info .panel-body .brand-block .material-name, .home-section .side-info .panel-body .material-block .shop-name, .home-section .side-info .panel-body .material-block .brand-name, .home-section .side-info .panel-body .material-block .material-name {
+    margin: 5px 0;
+    font-size: larger;
+    font-weight: bold; }
+.home-section .side-info .panel-body .material-block {
+  text-align: left; }
+  .home-section .side-info .panel-body .material-block .material-description {
+    margin-top: 5px; }
+
 /*# sourceMappingURL=style.css.map */

@@ -9,17 +9,23 @@ module.exports = function (app) {
         when.all([
             Shop.count().exec(),
             Brand.count().exec(),
-            Material.count().exec()
-        ]).spread(function (shopCount, brandCount, materialCount) {
+            Material.count().exec(),
+            Shop.findOneRandom(),
+            Brand.findOneRandom(),
+            Material.findOneRandom()
+        ]).spread(function (shopCount, brandCount, materialCount, randomShop, randomBrand, randomMaterial) {
             return res.render('index', {
                 pageTitle: 'Home',
                 navModule: 'home',
                 shopCount: shopCount,
                 brandCount: brandCount,
-                materialCount: materialCount
+                materialCount: materialCount,
+                randomShop: randomShop,
+                randomBrand: randomBrand,
+                randomMaterial: randomMaterial
             });
         }).otherwise(function (err) {
-            throw err;
+            next(err);
         });
     };
 
