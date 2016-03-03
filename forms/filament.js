@@ -13,8 +13,17 @@ module.exports = function (app) {
         field("brand", "Brand")
             .required(),
         field("shop", "Shop")
+            .required(),
+        field("colorName", "Color name")
+            .trim()
+            .required(),
+        field("colorCode", "Color code")
+            .trim()
+            .required(),
+        field("diameter", "Diameter")
+            .trim()
             .required()
-
+            .isFloat()
     );
 
     return this;

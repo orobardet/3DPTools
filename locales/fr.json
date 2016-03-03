@@ -95,7 +95,7 @@
   "Shop %s successfully deleted.": "Magasin %s supprimé avec succès.",
   "Shop %s not found.": "Le magasin %s est introuvable.",
   "Error while retrieving data for shop %s.": "Erreur lors de la récupération des données du magasin %s.",
-  "Name is required": "Name is required",
+  "Name is required": "Le nom est obligatoire",
   "Name contains non alpha-numeric characters": "Le nom contient des caractères non alpha-numeriques",
   "change picture": "changer l'image",
   "Logo:": "Logo:",
@@ -186,5 +186,9 @@
   "Pink": "Rose",
   "Gray": "Gris",
   "Yellow": "Jaune",
-  "Beige": "Beige"
+  "Beige": "Beige",
+  "Color name is required": "Le nom de couleur est obligatoire",
+  "Color code is required": "Le code de couleur est obligatoire",
+  "Diameter is required": "Le diamètre est obligatoire",
+  "Diameter is not a decimal": "Diameter is not a decimal"
 }

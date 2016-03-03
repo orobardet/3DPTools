@@ -4,6 +4,7 @@ module.exports = function (app) {
     var Shop = app.models.shop;
     var Brand = app.models.brand;
     var Material = app.models.material;
+    var thisController = this;
 
     this.index = function (req, res, next) {
         when(Filament.find().sort('name').exec())
@@ -20,23 +21,30 @@ module.exports = function (app) {
     };
 
     this.add = function (req, res, next) {
-        /*
-         if (!req.form.isValid) {
-         return res.render('shop/add', {
-         errors: req.form.getErrors()
-         });
-         }
-         var shop = new Shop({
-         name: req.form.name,
-         url: req.form.url,
-         });
-         shop.save(function (err) {
-         if (err) {
-         return next(err);
-         }
-         return res.redirect("/shop/set-logo/" + shop.id);
-         });
-         */
+        if (!req.form.isValid) {
+            return thisController.addForm(req, res, next);
+        }
+
+        var filament = new Filament({
+            name: req.form.name,
+            description: req.form.description,
+            brand: req.form.brand,
+            material: req.form.material,
+            diameter: req.form.diameter,
+            color: {
+                name: req.form.colorName,
+                code: req.form.colorCode
+            },
+            shop: req.form.shop,
+        });
+/*        shop.save(function (err) {
+            if (err) {
+                return next(err);
+            }
+            return res.redirect("/shop/set-logo/" + shop.id);
+        });
+*/
+        return res.redirect("/filament");
     };
 
     this.addForm = function (req, res) {
@@ -52,7 +60,7 @@ module.exports = function (app) {
                 materials: materials,
                 usedColors: usedColors,
                 predefinedColors: res.app.get('config').get('filament:colors'),
-                errors: []
+                errors: (req.form) ? req.form.getErrors() : []
             });
         });
     };
