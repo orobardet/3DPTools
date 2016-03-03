@@ -23,7 +23,11 @@ module.exports = function (app) {
         field("diameter", "Diameter")
             .trim()
             .required()
-            .isFloat()
+            .isFloat(),
+        field("buyDate", "Purchase date")
+            .trim()
+            .required()
+            .toInt()
     );
 
     return this;

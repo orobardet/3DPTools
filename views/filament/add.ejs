@@ -1,8 +1,11 @@
 <link rel="stylesheet" href="/css/bootstrap-colorpicker.min.css">
 <link rel="stylesheet" href="/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="/css/bootstrap-datepicker3.min.css">
 <script src="/marked.min.js"></script>
 <script src="/js/bootstrap-colorpicker.min.js"></script>
 <script src="/js/bootstrap-select.min.js"></script>
+<script src="/js/bootstrap-datepicker.min.js"></script>
+<script src="/locales/bootstrap-datepicker.<%- getLocale() %>.min.js"></script>
 
 <h1><span class="fa-overlay">
     <i class="p3di p3di-filament"></i>
@@ -35,7 +38,8 @@
                     <select class="form-control selectpicker" id="brand" name="brand" required>
                         <% if (locals.brands && brands.length) { %>
                         <% brands.forEach(function (brand) { %>
-                        <option value="<%- brand.id %>" data-content="<img class='brand-logo' src='/brand/get-logo/<%- brand.id %>'></img> <%- brand.name %> "><%- brand.name %></option>
+                        <option value="<%- brand.id %>"
+                                data-content="<img class='brand-logo' src='/brand/get-logo/<%- brand.id %>'></img> <%- brand.name %> "><%- brand.name %></option>
                         <% }); %>
                         <% } %>
                     </select>
@@ -179,10 +183,16 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group<%= (errors.buyDate) ? " has-error" : "" %>">
-                    <label for="buyDate" class="control-label required"><%- __('Purchase date:'); %></label>
-                    <input type="text" class="form-control" id="buyDate" name="buyDate"
-                           value="<%- (locals.buyDate) ? buyDate : '' %>"
-                           required>
+                    <label for="buyDateText" class="control-label required"><%- __('Purchase date:'); %></label>
+                    <div class="input-group date">
+                        <input type="text" class="form-control datepicker" id="buyDateText" name="buyDateText"
+                               value=""
+                               required>
+                        <input type="hidden" name="buyDate" id="buyDate" value="<%- (locals.buyDate) ? buyDate : '' %>">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                    </div>
                     <% if (errors.buyDate) { %>
                     <ul class="help-block with-errors">
                         <% errors.buyDate.forEach(function(msg) { %>
@@ -199,7 +209,8 @@
                     <select class="form-control selectpicker" id="shop" name="shop" required>
                         <% if (locals.shops && shops.length) { %>
                         <% shops.forEach(function (shop) { %>
-                        <option value="<%- shop.id %>" data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>'></img> <%- shop.name %> "><%- shop.name %></option>
+                        <option value="<%- shop.id %>"
+                                data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>'></img> <%- shop.name %> "><%- shop.name %></option>
                         <% }); %>
                         <% } %>
                     </select>
@@ -242,6 +253,22 @@
 <script type="text/javascript">
     $(function () {
         $('.selectpicker').selectpicker();
+
+        $('.datepicker').datepicker({
+            language: '<%- getLocale() %>',
+            autoclose: true,
+            clearBtn: true,
+            todayHighlight: true
+        });
+        if ($('#buyDate').val()) {
+            console.log($('#buyDate').val())
+            console.log(new Date($('#buyDate').val()*1000));
+            $('#buyDateText').datepicker('setUTCDate', new Date($('#buyDate').val()*1000));
+        }
+        $('#buyDateText').on('changeDate', function () {
+            var $this = $(this);
+            $('#buyDate').val($this.datepicker('getUTCDate').getTime() / 1000);
+        });
 
         $('textarea#description').keyup(function () {
             var $this = $(this);

@@ -36,7 +36,9 @@ module.exports = function (app) {
                 code: req.form.colorCode
             },
             shop: req.form.shop,
+            buyDate: new Date(req.form.buyDate * 1000)
         });
+        console.log(filament);
 /*        shop.save(function (err) {
             if (err) {
                 return next(err);
