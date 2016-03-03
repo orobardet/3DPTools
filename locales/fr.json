@@ -191,5 +191,7 @@
   "Color code is required": "Le code de couleur est obligatoire",
   "Diameter is required": "Le diamètre est obligatoire",
   "Diameter is not a decimal": "Le diamètre n'est pas un nombre",
-  "Purchase date is not a date": "La date d'achat n'est pas une date"
+  "Purchase date is not a date": "La date d'achat n'est pas une date",
+  "Price is required": "Le prix est obligatoire",
+  "Price is not a decimal": "Le prix n'est pas un nombre"
 }

@@ -226,10 +226,10 @@
 
             <div class="col-md-4">
                 <div class="form-group<%= (errors.price) ? " has-error" : "" %>">
-                    <label for="price" class="control-label"><%- __('Price:'); %></label>
+                    <label for="price" class="control-label required"><%- __('Price:'); %></label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="price"
-                               name="price" value="<%- (locals.price) ? price : '' %>">
+                               name="price" value="<%- (locals.price) ? price : '' %>" required>
                         <div class="input-group-addon"><%- __('€ VAT'); %></div>
                     </div>
                     <% if (errors.price) { %>
@@ -261,8 +261,6 @@
             todayHighlight: true
         });
         if ($('#buyDate').val()) {
-            console.log($('#buyDate').val())
-            console.log(new Date($('#buyDate').val()*1000));
             $('#buyDateText').datepicker('setUTCDate', new Date($('#buyDate').val()*1000));
         }
         $('#buyDateText').on('changeDate', function () {

@@ -23,11 +23,15 @@ module.exports = function (app) {
         field("diameter", "Diameter")
             .trim()
             .required()
-            .isFloat(),
+            .isNumeric(),
         field("buyDate", "Purchase date")
             .trim()
             .required()
-            .toInt()
+            .toInt(),
+        field("price", "Price")
+            .trim()
+            .required()
+            .isNumeric()
     );
 
     return this;

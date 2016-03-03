@@ -36,7 +36,8 @@ module.exports = function (app) {
                 code: req.form.colorCode
             },
             shop: req.form.shop,
-            buyDate: new Date(req.form.buyDate * 1000)
+            buyDate: new Date(req.form.buyDate * 1000),
+            price: req.form.price
         });
         console.log(filament);
 /*        shop.save(function (err) {
@@ -50,6 +51,7 @@ module.exports = function (app) {
     };
 
     this.addForm = function (req, res) {
+        if (req.form) console.log( req.form.getErrors());
         when.all([
             Shop.find().sort('name').exec(),
             Brand.find().sort('name').exec(),
