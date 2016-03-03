@@ -32,7 +32,8 @@
     "public/vendor/flag-icon-css",
     "public/vendor/sprintf/dist",
     "public/vendor/marked",
-    "public/vendor/mjolnic-bootstrap-colorpicker/dist"
+    "public/vendor/mjolnic-bootstrap-colorpicker/dist",
+    "public/vendor/bootstrap-select/dist"
   ],
   "filament": {
     "colors": {

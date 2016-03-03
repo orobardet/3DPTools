@@ -1,6 +1,8 @@
 <link rel="stylesheet" href="/css/bootstrap-colorpicker.min.css">
+<link rel="stylesheet" href="/css/bootstrap-select.min.css">
 <script src="/marked.min.js"></script>
 <script src="/js/bootstrap-colorpicker.min.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
 
 <h1><span class="fa-overlay">
     <i class="p3di p3di-filament"></i>
@@ -30,10 +32,10 @@
             <div class="col-md-3">
                 <div class="form-group<%= (errors.brand) ? " has-error" : "" %>">
                     <label for="brand" class="control-label required"><%- __('Brand:'); %></label>
-                    <select class="form-control" id="brand" name="brand" required>
+                    <select class="form-control selectpicker" id="brand" name="brand" required>
                         <% if (locals.brands && brands.length) { %>
                         <% brands.forEach(function (brand) { %>
-                        <option value="<%- brand.id %>"><%- brand.name %></option>
+                        <option value="<%- brand.id %>" data-content="<img class='brand-logo' src='/brand/get-logo/<%- brand.id %>'></img> <%- brand.name %> "><%- brand.name %></option>
                         <% }); %>
                         <% } %>
                     </select>
@@ -194,10 +196,10 @@
             <div class="col-md-4">
                 <div class="form-group<%= (errors.shop) ? " has-error" : "" %>">
                     <label for="shop" class="control-label required"><%- __('Shop:'); %></label>
-                    <select class="form-control" id="shop" name="shop" required>
+                    <select class="form-control selectpicker" id="shop" name="shop" required>
                         <% if (locals.shops && shops.length) { %>
                         <% shops.forEach(function (shop) { %>
-                        <option value="<%- shop.id %>"><%- shop.name %></option>
+                        <option value="<%- shop.id %>" data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>'></img> <%- shop.name %> "><%- shop.name %></option>
                         <% }); %>
                         <% } %>
                     </select>
@@ -239,6 +241,8 @@
 
 <script type="text/javascript">
     $(function () {
+        $('.selectpicker').selectpicker();
+
         $('textarea#description').keyup(function () {
             var $this = $(this);
             var $preview = $('#description-preview');

@@ -8085,4 +8085,10 @@ table.material-list > tbody > tr > td.material-description {
   width: 16px;
   border: solid 1px #333; }
 
+.filament-section .bootstrap-select .filter-option .brand-logo, .filament-section .bootstrap-select .filter-option .shop-logo {
+  max-height: 16px; }
+.filament-section .bootstrap-select .dropdown-menu .brand-logo, .filament-section .bootstrap-select .dropdown-menu .shop-logo {
+  float: right !important;
+  max-height: 16px; }
+
 /*# sourceMappingURL=style.css.map */

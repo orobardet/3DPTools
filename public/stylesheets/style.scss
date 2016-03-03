@@ -269,3 +269,20 @@ table.material-list {
     border: solid 1px #333;
   }
 }
+
+.filament-section {
+  .bootstrap-select {
+    .filter-option {
+      .brand-logo, .shop-logo {
+        max-height: 16px;
+      }
+    }
+
+    .dropdown-menu {
+      .brand-logo, .shop-logo {
+        float: right !important;
+        max-height: 16px;
+      }
+    }
+  }
+}
