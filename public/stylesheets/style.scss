@@ -151,7 +151,7 @@ table.table {
   }
 }
 
-table.shop-list,table.brand-list, table.material-list {
+table.shop-list,table.brand-list, table.material-list, table.filament-list {
   & > tbody > tr > td {
     vertical-align: middle;
   }
@@ -256,5 +256,16 @@ table.material-list {
         margin-top: 5px;
       }
     }
+  }
+}
+
+.dropdown-menu, .color-picker {
+  .color-preview
+  {
+    display: inline-block;
+    height: 16px;
+    vertical-align: text-top;
+    width: 16px;
+    border: solid 1px #333;
   }
 }

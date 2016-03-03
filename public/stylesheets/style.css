@@ -7984,16 +7984,16 @@ table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
   table.table > tr td.table-actions a:not(:last-of-type), table.table tbody > tr td.table-actions a:not(:last-of-type) {
     margin-right: 5px; }
 
-table.shop-list > tbody > tr > td, table.brand-list > tbody > tr > td, table.material-list > tbody > tr > td {
+table.shop-list > tbody > tr > td, table.brand-list > tbody > tr > td, table.material-list > tbody > tr > td, table.filament-list > tbody > tr > td {
   vertical-align: middle; }
-table.shop-list td.table-actions > .actions-block, table.brand-list td.table-actions > .actions-block, table.material-list td.table-actions > .actions-block {
+table.shop-list td.table-actions > .actions-block, table.brand-list td.table-actions > .actions-block, table.material-list td.table-actions > .actions-block, table.filament-list td.table-actions > .actions-block {
   display: inline-block;
   text-align: left; }
-table.shop-list .shop-name, table.shop-list .brand-name, table.shop-list .material-name, table.brand-list .shop-name, table.brand-list .brand-name, table.brand-list .material-name, table.material-list .shop-name, table.material-list .brand-name, table.material-list .material-name {
+table.shop-list .shop-name, table.shop-list .brand-name, table.shop-list .material-name, table.brand-list .shop-name, table.brand-list .brand-name, table.brand-list .material-name, table.material-list .shop-name, table.material-list .brand-name, table.material-list .material-name, table.filament-list .shop-name, table.filament-list .brand-name, table.filament-list .material-name {
   margin: 5px 0;
   font-size: larger;
   font-weight: bold; }
-table.shop-list .shop-logo, table.shop-list .brand-logo, table.brand-list .shop-logo, table.brand-list .brand-logo, table.material-list .shop-logo, table.material-list .brand-logo {
+table.shop-list .shop-logo, table.shop-list .brand-logo, table.brand-list .shop-logo, table.brand-list .brand-logo, table.material-list .shop-logo, table.material-list .brand-logo, table.filament-list .shop-logo, table.filament-list .brand-logo {
   max-height: 100px;
   max-width: 300px; }
 
@@ -8077,5 +8077,12 @@ table.material-list > tbody > tr > td.material-description {
   text-align: left; }
   .home-section .side-info .panel-body .material-block .material-description {
     margin-top: 5px; }
+
+.dropdown-menu .color-preview, .color-picker .color-preview {
+  display: inline-block;
+  height: 16px;
+  vertical-align: text-top;
+  width: 16px;
+  border: solid 1px #333; }
 
 /*# sourceMappingURL=style.css.map */

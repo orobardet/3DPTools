@@ -1,1 +1,36 @@
-<h2><%- __('Filaments') %></h2>
+<h1><i class="p3di p3di-filament"></i>&nbsp;<%- __('Filaments') %></h1>
+
+<div class="panel panel-default">
+    <div class="panel-heading with-button">
+        <a href="/filament/add" class="btn btn-primary trg-add-filament"><i
+                    class="fa fa-plus"></i>&nbsp;<%- __('Add filament') %></a>
+        <% if (filaments && filaments.length) { %>
+        <h3 class="panel-title"><%- __n("%s filament", "%s filaments", filaments.length || 0); %></h3>
+        <% } else { %>
+        <%- __('No filament found.') %>
+        <% } %>
+    </div>
+    <% if (filaments && filaments.length) { %>
+    <table class="table filament-list">
+        <tr>
+            <th><%- __('Name') %></th>
+            <th></th>
+        </tr>
+        <% filaments.forEach(function (filament) { %>
+        <tr>
+            <td>
+                <a href="/filament/show/<%- filament.id %>"><span class="filament-name"><%- filament.name %></span></a>
+            </td>
+            <td class="table-actions">
+                <div class="actions-block">
+                    <a href="/filament/edit/<%- filament.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
+                    <a href="/filament/delete/<%- filament.id %>" data-id="<%- filament.id %>" class="trg-delete-filament"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                </div>
+            </td>
+        </tr>
+        <% }); %>
+    </table>
+    <% } %>
+</div>
+
+<div id="filament-message-container"></div>

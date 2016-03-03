@@ -1,0 +1,265 @@
+<link rel="stylesheet" href="/css/bootstrap-colorpicker.min.css">
+<script src="/marked.min.js"></script>
+<script src="/js/bootstrap-colorpicker.min.js"></script>
+
+<h1><span class="fa-overlay">
+    <i class="p3di p3di-filament"></i>
+    <i class="fa fa-plus fa-overlay-se" style="color:white"></i>
+    <i class="fa fa-plus-circle fa-overlay-se text-success"></i>
+</span> <%- __('Add filament') %></h1>
+
+<form class="form-filament" method="POST">
+    <fieldset>
+        <div class="row">
+            <div class="col-md-9">
+                <div class="form-group<%= (errors.name)?" has-error":"" %>">
+                    <label for="name" class="control-label required"><%- __('Name:'); %></label>
+                    <input type="text" class="form-control" id="name" name="name"
+                           placeholder="<%- __('Name'); %>" value="<%- (locals.name) ? name : '' %>"
+                           required>
+                    <% if (errors.name) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.name.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group<%= (errors.brand) ? " has-error" : "" %>">
+                    <label for="brand" class="control-label required"><%- __('Brand:'); %></label>
+                    <select class="form-control" id="brand" name="brand" required>
+                        <% if (locals.brands && brands.length) { %>
+                        <% brands.forEach(function (brand) { %>
+                        <option value="<%- brand.id %>"><%- brand.name %></option>
+                        <% }); %>
+                        <% } %>
+                    </select>
+                    <% if (errors.brand) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.brand.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group<%= (errors.material) ? " has-error" : "" %>">
+                    <label for="material" class="control-label required"><%- __('Material:'); %></label>
+                    <select class="form-control" id="material" name="material" required>
+                        <% if (locals.materials && materials.length) { %>
+                        <% materials.forEach(function (material) { %>
+                        <option value="<%- material.id %>"><%- material.name %></option>
+                        <% }); %>
+                        <% } %>
+                    </select>
+                    <% if (errors.material) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.material.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group<%= (errors.diameter) ? " has-error" : "" %>">
+                    <label for="diameter" class="control-label required"><%- __('Diameter:'); %></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="diameter" name="diameter"
+                               placeholder="<%- __('Diameter'); %>" value="<%- (locals.diameter) ? diameter : '' %>"
+                               required>
+                        <div class="input-group-addon"><%- __('mm'); %></div>
+                    </div>
+                    <% if (errors.diameter) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.diameter.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <label for="colorN" class="control-label required"><%- __('Color:'); %></label>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="btn-group btn-block">
+                            <button type="button" class="btn btn-default btn-block dropdown-toggle"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false"><%- __('Available colors') %> <span
+                                        class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <% if (Object.keys(predefinedColors).length) { %>
+                                <li class="dropdown-header"><%- __('Preset colors') %></li>
+                                <% for (var color in predefinedColors) { %>
+                                <li><a href="#" class="trg-color-select" data-code="<%- predefinedColors[color] %>"
+                                       data-name="<%- __(color) %>">
+                                        <i class="color-preview"
+                                           style="background-color: <%- predefinedColors[color] %>;"></i>&nbsp;<%- __(color) %>
+                                    </a></li>
+                                <% } %>
+                                <% } %>
+                                <% if (usedColors.length) { %>
+                                <li class="dropdown-header"><%- __('Already used colors') %></li>
+                                <li><a href="#">Separated link</a></li>
+                                <% } %>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group<%= (errors.colorName) ? " has-error" : "" %>">
+                            <input type="text" class="form-control" id="colorName" name="colorName"
+                                   placeholder="<%- __('Name'); %>" value="<%- (locals.colorName) ? colorName : '' %>"
+                                   required>
+                            <% if (errors.colorName) { %>
+                            <ul class="help-block with-errors">
+                                <% errors.colorName.forEach(function(msg) { %>
+                                <li><%= __(msg) %></li>
+                                <% }); %>
+                            </ul>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group<%= (errors.colorCode) ? " has-error" : "" %>">
+                            <div class="input-group color-picker">
+                                <input type="text" class="form-control" id="colorCode" name="colorCode"
+                                       placeholder="<%- __('Code'); %>"
+                                       value="<%- (locals.colorCode) ? colorCode : '' %>"
+                                       required>
+                                <span class="input-group-addon"><i class="color-preview"></i></span>
+                            </div>
+                            <% if (errors.colorCode) { %>
+                            <ul class="help-block with-errors">
+                                <% errors.colorCode.forEach(function(msg) { %>
+                                <li><%= __(msg) %></li>
+                                <% }); %>
+                            </ul>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group<%= (errors.description) ? " has-error" : "" %>">
+                    <label for="description" class="control-label"><%- __('Description:'); %></label>
+                    <textarea rows="5" class="form-control" id="description" name="description"
+                              placeholder="<%- __('Description'); %>"><%- (locals.description) ? description : '' %></textarea>
+                    <% if (errors.description) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.description.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="description" class="control-label"><%- __('Description preview:'); %></label>
+                <div id="description-preview" class="description-preview markdown"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group<%= (errors.buyDate) ? " has-error" : "" %>">
+                    <label for="buyDate" class="control-label required"><%- __('Purchase date:'); %></label>
+                    <input type="text" class="form-control" id="buyDate" name="buyDate"
+                           value="<%- (locals.buyDate) ? buyDate : '' %>"
+                           required>
+                    <% if (errors.buyDate) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.buyDate.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group<%= (errors.shop) ? " has-error" : "" %>">
+                    <label for="shop" class="control-label required"><%- __('Shop:'); %></label>
+                    <select class="form-control" id="shop" name="shop" required>
+                        <% if (locals.shops && shops.length) { %>
+                        <% shops.forEach(function (shop) { %>
+                        <option value="<%- shop.id %>"><%- shop.name %></option>
+                        <% }); %>
+                        <% } %>
+                    </select>
+                    <% if (errors.shop) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.shop.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group<%= (errors.price) ? " has-error" : "" %>">
+                    <label for="price" class="control-label"><%- __('Price:'); %></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="price"
+                               name="price" value="<%- (locals.price) ? price : '' %>">
+                        <div class="input-group-addon"><%- __('€ VAT'); %></div>
+                    </div>
+                    <% if (errors.price) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.price.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <p class="button-bar">
+            <a href="/filament" class="btn btn-default"><%- __('Cancel') %></a>
+            <button type="submit" class="btn btn-primary"><%- __('Save') %></button>
+        </p>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+    $(function () {
+        $('textarea#description').keyup(function () {
+            var $this = $(this);
+            var $preview = $('#description-preview');
+            if (!$preview.length) {
+                return;
+            }
+            $preview.html(marked($this.val()));
+        }).trigger('keyup');
+
+        $('.color-picker').colorpicker();
+        $('.trg-color-select').click(function (e) {
+            var $this = $(this);
+
+            e.preventDefault();
+
+            var name = $this.data('name');
+            var code = $this.data('code');
+            if (name && code) {
+                $('#colorName').val(name);
+                $('.color-picker').colorpicker('setValue', code);
+            }
+        });
+    });
+</script>

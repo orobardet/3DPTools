@@ -31,6 +31,23 @@
     "public/vendor/font-awesome",
     "public/vendor/flag-icon-css",
     "public/vendor/sprintf/dist",
-    "public/vendor/marked"
-  ]
+    "public/vendor/marked",
+    "public/vendor/mjolnic-bootstrap-colorpicker/dist"
+  ],
+  "filament": {
+    "colors": {
+      "Black": "#000000",
+      "White": "#ffffff",
+      "Blue": "#1f77b4",
+      "Orange": "#ff7f0e",
+      "Green": "#2ca02c",
+      "Red": "#d62728",
+      "Purple": "#9467bd",
+      "Brown": "#8c564b",
+      "Pink": "#e377c2",
+      "Gray": "#7f7f7f",
+      "Yellow": "#f7f70e",
+      "Beige": "#f7f7e3"
+    }
+  }
 }
