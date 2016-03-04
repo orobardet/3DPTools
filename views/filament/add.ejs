@@ -444,6 +444,46 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group<%= (errors.initialMaterialWeight) ? " has-error" : "" %>">
+                    <label for="initialMaterialWeight" class="control-label required"><%- __('Initial net material weight:'); %></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="initialMaterialWeight"
+                               name="initialMaterialWeight"
+                               value="<%- (locals.initialMaterialWeight) ? initialMaterialWeight : '' %>" required>
+                        <div class="input-group-addon"><%- __('kg'); %></div>
+                    </div>
+                    <% if (errors.initialMaterialWeight) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.initialMaterialWeight.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-md-offset-1 col-md-3">
+                <div class="form-group<%= (errors.initialTotalWeight) ? " has-error" : "" %>">
+                    <label for="initialTotalWeight" class="control-label required" title="<% __('Including spool weight, if any') %>"><%- __('Initial total weight:'); %></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="initialTotalWeight"
+                               name="initialTotalWeight"
+                               value="<%- (locals.initialTotalWeight) ? initialTotalWeight : '' %>" required>
+                        <div class="input-group-addon"><%- __('kg'); %></div>
+                    </div>
+                    <% if (errors.initialTotalWeight) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.initialTotalWeight.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+
+        </div>
         <p class="button-bar">
             <a href="/filament" class="btn btn-default"><%- __('Cancel') %></a>
             <button type="submit" class="btn btn-primary"><%- __('Save') %></button>

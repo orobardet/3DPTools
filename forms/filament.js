@@ -104,6 +104,24 @@ module.exports = function (app) {
                 if (value <= 0) {
                     throw new Error('%s must be greater than 0.');
                 }
+            }),
+        field("initialMaterialWeight", "Initial material weight")
+            .trim()
+            .required()
+            .isNumeric()
+            .custom(function (value) {
+                if (value <= 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            }),
+        field("initialTotalWeight", "Initial total weight")
+            .trim()
+            .required()
+            .isNumeric()
+            .custom(function (value) {
+                if (value <= 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
             })
     );
 

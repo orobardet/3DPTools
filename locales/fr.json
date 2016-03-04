@@ -198,5 +198,11 @@
   "Get from material": "Récupérer de la matière",
   "Flow:": "Flux :",
   "%": "%",
-  "Speed:": "Vitesse :"
+  "Speed:": "Vitesse :",
+  "Initial net material weight:": "Poids net de matière initial :",
+  "kg": "kg",
+  "Including spool weight, if any": "Incluant le poids de la bobine, s'il y en a une",
+  "Initial total weight:": "Poids total initial :",
+  "Initial material weight is not an integer": "Initial material weight is not an integer",
+  "Initial total weight is not an integer": "Initial total weight is not an integer"
 }
