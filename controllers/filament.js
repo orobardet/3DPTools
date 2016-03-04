@@ -39,19 +39,36 @@ module.exports = function (app) {
             buyDate: new Date(req.form.buyDate * 1000),
             price: req.form.price
         });
+        if (req.form.headTempMin) {
+            filament.headTemp.min = req.form.headTempMin;
+        }
+        if (req.form.headTempMax) {
+            filament.headTemp.max = req.form.headTempMax;
+        }
+        if (req.form.headTempExperienced) {
+            filament.headTemp.experienced = req.form.headTempExperienced;
+        }
+        if (req.form.bedTempMin) {
+            filament.bedTemp.min = req.form.bedTempMin;
+        }
+        if (req.form.bedTempMax) {
+            filament.bedTemp.max = req.form.bedTempMax;
+        }
+        if (req.form.bedTempExperienced) {
+            filament.bedTemp.experienced = req.form.bedTempExperienced;
+        }
         console.log(filament);
-/*        shop.save(function (err) {
+/*        filament.save(function (err) {
             if (err) {
                 return next(err);
             }
-            return res.redirect("/shop/set-logo/" + shop.id);
+            return res.redirect("/filament");
         });
 */
         return res.redirect("/filament");
     };
 
     this.addForm = function (req, res) {
-        if (req.form) console.log( req.form.getErrors());
         when.all([
             Shop.find().sort('name').exec(),
             Brand.find().sort('name').exec(),

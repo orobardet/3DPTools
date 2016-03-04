@@ -31,7 +31,55 @@ module.exports = function (app) {
         field("price", "Price")
             .trim()
             .required()
-            .isNumeric()
+            .isNumeric(),
+        field("headTempMin", "Minimal extrusion temperature")
+            .trim()
+            .isInt()
+            .custom(function (value) {
+                if (value < 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            }),
+        field("headTempMax", "Maximal extrusion temperature")
+            .trim()
+            .isInt()
+            .custom(function (value) {
+                if (value < 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            }),
+        field("headTempExperienced", "Experienced extrusion temperature")
+            .trim()
+            .isInt()
+            .custom(function (value) {
+                if (value < 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            }),
+        field("bedTempMin", "Minimal bed temperature")
+            .trim()
+            .isInt()
+            .custom(function (value) {
+                if (value < 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            }),
+        field("bedTempMax", "Maximal bed temperature")
+            .trim()
+            .isInt()
+            .custom(function (value) {
+                if (value < 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            }),
+        field("bedTempExperienced", "Experienced bed temperature")
+            .trim()
+            .isInt()
+            .custom(function (value) {
+                if (value < 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            })
     );
 
     return this;
