@@ -61,6 +61,9 @@ module.exports = function (app) {
         if (req.form.flowPercentage) {
             filament.flowPercentage = req.form.flowPercentage;
         }
+        if (req.form.speedPercentage) {
+            filament.speedPercentage = req.form.speedPercentage;
+        }
         console.log(filament);
 /*        filament.save(function (err) {
             if (err) {

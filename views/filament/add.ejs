@@ -404,9 +404,10 @@
                     <% } %>
                 </div>
             </div>
+
             <div class="col-md-offset-1 col-md-3">
                 <div class="form-group<%= (errors.flowPercentage) ? " has-error" : "" %>">
-                    <label for="density" class="control-label"><%- __('Flow:'); %></label>
+                    <label for="flowPercentage" class="control-label"><%- __('Flow:'); %></label>
                     <div class="input-group">
                         <input type="number" class="form-control" id="flowPercentage"
                                name="flowPercentage"
@@ -416,6 +417,25 @@
                     <% if (errors.flowPercentage) { %>
                     <ul class="help-block with-errors">
                         <% errors.flowPercentage.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-md-offset-1 col-md-3">
+                <div class="form-group<%= (errors.speedPercentage) ? " has-error" : "" %>">
+                    <label for="speedPercentage" class="control-label"><%- __('Speed:'); %></label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="speedPercentage"
+                               name="speedPercentage"
+                               value="<%- (locals.speedPercentage) ? speedPercentage : '' %>" min="0">
+                        <div class="input-group-addon"><%- __('%'); %></div>
+                    </div>
+                    <% if (errors.speedPercentage) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.speedPercentage.forEach(function(msg) { %>
                         <li><%= __(msg) %></li>
                         <% }); %>
                     </ul>
