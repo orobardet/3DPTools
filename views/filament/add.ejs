@@ -251,6 +251,9 @@
                     <div class="col-md-4 form-group<%= (errors.headTempMin) ? " has-error" : "" %>">
                         <label for="headTempMin" class="control-label"><%- __('Min:'); %></label>
                         <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="headTempMin" data-temp-type="headTemp", data-temp-field="min" title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i></button>
+                            </span>
                             <input type="number" class="form-control input-temperature" id="headTempMin"
                                    name="headTempMin"
                                    value="<%- (locals.headTempMin) ? headTempMin : '' %>" min="0">
@@ -267,6 +270,9 @@
                     <div class="col-md-4 form-group<%= (errors.headTempMax) ? " has-error" : "" %>">
                         <label for="headTempMax" class="control-label"><%- __('Max:'); %></label>
                         <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="headTempMax" data-temp-type="headTemp", data-temp-field="max" title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i></button>
+                            </span>
                             <input type="number" class="form-control input-temperature" id="headTempMax"
                                    name="headTempMax"
                                    value="<%- (locals.headTempMax) ? headTempMax : '' %>" min="0">
@@ -306,6 +312,9 @@
                     <div class="col-md-4 form-group<%= (errors.bedTempMin) ? " has-error" : "" %>">
                         <label for="bedTempMin" class="control-label"><%- __('Min:'); %></label>
                         <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="bedTempMin" data-temp-type="bedTemp", data-temp-field="min" title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i></button>
+                            </span>
                             <input type="number" class="form-control input-temperature" id="bedTempMin"
                                    name="bedTempMin"
                                    value="<%- (locals.bedTempMin) ? bedTempMin : '' %>" min="0">
@@ -322,6 +331,9 @@
                     <div class="col-md-4 form-group<%= (errors.bedTempMax) ? " has-error" : "" %>">
                         <label for="bedTempMax" class="control-label"><%- __('Max:'); %></label>
                         <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="bedTempMax" data-temp-type="bedTemp", data-temp-field="max" title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i></button>
+                            </span>
                             <input type="number" class="form-control input-temperature" id="bedTempMax"
                                    name="bedTempMax"
                                    value="<%- (locals.bedTempMax) ? bedTempMax : '' %>" min="0">
@@ -364,6 +376,7 @@
 </form>
 
 <script type="text/javascript">
+    var materialData = <%- JSON.stringify(materials) %>;
     $(function () {
         $('.selectpicker').selectpicker();
 
@@ -374,7 +387,7 @@
             todayHighlight: true
         });
         if ($('#buyDate').val()) {
-            $('#buyDateText').datepicker('setUTCDate', new Date($('#buyDate').val()*1000));
+            $('#buyDateText').datepicker('setUTCDate', new Date($('#buyDate').val() * 1000));
         }
         $('#buyDateText').on('changeDate', function () {
             var $this = $(this);
@@ -402,6 +415,32 @@
                 $('#colorName').val(name);
                 $('.color-picker').colorpicker('setValue', code);
             }
+        });
+
+        $('.trg-get-temp-from-material').click(function() {
+            var $this = $(this);
+            var input = $('#'+$this.data('temp-id'));
+            var tempType = $this.data('temp-type');
+            var tempField = $this.data('temp-field');
+
+            if (!input.length || !tempType || !tempField) {
+                return;
+            }
+            var selectedMaterialId = $('#material').val();
+
+            if (materialData.length) {
+                materialData.forEach(function (material) {
+                    if (material._id == selectedMaterialId) {
+                        if (material[tempType] && material[tempType][tempField]) {
+                            input.val(material[tempType][tempField]);
+
+                        } else {
+                            input.val('');
+                        }
+                    }
+                });
+            }
+
         });
     });
 </script>
