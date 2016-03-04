@@ -7,7 +7,7 @@ module.exports = function (app) {
     var thisController = this;
 
     this.index = function (req, res, next) {
-        when(Filament.find().sort('name').exec())
+        when(Filament.find().populate('material brand shop').sort({'material.name': 1, 'color.code': 1, 'brand.name': 1}).exec())
             .then(function (filaments) {
                 return res.render('filament/index', {
                     filaments: filaments,

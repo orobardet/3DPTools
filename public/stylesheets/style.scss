@@ -259,7 +259,7 @@ table.material-list {
   }
 }
 
-.dropdown-menu, .color-picker {
+.filament-section {
   .color-preview
   {
     display: inline-block;
@@ -268,9 +268,7 @@ table.material-list {
     width: 16px;
     border: solid 1px #333;
   }
-}
 
-.filament-section {
   .bootstrap-select {
     .filter-option {
       .brand-logo, .shop-logo {
@@ -283,6 +281,15 @@ table.material-list {
         float: right !important;
         max-height: 16px;
       }
+    }
+  }
+
+  .table.filament-list {
+    .brand-logo, .shop-logo {
+      max-height: 24px;
+    }
+    .progress {
+      margin-bottom: 0;
     }
   }
 }

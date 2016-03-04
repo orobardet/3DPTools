@@ -208,5 +208,15 @@
   "%s filament": {
     "one": "%s filament",
     "other": "%s filaments"
-  }
+  },
+  "Material": "Matière",
+  "∅": "∅",
+  "Color": "Couleur",
+  "Could not find matching close tag for \"<%-\".": "Could not find matching close tag for \"<%-\".",
+  "Brand": "Marque",
+  "Shop": "Magasin",
+  "Weight": "Poids",
+  "%s kg": "%s kg",
+  "Material left": "Restant",
+  "%s°C": "%s°C"
 }

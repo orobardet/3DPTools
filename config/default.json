@@ -51,6 +51,10 @@
       "Gray": "#7f7f7f",
       "Yellow": "#f7f70e",
       "Beige": "#f7f7e3"
+    },
+    "leftThresholds": {
+      "warning": 35,
+      "danger": 10
     }
   }
 }

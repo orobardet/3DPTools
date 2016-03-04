@@ -14,6 +14,15 @@
     <table class="table filament-list">
         <tr>
             <th><%- __('Name') %></th>
+            <th><%- __('Material') %></th>
+            <th><%- __('∅') %></th>
+            <th></th>
+            <th><%- __('Brand') %></th>
+            <th><%- __('Shop') %></th>
+            <th><i class="p3di p3di-printer-head-heat"></i></th>
+            <th><i class="p3di p3di-printer-bed-heat"></i></th>
+            <th><%- __('Weight') %></th>
+            <th><%- __('Material left') %></th>
             <th></th>
         </tr>
         <% filaments.forEach(function (filament) { %>
@@ -21,10 +30,64 @@
             <td>
                 <a href="/filament/show/<%- filament.id %>"><span class="filament-name"><%- filament.name %></span></a>
             </td>
+            <td><%- filament.material.name %></td>
+            <td><%- filament.diameter %></td>
+            <td><i title="<%- filament.color.name %>" class="color-preview"
+                   style="background-color: <%- filament.color.code %> %>;"></i></td>
+            <td>
+                <% if (filament.brand.logo && filament.brand.logo.size) { %>
+                <img alt="<%- filament.brand.name %>" title="<%- filament.brand.name %>" class="brand-logo"
+                     src="/brand/get-logo/<%- filament.brand.id %>">
+                <% } else { %>
+                <%- filament.brand.name %>
+                <% } %>
+            </td>
+            <td>
+                <% if (filament.shop.logo && filament.shop.logo.size) { %>
+                <img alt="<%- filament.shop.name %>" title="<%- filament.shop.name %>" class="shop-logo"
+                     src="/shop/get-logo/<%- filament.shop.id %>">
+                <% } else { %>
+                <%- filament.shop.name %>
+                <% } %>
+            </td>
+            <td>
+                <% if (filament.headTemp.experienced) { %>
+                    <%- __('%s°C', filament.headTemp.experienced) %>
+                <% } %>
+            </td>
+            <td>
+                <% if (filament.bedTemp.experienced) { %>
+                    <%- __('%s°C', filament.bedTemp.experienced) %>
+                <% } %>
+            </td>
+            <td>
+                <%- __('%s kg', filament.initialMaterialWeight) %>
+            </td>
+            <td>
+                <div class="progress">
+                    <%
+                        var leftPercentage = filament.materialLeftPercentage;
+                        var progressbarClass = 'progress-bar-success';
+                        if (leftPercentage <= config.get('filament:leftThresholds:warning')) {
+                            progressbarClass = 'progress-bar-warning'
+                        }
+                        if (leftPercentage <= config.get('filament:leftThresholds:danger')) {
+                            progressbarClass = 'progress-bar-danger'
+                        }
+                    %>
+                    <div title="<%- leftPercentage %>%" class="progress-bar <%- progressbarClass %>"
+                         role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                         style="width: <%- leftPercentage %>%;">
+                        <%- leftPercentage %>%
+                    </div>
+                </div>
+            </td>
+
             <td class="table-actions">
                 <div class="actions-block">
                     <a href="/filament/edit/<%- filament.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
-                    <a href="/filament/delete/<%- filament.id %>" data-id="<%- filament.id %>" class="trg-delete-filament"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                    <a href="/filament/delete/<%- filament.id %>" data-id="<%- filament.id %>"
+                       class="trg-delete-filament"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
                 </div>
             </td>
         </tr>
