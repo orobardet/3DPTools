@@ -40,7 +40,8 @@ module.exports = function (app) {
             price: req.form.price,
             density: req.form.density,
             initialMaterialWeight: req.form.initialMaterialWeight,
-            initialTotalWeight: req.form.initialTotalWeight
+            initialTotalWeight: req.form.initialTotalWeight,
+            materialLeftPercentage: 100
         });
         if (req.form.headTempMin) {
             filament.headTemp.min = req.form.headTempMin;
