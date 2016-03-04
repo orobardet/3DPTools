@@ -13,12 +13,12 @@ module.exports = function (app) {
             name: String,
             code: String    // HTML compliant #hex color code
         },
-        photo: {
+        photos: [{
             name: String,
             mimeType: String,
             size: Number,
             data: Buffer
-        },
+        }],
         headTemp: {
             min: Number,
             max: Number,

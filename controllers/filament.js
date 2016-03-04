@@ -58,6 +58,9 @@ module.exports = function (app) {
         if (req.form.bedTempExperienced) {
             filament.bedTemp.experienced = req.form.bedTempExperienced;
         }
+        if (req.form.flowPercentage) {
+            filament.flowPercentage = req.form.flowPercentage;
+        }
         console.log(filament);
 /*        filament.save(function (err) {
             if (err) {

@@ -195,5 +195,7 @@
   "Price is required": "Le prix est obligatoire",
   "Price is not a decimal": "Le prix n'est pas un nombre",
   "Experienced:": "Expérimenté :",
-  "Get from material": "Récupérer de la matière"
+  "Get from material": "Récupérer de la matière",
+  "Flow:": "Flux :",
+  "%": "%"
 }

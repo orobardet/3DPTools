@@ -390,7 +390,7 @@
                                         title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i>
                                 </button>
                             </span>
-                        <input type="number" class="form-control input-temperature" id="density"
+                        <input type="number" class="form-control" id="density"
                                name="density"
                                value="<%- (locals.density) ? density : '' %>" required min="0" step="10">
                         <div class="input-group-addon"><%- __('kg/m³'); %></div>
@@ -398,6 +398,24 @@
                     <% if (errors.density) { %>
                     <ul class="help-block with-errors">
                         <% errors.density.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+            <div class="col-md-offset-1 col-md-3">
+                <div class="form-group<%= (errors.flowPercentage) ? " has-error" : "" %>">
+                    <label for="density" class="control-label"><%- __('Flow:'); %></label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="flowPercentage"
+                               name="flowPercentage"
+                               value="<%- (locals.flowPercentage) ? flowPercentage : '' %>" min="0">
+                        <div class="input-group-addon"><%- __('%'); %></div>
+                    </div>
+                    <% if (errors.flowPercentage) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.flowPercentage.forEach(function(msg) { %>
                         <li><%= __(msg) %></li>
                         <% }); %>
                     </ul>
