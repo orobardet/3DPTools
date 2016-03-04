@@ -79,6 +79,15 @@ module.exports = function (app) {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
+            }),
+        field("density", "Density")
+            .trim()
+            .required()
+            .isInt()
+            .custom(function (value) {
+                if (value <= 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
             })
     );
 

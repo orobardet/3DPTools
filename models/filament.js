@@ -29,6 +29,7 @@ module.exports = function (app) {
             max: Number,
             experienced: Number
         },
+        density: Number,
         buyDate: Date,
         price: Number,
         shop: { type: Schema.Types.ObjectId, ref: 'Shop' },

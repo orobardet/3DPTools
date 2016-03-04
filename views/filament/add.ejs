@@ -252,7 +252,10 @@
                         <label for="headTempMin" class="control-label"><%- __('Min:'); %></label>
                         <div class="input-group">
                             <span class="input-group-btn">
-                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="headTempMin" data-temp-type="headTemp", data-temp-field="min" title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i></button>
+                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="headTempMin"
+                                        data-temp-type="headTemp" , data-temp-field="min"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i>
+                                </button>
                             </span>
                             <input type="number" class="form-control input-temperature" id="headTempMin"
                                    name="headTempMin"
@@ -271,7 +274,10 @@
                         <label for="headTempMax" class="control-label"><%- __('Max:'); %></label>
                         <div class="input-group">
                             <span class="input-group-btn">
-                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="headTempMax" data-temp-type="headTemp", data-temp-field="max" title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i></button>
+                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="headTempMax"
+                                        data-temp-type="headTemp" , data-temp-field="max"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i>
+                                </button>
                             </span>
                             <input type="number" class="form-control input-temperature" id="headTempMax"
                                    name="headTempMax"
@@ -313,7 +319,10 @@
                         <label for="bedTempMin" class="control-label"><%- __('Min:'); %></label>
                         <div class="input-group">
                             <span class="input-group-btn">
-                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="bedTempMin" data-temp-type="bedTemp", data-temp-field="min" title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i></button>
+                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="bedTempMin"
+                                        data-temp-type="bedTemp" , data-temp-field="min"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i>
+                                </button>
                             </span>
                             <input type="number" class="form-control input-temperature" id="bedTempMin"
                                    name="bedTempMin"
@@ -332,7 +341,10 @@
                         <label for="bedTempMax" class="control-label"><%- __('Max:'); %></label>
                         <div class="input-group">
                             <span class="input-group-btn">
-                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="bedTempMax" data-temp-type="bedTemp", data-temp-field="max" title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i></button>
+                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="bedTempMax"
+                                        data-temp-type="bedTemp" , data-temp-field="max"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i>
+                                </button>
                             </span>
                             <input type="number" class="form-control input-temperature" id="bedTempMax"
                                    name="bedTempMax"
@@ -365,6 +377,32 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group<%= (errors.density) ? " has-error" : "" %>">
+                    <label for="density" class="control-label required"><%- __('Density:'); %></label>
+                    <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-density-from-material" data-density-id="density"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i>
+                                </button>
+                            </span>
+                        <input type="number" class="form-control input-temperature" id="density"
+                               name="density"
+                               value="<%- (locals.density) ? density : '' %>" required min="0" step="10">
+                        <div class="input-group-addon"><%- __('kg/m³'); %></div>
+                    </div>
+                    <% if (errors.density) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.density.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
             </div>
         </div>
 
@@ -417,9 +455,9 @@
             }
         });
 
-        $('.trg-get-temp-from-material').click(function() {
+        $('.trg-get-temp-from-material').click(function () {
             var $this = $(this);
-            var input = $('#'+$this.data('temp-id'));
+            var input = $('#' + $this.data('temp-id'));
             var tempType = $this.data('temp-type');
             var tempField = $this.data('temp-field');
 
@@ -433,14 +471,34 @@
                     if (material._id == selectedMaterialId) {
                         if (material[tempType] && material[tempType][tempField]) {
                             input.val(material[tempType][tempField]);
-
                         } else {
                             input.val('');
                         }
                     }
                 });
             }
+        });
 
+        $('.trg-get-density-from-material').click(function () {
+            var $this = $(this);
+            var input = $('#' + $this.data('density-id'));
+
+            if (!input.length) {
+                return;
+            }
+            var selectedMaterialId = $('#material').val();
+
+            if (materialData.length) {
+                materialData.forEach(function (material) {
+                    if (material._id == selectedMaterialId) {
+                        if (material.density) {
+                            input.val(material.density);
+                        } else {
+                            input.val('');
+                        }
+                    }
+                });
+            }
         });
     });
 </script>

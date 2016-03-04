@@ -37,7 +37,8 @@ module.exports = function (app) {
             },
             shop: req.form.shop,
             buyDate: new Date(req.form.buyDate * 1000),
-            price: req.form.price
+            price: req.form.price,
+            density: req.form.density
         });
         if (req.form.headTempMin) {
             filament.headTemp.min = req.form.headTempMin;
