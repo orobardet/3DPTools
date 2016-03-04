@@ -66,15 +66,12 @@ module.exports = function (app) {
         if (req.form.speedPercentage) {
             filament.speedPercentage = req.form.speedPercentage;
         }
-        console.log(filament);
-/*        filament.save(function (err) {
+        filament.save(function (err) {
             if (err) {
                 return next(err);
             }
             return res.redirect("/filament");
         });
-*/
-        return res.redirect("/filament");
     };
 
     this.addForm = function (req, res) {
