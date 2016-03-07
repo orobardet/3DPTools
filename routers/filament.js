@@ -14,6 +14,9 @@ module.exports = function (app) {
     router.post('/add', FilamentForm.filament, Controller.add);
     router.get('/add', Controller.addForm);
 
+    router.post('/edit/:filament_id', FilamentForm.filament, Controller.edit);
+    router.get('/edit/:filament_id', Controller.editForm);
+
     app.use('/filament', router);
     return this;
 };

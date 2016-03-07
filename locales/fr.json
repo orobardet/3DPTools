@@ -218,5 +218,7 @@
   "Weight": "Poids",
   "%s kg": "%s kg",
   "Material left": "Restant",
-  "%s°C": "%s°C"
+  "%s°C": "%s°C",
+  "Edit filament %s": "Modifier le filament %s",
+  "Unexpected token ILLEGAL in e:\\Developpement\\Node\\3DPTools\\views\\filament\\edit.ejs while compiling ejs": "Unexpected token ILLEGAL in e:\\Developpement\\Node\\3DPTools\\views\\filament\\edit.ejs while compiling ejs"
 }
