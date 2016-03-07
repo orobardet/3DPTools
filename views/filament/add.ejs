@@ -36,10 +36,14 @@
                 <div class="form-group<%= (errors.brand) ? " has-error" : "" %>">
                     <label for="brand" class="control-label required"><%- __('Brand:'); %></label>
                     <select class="form-control selectpicker" id="brand" name="brand" required>
-                        <% if (locals.brands && brands.length) { %>
+                        <% if (locals.brands && brands.length) { selected = (locals.brand) ? brand : ''; %>
                         <% brands.forEach(function (brand) { %>
                         <option value="<%- brand.id %>"
-                                data-content="<img class='brand-logo' src='/brand/get-logo/<%- brand.id %>'></img> <%- brand.name %> "><%- brand.name %></option>
+                                data-content="<img class='brand-logo' src='/brand/get-logo/<%- brand.id %>'></img> <%- brand.name %> "
+                                <% if (brand.id == selected) { %>
+                                selected
+                                <% } %>
+                        ><%- brand.name %></option>
                         <% }); %>
                         <% } %>
                     </select>
@@ -59,9 +63,13 @@
                 <div class="form-group<%= (errors.material) ? " has-error" : "" %>">
                     <label for="material" class="control-label required"><%- __('Material:'); %></label>
                     <select class="form-control" id="material" name="material" required>
-                        <% if (locals.materials && materials.length) { %>
+                        <% if (locals.materials && materials.length) { selected = (locals.material) ? material : ''; %>
                         <% materials.forEach(function (material) { %>
-                        <option value="<%- material.id %>"><%- material.name %></option>
+                        <option value="<%- material.id %>"
+                                <% if (material.id == selected) { %>
+                                selected
+                                <% } %>
+                        ><%- material.name %></option>
                         <% }); %>
                         <% } %>
                     </select>
@@ -207,10 +215,14 @@
                 <div class="form-group<%= (errors.shop) ? " has-error" : "" %>">
                     <label for="shop" class="control-label required"><%- __('Shop:'); %></label>
                     <select class="form-control selectpicker" id="shop" name="shop" required>
-                        <% if (locals.shops && shops.length) { %>
+                        <% if (locals.shops && shops.length) { selected = (locals.shop) ? shop : ''; %>
                         <% shops.forEach(function (shop) { %>
                         <option value="<%- shop.id %>"
-                                data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>'></img> <%- shop.name %> "><%- shop.name %></option>
+                                data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>'></img> <%- shop.name %> "
+                                <% if (shop.id == selected) { %>
+                                selected
+                                <% } %>
+                        ><%- shop.name %></option>
                         <% }); %>
                         <% } %>
                     </select>
@@ -447,7 +459,8 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group<%= (errors.initialMaterialWeight) ? " has-error" : "" %>">
-                    <label for="initialMaterialWeight" class="control-label required"><%- __('Initial net material weight:'); %></label>
+                    <label for="initialMaterialWeight"
+                           class="control-label required"><%- __('Initial net material weight:'); %></label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="initialMaterialWeight"
                                name="initialMaterialWeight"
@@ -466,7 +479,8 @@
 
             <div class="col-md-offset-1 col-md-3">
                 <div class="form-group<%= (errors.initialTotalWeight) ? " has-error" : "" %>">
-                    <label for="initialTotalWeight" class="control-label required" title="<% __('Including spool weight, if any') %>"><%- __('Initial total weight:'); %></label>
+                    <label for="initialTotalWeight" class="control-label required"
+                           title="<% __('Including spool weight, if any') %>"><%- __('Initial total weight:'); %></label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="initialTotalWeight"
                                name="initialTotalWeight"
