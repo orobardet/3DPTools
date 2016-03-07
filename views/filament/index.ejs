@@ -97,3 +97,66 @@
 </div>
 
 <div id="filament-message-container"></div>
+
+<script type="text/javascript">
+    $(function () {
+        function deleteFilament(filamentId) {
+            $.ajax({
+                type: "DELETE",
+                url: '/filament/delete/'+filamentId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.message) {
+                        App3DPTools.successFlash('#filament-message-container', data.message);
+                    }
+                    document.location = document.location;
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#filament-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#filament-message-container', errorMsg);
+                }
+            });
+        }
+
+        $('.trg-delete-filament').click(function (e) {
+            e.preventDefault();
+
+            var $this = $(this);
+            var filamentId = $this.data('id');
+
+            $.ajax({
+                type: "GET",
+                url: '/filament/get/'+filamentId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.filament) {
+                        App3DPTools.confirmModal(Locale3DPTools.__('Delete %s filament?', data.filament.name), function () {
+                            deleteFilament(filamentId);
+                        });
+                    } else {
+                        App3DPTools.errorFlash('#filament-message-container', Locale3DPTools.__('Error while retrieving data for filament %s.', filamentId));
+                        return;
+                    }
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#filament-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#filament-message-container', errorMsg);
+                }
+            });
+        });
+    });
+</script>

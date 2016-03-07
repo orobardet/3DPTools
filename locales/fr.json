@@ -203,8 +203,6 @@
   "kg": "kg",
   "Including spool weight, if any": "Incluant le poids de la bobine, s'il y en a une",
   "Initial total weight:": "Poids total initial :",
-  "Initial material weight is not an integer": "Initial material weight is not an integer",
-  "Initial total weight is not an integer": "Initial total weight is not an integer",
   "%s filament": {
     "one": "%s filament",
     "other": "%s filaments"
@@ -212,7 +210,6 @@
   "Material": "Matière",
   "∅": "∅",
   "Color": "Couleur",
-  "Could not find matching close tag for \"<%-\".": "Could not find matching close tag for \"<%-\".",
   "Brand": "Marque",
   "Shop": "Magasin",
   "Weight": "Poids",
@@ -220,5 +217,7 @@
   "Material left": "Restant",
   "%s°C": "%s°C",
   "Edit filament %s": "Modifier le filament %s",
-  "Unexpected token ILLEGAL in e:\\Developpement\\Node\\3DPTools\\views\\filament\\edit.ejs while compiling ejs": "Unexpected token ILLEGAL in e:\\Developpement\\Node\\3DPTools\\views\\filament\\edit.ejs while compiling ejs"
+  "Delete %s filament?": "Supprimer le filament %s ?",
+  "Error while retrieving data for filament %s.": "Erreur lors de la récupération des données du filament %s.",
+  "Filament %s successfully deleted.": "Filament %s successfully deleted."
 }

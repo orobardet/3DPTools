@@ -168,5 +168,40 @@ module.exports = function (app) {
             });
     };
 
+    this.get = function (req, res) {
+        var filamentId = req.params.filament_id;
+
+        when(Filament.findById(filamentId).populate('material brand shop').exec())
+            .then(function (filament) {
+                var filamentData = filament.toObject({getters: false, virtuals: true, versionKey: false});
+                return res.json({
+                    filament: filamentData
+                });
+            })
+            .catch(function (err) {
+                res.status(404);
+                return res.json({
+                    message: res.__('Filament %s not found.', filamentId)
+                });
+            });
+    };
+
+    this.delete = function (req, res) {
+        var filamentId = req.params.filament_id;
+
+        when(Filament.findById(filamentId).remove().exec())
+            .then(function () {
+                return res.json({
+                    message: res.__('Filament %s successfully deleted.', filamentId)
+                });
+            })
+            .catch(function (err) {
+                res.status(500);
+                return res.json({
+                    message: res.__(err.message)
+                });
+            });
+    };
+
     return this;
 };
