@@ -219,5 +219,6 @@
   "Edit filament %s": "Modifier le filament %s",
   "Delete %s filament?": "Supprimer le filament %s ?",
   "Error while retrieving data for filament %s.": "Erreur lors de la récupération des données du filament %s.",
-  "Filament %s successfully deleted.": "Filament %s successfully deleted."
+  "Filament %s successfully deleted.": "Filament %s supprimé avec succès.",
+  "Specifications": "Spécifications"
 }

@@ -285,8 +285,13 @@ table.material-list {
   }
 
   .table.filament-list {
+    .color-preview {
+      height:46px;
+      width:46px;
+    }
     .brand-logo, .shop-logo {
-      max-height: 24px;
+      max-height: 46px;
+      max-width: 130px;
     }
     .progress {
       margin-bottom: 0;

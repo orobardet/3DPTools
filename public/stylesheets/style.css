@@ -8089,8 +8089,12 @@ table.material-list > tbody > tr > td.material-description {
 .filament-section .bootstrap-select .dropdown-menu .brand-logo, .filament-section .bootstrap-select .dropdown-menu .shop-logo {
   float: right !important;
   max-height: 16px; }
+.filament-section .table.filament-list .color-preview {
+  height: 46px;
+  width: 46px; }
 .filament-section .table.filament-list .brand-logo, .filament-section .table.filament-list .shop-logo {
-  max-height: 24px; }
+  max-height: 46px;
+  max-width: 130px; }
 .filament-section .table.filament-list .progress {
   margin-bottom: 0; }
 
