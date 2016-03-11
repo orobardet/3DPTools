@@ -186,6 +186,23 @@ module.exports = function (app) {
             });
     };
 
+    this.show = function (req, res) {
+        var filamentId = req.params.filament_id;
+
+        when(Filament.findById(filamentId).populate('material brand shop').exec())
+            .then(function (filament) {
+                return res.render('filament/show', {
+                    filament: filament
+                });
+            })
+            .catch(function (err) {
+                res.status(404);
+                return res.json({
+                    message: res.__('Filament %s not found.', filamentId)
+                });
+            });
+    };
+
     this.delete = function (req, res) {
         var filamentId = req.params.filament_id;
 

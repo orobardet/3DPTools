@@ -15,7 +15,7 @@ body {
 }
 
 h1 {
-  margin-bottom:30px;
+  margin-bottom: 30px;
 }
 
 .navbar-fixed-top {
@@ -98,20 +98,20 @@ h1 {
 .setup-section {
 
   > h1 {
-    margin:20px;
+    margin: 20px;
   }
 
   .panel .instruction {
     font-size: larger;
-    margin-bottom:20px;
+    margin-bottom: 20px;
   }
 
   .create-user {
-    max-width:800px;
+    max-width: 800px;
   }
 
   #pwd1-group {
-    margin-bottom:10px;
+    margin-bottom: 10px;
   }
 }
 
@@ -131,9 +131,10 @@ h1 {
 .fa-overlay {
   position: relative;
 }
+
 .fa-overlay-se {
 
-  position:absolute;
+  position: absolute;
   font-size: 0.5em;
   right: 0.5em;
   bottom: 0em;
@@ -151,7 +152,7 @@ table.table {
   }
 }
 
-table.shop-list,table.brand-list, table.material-list, table.filament-list {
+table.shop-list, table.brand-list, table.material-list, table.filament-list {
   & > tbody > tr > td {
     vertical-align: middle;
   }
@@ -171,6 +172,7 @@ table.shop-list,table.brand-list, table.material-list, table.filament-list {
     max-width: 300px;
   }
 }
+
 form.logo-shop, form.logo-brand {
   .row-or {
     @include make-row();
@@ -180,7 +182,7 @@ form.logo-shop, form.logo-brand {
       vertical-align: middle;
     }
 
-    .cell-upload-logo{
+    .cell-upload-logo {
       @include make-md-column(5);
     }
     .cell-or {
@@ -188,7 +190,7 @@ form.logo-shop, form.logo-brand {
       font-style: italic;
       text-align: center;
     }
-    .cell-remove-logo{
+    .cell-remove-logo {
       @include make-md-column(5);
       text-align: right;
     }
@@ -216,6 +218,7 @@ form.logo-shop, form.logo-brand {
     max-width: 75px;
   }
 }
+
 table.material-list {
 
   & > tbody > tr > td.material-description {
@@ -231,10 +234,10 @@ table.material-list {
   }
 
   .side-info .panel-body {
-     h3 {
-       margin: 0;
-       font-size: small;
-     }
+    h3 {
+      margin: 0;
+      font-size: small;
+    }
     .shop-block, .brand-block, .material-block {
       margin: 10px 0;
       display: block;
@@ -260,8 +263,7 @@ table.material-list {
 }
 
 .filament-section {
-  .color-preview
-  {
+  .color-preview {
     display: inline-block;
     height: 16px;
     vertical-align: text-top;
@@ -286,8 +288,8 @@ table.material-list {
 
   .table.filament-list {
     .color-preview {
-      height:46px;
-      width:46px;
+      height: 46px;
+      width: 46px;
     }
     .brand-logo, .shop-logo {
       max-height: 46px;
@@ -298,3 +300,86 @@ table.material-list {
     }
   }
 }
+
+.filament-show-layout {
+  display: flex;
+
+  .filament-details, .filament-content, .filament-actions {
+    vertical-align: top;
+    display: inline-block;
+    margin-left: 10px;
+    &:first-of-type {
+      margin-left: 0;
+    }
+  }
+
+  .filament-details {
+    @extend .panel;
+    @extend .panel-default;
+    padding: 5px;
+    width: 350px;
+
+    & > table > tbody > tr {
+      & > td {
+        padding: 2px;
+      }
+      & > td:first-of-type {
+        font-weight: bold;
+        text-align: right;
+        vertical-align: top;
+      }
+    }
+    .brand-logo-container {
+      text-align: center;
+
+      .brand-logo {
+        max-width: 100%;
+      }
+    }
+  }
+
+  .filament-content {
+    flex-grow: 1
+  }
+
+  .filament-actions {
+    width: 160px;
+
+    & > title {
+      display: block;
+      font-weight: bold;
+      text-align: center;
+      text-transform: uppercase;
+      font-size: smaller;
+      height: 20px;
+      margin-top: -20px;
+    }
+
+    & > a {
+      margin-bottom: 5px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.filament-content {
+  & > div {
+    margin-top: 20px;
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+  .buy-data table > tbody > tr > td {
+    vertical-align: middle;
+    &.shop-data {
+      padding-right: 20px;
+    }
+  }
+  .shop-logo {
+    max-height: 55px
+  }
+}
+

@@ -20,9 +20,9 @@
             <th></th>
         </tr>
         <% filaments.forEach(function (filament) { %>
-        <tr>
+        <tr class="trg-show-filament" data-url="/filament/show/<%- filament.id %>">
             <td><i title="<%- filament.color.name %>" class="color-preview"
-                               style="background-color: <%- filament.color.code %> %>;"></i></td>
+                   style="background-color: <%- filament.color.code %> %>;"></i></td>
             <td>
                 <%- filament.material.name %>
                 <br/>
@@ -75,7 +75,9 @@
 
             <td class="table-actions">
                 <div class="actions-block">
-                    <a href="/filament/edit/<%- filament.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
+                    <a href="/filament/show/<%- filament.id %>" class="trg-add-filament"><i class=" fa fa-eye"></i>&nbsp;<%- __("show") %>
+                    <a href="/filament/edit/<%- filament.id %>" class="trg-edit-filament"><i class=" fa fa-pencil"></i>&nbsp;<%- __("edit") %>
+                    </a>
                     <a href="/filament/delete/<%- filament.id %>" data-id="<%- filament.id %>"
                        class="trg-delete-filament"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
                 </div>
@@ -117,6 +119,7 @@
 
         $('.trg-delete-filament').click(function (e) {
             e.preventDefault();
+            e.stopPropagation();
 
             var $this = $(this);
             var filamentId = $this.data('id');
@@ -147,6 +150,19 @@
                     App3DPTools.errorFlash('#filament-message-container', errorMsg);
                 }
             });
+        });
+
+        $('.trg-edit-filament').click(function (e) {
+            e.stopPropagation();
+            return true;
+        });
+
+        $('.trg-show-filament').click(function (e) {
+            var url = $(this).data('url');
+
+            if (url) {
+                document.location = url;
+            }
         });
     });
 </script>

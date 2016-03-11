@@ -53,6 +53,10 @@ module.exports = function (app) {
             });
     };
 
+    filamentSchema.methods.leftMaterialWeight = function () {
+        return this.initialMaterialWeight * this.materialLeftPercentage / 100;
+    };
+
     var Filament = mongoose.model('Filament', filamentSchema);
 
     return Filament;

@@ -1,0 +1,225 @@
+<h1><i class="p3di p3di-filament" style="color:<%- filament.color.code %>"></i>&nbsp;<%- filament.name %></h1>
+
+<div class="filament-show-layout">
+    <div class="filament-details">
+        <table>
+            <tr>
+                <td><%- __('Material:') %></td>
+                <td><%- filament.material.name %></td>
+            </tr>
+            <tr>
+                <td><%- __('Color:') %></td>
+                <td>
+                    <i title="<%- filament.color.name %>" class="color-preview"
+                       style="background-color: <%- filament.color.code %> %>;"></i>
+                    <%- filament.color.name %>
+                </td>
+            </tr>
+            <tr>
+                <td><%- __('Diameter:') %></td>
+                <td><b>∅</b> <%- filament.diameter %></td>
+            </tr>
+            <tr>
+                <td><%- __('Net material weight:') %></td>
+                <td><i class="fa fa-balance-scale"></i>
+                    <%- __('%s kg', filament.initialMaterialWeight) %></td>
+            </tr>
+            <tr>
+                <td><%- __('Density:') %></td>
+                <td><%- __('%s kg/m³', filament.density) %></td>
+            </tr>
+            <tr>
+                <td><%- __('Flow:') %></td>
+                <td>
+                    <% if (filament.flowPercentage) { %>
+                    <i class="fa fa-tint"></i>
+                    <%- __('%s %%', filament.flowPercentage) %>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+                <td><%- __('Speed:') %></td>
+                <td>
+                    <% if (filament.speedPercentage) { %>
+                    <i class="fa fa-bolt"></i>
+                    <%- __('%s %%', filament.speedPercentage) %>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+                <td><%- __('Extrusion temperature:') %></td>
+                <td>
+                    <% temp = filament.headTemp;
+                    iconClass = "p3di p3di-printer-head-heat"; %>
+                    <% include ../material/partial/tempRange.ejs %>
+                    <% if (filament.headTemp.experienced) { %>
+                    <br/>
+                    <i class="fa fa-check"></i>
+                    <%- __('%s°C', filament.headTemp.experienced) %>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+                <td><%- __('Bed temperature:') %></td>
+                <td>
+                    <% temp = filament.bedTemp;
+                    iconClass = "p3di p3di-printer-bed-heat"; %>
+                    <% include ../material/partial/tempRange.ejs %>
+                    <% if (filament.bedTemp.experienced) { %>
+                    <br/>
+                    <i class="fa fa-check"></i>
+                    <%- __('%s°C', filament.bedTemp.experienced) %>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+                <td><%- __('Brand:') %></td>
+                <td>
+                    <% if (filament.brand.url) { %>
+                    <a href="<%- filament.brand.url %>" target="_blank">
+                    <% } %>
+                        <%- filament.brand.name %>
+                    <% if (filament.brand.url) { %>
+                    </a>
+                    <% } %>
+                </td>
+            </tr>
+        </table>
+        <% if (filament.brand.logo && filament.brand.logo.size) { %>
+        <div class="brand-logo-container">
+            <% if (filament.brand.url) { %>
+            <a href="<%- filament.brand.url %>" target="_blank">
+            <% } %>
+            <img alt="<%- filament.brand.name %>" title="<%- filament.brand.name %>" class="brand-logo"
+             src="/brand/get-logo/<%- filament.brand.id %>">
+            <% if (filament.brand.url) { %>
+            </a>
+            <% } %>
+        </div>
+        <% } %>
+    </div>
+    <div class="filament-content">
+        <div class="description markdown">
+        <%- marked(filament.description) %>
+        </div>
+        <div class="buy-data">
+            <table>
+                <tr>
+                    <td class="shop-data">
+                        <% if (filament.shop.url) { %>
+                        <a href="<%- filament.shop.url %>" target="_blank">
+                        <% } %>
+                        <% if (filament.shop.logo && filament.shop.logo.size) { %>
+                            <img alt="<%- filament.shop.name %>" title="<%- filament.shop.name %>" class="shop-logo"
+                                 src="/shop/get-logo/<%- filament.shop.id %>">
+                        <% } else { %>
+                            <%- filament.shop.name %>
+                        <% } %>
+                        <% if (filament.shop.url) { %>
+                        </a>
+                        <% } %>
+                    </td>
+                    <td>
+                    <b><%- __('Purchased on:') %></b> <%- moment(filament.buyDate).format('LL') %>
+                    <br/>
+                    <b><%- __('Price:') %></b> <%- __('%.2f € TTC', filament.price) %>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <%- __('Material left: %.2f Kg / %.2f Kg', filament.leftMaterialWeight(), filament.initialMaterialWeight)%>
+            <div class="progress">
+                <%
+                var leftPercentage = filament.materialLeftPercentage;
+                var progressbarClass = 'progress-bar-success';
+                if (leftPercentage <= config.get('filament:leftThresholds:warning')) {
+                    progressbarClass = 'progress-bar-warning'
+                }
+                if (leftPercentage <= config.get('filament:leftThresholds:danger')) {
+                    progressbarClass = 'progress-bar-danger'
+                }
+                %>
+                <div title="<%- leftPercentage %>%" class="progress-bar <%- progressbarClass %>"
+                     role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                     style="width: <%- leftPercentage %>%;">
+                    <%- leftPercentage %>%
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="filament-actions">
+        <title><%- __('Actions') %></title>
+        <a href="/filament/edit/<%- filament.id %>" class="btn btn-default btn-block trg-edit-filament"><i
+                    class=" fa fa-pencil"></i>&nbsp;<%- __("edit") %>
+        </a>
+        <a href="/filament/delete/<%- filament.id %>" data-id="<%- filament.id %>"
+           class="btn btn-default btn-block trg-delete-filament"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %>
+        </a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        function deleteFilament(filamentId) {
+            $.ajax({
+                type: "DELETE",
+                url: '/filament/delete/' + filamentId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.message) {
+                        App3DPTools.successFlash('#filament-message-container', data.message);
+                    }
+                    document.location = document.location;
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#filament-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#filament-message-container', errorMsg);
+                }
+            });
+        }
+
+        $('.trg-delete-filament').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var $this = $(this);
+            var filamentId = $this.data('id');
+
+            $.ajax({
+                type: "GET",
+                url: '/filament/get/' + filamentId,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.filament) {
+                        App3DPTools.confirmModal(Locale3DPTools.__('Delete %s filament?', data.filament.name), function () {
+                            deleteFilament(filamentId);
+                        });
+                    } else {
+                        App3DPTools.errorFlash('#filament-message-container', Locale3DPTools.__('Error while retrieving data for filament %s.', filamentId));
+                        return;
+                    }
+                },
+                error: function (xhr, status, errorMsg) {
+                    if (xhr.responseJSON) {
+                        var data = xhr.responseJSON;
+                        if (data.message) {
+                            App3DPTools.errorFlash('#filament-message-container', data.message);
+                            return;
+                        }
+                    }
+                    App3DPTools.errorFlash('#filament-message-container', errorMsg);
+                }
+            });
+        });
+    });
+</script>

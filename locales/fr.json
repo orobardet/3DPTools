@@ -220,5 +220,14 @@
   "Delete %s filament?": "Supprimer le filament %s ?",
   "Error while retrieving data for filament %s.": "Erreur lors de la récupération des données du filament %s.",
   "Filament %s successfully deleted.": "Filament %s supprimé avec succès.",
-  "Specifications": "Spécifications"
+  "Specifications": "Spécifications",
+  "Actions": "Actions",
+  "Net material weight:": "Poids de matière net :",
+  "%s %%": "%s %%",
+  "show": "afficher",
+  "%d2 € TTC": "%d2 € TTC",
+  "%.2d € TTC": "%.2d € TTC",
+  "%.2f € TTC": "%.2f € TTC",
+  "Purchased on:": "Acheté le : ",
+  "Material left: %.2f Kg / %.2f Kg": "Matière restante : %.2f Kg / %.2f Kg"
 }
