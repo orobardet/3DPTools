@@ -1,0 +1,29 @@
+<h1><span class="fa-overlay">
+    <i class="fa fa-picture-o"></i>
+    <i class="fa fa-plus fa-overlay-se" style="color:white"></i>
+    <i class="fa fa-plus-circle fa-overlay-se text-success"></i>
+</span> <%- __("Add %s filament's picture", filament.name) %></h1>
+
+<form class="logo-filament" method="POST" enctype="multipart/form-data">
+    <fieldset>
+        <div class="cell-upload-logo">
+            <div class="form-group<%= (errors.logo) ? " has-error" : "" %>">
+                <label for="picture"><%- __('Picture:'); %></label>
+                <input type="file" id="picture" name="picture">
+                <p class="help-block"><%- __('You can choose a picture.'); %></p>
+                <% if (errors.logo) { %>
+                <ul class="help-block with-errors">
+                    <% errors.logo.forEach(function(msg) { %>
+                    <li><%= __(msg) %></li>
+                    <% }); %>
+                </ul>
+                <% } %>
+            </div>
+        </div>
+
+        <p class="button-bar">
+            <a href="/filament/show/<%- filament.id %>" class="btn btn-default"><%- __('Cancel') %></a>
+            <button type="submit" class="btn btn-primary"><%- __('Save') %></button>
+        </p>
+    </fieldset>
+</form>

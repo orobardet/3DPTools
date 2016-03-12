@@ -8241,4 +8241,7 @@ table.material-list > tbody > tr > td.material-description {
   height: 100%;
   line-height: 20px; }
 
+.filament-pictures > img {
+  max-width: 150px; }
+
 /*# sourceMappingURL=style.css.map */

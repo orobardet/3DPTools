@@ -397,3 +397,8 @@ table.material-list {
   line-height: $line-height-computed;
 }
 
+.filament-pictures {
+  & > img {
+    max-width: 150px;
+  }
+}

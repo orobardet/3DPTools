@@ -3,6 +3,11 @@ module.exports = function (app) {
     var router = express.Router();
     var Controller = app.controllers.filament;
     var FilamentForm = app.forms.filament;
+    var multer = require('multer');
+    var fileUpload = multer({
+        dest: app.get('config').get('upload:tmpPath'),
+        limits: {fileSize: 10000000, files: 1}
+    });
 
     router.use(function (req, res, next) {
         res.locals.navModule = 'filament';
@@ -22,6 +27,11 @@ module.exports = function (app) {
 
     router.post('/left-material/:filament_id', FilamentForm.leftMaterial, Controller.leftMaterial);
     router.get('/left-material/:filament_id', Controller.leftMaterialForm);
+
+    router.post('/add-picture/:filament_id', fileUpload.single('picture'), Controller.addPicture);
+    router.get('/add-picture/:filament_id', Controller.pictureForm);
+    router.get('/delete-picture/:filament_id/:picture_id', Controller.deletePicture);
+    router.get('/get-picture/:filament_id/:picture_id', Controller.getPicture);
 
     router.delete('/delete/:filament_id', Controller.delete);
 

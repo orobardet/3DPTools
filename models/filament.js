@@ -13,7 +13,8 @@ module.exports = function (app) {
             name: String,
             code: String    // HTML compliant #hex color code
         },
-        photos: [{
+        pictures: [{
+            id: Schema.Types.ObjectId,
             name: String,
             mimeType: String,
             size: Number,
@@ -79,6 +80,22 @@ module.exports = function (app) {
 
     filamentSchema.methods.getLeftLength = function () {
         return this.getLength(this.leftMaterialWeight());
+    };
+
+    filamentSchema.methods.addPicture = function (picture) {
+        this.pictures.push(picture);
+    };
+
+    filamentSchema.methods.getPicture = function (id) {
+        if (this.pictures && this.pictures.length) {
+            for (var i = 0; i < this.pictures.length; i++) {
+                if (this.pictures[i]._id == id) {
+                    return this.pictures[i];
+                }
+            }
+        }
+
+        return false;
     };
 
     var Filament = mongoose.model('Filament', filamentSchema);

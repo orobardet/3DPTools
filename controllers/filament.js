@@ -5,6 +5,7 @@ module.exports = function (app) {
     var Brand = app.models.brand;
     var Material = app.models.material;
     var thisController = this;
+    var fs = require('fs');
 
     this.index = function (req, res, next) {
         when(Filament.find().populate('material brand shop').sort({
@@ -259,6 +260,89 @@ module.exports = function (app) {
                 } else {
                     return res.redirect("/filament/show/" + filamentId);
                 }
+            });
+    };
+
+    this.addPicture = function (req, res, next) {
+        var filamentId = req.params.filament_id;
+        var uploadedPicture = req.file;
+
+        when(Filament.findById(filamentId).exec())
+            .then(function (filament) {
+                var picture = {
+                    name: uploadedPicture.originalname,
+                    size: uploadedPicture.size,
+                    mimeType: uploadedPicture.mimetype,
+                    data: fs.readFileSync(uploadedPicture.path)
+                }
+                filament.addPicture(picture);
+
+                fs.unlink(uploadedPicture.path);
+
+                filament.save(function (err) {
+                    if (err) {
+                        return next(err);
+                    }
+                    return res.redirect("/filament/show/" + filament.id);
+                });
+            });
+    };
+
+    this.deletePicture = function (req, res, next) {
+        var filamentId = req.params.filament_id;
+        var pictureId = req.params.picture_id;
+
+        when(Filament.findById(filamentId).exec())
+            .then(function (filament) {
+                filament.logo = undefined;
+
+                filament.save(function (err) {
+                    if (err) {
+                        return next(err);
+                    }
+                    return res.redirect("/filament/show/" + filament.id);
+                });
+            });
+    };
+
+    this.getPicture = function (req, res) {
+        var filamentId = req.params.filament_id;
+        var pictureId = req.params.picture_id;
+
+        when(Filament.findById(filamentId).exec())
+            .then(function (filament) {
+                var picture = filament.getPicture(pictureId);
+                if (picture) {
+                    res.set('Content-Type', picture.mimeType);
+                    res.set('Content-Length', picture.size);
+                    return res.send(picture.data);
+                }
+                res.status(404);
+                return res.json({
+                    message: res.__('Picture %s not found.', pictureId)
+                });
+            })
+            .catch(function (err) {
+                res.status(404);
+                return res.json({
+                    message: res.__('Filament %s not found.', filamentId)
+                });
+            });
+    };
+
+    this.pictureForm = function (req, res, next) {
+        var filamentId = req.params.filament_id;
+
+        when(Filament.findById(filamentId).exec())
+            .then(function (filament) {
+                return res.render('filament/picture', {
+                    filamentId: filamentId,
+                    filament: filament,
+                    errors: []
+                });
+            })
+            .catch(function (err) {
+                return next(err);
             });
     };
 
