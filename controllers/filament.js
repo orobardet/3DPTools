@@ -220,5 +220,47 @@ module.exports = function (app) {
             });
     };
 
+    this.leftMaterialForm = function (req, res) {
+        var filamentId = req.params.filament_id;
+
+        when(Filament.findById(filamentId).populate('material brand shop').exec())
+            .then(function (filament) {
+                return res.render('filament/left-material', {
+                    filament: filament,
+                    errors: (req.form) ? req.form.getErrors() : []
+                });
+            })
+            .catch(function (err) {
+                res.status(404);
+                return res.json({
+                    message: res.__('filament %s not found.', filamentId)
+                });
+            });
+    };
+
+    this.leftMaterial = function (req, res, next) {
+        var filamentId = req.params.filament_id;
+
+        when(Filament.findById(filamentId).exec())
+            .then(function (filament) {
+                if (!req.form.isValid) {
+                    return thisController.leftMaterialForm(req, res, next);
+                }
+
+                if (req.form.leftTotalWeight) {
+                    filament.setLeftTotalWeight(req.form.leftTotalWeight);
+
+                    filament.save(function (err) {
+                        if (err) {
+                            return next(err);
+                        }
+                        return res.redirect("/filament/show/" + filamentId);
+                    });
+                } else {
+                    return res.redirect("/filament/show/" + filamentId);
+                }
+            });
+    };
+
     return this;
 };

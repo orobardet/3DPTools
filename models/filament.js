@@ -6,8 +6,8 @@ module.exports = function (app) {
     var filamentSchema = new Schema({
         name: String,
         description: String,
-        brand: { type: Schema.Types.ObjectId, ref: 'Brand' },
-        material: { type: Schema.Types.ObjectId, ref: 'Material' },
+        brand: {type: Schema.Types.ObjectId, ref: 'Brand'},
+        material: {type: Schema.Types.ObjectId, ref: 'Material'},
         diameter: Number,   // in mm
         color: {
             name: String,
@@ -32,7 +32,7 @@ module.exports = function (app) {
         density: Number,
         buyDate: Date,
         price: Number,
-        shop: { type: Schema.Types.ObjectId, ref: 'Shop' },
+        shop: {type: Schema.Types.ObjectId, ref: 'Shop'},
         initialMaterialWeight: Number,  // in gram
         initialTotalWeight: Number,  // in gram
         materialLeftPercentage: Number,
@@ -55,6 +55,18 @@ module.exports = function (app) {
 
     filamentSchema.methods.leftMaterialWeight = function () {
         return this.initialMaterialWeight * this.materialLeftPercentage / 100;
+    };
+
+    filamentSchema.methods.setLeftTotalWeight = function (leftTotalWeight) {
+        if (leftTotalWeight > this.initialMaterialWeight) {
+            return false;
+        }
+
+        var netLeftWeight = Math.max(0, leftTotalWeight - (this.initialTotalWeight - this.initialMaterialWeight));
+
+        this.materialLeftPercentage = 100 * netLeftWeight / this.initialMaterialWeight;
+
+        return true;
     };
 
     var Filament = mongoose.model('Filament', filamentSchema);

@@ -125,5 +125,16 @@ module.exports = function (app) {
             })
     );
 
+    this.leftMaterial = form(
+        field("leftTotalWeight", "Left total weight")
+            .trim()
+            .isNumeric()
+            .custom(function (value) {
+                if (value <= 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            })
+    );
+
     return this;
 };

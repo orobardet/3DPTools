@@ -20,6 +20,9 @@ module.exports = function (app) {
     router.post('/edit/:filament_id', FilamentForm.filament, Controller.edit);
     router.get('/edit/:filament_id', Controller.editForm);
 
+    router.post('/left-material/:filament_id', FilamentForm.leftMaterial, Controller.leftMaterial);
+    router.get('/left-material/:filament_id', Controller.leftMaterialForm);
+
     router.delete('/delete/:filament_id', Controller.delete);
 
     app.use('/filament', router);

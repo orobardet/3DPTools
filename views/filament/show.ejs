@@ -77,9 +77,9 @@
                 <td>
                     <% if (filament.brand.url) { %>
                     <a href="<%- filament.brand.url %>" target="_blank">
-                    <% } %>
+                        <% } %>
                         <%- filament.brand.name %>
-                    <% if (filament.brand.url) { %>
+                        <% if (filament.brand.url) { %>
                     </a>
                     <% } %>
                 </td>
@@ -89,10 +89,10 @@
         <div class="brand-logo-container">
             <% if (filament.brand.url) { %>
             <a href="<%- filament.brand.url %>" target="_blank">
-            <% } %>
-            <img alt="<%- filament.brand.name %>" title="<%- filament.brand.name %>" class="brand-logo"
-             src="/brand/get-logo/<%- filament.brand.id %>">
-            <% if (filament.brand.url) { %>
+                <% } %>
+                <img alt="<%- filament.brand.name %>" title="<%- filament.brand.name %>" class="brand-logo"
+                     src="/brand/get-logo/<%- filament.brand.id %>">
+                <% if (filament.brand.url) { %>
             </a>
             <% } %>
         </div>
@@ -100,7 +100,7 @@
     </div>
     <div class="filament-content">
         <div class="description markdown">
-        <%- marked(filament.description) %>
+            <%- marked(filament.description) %>
         </div>
         <div class="buy-data">
             <table>
@@ -108,27 +108,28 @@
                     <td class="shop-data">
                         <% if (filament.shop.url) { %>
                         <a href="<%- filament.shop.url %>" target="_blank">
-                        <% } %>
-                        <% if (filament.shop.logo && filament.shop.logo.size) { %>
+                            <% } %>
+                            <% if (filament.shop.logo && filament.shop.logo.size) { %>
                             <img alt="<%- filament.shop.name %>" title="<%- filament.shop.name %>" class="shop-logo"
                                  src="/shop/get-logo/<%- filament.shop.id %>">
-                        <% } else { %>
+                            <% } else { %>
                             <%- filament.shop.name %>
-                        <% } %>
-                        <% if (filament.shop.url) { %>
+                            <% } %>
+                            <% if (filament.shop.url) { %>
                         </a>
                         <% } %>
                     </td>
                     <td>
-                    <b><%- __('Purchased on:') %></b> <%- moment(filament.buyDate).format('LL') %>
-                    <br/>
-                    <b><%- __('Price:') %></b> <%- __('%.2f € TTC', filament.price) %>
+                        <b><%- __('Purchased on:') %></b> <%- moment(filament.buyDate).format('LL') %>
+                        <br/>
+                        <b><%- __('Price:') %></b> <%- __('%.2f € TTC', filament.price) %>
                     </td>
                 </tr>
             </table>
         </div>
         <div>
-            <%- __('Material left: %.2f Kg / %.2f Kg', filament.leftMaterialWeight(), filament.initialMaterialWeight)%>
+            <%- __('Material left: %.2f Kg / %.2f Kg', filament.leftMaterialWeight(), filament.initialMaterialWeight) %>
+            <a href="/filament/left-material/<%- filament.id %>" class="pull-right"><i class="fa fa-pencil"></i></a>
             <div class="progress">
                 <%
                 var leftPercentage = filament.materialLeftPercentage;
@@ -156,6 +157,9 @@
         </a>
         <a href="/filament/delete/<%- filament.id %>" data-id="<%- filament.id %>"
            class="btn btn-default btn-block trg-delete-filament"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %>
+        </a>
+        <a href="/filament/left-material/<%- filament.id %>" class="btn btn-default btn-block"><i
+            class="fa fa-balance-scale"></i>&nbsp;<%- __("left material") %>
         </a>
     </div>
 </div>

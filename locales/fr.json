@@ -229,5 +229,8 @@
   "%.2d € TTC": "%.2d € TTC",
   "%.2f € TTC": "%.2f € TTC",
   "Purchased on:": "Acheté le : ",
-  "Material left: %.2f Kg / %.2f Kg": "Matière restante : %.2f Kg / %.2f Kg"
+  "Material left: %.2f Kg / %.2f Kg": "Matière restante : %.2f Kg / %.2f Kg",
+  "left material": "matière restante",
+  "Left filament %s": "Filament %s restant",
+  "Left total weight:": "Poids total restant :"
 }

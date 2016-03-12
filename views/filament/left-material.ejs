@@ -1,0 +1,33 @@
+<h1><span class="fa-overlay">
+    <i class="p3di p3di-filament"></i>
+    <i class="fa fa-balance-scale fa-overlay-se" style="color:white"></i>
+    <i class="fa fa-balance-scale fa-overlay-se text-primary"></i>
+</span> <%- __('Left filament %s', filament.name) %></h1>
+
+<form class="form-filament" method="POST">
+    <fieldset>
+        <div class="form-group<%= (errors.leftTotalWeight) ? " has-error" : "" %>">
+            <label for="leftTotalWeight"
+                   class="control-label"><%- __('Left total weight:'); %></label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="leftTotalWeight"
+                       name="leftTotalWeight"
+                       value="<%- (locals.leftTotalWeight) ? leftTotalWeight : '' %>">
+                <div class="input-group-addon"><%- __('kg'); %></div>
+            </div>
+            <% if (errors.leftTotalWeight) { %>
+            <ul class="help-block with-errors">
+                <% errors.leftTotalWeight.forEach(function(msg) { %>
+                <li><%= __(msg) %></li>
+                <% }); %>
+            </ul>
+            <% } %>
+        </div>
+
+
+        <p class="button-bar">
+            <a href="/filament/show/<%- filament.id %>" class="btn btn-default"><%- __('Cancel') %></a>
+            <button type="submit" class="btn btn-primary"><%- __('Save') %></button>
+        </p>
+    </fieldset>
+</form>
