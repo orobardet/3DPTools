@@ -8232,4 +8232,11 @@ table.material-list > tbody > tr > td.material-description {
 .filament-content .shop-logo {
   max-height: 55px; }
 
+.progress .progress-text {
+  text-align: center;
+  vertical-align: middle;
+  font-size: 12px;
+  height: 100%;
+  line-height: 20px; }
+
 /*# sourceMappingURL=style.css.map */

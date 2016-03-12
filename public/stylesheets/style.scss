@@ -383,3 +383,11 @@ table.material-list {
   }
 }
 
+.progress .progress-text {
+  text-align: center;
+  vertical-align: middle;
+  font-size: $font-size-small;
+  height: 100%;
+  line-height: $line-height-computed;
+}
+
