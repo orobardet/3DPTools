@@ -8231,6 +8231,8 @@ table.material-list > tbody > tr > td.material-description {
     padding-right: 20px; }
 .filament-content .shop-logo {
   max-height: 55px; }
+.filament-content .filament-left-data .progress {
+  margin-bottom: 0; }
 
 .progress .progress-text {
   text-align: center;

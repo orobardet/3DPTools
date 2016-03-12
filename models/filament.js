@@ -63,10 +63,22 @@ module.exports = function (app) {
         }
 
         var netLeftWeight = Math.max(0, leftTotalWeight - (this.initialTotalWeight - this.initialMaterialWeight));
-
         this.materialLeftPercentage = 100 * netLeftWeight / this.initialMaterialWeight;
 
         return true;
+    };
+
+    filamentSchema.methods.getLength = function (weight) {
+        var volume = weight / this.density;
+        return volume / (Math.PI * Math.pow(this.diameter / 2 / 1000, 2));
+    };
+
+    filamentSchema.methods.getInitialLength = function () {
+        return this.getLength(this.initialMaterialWeight);
+    };
+
+    filamentSchema.methods.getLeftLength = function () {
+        return this.getLength(this.leftMaterialWeight());
     };
 
     var Filament = mongoose.model('Filament', filamentSchema);

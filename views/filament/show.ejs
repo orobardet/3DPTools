@@ -29,6 +29,10 @@
                 <td><%- __('%s kg/m³', filament.density) %></td>
             </tr>
             <tr>
+                <td><%- __('Length:') %></td>
+                <td><%- __('~ %.2f m', filament.getInitialLength()) %></td>
+            </tr>
+            <tr>
                 <td><%- __('Flow:') %></td>
                 <td>
                     <% if (filament.flowPercentage) { %>
@@ -127,8 +131,8 @@
                 </tr>
             </table>
         </div>
-        <div>
-            <%- __('Material left: %.2f Kg / %.2f Kg', filament.leftMaterialWeight(), filament.initialMaterialWeight) %>
+        <div class="filament-left-data">
+            <%- __('Material left: ~ %.2f Kg / %.2f Kg', filament.leftMaterialWeight(), filament.initialMaterialWeight) %>
             <a href="/filament/left-material/<%- filament.id %>" class="pull-right"><i class="fa fa-pencil"></i></a>
             <div class="progress">
                 <%
@@ -147,7 +151,7 @@
                     <%- leftPercentage %>%
                 </div>
             </div>
-
+            <%- __('Length left: ~ %.2f m / ~ %.2f m', filament.getLeftLength(), filament.getInitialLength()) %>
         </div>
     </div>
     <div class="filament-actions">
