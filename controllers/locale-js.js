@@ -16,7 +16,8 @@ module.exports = function (app) {
                 'Delete %s material?',
                 'Error while retrieving data for material %s.',
                 'Delete %s filament?',
-                'Error while retrieving data for filament %s.'
+                'Error while retrieving data for filament %s.',
+                'Do you really want to delete this picture?'
             ]
         });
     };

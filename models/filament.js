@@ -98,6 +98,26 @@ module.exports = function (app) {
         return false;
     };
 
+    filamentSchema.methods.deletePicture = function (id) {
+        if (this.pictures && this.pictures.length) {
+            var deleteIndex = -1;
+            for (var i = 0; i < this.pictures.length; i++) {
+                if (this.pictures[i]._id == id) {
+                    deleteIndex = i;
+                    break;
+                }
+            }
+
+            if (deleteIndex >= 0) {
+                this.pictures.splice(deleteIndex, 1);
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+
     var Filament = mongoose.model('Filament', filamentSchema);
 
     return Filament;

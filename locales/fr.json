@@ -241,5 +241,7 @@
   "Picture:": "Image :",
   "You can choose a picture.": "Vous pouvez choisir une image.",
   "filament_id is not defined": "filament_id is not defined",
-  "Picture %s not found.": "Picture %s not found."
+  "Picture %s not found.": "Picture %s not found.",
+  "Do you really want to delete this picture?": "Voulez-vous vraiment supprimer cette image ?",
+  "Filament's picture %s not found.": "Filament's picture %s not found."
 }

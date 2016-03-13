@@ -170,7 +170,9 @@
                     <% } %>
                 </div>
                 <% if (filament.materialLeftPercentage <= 50) { %>
-                <div class="progress-text" style="padding-left:<%- leftPercentage%>%"><%- sprintf('%.2f', leftPercentage) %>%</div>
+                <div class="progress-text"
+                     style="padding-left:<%- leftPercentage %>%"><%- sprintf('%.2f', leftPercentage) %>%
+                </div>
                 <% } %>
             </div>
             <%- __('Length left: ~ %.2f m / ~ %.2f m', filament.getLeftLength(), filament.getInitialLength()) %>
@@ -180,15 +182,56 @@
     <% if (filament.pictures && filament.pictures.length) { %>
     <div class="filament-pictures">
         <% filament.pictures.forEach(function(picture) { %>
-        <img class="img-responsive img-thumbnail" src="/filament/get-picture/<%- filament.id %>/<%- picture._id %>">
+        <div class="img-overlay-container img-responsive img-thumbnail">
+            <img class="filament-picture" src="/filament/get-picture/<%- filament.id %>/<%- picture._id %>">
+            <div class="img-actions">
+                <a href="/filament/delete-picture/<%- filament.id %>/<%- picture._id %>" class="trg-delete-picture"><i
+                            class="fa fa-trash"></i></a>
+            </div>
+        </div>
         <% }); %>
     </div>
     <% } %>
 </div>
 
+<div id="filament-message-container"></div>
 
 <script type="text/javascript">
     $(function () {
+        $('.trg-delete-picture').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var $this = $(this);
+            var $img = $this.closest('.img-overlay-container').find('.filament-picture').first();
+
+            var confirmContent = $('<div>').text(Locale3DPTools.__('Do you really want to delete this picture?'));
+            confirmContent.append($('<br>'));
+            confirmContent.append($('<img>').attr('src', $img.attr('src')).addClass('picture'));
+
+            App3DPTools.confirmModal(confirmContent, function () {
+                $.ajax({
+                    type: "DELETE",
+                    url: $this.attr('href'),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function (data) {
+                        document.location = document.location;
+                    },
+                    error: function (xhr, status, errorMsg) {
+                        if (xhr.responseJSON) {
+                            var data = xhr.responseJSON;
+                            if (data.message) {
+                                App3DPTools.errorFlash('#filament-message-container', data.message);
+                                return;
+                            }
+                        }
+                        App3DPTools.errorFlash('#filament-message-container', errorMsg);
+                    }
+                });
+            });
+        });
+
         function deleteFilament(filamentId) {
             $.ajax({
                 type: "DELETE",

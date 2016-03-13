@@ -30,6 +30,7 @@ module.exports = function (app) {
 
     router.post('/add-picture/:filament_id', fileUpload.single('picture'), Controller.addPicture);
     router.get('/add-picture/:filament_id', Controller.pictureForm);
+    router.delete('/delete-picture/:filament_id/:picture_id', Controller.deletePicture);
     router.get('/delete-picture/:filament_id/:picture_id', Controller.deletePicture);
     router.get('/get-picture/:filament_id/:picture_id', Controller.getPicture);
 

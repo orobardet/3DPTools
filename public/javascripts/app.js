@@ -29,7 +29,7 @@ var App3DPTools = {
     confirmModal: function (message, cb) {
         var $modal = $('#3dptoolConfirmModal');
         if (!$modal.length) {
-            $('body').append('<div id="3dptoolConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true">'
+            $('body').append('<div id="3dptoolConfirmModal" class="modal confirm-modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true">'
                 + '<div class="modal-dialog" role="document">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header draggable">'
@@ -55,7 +55,12 @@ var App3DPTools = {
             });
         }
 
-        $modal.find('.modal-body').text(message);
+        $modal.find('.modal-body').text('');
+        if (message instanceof jQuery) {
+            $modal.find('.modal-body').append(message);
+        } else {
+            $modal.find('.modal-body').text(message);
+        }
         $modal.modal('show');
     }
 };

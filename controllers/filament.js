@@ -294,14 +294,27 @@ module.exports = function (app) {
 
         when(Filament.findById(filamentId).exec())
             .then(function (filament) {
-                filament.logo = undefined;
+                if (filament.deletePicture(pictureId)) {
+                    filament.save(function (err) {
+                        if (err) {
+                            return next(err);
+                        }
+                        if (req.method === 'DELETE') {
+                            return res.json({});
+                        }
 
-                filament.save(function (err) {
-                    if (err) {
-                        return next(err);
+                        return res.redirect("/filament/show/" + filament.id);
+                    });
+                } else {
+                    res.status(404);
+                    if (req.method === 'DELETE') {
+                        return res.json({
+                            message: res.__("Filament's picture %s not found.", pictureId)
+                        });
                     }
-                    return res.redirect("/filament/show/" + filament.id);
-                });
+
+                    return next(new Error(res.__("Filament's picture %s not found.", pictureId)));
+                }
             });
     };
 

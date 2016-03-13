@@ -8233,10 +8233,10 @@ table.material-list > tbody > tr > td.material-description {
 
 .filament-pictures {
   margin-top: 10px; }
-  .filament-pictures > img {
+  .filament-pictures img {
     max-width: 250px;
     margin-left: 10px; }
-    .filament-pictures > img:first-child {
+    .filament-pictures img:first-child {
       margin-left: 0; }
 
 .progress .progress-text {
@@ -8245,5 +8245,26 @@ table.material-list > tbody > tr > td.material-description {
   font-size: 12px;
   height: 100%;
   line-height: 20px; }
+
+.img-overlay-container {
+  display: inline-block;
+  position: relative; }
+  .img-overlay-container > .img-actions {
+    visibility: hidden;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 4px; }
+    .img-overlay-container > .img-actions, .img-overlay-container > .img-actions a {
+      color: white; }
+  .img-overlay-container:hover > .img-actions {
+    visibility: visible; }
+  .img-overlay-container.img-thumbnail > .img-actions {
+    padding-right: 4px; }
+
+.confirm-modal .modal-body .picture {
+  max-width: 100%;
+  max-height: 100%; }
 
 /*# sourceMappingURL=style.css.map */
