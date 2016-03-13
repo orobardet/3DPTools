@@ -148,8 +148,13 @@
                 <div title="<%- leftPercentage %>%" class="progress-bar <%- progressbarClass %>"
                      role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
                      style="width: <%- leftPercentage %>%;">
-                    <%- leftPercentage %>%
+                    <% if (filament.materialLeftPercentage > 50) { %>
+                    <%- sprintf('%.2f', leftPercentage) %>%
+                    <% } %>
                 </div>
+                <% if (filament.materialLeftPercentage <= 50) { %>
+                <div class="progress-text" style="padding-left:<%- leftPercentage%>%"><%- sprintf('%.2f', leftPercentage) %>%</div>
+                <% } %>
             </div>
             <%- __('Length left: ~ %.2f m / ~ %.2f m', filament.getLeftLength(), filament.getInitialLength()) %>
         </div>
