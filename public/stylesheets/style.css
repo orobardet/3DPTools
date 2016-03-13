@@ -8183,56 +8183,61 @@ table.material-list > tbody > tr > td.material-description {
 .filament-section .table.filament-list .progress {
   margin-bottom: 0; }
 
-.filament-show-layout {
-  display: flex; }
-  .filament-show-layout .filament-details, .filament-show-layout .filament-content, .filament-show-layout .filament-actions {
-    vertical-align: top;
-    display: inline-block;
-    margin-left: 10px; }
-    .filament-show-layout .filament-details:first-of-type, .filament-show-layout .filament-content:first-of-type, .filament-show-layout .filament-actions:first-of-type {
-      margin-left: 0; }
-  .filament-show-layout .filament-details {
-    padding: 5px;
-    width: 350px; }
-    .filament-show-layout .filament-details > table > tbody > tr > td {
-      padding: 2px; }
-    .filament-show-layout .filament-details > table > tbody > tr > td:first-of-type {
-      font-weight: bold;
-      text-align: right;
-      vertical-align: top; }
-    .filament-show-layout .filament-details .brand-logo-container {
-      text-align: center; }
-      .filament-show-layout .filament-details .brand-logo-container .brand-logo {
-        max-width: 100%; }
-  .filament-show-layout .filament-content {
-    flex-grow: 1; }
-  .filament-show-layout .filament-actions {
-    width: 160px; }
-    .filament-show-layout .filament-actions > title {
-      display: block;
-      font-weight: bold;
-      text-align: center;
-      text-transform: uppercase;
-      font-size: smaller;
-      height: 20px;
-      margin-top: -20px; }
-    .filament-show-layout .filament-actions > a {
-      margin-bottom: 5px; }
-      .filament-show-layout .filament-actions > a:last-of-type {
-        margin-bottom: 0; }
-
-.filament-content > div {
+.filament-show-layout .filament-details, .filament-show-layout .filament-content, .filament-show-layout .filament-actions {
+  vertical-align: top;
+  margin-left: 10px; }
+  .filament-show-layout .filament-details:first-of-type, .filament-show-layout .filament-content:first-of-type, .filament-show-layout .filament-actions:first-of-type {
+    margin-left: 0; }
+.filament-show-layout .filament-details {
+  float: left;
+  padding: 5px;
+  width: 350px;
+  margin-right: 10px; }
+  .filament-show-layout .filament-details > table > tbody > tr > td {
+    padding: 2px; }
+  .filament-show-layout .filament-details > table > tbody > tr > td:first-of-type {
+    font-weight: bold;
+    text-align: right;
+    vertical-align: top; }
+  .filament-show-layout .filament-details .brand-logo-container {
+    text-align: center; }
+    .filament-show-layout .filament-details .brand-logo-container .brand-logo {
+      max-width: 100%; }
+.filament-show-layout .filament-content > div {
   margin-top: 20px; }
-  .filament-content > div:first-of-type {
+  .filament-show-layout .filament-content > div:first-of-type {
     margin-top: 0; }
-.filament-content .buy-data table > tbody > tr > td {
+.filament-show-layout .filament-content .buy-data table > tbody > tr > td {
   vertical-align: middle; }
-  .filament-content .buy-data table > tbody > tr > td.shop-data {
+  .filament-show-layout .filament-content .buy-data table > tbody > tr > td.shop-data {
     padding-right: 20px; }
-.filament-content .shop-logo {
+.filament-show-layout .filament-content .shop-logo {
   max-height: 55px; }
-.filament-content .filament-left-data .progress {
+.filament-show-layout .filament-content .filament-left-data .progress {
   margin-bottom: 0; }
+.filament-show-layout .filament-actions {
+  float: right;
+  width: 160px; }
+  .filament-show-layout .filament-actions > title {
+    display: block;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: smaller;
+    height: 20px;
+    margin-top: -20px; }
+  .filament-show-layout .filament-actions > a {
+    margin-bottom: 5px; }
+    .filament-show-layout .filament-actions > a:last-of-type {
+      margin-bottom: 0; }
+
+.filament-pictures {
+  margin-top: 10px; }
+  .filament-pictures > img {
+    max-width: 250px;
+    margin-left: 10px; }
+    .filament-pictures > img:first-child {
+      margin-left: 0; }
 
 .progress .progress-text {
   text-align: center;
@@ -8240,8 +8245,5 @@ table.material-list > tbody > tr > td.material-description {
   font-size: 12px;
   height: 100%;
   line-height: 20px; }
-
-.filament-pictures > img {
-  max-width: 150px; }
 
 /*# sourceMappingURL=style.css.map */

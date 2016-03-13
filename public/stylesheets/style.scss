@@ -302,11 +302,8 @@ table.material-list {
 }
 
 .filament-show-layout {
-  display: flex;
-
   .filament-details, .filament-content, .filament-actions {
     vertical-align: top;
-    display: inline-block;
     margin-left: 10px;
     &:first-of-type {
       margin-left: 0;
@@ -314,10 +311,12 @@ table.material-list {
   }
 
   .filament-details {
+    float: left;
     @extend .panel;
     @extend .panel-default;
     padding: 5px;
     width: 350px;
+    margin-right: 10px;
 
     & > table > tbody > tr {
       & > td {
@@ -339,10 +338,33 @@ table.material-list {
   }
 
   .filament-content {
-    flex-grow: 1
+    & > div {
+      margin-top: 20px;
+      &:first-of-type {
+        margin-top: 0;
+      }
+    }
+    .buy-data table > tbody > tr > td {
+      vertical-align: middle;
+      &.shop-data {
+        padding-right: 20px;
+      }
+    }
+    .shop-logo {
+      max-height: 55px
+    }
+
+    .filament-left-data {
+      .progress {
+        margin-bottom: 0;
+      }
+    }
+
   }
 
   .filament-actions {
+    float: right;
+
     width: 160px;
 
     & > title {
@@ -364,27 +386,14 @@ table.material-list {
     }
   }
 }
+.filament-pictures {
+  margin-top: 10px;
 
-.filament-content {
-  & > div {
-    margin-top: 20px;
-    &:first-of-type {
-      margin-top: 0;
-    }
-  }
-  .buy-data table > tbody > tr > td {
-    vertical-align: middle;
-    &.shop-data {
-      padding-right: 20px;
-    }
-  }
-  .shop-logo {
-    max-height: 55px
-  }
-
-  .filament-left-data {
-    .progress {
-      margin-bottom: 0;
+  & > img {
+    max-width: 250px;
+    margin-left: 10px;
+    &:first-child {
+      margin-left: 0;
     }
   }
 }
@@ -395,10 +404,4 @@ table.material-list {
   font-size: $font-size-small;
   height: 100%;
   line-height: $line-height-computed;
-}
-
-.filament-pictures {
-  & > img {
-    max-width: 150px;
-  }
 }
