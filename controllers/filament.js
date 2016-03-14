@@ -6,6 +6,7 @@ module.exports = function (app) {
     var Material = app.models.material;
     var thisController = this;
     var fs = require('fs');
+    var gm = require('gm').subClass({ imageMagick: true });
 
     this.index = function (req, res, next) {
         when(Filament.find().populate('material brand shop').sort({
@@ -269,21 +270,27 @@ module.exports = function (app) {
 
         when(Filament.findById(filamentId).exec())
             .then(function (filament) {
-                var picture = {
-                    name: uploadedPicture.originalname,
-                    size: uploadedPicture.size,
-                    mimeType: uploadedPicture.mimetype,
-                    data: fs.readFileSync(uploadedPicture.path)
-                }
-                filament.addPicture(picture);
-
-                fs.unlink(uploadedPicture.path);
-
-                filament.save(function (err) {
+                gm(uploadedPicture.path).autoOrient().write(uploadedPicture.path, function (err) {
                     if (err) {
                         return next(err);
                     }
-                    return res.redirect("/filament/show/" + filament.id);
+
+                    var picture = {
+                        name: uploadedPicture.originalname,
+                        size: uploadedPicture.size,
+                        mimeType: uploadedPicture.mimetype,
+                        data: fs.readFileSync(uploadedPicture.path)
+                    }
+                    filament.addPicture(picture);
+
+                    fs.unlink(uploadedPicture.path);
+
+                    filament.save(function (err) {
+                        if (err) {
+                            return next(err);
+                        }
+                        return res.redirect("/filament/show/" + filament.id);
+                    });
                 });
             });
     };

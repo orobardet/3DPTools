@@ -243,5 +243,8 @@
   "filament_id is not defined": "filament_id is not defined",
   "Picture %s not found.": "Picture %s not found.",
   "Do you really want to delete this picture?": "Voulez-vous vraiment supprimer cette image ?",
-  "Filament's picture %s not found.": "Filament's picture %s not found."
+  "Filament's picture %s not found.": "Filament's picture %s not found.",
+  "Could not execute GraphicsMagick/ImageMagick: gm \"identify\" \"-ping\" \"-format\" \"%[EXIF:Orientation]\" \"tmp\\uploads\\0f6e8e197b8609dcc9b160782b02c8d2\" this most likely means the gm/convert binaries can't be found": "Could not execute GraphicsMagick/ImageMagick: gm \"identify\" \"-ping\" \"-format\" \"%[EXIF:Orientation]\" \"tmp\\uploads\\0f6e8e197b8609dcc9b160782b02c8d2\" this most likely means the gm/convert binaries can't be found",
+  "Could not execute GraphicsMagick/ImageMagick: gm \"identify\" \"-ping\" \"-format\" \"%[EXIF:Orientation]\" \"tmp\\uploads\\6dca17408b6af48d0773ae2e44ad05d9\" this most likely means the gm/convert binaries can't be found": "Could not execute GraphicsMagick/ImageMagick: gm \"identify\" \"-ping\" \"-format\" \"%[EXIF:Orientation]\" \"tmp\\uploads\\6dca17408b6af48d0773ae2e44ad05d9\" this most likely means the gm/convert binaries can't be found",
+  "Could not execute GraphicsMagick/ImageMagick: gm \"identify\" \"-ping\" \"-format\" \"%[EXIF:Orientation]\" \"tmp\\uploads\\1caa31130ea6db1efdb3bf5a26102b00\" this most likely means the gm/convert binaries can't be found": "Could not execute GraphicsMagick/ImageMagick: gm \"identify\" \"-ping\" \"-format\" \"%[EXIF:Orientation]\" \"tmp\\uploads\\1caa31130ea6db1efdb3bf5a26102b00\" this most likely means the gm/convert binaries can't be found"
 }
