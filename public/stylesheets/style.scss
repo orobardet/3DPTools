@@ -430,6 +430,9 @@ table.material-list {
 
   &.img-thumbnail > .img-actions {
     padding-right: 4px;
+    & > a {
+      margin-left: 4px;
+    }
   }
 }
 

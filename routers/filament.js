@@ -33,6 +33,7 @@ module.exports = function (app) {
     router.delete('/delete-picture/:filament_id/:picture_id', Controller.deletePicture);
     router.get('/delete-picture/:filament_id/:picture_id', Controller.deletePicture);
     router.get('/get-picture/:filament_id/:picture_id', Controller.getPicture);
+    router.get('/download-picture/:filament_id/:picture_id', Controller.downloadPicture);
 
     router.delete('/delete/:filament_id', Controller.delete);
 

@@ -8262,6 +8262,8 @@ table.material-list > tbody > tr > td.material-description {
     visibility: visible; }
   .img-overlay-container.img-thumbnail > .img-actions {
     padding-right: 4px; }
+    .img-overlay-container.img-thumbnail > .img-actions > a {
+      margin-left: 4px; }
 
 .confirm-modal .modal-body .picture {
   max-width: 100%;

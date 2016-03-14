@@ -359,5 +359,27 @@ module.exports = function (app) {
             });
     };
 
+    this.downloadPicture = function (req, res) {
+        var filamentId = req.params.filament_id;
+        var pictureId = req.params.picture_id;
+
+        when(Filament.findById(filamentId).exec())
+            .then(function (filament) {
+                var picture = filament.getPicture(pictureId);
+                if (picture) {
+                    res.set('Content-Type', picture.mimeType);
+                    res.set('Content-Length', picture.size);
+                    res.set('Content-Disposition', 'attachment; filename="' + picture.name + '"');
+                    return res.send(picture.data);
+                }
+                res.status(404);
+                return res.send(res.__('Picture %s not found.', pictureId));
+            })
+            .catch(function (err) {
+                res.status(404);
+                return res.json(res.__('Filament %s not found.', filamentId));
+            });
+    };
+
     return this;
 };
