@@ -59,7 +59,7 @@ module.exports = function (app) {
     };
 
     filamentSchema.methods.setLeftTotalWeight = function (leftTotalWeight) {
-        if (leftTotalWeight > this.initialMaterialWeight) {
+        if (leftTotalWeight > this.initialTotalWeight) {
             return false;
         }
 
