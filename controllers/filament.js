@@ -6,7 +6,7 @@ module.exports = function (app) {
     var Material = app.models.material;
     var thisController = this;
     var fs = require('fs');
-    var gm = require('gm').subClass({ imageMagick: true });
+    var gm = require('gm').subClass({imageMagick: true});
 
     this.index = function (req, res, next) {
         when(Filament.find().populate('material brand shop').sort({
@@ -173,9 +173,12 @@ module.exports = function (app) {
     this.get = function (req, res) {
         var filamentId = req.params.filament_id;
 
-        when(Filament.findById(filamentId).populate('material brand shop').exec())
+        // Pas de populate des magasins/marque/matière, pour éviter que le document ne soit trop gros.
+        when(Filament.findById(filamentId).exec())
             .then(function (filament) {
                 var filamentData = filament.toObject({getters: false, virtuals: true, versionKey: false});
+                delete filamentData.pictures; // Pour éviter de renvoyer un document avec toutes les images qui ne soit trop gros.
+
                 return res.json({
                     filament: filamentData
                 });
