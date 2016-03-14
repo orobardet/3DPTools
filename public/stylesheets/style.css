@@ -8233,6 +8233,8 @@ table.material-list > tbody > tr > td.material-description {
 
 .filament-pictures {
   margin-top: 10px; }
+  .filament-pictures .filament-picture-zoom {
+    cursor: zoom-in; }
   .filament-pictures img {
     max-width: 250px;
     margin-left: 10px; }

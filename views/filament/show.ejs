@@ -183,7 +183,7 @@
     <div class="filament-pictures">
         <% filament.pictures.forEach(function(picture) { %>
         <div class="img-overlay-container img-responsive img-thumbnail">
-            <img class="filament-picture" src="/filament/get-picture/<%- filament.id %>/<%- picture._id %>">
+            <a href="/filament/get-picture/<%- filament.id %>/<%- picture._id %>" class="filament-picture-zoom" target="_blank"><img class="filament-picture" src="/filament/get-picture/<%- filament.id %>/<%- picture._id %>"></a>
             <div class="img-actions">
                 <a href="/filament/download-picture/<%- filament.id %>/<%- picture._id %>"><i class="fa fa-download"></i></a>
                 <a href="/filament/delete-picture/<%- filament.id %>/<%- picture._id %>" class="trg-delete-picture"><i

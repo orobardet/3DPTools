@@ -389,6 +389,10 @@ table.material-list {
 .filament-pictures {
   margin-top: 10px;
 
+  .filament-picture-zoom {
+    cursor: zoom-in;
+  }
+
   img {
     max-width: 250px;
     margin-left: 10px;
