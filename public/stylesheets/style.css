@@ -8236,7 +8236,7 @@ table.material-list > tbody > tr > td.material-description {
   .filament-pictures .filament-picture-zoom {
     cursor: zoom-in; }
   .filament-pictures img {
-    max-width: 250px;
+    max-height: 300px;
     margin-left: 10px; }
     .filament-pictures img:first-child {
       margin-left: 0; }
@@ -8250,7 +8250,9 @@ table.material-list > tbody > tr > td.material-description {
 
 .img-overlay-container {
   display: inline-block;
-  position: relative; }
+  position: relative;
+  margin-right: 5px;
+  margin-bottom: 5px; }
   .img-overlay-container > .img-actions {
     visibility: hidden;
     display: block;

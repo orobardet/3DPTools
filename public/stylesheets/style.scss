@@ -394,7 +394,7 @@ table.material-list {
   }
 
   img {
-    max-width: 250px;
+    max-height: 300px;
     margin-left: 10px;
     &:first-child {
       margin-left: 0;
@@ -413,6 +413,8 @@ table.material-list {
 .img-overlay-container {
   display: inline-block;
   position: relative;
+  margin-right: 5px;
+  margin-bottom: 5px;
 
   & > .img-actions {
     visibility: hidden;
