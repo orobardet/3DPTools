@@ -7979,6 +7979,15 @@ body {
   body.setup-section {
     padding-top: 0px; }
 
+#version {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 0 5px;
+  color: gray;
+  font-style: italic;
+  font-size: smaller; }
+
 h1 {
   margin-bottom: 30px; }
 
