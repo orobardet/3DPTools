@@ -23,8 +23,6 @@ app.locals = {
 
 // load configuration
 config.use('memory');
-config.file('default', 'config/default.json');
-config.env();
 config.argv({
     "c": {
         alias: 'config-file',
@@ -34,9 +32,11 @@ config.argv({
         type: 'string'
     }
 });
+config.env({separator: '__'});
 if (config.get('config-file')) {
     config.file('user', config.get('config-file'));
 }
+config.file('default', 'config/default.json');
 app.locals.config = config;
 app.locals.moment = moment;
 app.set('config', config);
