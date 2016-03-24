@@ -1,0 +1,14 @@
+redis:
+    restart: always
+    image: redis:alpine
+
+3dptools:
+    restart: always
+    images: orobardet/3dptools:latest
+    environment:
+        - redis__host=redis
+        - database__url=mongodb://nas/3dptools
+    links:
+        - redis
+    ports:
+        - "3000:3000"
