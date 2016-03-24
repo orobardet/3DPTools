@@ -13,6 +13,10 @@
   "language": {
     "cookieName": "locale"
   },
+  "redis": {
+    "host": "localhost",
+    "port": "6379"
+  },
   "database": {
     "url": "mongodb://localhost/3dptools",
     "connectOptions": {

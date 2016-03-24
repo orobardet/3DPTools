@@ -48,7 +48,7 @@ app.use(session({
     secret: config.get('session:secret'),
     saveUninitialized: false,
     unset: 'destroy',
-    store: new RedisSessionStore()
+    store: new RedisSessionStore(config.get("redis"))
 }));
 app.use(flash());
 
