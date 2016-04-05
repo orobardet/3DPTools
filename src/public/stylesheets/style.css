@@ -7994,24 +7994,37 @@ h1 {
 .navbar-fixed-top {
   border-bottom: 0; }
 
+.dropdown-menu-col > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857;
+  color: #333333;
+  white-space: nowrap; }
+  .dropdown-menu-col > li > a:hover, .dropdown-menu-col > li > a:focus {
+    text-decoration: none;
+    color: #262626;
+    background-color: #f5f5f5; }
+
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
   background-color: #090909;
   color: #fff; }
-.navbar-inverse .navbar-nav .dropdown-menu {
+.navbar-inverse .navbar-nav .dropdown-menu, .navbar-inverse .navbar-nav .dropdown-menu-col {
   background-color: #222;
   border-color: #090909;
   border-top: 0; }
-  .navbar-inverse .navbar-nav .dropdown-menu > li.active > a {
+  .navbar-inverse .navbar-nav .dropdown-menu > li.active > a, .navbar-inverse .navbar-nav .dropdown-menu-col > li.active > a {
     background-color: #090909;
     color: #fff; }
-  .navbar-inverse .navbar-nav .dropdown-menu > li > a {
+  .navbar-inverse .navbar-nav .dropdown-menu > li > a, .navbar-inverse .navbar-nav .dropdown-menu-col > li > a {
     color: #9d9d9d; }
-    .navbar-inverse .navbar-nav .dropdown-menu > li > a:hover {
+    .navbar-inverse .navbar-nav .dropdown-menu > li > a:hover, .navbar-inverse .navbar-nav .dropdown-menu-col > li > a:hover {
       color: #fff;
       background-color: #090909; }
-    .navbar-inverse .navbar-nav .dropdown-menu > li > a > .fa.pull-right {
+    .navbar-inverse .navbar-nav .dropdown-menu > li > a > .fa.pull-right, .navbar-inverse .navbar-nav .dropdown-menu-col > li > a > .fa.pull-right {
       margin-top: 0.3em; }
-  .navbar-inverse .navbar-nav .dropdown-menu > li.divider {
+  .navbar-inverse .navbar-nav .dropdown-menu > li.divider, .navbar-inverse .navbar-nav .dropdown-menu-col > li.divider {
     background-color: #090909; }
 
 .dropdown.language-selector > .dropdown-menu > li.active.active > a {
@@ -8281,3 +8294,5 @@ table.material-list > tbody > tr > td.material-description {
 .confirm-modal .modal-body .picture {
   max-width: 100%;
   max-height: 100%; }
+
+/*# sourceMappingURL=style.css.map */

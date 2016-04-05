@@ -32,6 +32,22 @@ h1 {
   border-bottom: 0;
 }
 
+.dropdown-menu-col > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: $line-height-base;
+  color: $dropdown-link-color;
+  white-space: nowrap; // prevent links from randomly breaking onto new lines
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: $dropdown-link-hover-color;
+    background-color: $dropdown-link-hover-bg;
+  }
+}
+
 .navbar-inverse .navbar-nav {
   > .open > a {
     &,
@@ -42,7 +58,7 @@ h1 {
     }
   }
 
-  .dropdown-menu {
+  .dropdown-menu,.dropdown-menu-col {
     background-color: $navbar-inverse-bg;
     border-color: $navbar-inverse-border;
     border-top: 0;

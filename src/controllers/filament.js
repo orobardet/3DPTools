@@ -7,6 +7,7 @@ module.exports = function (app) {
     var thisController = this;
     var fs = require('fs');
     var gm = require('gm').subClass({imageMagick: true});
+    var thatController = this;
 
     this.index = function (req, res, next) {
         when(Filament.find().populate('material brand shop').sort({
@@ -83,6 +84,24 @@ module.exports = function (app) {
         });
     };
 
+    this.filterPredefinedColors = function (used, predefined) {
+        var filtered = {};
+        var predefinedValues = [];
+
+        for (var idx in predefined) {
+            predefinedValues.push(predefined[idx]);
+        }
+
+        for (var idx in used) {
+            var color = used[idx];
+            if (predefinedValues.indexOf(color.code) == -1) {
+                filtered[color.name] = color.code;
+            }
+        }
+
+        return filtered;
+    };
+
     this.addForm = function (req, res) {
         when.all([
             Shop.find().sort('name').exec(),
@@ -90,12 +109,14 @@ module.exports = function (app) {
             Material.find().sort('name').exec(),
             Filament.find().distinct('color').exec()
         ]).spread(function (shops, brands, materials, usedColors) {
+            var predefinedColors = res.app.get('config').get('filament:colors');
+            usedColors = thatController.filterPredefinedColors(usedColors, predefinedColors);
             return res.render('filament/add', {
                 shops: shops,
                 brands: brands,
                 materials: materials,
                 usedColors: usedColors,
-                predefinedColors: res.app.get('config').get('filament:colors'),
+                predefinedColors: predefinedColors,
                 errors: (req.form) ? req.form.getErrors() : []
             });
         });
@@ -153,13 +174,15 @@ module.exports = function (app) {
                     Material.find().sort('name').exec(),
                     Filament.find().distinct('color').exec()
                 ]).spread(function (shops, brands, materials, usedColors) {
+                    var predefinedColors = res.app.get('config').get('filament:colors');
+                    usedColors = thatController.filterPredefinedColors(usedColors, predefinedColors);
                     return res.render('filament/edit', {
                         filament: filament,
                         shops: shops,
                         brands: brands,
                         materials: materials,
                         usedColors: usedColors,
-                        predefinedColors: res.app.get('config').get('filament:colors'),
+                        predefinedColors: predefinedColors,
                         errors: (req.form) ? req.form.getErrors() : []
                     });
                 });

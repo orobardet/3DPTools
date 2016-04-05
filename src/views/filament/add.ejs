@@ -113,20 +113,34 @@
                                         class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <% if (Object.keys(predefinedColors).length) { %>
-                                <li class="dropdown-header"><%- __('Preset colors') %></li>
-                                <% for (var color in predefinedColors) { %>
-                                <li><a href="#" class="trg-color-select" data-code="<%- predefinedColors[color] %>"
-                                       data-name="<%- __(color) %>">
-                                        <i class="color-preview"
-                                           style="background-color: <%- predefinedColors[color] %>;"></i>&nbsp;<%- __(color) %>
-                                    </a></li>
-                                <% } %>
-                                <% } %>
-                                <% if (usedColors.length) { %>
-                                <li class="dropdown-header"><%- __('Already used colors') %></li>
-                                <li><a href="#">Separated link</a></li>
-                                <% } %>
+                                <li>
+                                    <div class="row" style="width: 400px;">
+                                        <% if (Object.keys(predefinedColors).length) { %>
+                                        <ul class="dropdown-menu-col list-unstyled col-md-6">
+                                        <li class="dropdown-header"><%- __('Preset colors') %></li>
+                                        <% for (var color in predefinedColors) { %>
+                                        <li><a href="#" class="trg-color-select" data-code="<%- predefinedColors[color] %>"
+                                               data-name="<%- __(color) %>">
+                                                <i class="color-preview"
+                                                   style="background-color: <%- predefinedColors[color] %>;"></i>&nbsp;<%- __(color) %>
+                                            </a></li>
+                                        <% } %>
+                                        </ul>
+                                        <% } %>
+                                        <% if (Object.keys(usedColors).length) { %>
+                                        <ul class="dropdown-menu-col list-unstyled col-md-6">
+                                        <li class="dropdown-header"><%- __('Already used colors') %></li>
+                                        <% for (var color in usedColors) { %>
+                                        <li><a href="#" class="trg-color-select" data-code="<%- usedColors[color] %>"
+                                               data-name="<%- __(color) %>">
+                                                <i class="color-preview"
+                                                   style="background-color: <%- usedColors[color] %>;"></i>&nbsp;<%- __(color) %>
+                                            </a></li>
+                                        <% } %>
+                                        </ul>
+                                        <% } %>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                     </div>

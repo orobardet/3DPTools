@@ -244,10 +244,8 @@
   "Picture %s not found.": "Picture %s not found.",
   "Do you really want to delete this picture?": "Voulez-vous vraiment supprimer cette image ?",
   "Filament's picture %s not found.": "Filament's picture %s not found.",
-  "Could not execute GraphicsMagick/ImageMagick: gm \"identify\" \"-ping\" \"-format\" \"%[EXIF:Orientation]\" \"tmp\\uploads\\0f6e8e197b8609dcc9b160782b02c8d2\" this most likely means the gm/convert binaries can't be found": "Could not execute GraphicsMagick/ImageMagick: gm \"identify\" \"-ping\" \"-format\" \"%[EXIF:Orientation]\" \"tmp\\uploads\\0f6e8e197b8609dcc9b160782b02c8d2\" this most likely means the gm/convert binaries can't be found",
-  "Could not execute GraphicsMagick/ImageMagick: gm \"identify\" \"-ping\" \"-format\" \"%[EXIF:Orientation]\" \"tmp\\uploads\\6dca17408b6af48d0773ae2e44ad05d9\" this most likely means the gm/convert binaries can't be found": "Could not execute GraphicsMagick/ImageMagick: gm \"identify\" \"-ping\" \"-format\" \"%[EXIF:Orientation]\" \"tmp\\uploads\\6dca17408b6af48d0773ae2e44ad05d9\" this most likely means the gm/convert binaries can't be found",
-  "Could not execute GraphicsMagick/ImageMagick: gm \"identify\" \"-ping\" \"-format\" \"%[EXIF:Orientation]\" \"tmp\\uploads\\1caa31130ea6db1efdb3bf5a26102b00\" this most likely means the gm/convert binaries can't be found": "Could not execute GraphicsMagick/ImageMagick: gm \"identify\" \"-ping\" \"-format\" \"%[EXIF:Orientation]\" \"tmp\\uploads\\1caa31130ea6db1efdb3bf5a26102b00\" this most likely means the gm/convert binaries can't be found",
   "Download picture": "Télécharger l'image",
   "Delete picture": "Supprimer l'image",
-  "e:\\Developpement\\Node\\3DPTools\\views\\layout.ejs:69\n    67|     <%- body %>\n    68| </div>\n >> 69| <%- version %>\n    70| </body>\n    71| </html>\n    72| \n\nversion is not defined": "e:\\Developpement\\Node\\3DPTools\\views\\layout.ejs:69\n    67|     <%- body %>\n    68| </div>\n >> 69| <%- version %>\n    70| </body>\n    71| </html>\n    72| \n\nversion is not defined"
+  "Transparent": "Transparent",
+  "Naturel": "Naturel"
 }
