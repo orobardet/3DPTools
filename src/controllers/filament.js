@@ -47,7 +47,9 @@ module.exports = function (app) {
             density: req.form.density,
             initialMaterialWeight: req.form.initialMaterialWeight,
             initialTotalWeight: req.form.initialTotalWeight,
-            materialLeftPercentage: 100
+            materialLeftPercentage: 100,
+            flowPercentage: 100,
+            speedPercentage: 100
         });
         if (req.form.headTempMin) {
             filament.headTemp.min = req.form.headTempMin;
@@ -67,10 +69,10 @@ module.exports = function (app) {
         if (req.form.bedTempExperienced) {
             filament.bedTemp.experienced = req.form.bedTempExperienced;
         }
-        if (req.form.flowPercentage) {
+        if (req.form.flowPercentage && req.form.flowPercentage !== '') {
             filament.flowPercentage = req.form.flowPercentage;
         }
-        if (req.form.speedPercentage) {
+        if (req.form.speedPercentage && req.form.speedPercentage !== '') {
             filament.speedPercentage = req.form.speedPercentage;
         }
         filament.save(function (err) {
@@ -127,8 +129,8 @@ module.exports = function (app) {
                 filament.bedTemp.min = req.form.bedTempMin;
                 filament.bedTemp.max = req.form.bedTempMax;
                 filament.bedTemp.experienced = req.form.bedTempExperienced;
-                filament.flowPercentage = req.form.flowPercentage;
-                filament.speedPercentage = req.form.speedPercentage;
+                filament.flowPercentage = (req.form.flowPercentage !== '') ? req.form.flowPercentage : 100;
+                filament.speedPercentage = (req.form.speedPercentage !== '') ? req.form.speedPercentage : 100;
                 filament.name = req.form.name;
 
                 filament.save(function (err) {
