@@ -8038,6 +8038,12 @@ h1 {
   .form-group > ul.help-block.with-errors:empty {
     display: none; }
 
+.form-horizontal-alternative-or {
+  display: table-cell; }
+  .form-horizontal-alternative-or, .form-horizontal-alternative-or > div {
+    vertical-align: middle;
+    text-align: center; }
+
 .control-label.required:after {
   content: '*';
   margin-left: 5px;

@@ -104,6 +104,15 @@ h1 {
   }
 }
 
+.form-horizontal-alternative-or {
+  display: table-cell;
+
+  &, & > div {
+    vertical-align: middle;
+    text-align: center;
+  }
+}
+
 .control-label.required:after {
   content: '*';
   margin-left: 5px;

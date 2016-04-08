@@ -69,6 +69,15 @@ module.exports = function (app) {
         return true;
     };
 
+    filamentSchema.methods.setLeftLength = function (leftLength) {
+        var volume = Math.PI * Math.pow(this.diameter / 2 / 1000, 2) * leftLength;
+        var netLeftWeight = volume * this.density;
+
+        this.materialLeftPercentage = 100 * netLeftWeight / this.initialMaterialWeight;
+
+        return true;
+    };
+
     filamentSchema.methods.getLength = function (weight) {
         var volume = weight / this.density;
         return volume / (Math.PI * Math.pow(this.diameter / 2 / 1000, 2));

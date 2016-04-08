@@ -277,8 +277,8 @@ module.exports = function (app) {
                     return thisController.leftMaterialForm(req, res, next);
                 }
 
-                if (req.form.leftTotalWeight) {
-                    filament.setLeftTotalWeight(req.form.leftTotalWeight);
+                if (req.form.leftLength) {
+                    filament.setLeftLength(req.form.leftLength);
 
                     filament.save(function (err) {
                         if (err) {
@@ -286,6 +286,8 @@ module.exports = function (app) {
                         }
                         return res.redirect("/filament/show/" + filamentId);
                     });
+                } else if (req.form.leftLength) {
+
                 } else {
                     return res.redirect("/filament/show/" + filamentId);
                 }

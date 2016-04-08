@@ -6,24 +6,49 @@
 
 <form class="form-filament" method="POST">
     <fieldset>
-        <div class="form-group<%= (errors.leftTotalWeight) ? " has-error" : "" %>">
-            <label for="leftTotalWeight"
-                   class="control-label"><%- __('Left total weight:'); %></label>
-            <div class="input-group">
-                <input type="text" class="form-control" id="leftTotalWeight"
-                       name="leftTotalWeight"
-                       value="<%- (locals.leftTotalWeight) ? leftTotalWeight : '' %>">
-                <div class="input-group-addon"><%- __('kg'); %></div>
+        <div class="row ">
+            <div class="col-md-5">
+                <div class="form-group<%= (errors.leftTotalWeight) ? " has-error" : "" %>">
+                    <label for="leftTotalWeight"
+                           class="control-label"><%- __('Left total weight:'); %></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="leftTotalWeight"
+                               name="leftTotalWeight"
+                               value="<%- (locals.leftTotalWeight) ? leftTotalWeight : '' %>">
+                        <div class="input-group-addon"><%- __('kg'); %></div>
+                    </div>
+                    <% if (errors.leftTotalWeight) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.leftTotalWeight.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
             </div>
-            <% if (errors.leftTotalWeight) { %>
-            <ul class="help-block with-errors">
-                <% errors.leftTotalWeight.forEach(function(msg) { %>
-                <li><%= __(msg) %></li>
-                <% }); %>
-            </ul>
-            <% } %>
+            <div class="col-md-2 form-horizontal-alternative-or">
+                <div style="margin-top: 30px;"><%- __('or') %></div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group<%= (errors.leftLength) ? " has-error" : "" %>">
+                    <label for="leftLength"
+                           class="control-label"><%- __('Left length:'); %></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="leftLength"
+                               name="leftLength"
+                               value="<%- (locals.leftLength) ? leftLength : '' %>">
+                        <div class="input-group-addon"><%- __('m'); %></div>
+                    </div>
+                    <% if (errors.leftTotalWeight) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.leftTotalWeight.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
         </div>
-
 
         <p class="button-bar">
             <a href="/filament/show/<%- filament.id %>" class="btn btn-default"><%- __('Cancel') %></a>

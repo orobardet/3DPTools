@@ -133,7 +133,16 @@ module.exports = function (app) {
                 if (value <= 0) {
                     throw new Error('%s must be greater than 0.');
                 }
+            }),
+        field("leftLength", "Left length")
+            .trim()
+            .isNumeric()
+            .custom(function (value) {
+                if (value <= 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
             })
+
     );
 
     return this;
