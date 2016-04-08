@@ -288,14 +288,27 @@ table.material-list {
   }
 }
 
-.filament-section {
+.color-preview-container {
+  display: inline-block;
+  height: 16px;
+  vertical-align: text-top;
+  width: 16px;
+  background-repeat: repeat;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAAArSURBVDhPY9iPA/zHAUY1IAOoPAYgXQOUxgBQfRhgVAMygMpjABI17N8PAKcQnR/BFzdFAAAAAElFTkSuQmCC);
+  position: relative;
+
   .color-preview {
-    display: inline-block;
-    height: 16px;
-    vertical-align: text-top;
-    width: 16px;
     border: solid 1px #333;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
   }
+}
+
+.filament-section {
 
   .bootstrap-select {
     .filter-option {
@@ -313,7 +326,7 @@ table.material-list {
   }
 
   .table.filament-list {
-    .color-preview {
+    .color-preview-container {
       height: 46px;
       width: 46px;
     }

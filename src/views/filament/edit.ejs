@@ -122,8 +122,8 @@
                                             <% for (var color in predefinedColors) { %>
                                             <li><a href="#" class="trg-color-select" data-code="<%- predefinedColors[color] %>"
                                                    data-name="<%- __(color) %>">
-                                                    <i class="color-preview"
-                                                       style="background-color: <%- predefinedColors[color] %>;"></i>&nbsp;<%- __(color) %>
+                                                    <div class="color-preview-container"><i class="color-preview"
+                                                       style="background-color: <%- predefinedColors[color] %>;"></i></div>&nbsp;<%- __(color) %>
                                                 </a></li>
                                             <% } %>
                                         </ul>
@@ -134,8 +134,8 @@
                                             <% for (var color in usedColors) { %>
                                             <li><a href="#" class="trg-color-select" data-code="<%- usedColors[color] %>"
                                                    data-name="<%- __(color) %>">
-                                                    <i class="color-preview"
-                                                       style="background-color: <%- usedColors[color] %>;"></i>&nbsp;<%- __(color) %>
+                                                    <div class="color-preview-container"><i class="color-preview"
+                                                       style="background-color: <%- usedColors[color] %>;"></i></div>&nbsp;<%- __(color) %>
                                                 </a></li>
                                             <% } %>
                                         </ul>
@@ -167,7 +167,7 @@
                                        placeholder="<%- __('Code'); %>"
                                        value="<%- (locals.colorCode) ? colorCode : filament.color.code %>"
                                        required>
-                                <span class="input-group-addon"><i class="color-preview"></i></span>
+                                <span class="input-group-addon"><div class="color-preview-container"><i class="color-preview"></i></div></span>
                             </div>
                             <% if (errors.colorCode) { %>
                             <ul class="help-block with-errors">
