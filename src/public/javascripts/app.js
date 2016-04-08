@@ -62,6 +62,112 @@ var App3DPTools = {
             $modal.find('.modal-body').text(message);
         }
         $modal.modal('show');
+    },
+
+    colorStringParsers: [{
+        re: /rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*?\)/,
+        format: 'rgb',
+        parse: function (execResult) {
+            return [
+                execResult[1],
+                execResult[2],
+                execResult[3],
+                1
+            ];
+        }
+    }, {
+        re: /rgb\(\s*(\d*(?:\.\d+)?)\%\s*,\s*(\d*(?:\.\d+)?)\%\s*,\s*(\d*(?:\.\d+)?)\%\s*?\)/,
+        format: 'rgb',
+        parse: function (execResult) {
+            return [
+                2.55 * execResult[1],
+                2.55 * execResult[2],
+                2.55 * execResult[3],
+                1
+            ];
+        }
+    }, {
+        re: /rgba\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(\d*(?:\.\d+)?)\s*)?\)/,
+        format: 'rgba',
+        parse: function (execResult) {
+            return [
+                execResult[1],
+                execResult[2],
+                execResult[3],
+                execResult[4]
+            ];
+        }
+    }, {
+        re: /rgba\(\s*(\d*(?:\.\d+)?)\%\s*,\s*(\d*(?:\.\d+)?)\%\s*,\s*(\d*(?:\.\d+)?)\%\s*(?:,\s*(\d*(?:\.\d+)?)\s*)?\)/,
+        format: 'rgba',
+        parse: function (execResult) {
+            return [
+                2.55 * execResult[1],
+                2.55 * execResult[2],
+                2.55 * execResult[3],
+                execResult[4]
+            ];
+        }
+    }, {
+        re: /hsl\(\s*(\d*(?:\.\d+)?)\s*,\s*(\d*(?:\.\d+)?)\%\s*,\s*(\d*(?:\.\d+)?)\%\s*?\)/,
+        format: 'hsl',
+        parse: function (execResult) {
+            return [
+                execResult[1] / 360,
+                execResult[2] / 100,
+                execResult[3] / 100,
+                execResult[4]
+            ];
+        }
+    }, {
+        re: /hsla\(\s*(\d*(?:\.\d+)?)\s*,\s*(\d*(?:\.\d+)?)\%\s*,\s*(\d*(?:\.\d+)?)\%\s*(?:,\s*(\d*(?:\.\d+)?)\s*)?\)/,
+        format: 'hsla',
+        parse: function (execResult) {
+            return [
+                execResult[1] / 360,
+                execResult[2] / 100,
+                execResult[3] / 100,
+                execResult[4]
+            ];
+        }
+    }, {
+        re: /#?([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})/,
+        format: 'hex',
+        parse: function (execResult) {
+            return [
+                parseInt(execResult[1], 16),
+                parseInt(execResult[2], 16),
+                parseInt(execResult[3], 16),
+                1
+            ];
+        }
+    }, {
+        re: /#?([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])/,
+        format: 'hex',
+        parse: function (execResult) {
+            return [
+                parseInt(execResult[1] + execResult[1], 16),
+                parseInt(execResult[2] + execResult[2], 16),
+                parseInt(execResult[3] + execResult[3], 16),
+                1
+            ];
+        }
+    }],
+
+    colorParse: function (colorValue) {
+        var that = this;
+        var result = false;
+        $.each(this.colorStringParsers, function (i, parser) {
+            var match = parser.re.exec(colorValue);
+            var values = match && parser.parse.apply(that, [match]);
+            if (values) {
+                match.format = parser.format;
+                result = match;
+                return false;
+            }
+        });
+
+        return result;
     }
 };
 
@@ -79,10 +185,10 @@ $(function () {
         $('.modal:visible').each(modalHCenterReposition);
     });
 
-    $('a.need-confirmation').click(function(e) {
+    $('a.need-confirmation').click(function (e) {
         var $this = $(this);
-        var message =  $this.data('confirm-message');
-        var url =  $this.attr('href');
+        var message = $this.data('confirm-message');
+        var url = $this.attr('href');
 
         if (!message || !url) {
             return true;

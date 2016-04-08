@@ -557,7 +557,16 @@
             var code = $this.data('code');
             if (name && code) {
                 $('#colorName').val(name);
+                var parsedColor = App3DPTools.colorParse(code);
+                var oldFormat = false;
+                if (parsedColor && parsedColor.format) {
+                    oldFormat = $('.color-picker').data('colorpicker').format;
+                    $('.color-picker').data('colorpicker').format = parsedColor.format;
+                }
                 $('.color-picker').colorpicker('setValue', code);
+                if (parsedColor && parsedColor.format) {
+                    $('.color-picker').data('colorpicker').format = oldFormat;
+                }
             }
         });
 
