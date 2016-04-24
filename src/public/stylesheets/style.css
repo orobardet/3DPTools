@@ -8206,6 +8206,15 @@ table.material-list > tbody > tr > td.material-description {
     bottom: 0;
     left: 0;
     right: 0; }
+    .color-preview-container .color-preview .color-name {
+      position: absolute;
+      text-align: center;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-shadow: 1px 0 0 #ccc, -1px 0 0 #ccc, 0 1px 0 #ccc, 0 -1px 0 #ccc;
+      font-size: smaller;
+      word-wrap: break-word; }
 
 .filament-section .bootstrap-select .filter-option .brand-logo, .filament-section .bootstrap-select .filter-option .shop-logo {
   max-height: 16px; }
