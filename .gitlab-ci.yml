@@ -1,0 +1,7 @@
+Unit test:
+  image: node:5
+  service:
+    - mongo
+  scripts:
+    - npm install
+    - npm t
