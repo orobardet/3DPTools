@@ -2,15 +2,46 @@ image: node:5
 
 stages:
   - tests
+  - build
 
 before_script:
-    - cd src && npm install
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - cd src && npm install && node_modules/.bin/bower install && cd ..
 
-Unit_tests:
+cache:
+  key: "$CI_BUILD_REF_NAME"
+  paths:
+  - node_modules
+  - public/vendor
+
+variables:
+  CONTAINER_TEST_IMAGE: registry.gitlab.com/orobardet/3dptools:$CI_BUILD_REF_NAME
+  CONTAINER_RELEASE_IMAGE: registry.gitlab.com/orobardet/3dptools:latest
+
+Unit tests:
   variables:
     MONGO_URL: "mongodb://mongo/3dptoolstests"
   stage: tests
   services:
     - mongo
   script:
-    - npm t
+    - cd src && npm t
+
+Docker build:
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - docker build -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+
+Docker release:
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
+  only:
+    - tags
