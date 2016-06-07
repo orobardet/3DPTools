@@ -1,6 +1,10 @@
-Unit test:
+stages:
+  - tests
+
+Unit_tests:
+  stage: tests
   image: node:5
-  service:
+  services:
     - mongo
   scripts:
     - npm install
