@@ -10,7 +10,7 @@ beforeEach(function (done) {
     }
 
     if (mongoose.connection.readyState === 0) {
-        mongoose.connect("mongodb://localhost/tests3dpt", function (err) {
+        mongoose.connect(process.env.MONGO_URL, function (err) {
             if (err) {
                 throw err;
             }
