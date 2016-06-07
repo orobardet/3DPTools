@@ -4,11 +4,11 @@ stages:
   - tests
 
 before_script:
-    - npm install
+    - cd src && npm install
 
 Unit_tests:
   stage: tests
   services:
     - mongo
   script:
-    - npm t
+    - cd src && npm t
