@@ -8,7 +8,7 @@ before_script:
 
 Unit_tests:
   variables:
-    - MONGO_URL: "mongodb://mongo/3dptoolstests"
+    MONGO_URL: "mongodb://mongo/3dptoolstests"
   stage: tests
   services:
     - mongo
