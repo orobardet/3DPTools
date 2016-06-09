@@ -13,7 +13,7 @@ cache:
 
 variables:
   CONTAINER_TEST_IMAGE: registry.gitlab.com/orobardet/3dptools:$CI_BUILD_REF_NAME
-  CONTAINER_RELEASE_IMAGE: registry.gitlab.com/orobardet/3dptools:latest
+  CONTAINER_RELEASE_IMAGE: registry.gitlab.com/orobardet/3dptools
 
 Unit tests:
   variables:
@@ -44,7 +44,9 @@ Docker release:
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker pull $CONTAINER_TEST_IMAGE
-    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-    - docker push $CONTAINER_RELEASE_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE:$(cat VERSION)
+    - docker push $CONTAINER_RELEASE_IMAGE:$(cat VERSION)
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE:latest
+    - docker push $CONTAINER_RELEASE_IMAGE:latest
   only:
     - tags
