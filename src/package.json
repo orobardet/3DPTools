@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "mocha -c --recursive",
+    "coverage": "istanbul --hook-run-in-context cover node_modules/mocha/bin/_mocha -- --recursive -R spec -c"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.2",
+    "bower": "^1.7.9",
     "connect-flash": "^0.1.1",
     "connect-redis": "^3.0.2",
     "consign": "^0.1.2",
@@ -36,6 +39,10 @@
     "when": "^3.7.7"
   },
   "devDependencies": {
-    "debug": "^2.2.0"
+    "chai": "^3.5.0",
+    "debug": "^2.2.0",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.5.2",
+    "should": "^8.4.0"
   }
 }
