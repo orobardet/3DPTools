@@ -1,3 +1,5 @@
+version:'2'
+
 redis:
     restart: always
     image: redis:alpine
@@ -10,5 +12,6 @@ redis:
         - database__url=mongodb://nas/3dptools
     links:
         - redis
+        - mongo-db:mongo
     ports:
         - "3000:3000"
