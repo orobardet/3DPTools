@@ -50,10 +50,9 @@ Docker release:
   stage: release
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker pull $CONTAINER_TEST_IMAGE
-    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE:$CI_BUILD_TAG
+    - docker build -t $CONTAINER_RELEASE_IMAGE:$CI_BUILD_TAG .
     - docker push $CONTAINER_RELEASE_IMAGE:$CI_BUILD_TAG
-    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE:latest
+    - docker tag $CONTAINER_RELEASE_IMAGE:$CI_BUILD_TAG $CONTAINER_RELEASE_IMAGE:latest
     - docker push $CONTAINER_RELEASE_IMAGE:latest
   environment: production
   only:
