@@ -8,8 +8,8 @@ stages:
 cache:
   key: $CI_BUILD_REPO
   paths:
-  - node_modules
-  - public/vendor
+  - src/node_modules
+  - src/public/vendor
 
 variables:
   CONTAINER_TEST_IMAGE: registry.gitlab.com/orobardet/3dptools:$CI_BUILD_REF_NAME
