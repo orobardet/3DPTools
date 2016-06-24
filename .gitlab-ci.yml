@@ -6,10 +6,10 @@ stages:
   - release
 
 cache:
-  key: "$CI_BUILD_REF_NAME"
+  key: 3dptools-ci
   paths:
-  - node_modules
-  - public/vendor
+  - src/node_modules
+  - src/public/vendor
 
 variables:
   CONTAINER_TEST_IMAGE: registry.gitlab.com/orobardet/3dptools:$CI_BUILD_REF_NAME
@@ -28,17 +28,20 @@ Unit tests:
   only:
     - branches
 
-#Docker build:
-#  image: docker:git
-#  services:
-#    - docker:dind
-#  stage: build
-#  script:
-#    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-#    - docker build -t $CONTAINER_TEST_IMAGE .
-#    - docker push $CONTAINER_TEST_IMAGE
-#  only:
-#    - branches
+Docker test build:
+  image: docker:git
+  services:
+    - docker:dind
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker build -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+  environment: master
+  only:
+    - master
+  except:
+    - tags
 
 Docker release:
   image: docker:git
@@ -48,9 +51,11 @@ Docker release:
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker pull $CONTAINER_TEST_IMAGE
-    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE:$(cat VERSION)
-    - docker push $CONTAINER_RELEASE_IMAGE:$(cat VERSION)
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE:$CI_BUILD_TAG
+    - docker push $CONTAINER_RELEASE_IMAGE:$CI_BUILD_TAG
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE:latest
     - docker push $CONTAINER_RELEASE_IMAGE:latest
+  environment: production
   only:
     - tags
+    - triggers
