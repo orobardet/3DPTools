@@ -6,6 +6,7 @@ stages:
   - release
 
 cache:
+  key: $CI_BUILD_REPO
   paths:
   - node_modules
   - public/vendor
