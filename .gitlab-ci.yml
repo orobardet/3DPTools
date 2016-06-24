@@ -6,7 +6,7 @@ stages:
   - release
 
 cache:
-  key: $CI_BUILD_REPO
+  key: 3dptools-ci
   paths:
   - src/node_modules
   - src/public/vendor
