@@ -82,6 +82,9 @@
                     <div class="progress-text" style="padding-left:<%- leftPercentage%>%"><%- sprintf('%.2f', leftPercentage) %>%</div>
                     <% } %>
                 </div>
+                <div class="filament-left-data">
+                    <%- __('~ %.2f Kg / ~ %.2f m', filament.leftMaterialWeight(), filament.getLeftLength()) %>
+                </div>
             </td>
 
             <td class="table-actions">

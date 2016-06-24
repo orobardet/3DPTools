@@ -8229,6 +8229,9 @@ table.material-list > tbody > tr > td.material-description {
   max-width: 130px; }
 .filament-section .table.filament-list .progress {
   margin-bottom: 0; }
+.filament-section .table.filament-list .filament-left-data {
+  text-align: center;
+  font-size: small; }
 
 .filament-show-layout .filament-details, .filament-show-layout .filament-content, .filament-show-layout .filament-actions {
   vertical-align: top;
