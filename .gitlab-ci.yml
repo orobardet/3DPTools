@@ -28,15 +28,17 @@ Unit tests:
   only:
     - branches
 
-Docker build:
-  image: docker:git
-  services:
-    - docker:dind
-  stage: build
-  script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker build -t $CONTAINER_TEST_IMAGE .
-    - docker push $CONTAINER_TEST_IMAGE
+#Docker build:
+#  image: docker:git
+#  services:
+#    - docker:dind
+#  stage: build
+#  script:
+#    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+#    - docker build -t $CONTAINER_TEST_IMAGE .
+#    - docker push $CONTAINER_TEST_IMAGE
+#  only:
+#    - branches
 
 Docker release:
   image: docker:git
