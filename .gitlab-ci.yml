@@ -25,6 +25,8 @@ Unit tests:
     - cd src
     - npm install && node_modules/.bin/bower --allow-root install
     - npm t
+  only:
+    - branches
 
 Docker build:
   image: docker:git
