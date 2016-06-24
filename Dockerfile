@@ -1,4 +1,4 @@
-FROM node:5.9
+FROM node:6
 MAINTAINER Olivier Robardet <olivier.robardet@gmail.com>
 
 RUN apt-get update \
