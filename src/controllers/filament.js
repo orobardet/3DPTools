@@ -286,8 +286,15 @@ module.exports = function (app) {
                         }
                         return res.redirect("/filament/show/" + filamentId);
                     });
-                } else if (req.form.leftLength) {
+                } else if (req.form.leftTotalWeight) {
+                    filament.setLeftTotalWeight(req.form.leftTotalWeight);
 
+                    filament.save(function (err) {
+                        if (err) {
+                            return next(err);
+                        }
+                        return res.redirect("/filament/show/" + filamentId);
+                    });
                 } else {
                     return res.redirect("/filament/show/" + filamentId);
                 }
