@@ -19,7 +19,7 @@
     "express": "~4.14.0",
     "express-ejs-layouts": "^2.0.0",
     "express-flash": "0.0.2",
-    "express-form": "^0.12.4",
+    "express-form": "git://github.com/orobardet/express-form.git",
     "express-session": "^1.13.0",
     "gm": "^1.21.1",
     "hjs": "~0.0.6",
