@@ -31,7 +31,7 @@ Unit tests:
 Docker test build:
   image: docker:git
   services:
-    - docker:dind
+    - orobardet/docker:dind
   stage: build
   script:
     - docker info
