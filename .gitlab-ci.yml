@@ -34,6 +34,7 @@ Docker test build:
     - docker:dind
   stage: build
   script:
+    - docker info
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker build -t $CONTAINER_TEST_IMAGE .
     - docker push $CONTAINER_TEST_IMAGE
