@@ -33,7 +33,7 @@ Docker test build:
   services:
     - orobardet/docker:dind
   variables: 
-    DOCKER_HOST: orobardet__docker
+    DOCKER_HOST: "tcp://orobardet__docker:2375"
   stage: build
   script:
     - docker info
