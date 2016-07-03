@@ -32,6 +32,8 @@ Docker test build:
   image: docker:git
   services:
     - orobardet/docker:dind
+  variables: 
+    DOCKER_HOST: orobardet__docker
   stage: build
   script:
     - docker info
