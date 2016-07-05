@@ -1,4 +1,4 @@
-<h1><i class="p3di p3di-filament"></i>&nbsp;<%- __('Filaments') %></h1>
+<h1><i class="rs rs-filament"></i>&nbsp;<%- __('Filaments') %></h1>
 
 <div class="panel panel-default">
     <div class="panel-heading with-button">
@@ -42,12 +42,12 @@
             </td>
             <td>
                 <% if (filament.headTemp.experienced) { %>
-                <i class="p3di p3di-printer-head-heat"></i>
+                <i class="rs rs-extruder"></i>
                 <%- __('%s°C', filament.headTemp.experienced) %>
                 <% } %>
                 <br/>
                 <% if (filament.bedTemp.experienced) { %>
-                <i class="p3di p3di-printer-bed-heat"></i>
+                <i class="rs rs-heated-bed"></i>
                 <%- __('%s°C', filament.bedTemp.experienced) %>
                 <% } %>
             </td>

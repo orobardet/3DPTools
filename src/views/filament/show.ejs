@@ -1,4 +1,4 @@
-<h1><i class="p3di p3di-filament" style="color:<%- filament.color.code %>"></i>&nbsp;<%- filament.name %></h1>
+<h1><i class="rs rs-filament" style="color:<%- filament.color.code %>"></i>&nbsp;<%- filament.name %></h1>
 
 <div class="filament-show-layout">
     <div class="filament-details">
@@ -36,7 +36,7 @@
                 <td><%- __('Flow:') %></td>
                 <td>
                     <% if (filament.flowPercentage) { %>
-                    <i class="fa fa-tint"></i>
+                    <i class="rs rs-flow"></i>
                     <%- __('%s %%', filament.flowPercentage) %>
                     <% } %>
                 </td>
@@ -45,7 +45,7 @@
                 <td><%- __('Speed:') %></td>
                 <td>
                     <% if (filament.speedPercentage) { %>
-                    <i class="fa fa-bolt"></i>
+                    <i class="rs rs-speed"></i>
                     <%- __('%s %%', filament.speedPercentage) %>
                     <% } %>
                 </td>
@@ -54,7 +54,7 @@
                 <td><%- __('Extrusion temperature:') %></td>
                 <td>
                     <% temp = filament.headTemp;
-                    iconClass = "p3di p3di-printer-head-heat"; %>
+                    iconClass = "rs rs-extruder"; %>
                     <% include ../material/partial/tempRange.ejs %>
                     <% if (filament.headTemp.experienced) { %>
                     <br/>
@@ -67,7 +67,7 @@
                 <td><%- __('Bed temperature:') %></td>
                 <td>
                     <% temp = filament.bedTemp;
-                    iconClass = "p3di p3di-printer-bed-heat"; %>
+                    iconClass = "rs rs-heated-bed"; %>
                     <% include ../material/partial/tempRange.ejs %>
                     <% if (filament.bedTemp.experienced) { %>
                     <br/>
