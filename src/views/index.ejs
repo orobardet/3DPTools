@@ -3,7 +3,7 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2 class="panel-title"><i class="p3di p3di-filament"></i>&nbsp;<%- __('Filaments'); %></h2>
+                <h2 class="panel-title"><i class="rs rs-filament"></i>&nbsp;<%- __('Filaments'); %></h2>
             </div>
             <div class="panel-body">
                 TODO
@@ -72,14 +72,14 @@
                         <div class="col-md-6">
                             <% if (material.headTemp) {
                                 temp = material.headTemp;
-                                iconClass = "p3di p3di-printer-head-heat"; %>
+                                iconClass = "rs rs-extruder"; %>
                             <% include material/partial/tempRange.ejs %>
                             <% } %>
                         </div>
                         <div class="col-md-6">
                             <% if (material.bedTemp) {
                                 temp = material.bedTemp;
-                                iconClass = "p3di p3di-printer-bed-heat"; %>
+                                iconClass = "rs rs-heated-bed"; %>
                             <% include material/partial/tempRange.ejs %>
                             <% } %>
                         </div>

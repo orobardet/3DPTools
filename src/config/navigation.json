@@ -12,7 +12,7 @@
       "label": "Filaments",
       "moduleName": "filament",
       "url": "/filament",
-      "iconClasses": "p3di p3di-filament"
+      "iconClasses": "rs rs-filament"
     },
     {
       "name": "settings",
