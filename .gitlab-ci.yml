@@ -35,6 +35,7 @@ Docker test build:
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker pull $CONTAINER_TEST_IMAGE
     - docker build -t $CONTAINER_TEST_IMAGE .
     - docker push $CONTAINER_TEST_IMAGE
   environment: master
@@ -50,6 +51,7 @@ Docker release:
   stage: release
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker pull $CONTAINER_RELEASE_IMAGE:$CI_BUILD_TAG
     - docker build -t $CONTAINER_RELEASE_IMAGE:$CI_BUILD_TAG .
     - docker push $CONTAINER_RELEASE_IMAGE:$CI_BUILD_TAG
     - docker tag $CONTAINER_RELEASE_IMAGE:$CI_BUILD_TAG $CONTAINER_RELEASE_IMAGE:latest
