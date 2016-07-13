@@ -344,6 +344,10 @@ table.material-list {
     }
   }
 
+  .filament-left-data {
+    font-size: small;
+  }
+
   .table.filament-list {
     .color-preview-container {
       height: 46px;
@@ -358,7 +362,6 @@ table.material-list {
     }
     .filament-left-data {
       text-align: center;
-      font-size: small;
     }
   }
 }

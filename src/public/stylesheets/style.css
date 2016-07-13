@@ -8222,6 +8222,8 @@ table.material-list > tbody > tr > td.material-description {
 .filament-section .bootstrap-select .dropdown-menu .brand-logo, .filament-section .bootstrap-select .dropdown-menu .shop-logo {
   float: right !important;
   max-height: 16px; }
+.filament-section .filament-left-data {
+  font-size: small; }
 .filament-section .table.filament-list .color-preview-container {
   height: 46px;
   width: 46px; }
@@ -8231,8 +8233,7 @@ table.material-list > tbody > tr > td.material-description {
 .filament-section .table.filament-list .progress {
   margin-bottom: 0; }
 .filament-section .table.filament-list .filament-left-data {
-  text-align: center;
-  font-size: small; }
+  text-align: center; }
 
 .filament-show-layout .filament-details, .filament-show-layout .filament-content, .filament-show-layout .filament-actions {
   vertical-align: top;

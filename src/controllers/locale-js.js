@@ -17,7 +17,9 @@ module.exports = function (app) {
                 'Error while retrieving data for material %s.',
                 'Delete %s filament?',
                 'Error while retrieving data for filament %s.',
-                'Do you really want to delete this picture?'
+                'Do you really want to delete this picture?',
+                '~ %.2f Kg',
+                '~ %.2f m'
             ]
         });
     };

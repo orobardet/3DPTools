@@ -27,6 +27,7 @@ module.exports = function (app) {
 
     router.post('/left-material/:filament_id', FilamentForm.leftMaterial, Controller.leftMaterial);
     router.get('/left-material/:filament_id', Controller.leftMaterialForm);
+    router.post('/compute-left-material/:filament_id', FilamentForm.leftMaterial, Controller.computeLeftMaterial);
 
     router.post('/add-picture/:filament_id', fileUpload.single('picture'), Controller.addPicture);
     router.get('/add-picture/:filament_id', Controller.pictureForm);

@@ -305,6 +305,32 @@ module.exports = function (app) {
             });
     };
 
+    this.computeLeftMaterial = function (req, res, next) {
+        var filamentId = req.params.filament_id;
+
+        when(Filament.findById(filamentId).exec())
+            .then(function (filament) {
+                if (!req.form.isValid) {
+                    return thisController.leftMaterialForm(req, res, next);
+                }
+
+                var responseData = {};
+                if (req.form.leftLength) {
+                    filament.setLeftLength(req.form.leftLength);
+                    responseData.weight = filament.leftMaterialWeight();
+                }
+                if (req.form.leftTotalWeight) {
+                    var weight = req.form.leftTotalWeight;
+                    if (req.form.weighUnit === "g") {
+                        weight /= 1000;
+                    }
+                    filament.setLeftTotalWeight(weight);
+                    responseData.length = filament.getLeftLength();
+                }
+                return res.json(responseData);
+            });
+    };
+
     this.addPicture = function (req, res, next) {
         var filamentId = req.params.filament_id;
         var uploadedPicture = req.file;
