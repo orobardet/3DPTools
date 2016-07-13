@@ -8,20 +8,31 @@
     <fieldset>
         <div class="row ">
             <div class="col-md-5">
-                <div class="form-group<%= (errors.leftTotalWeight) ? " has-error" : "" %>">
+                <div class="form-group<%= (errors.leftTotalWeight || errors.weighUnit) ? " has-error" : "" %>">
                     <label for="leftTotalWeight"
                            class="control-label"><%- __('Left total weight:'); %></label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="leftTotalWeight"
                                name="leftTotalWeight"
-                               value="<%- (locals.leftTotalWeight) ? leftTotalWeight : '' %>">
-                        <div class="input-group-addon"><%- __('kg'); %></div>
+                               value="<%- (locals.leftTotalWeight) ? leftTotalWeight : ''; %>">
+                        <div class="input-group-addon">
+                            <label for="weight-unit-g"><input type="radio" name="weighUnit" value="g" id="weight-unit-g" <%- (locals.weighUnit) ? (weighUnit=='g'?'checked':'') : 'checked' %>> <%- __('g'); %></label>
+                            /
+                            <label for="weight-unit-kg"><input type="radio" name="weighUnit" value="kg" id="weight-unit-kg" <%- (locals.weighUnit) ? (weighUnit=='kg'?'checked':'') : '' %>> <%- __('Kg'); %></label>
+                        </div>
                     </div>
-                    <% if (errors.leftTotalWeight) { %>
+                    <% if (errors.leftTotalWeight || errors.weighUnit) { %>
                     <ul class="help-block with-errors">
+                        <% if (errors.leftTotalWeight) { %>
                         <% errors.leftTotalWeight.forEach(function(msg) { %>
                         <li><%= __(msg) %></li>
                         <% }); %>
+                        <% } %>
+                        <% if (errors.weighUnit) { %>
+                        <% errors.weighUnit.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                        <% } %>
                     </ul>
                     <% } %>
                 </div>
@@ -39,9 +50,9 @@
                                value="<%- (locals.leftLength) ? leftLength : '' %>">
                         <div class="input-group-addon"><%- __('m'); %></div>
                     </div>
-                    <% if (errors.leftTotalWeight) { %>
+                    <% if (errors.leftLength) { %>
                     <ul class="help-block with-errors">
-                        <% errors.leftTotalWeight.forEach(function(msg) { %>
+                        <% errors.leftLength.forEach(function(msg) { %>
                         <li><%= __(msg) %></li>
                         <% }); %>
                     </ul>

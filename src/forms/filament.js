@@ -141,6 +141,16 @@ module.exports = function (app) {
                 if (value <= 0) {
                     throw new Error('%s must be greater than 0.');
                 }
+            }),
+        field("weighUnit", "Weight's unit")
+            .trim()
+            .ifNull('g')
+            .toLower()
+            .required()
+            .custom(function (value) {
+                if ((value !== "g") && (value !== "kg")) {
+                    throw new Error('%s must be "g" or "kg".');
+                }
             })
 
     );
