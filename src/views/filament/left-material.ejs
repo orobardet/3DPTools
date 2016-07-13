@@ -36,6 +36,7 @@
                     </ul>
                     <% } %>
                 </div>
+                <div id="estimated-left-length" class="filament-left-data"></div>
             </div>
             <div class="col-md-2 form-horizontal-alternative-or">
                 <div style="margin-top: 30px;"><%- __('or') %></div>
@@ -58,6 +59,7 @@
                     </ul>
                     <% } %>
                 </div>
+                <div id="estimated-left-weight" class="filament-left-data"></div>
             </div>
         </div>
 
@@ -67,3 +69,27 @@
         </p>
     </fieldset>
 </form>
+
+<script type="text/javascript">
+    function filamentLeftMaterialOnChange() {
+        $.ajax({
+            method: 'POST',
+            url: '/filament/compute-left-material/<%- filament.id %>',
+            data: $('form.form-filament').serialize(),
+            success: function(data) {
+                $('#estimated-left-length, #estimated-left-weight').text('');
+
+                if (data.weight) {
+                    $('#estimated-left-weight').text(Locale3DPTools.__('~ %.2f Kg', data.weight));
+                }
+                if (data.length) {
+                    $('#estimated-left-length').text(Locale3DPTools.__('~ %.2f m', data.length));
+                }
+            }
+        });
+    }
+    $(function () {
+        $('#leftTotalWeight,#leftLength').keyup(filamentLeftMaterialOnChange);
+        $('input[name=weighUnit]').change(filamentLeftMaterialOnChange);
+    });
+</script>
