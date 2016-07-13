@@ -255,5 +255,9 @@
   "Vert pomme": "Vert pomme",
   "Bleu foncé": "Bleu foncé",
   "Or": "Or",
-  "Peau": "Peau"
+  "Peau": "Peau",
+  "Kg": "Kg",
+  "g": "g",
+  "Left total weight is not a number": "Left total weight is not a number",
+  "Weight's unit must be \"g\" or \"kg\".": "Weight's unit must be \"g\" or \"kg\"."
 }
