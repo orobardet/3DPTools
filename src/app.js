@@ -53,7 +53,10 @@ app.use(session({
 app.use(flash());
 
 // database connection
-mongoose.connect(config.get("database:url"), config.get("database:connectOptions"));
+mongoose.Promise = global.Promise;
+var mongoOptions = config.get("database:connectOptions");
+mongoOptions.promiseLibrary = global.Promise;
+mongoose.connect(config.get("database:url"), mongoOptions);
 
 // setting up i18n
 i18n.configure({
