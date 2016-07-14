@@ -42,13 +42,15 @@ app.locals.moment = moment;
 app.set('config', config);
 
 // init sessions
+var redisStoreOptions = config.get("redis");
+redisStoreOptions.prefix = config.get('session:name')+':sessions:';
 app.use(session({
     name: config.get('session:name'),
     resave: false,
     secret: config.get('session:secret'),
     saveUninitialized: false,
     unset: 'destroy',
-    store: new RedisSessionStore(config.get("redis"))
+    store: new RedisSessionStore(redisStoreOptions)
 }));
 app.use(flash());
 
