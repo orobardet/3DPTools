@@ -10,6 +10,15 @@ module.exports = function (app) {
     var thatController = this;
 
     this.index = function (req, res, next) {
+        req.setOriginUrl([
+            'filament/view',
+            'filament/add',
+            'filament/edit',
+            'filament/delete',
+            'filament/left-material',
+            'filament/add-picture'
+        ], req.originalUrl);
+
         when(Filament.find().populate('material brand shop').sort({
             'material.name': 1,
             'color.code': 1,
@@ -80,7 +89,7 @@ module.exports = function (app) {
             if (err) {
                 return next(err);
             }
-            return res.redirect("/filament");
+            return res.redirect(req.getOriginUrl("filament/add", "/filament"));
         });
     };
 
@@ -112,6 +121,7 @@ module.exports = function (app) {
             var predefinedColors = res.app.get('config').get('filament:colors');
             usedColors = thatController.filterPredefinedColors(usedColors, predefinedColors);
             return res.render('filament/add', {
+                cancelUrl: req.getOriginUrl("filament/add", "/filament"),
                 shops: shops,
                 brands: brands,
                 materials: materials,
@@ -158,7 +168,7 @@ module.exports = function (app) {
                     if (err) {
                         return next(err);
                     }
-                    return res.redirect("/filament");
+                    return res.redirect(req.getOriginUrl("filament/edit", "/filament"));
                 });
             });
     };
@@ -177,6 +187,7 @@ module.exports = function (app) {
                     var predefinedColors = res.app.get('config').get('filament:colors');
                     usedColors = thatController.filterPredefinedColors(usedColors, predefinedColors);
                     return res.render('filament/edit', {
+                        cancelUrl: req.getOriginUrl("filament/edit", "/filament"),
                         filament: filament,
                         shops: shops,
                         brands: brands,
@@ -219,6 +230,15 @@ module.exports = function (app) {
     this.show = function (req, res) {
         var filamentId = req.params.filament_id;
 
+        req.setOriginUrl([
+            'filament/view',
+            'filament/add',
+            'filament/edit',
+            'filament/delete',
+            'filament/left-material',
+            'filament/add-picture'
+        ], req.originalUrl);
+
         when(Filament.findById(filamentId).populate('material brand shop').exec())
             .then(function (filament) {
                 return res.render('filament/show', {
@@ -256,6 +276,7 @@ module.exports = function (app) {
         when(Filament.findById(filamentId).populate('material brand shop').exec())
             .then(function (filament) {
                 return res.render('filament/left-material', {
+                    cancelUrl: req.getOriginUrl("filament/left-material", "/filament"),
                     filament: filament,
                     errors: (req.form) ? req.form.getErrors() : []
                 });
@@ -284,7 +305,7 @@ module.exports = function (app) {
                         if (err) {
                             return next(err);
                         }
-                        return res.redirect("/filament/show/" + filamentId);
+                        return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
                     });
                 } else if (req.form.leftTotalWeight) {
                     var weight = req.form.leftTotalWeight;
@@ -297,10 +318,10 @@ module.exports = function (app) {
                         if (err) {
                             return next(err);
                         }
-                        return res.redirect("/filament/show/" + filamentId);
+                        return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
                     });
                 } else {
-                    return res.redirect("/filament/show/" + filamentId);
+                    return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
                 }
             });
     };
@@ -356,7 +377,7 @@ module.exports = function (app) {
                         if (err) {
                             return next(err);
                         }
-                        return res.redirect("/filament/show/" + filament.id);
+                        return res.redirect(req.getOriginUrl("filament/add-picture", "/filament"));
                     });
                 });
             });
@@ -423,6 +444,7 @@ module.exports = function (app) {
         when(Filament.findById(filamentId).exec())
             .then(function (filament) {
                 return res.render('filament/picture', {
+                    cancelUrl: req.getOriginUrl("filament/add-picture", "/filament"),
                     filamentId: filamentId,
                     filament: filament,
                     errors: []
