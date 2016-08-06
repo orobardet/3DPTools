@@ -4,6 +4,81 @@
     <i class="fa fa-balance-scale fa-overlay-se text-primary"></i>
 </span> <%- __('Left filament %s', filament.name) %></h1>
 
+<div class="row">
+    <div class="col-md-3 filament-content">
+        <% if (filament.brand.logo && filament.brand.logo.size) { %>
+        <div class="brand-logo-container">
+            <% if (filament.brand.url) { %>
+            <a href="<%- filament.brand.url %>" target="_blank">
+                <% } %>
+                <img alt="<%- filament.brand.name %>" title="<%- filament.brand.name %>" class="brand-logo"
+                     src="/brand/get-logo/<%- filament.brand.id %>">
+                <% if (filament.brand.url) { %>
+            </a>
+            <% } %>
+        </div>
+        <% } %>
+    </div>
+    <div class="col-md-9 filament-details">
+        <table>
+            <tr>
+                <td><%- __('Material:') %></td>
+                <td><%- filament.material.name %></td>
+            </tr>
+            <tr>
+                <td><%- __('Color:') %></td>
+                <td>
+                    <div class="color-preview-container"><i title="<%- filament.color.name %>" class="color-preview"
+                                                            style="background-color: <%- filament.color.code %> %>;"></i></div>
+                    <%- filament.color.name %>
+                </td>
+            </tr>
+            <tr>
+                <td><%- __('Diameter:') %></td>
+                <td><b>∅</b> <%- filament.diameter %></td>
+            </tr>
+            <tr>
+                <td><%- __('Net material weight:') %></td>
+                <td><i class="fa fa-balance-scale"></i>
+                    <%- __('%s kg', filament.initialMaterialWeight) %></td>
+            </tr>
+            <tr>
+                <td><%- __('Length:') %></td>
+                <td><%- __('~ %.2f m', filament.getInitialLength()) %></td>
+            </tr>
+        </table>
+        <div class="filament-left-data">
+            <%- __('Material left: ~ %.2f Kg / %.2f Kg', filament.leftMaterialWeight(), filament.initialMaterialWeight) %>
+            <a href="/filament/left-material/<%- filament.id %>" class="pull-right"><i class="fa fa-pencil"></i></a>
+            <div class="progress">
+                <%
+                var leftPercentage = filament.materialLeftPercentage;
+                var progressbarClass = 'progress-bar-success';
+                if (leftPercentage <= config.get('filament:leftThresholds:warning')) {
+                    progressbarClass = 'progress-bar-warning'
+                }
+                if (leftPercentage <= config.get('filament:leftThresholds:danger')) {
+                    progressbarClass = 'progress-bar-danger'
+                }
+                %>
+                <div title="<%- leftPercentage %>%" class="progress-bar <%- progressbarClass %>"
+                     role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                     style="width: <%- leftPercentage %>%;">
+                    <% if (filament.materialLeftPercentage > 50) { %>
+                    <%- sprintf('%.2f', leftPercentage) %>%
+                    <% } %>
+                </div>
+                <% if (filament.materialLeftPercentage <= 50) { %>
+                <div class="progress-text"
+                     style="padding-left:<%- leftPercentage %>%"><%- sprintf('%.2f', leftPercentage) %>%
+                </div>
+                <% } %>
+            </div>
+            <%- __('Length left: ~ %.2f m / ~ %.2f m', filament.getLeftLength(), filament.getInitialLength()) %>
+        </div>
+    </div>
+</div>
+<hr>
 <form class="form-filament" method="POST">
     <fieldset>
         <div class="row ">

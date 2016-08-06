@@ -8235,6 +8235,24 @@ table.material-list > tbody > tr > td.material-description {
 .filament-section .table.filament-list .filament-left-data {
   text-align: center; }
 
+.filament-content .brand-logo-container {
+  text-align: center; }
+  .filament-content .brand-logo-container .brand-logo {
+    max-width: 100%; }
+
+.filament-details > table > tbody > tr > td {
+  padding: 2px; }
+.filament-details > table > tbody > tr > td:first-of-type {
+  font-weight: bold;
+  text-align: right;
+  vertical-align: top; }
+.filament-details .brand-logo-container {
+  text-align: center; }
+  .filament-details .brand-logo-container .brand-logo {
+    max-width: 100%; }
+.filament-details .filament-left-data .progress {
+  margin-bottom: 0; }
+
 .filament-show-layout .filament-details, .filament-show-layout .filament-content, .filament-show-layout .filament-actions {
   vertical-align: top;
   margin-left: 10px; }
@@ -8245,16 +8263,6 @@ table.material-list > tbody > tr > td.material-description {
   padding: 5px;
   width: 350px;
   margin-right: 10px; }
-  .filament-show-layout .filament-details > table > tbody > tr > td {
-    padding: 2px; }
-  .filament-show-layout .filament-details > table > tbody > tr > td:first-of-type {
-    font-weight: bold;
-    text-align: right;
-    vertical-align: top; }
-  .filament-show-layout .filament-details .brand-logo-container {
-    text-align: center; }
-    .filament-show-layout .filament-details .brand-logo-container .brand-logo {
-      max-width: 100%; }
 .filament-show-layout .filament-content > div {
   margin-top: 20px; }
   .filament-show-layout .filament-content > div:first-of-type {
