@@ -8028,6 +8028,25 @@ h1 {
   .navbar-inverse .navbar-nav .dropdown-menu > li.divider, .navbar-inverse .navbar-nav .dropdown-menu-col > li.divider {
     background-color: #090909; }
 
+.nav-tabs-title {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  border-bottom: 0; }
+  .nav-tabs-title > li {
+    bottom: 0; }
+    .nav-tabs-title > li > a {
+      border: 0;
+      padding: 0 15px;
+      position: relative;
+      bottom: -12px;
+      font-size: 18px; }
+    .nav-tabs-title > li > a:hover {
+      background-color: inherit; }
+    .nav-tabs-title > li.active {
+      margin-right: 50px; }
+    .nav-tabs-title > li > h1 {
+      margin: 0 !important; }
+
 .dropdown.language-selector > .dropdown-menu > li.active.active > a {
   background-color: transparent; }
 

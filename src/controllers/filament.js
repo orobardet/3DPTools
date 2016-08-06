@@ -36,6 +36,13 @@ module.exports = function (app) {
             });
     };
 
+    this.stats = function (req, res, next) {
+        return res.render('filament/stats', {
+            pageTitle: 'Filaments statistics',
+            errors: []
+        });
+    };
+
     this.add = function (req, res, next) {
         if (!req.form.isValid) {
             return thisController.addForm(req, res, next);
