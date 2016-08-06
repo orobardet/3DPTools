@@ -366,6 +366,41 @@ table.material-list {
   }
 }
 
+.filament-content {
+  .brand-logo-container {
+    text-align: center;
+
+    .brand-logo {
+      max-width: 100%;
+    }
+  }
+}
+
+.filament-details {
+  & > table > tbody > tr {
+    & > td {
+      padding: 2px;
+    }
+    & > td:first-of-type {
+      font-weight: bold;
+      text-align: right;
+      vertical-align: top;
+    }
+  }
+  .brand-logo-container {
+    text-align: center;
+
+    .brand-logo {
+      max-width: 100%;
+    }
+  }
+  .filament-left-data {
+    .progress {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .filament-show-layout {
   .filament-details, .filament-content, .filament-actions {
     vertical-align: top;
@@ -382,24 +417,6 @@ table.material-list {
     padding: 5px;
     width: 350px;
     margin-right: 10px;
-
-    & > table > tbody > tr {
-      & > td {
-        padding: 2px;
-      }
-      & > td:first-of-type {
-        font-weight: bold;
-        text-align: right;
-        vertical-align: top;
-      }
-    }
-    .brand-logo-container {
-      text-align: center;
-
-      .brand-logo {
-        max-width: 100%;
-      }
-    }
   }
 
   .filament-content {
