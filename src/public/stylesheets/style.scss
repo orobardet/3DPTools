@@ -87,6 +87,35 @@ h1 {
   }
 }
 
+.nav-tabs-title {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  border-bottom: 0;
+
+  > li {
+    bottom: 0;
+
+    & > a {
+      border: 0;
+      padding: 0 15px;
+      position: relative;
+      bottom: -12px;
+      font-size: $font-size-h1/2;
+    }
+
+    & > a:hover {
+      background-color: inherit;
+    }
+
+    &.active {
+      margin-right: 50px;
+    }
+    &>h1 {
+      margin: 0 !important;
+    }
+  }
+}
+
 .dropdown.language-selector > .dropdown-menu > li.active {
   &.active > a {
     background-color: transparent;
