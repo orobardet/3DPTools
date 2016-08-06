@@ -28,7 +28,7 @@ Unit tests:
   only:
     - branches
 
-Docker test build:
+Docker build:
   image: docker:git
   services:
     - docker:dind
