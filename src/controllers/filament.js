@@ -37,9 +37,19 @@ module.exports = function (app) {
     };
 
     this.stats = function (req, res, next) {
-        return res.render('filament/stats', {
-            pageTitle: 'Filaments statistics',
-            errors: []
+        when.all([
+            Filament.count({}).exec(),
+            Filament.getTotalCost(),
+            Filament.getCostPerBrands(),
+        ]).spread(function (filamentTotalCount, filamentTotalCost) {
+            console.log(filamentTotalCount);
+            console.log(filamentTotalCost);
+            return res.render('filament/stats', {
+                pageTitle: 'Filaments statistics',
+                errors: []
+            });
+        }).otherwise(function (err) {
+            next(err);
         });
     };
 

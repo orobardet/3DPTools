@@ -2,6 +2,7 @@ module.exports = function (app) {
     var when = require('when');
     var mongoose = require('mongoose');
     var Schema = mongoose.Schema;
+    var Brand  = app.models.brand;
 
     var filamentSchema = new Schema({
         name: String,
@@ -51,6 +52,50 @@ module.exports = function (app) {
             .then(function (count) {
                 var rand = Math.floor(Math.random() * count);
                 return this.findOne({}, {}, {skip: rand}, callback);
+            });
+    };
+
+    filamentSchema.statics.getTotalCost = function (callback) {
+        return when(this.aggregate({
+            $group: {
+                _id: '',
+                totalCost: { $sum: '$price' }
+            }
+        }, {
+            $project: {
+                _id: 0,
+                totalCost: '$totalCost'
+            }
+        }).exec())
+            .with(this)
+            .then(function (result) {
+                return result[0].totalCost;
+            });
+    };
+
+    filamentSchema.statics.getCostPerBrands = function (callback) {
+        return when(this.aggregate([
+            { $group: {
+                    _id: '$brand',
+                    totalCost: { $sum: '$price' }
+                }
+            },
+            { $sort: { 'totalCost': -1 } }
+        ]).exec())
+            .with(this)
+            .then(function (result) {
+                Brand.populate(result, { "path" : "_id"}, function(err,results) {
+                    if (err) { throw err; }
+
+                    result = result.map(function(doc) {
+                        doc.label = doc._id.name;
+                        doc._id = doc._id._id;
+                        return doc;
+                    });
+
+                    console.log(result);
+                    return result;
+                });
             });
     };
 
