@@ -35,8 +35,8 @@ module.exports = function (app) {
         buyDate: Date,
         price: Number,
         shop: {type: Schema.Types.ObjectId, ref: 'Shop'},
-        initialMaterialWeight: Number,  // in gram
-        initialTotalWeight: Number,  // in gram
+        initialMaterialWeight: Number,  // in Kgram
+        initialTotalWeight: Number,  // in Kgram
         materialLeftPercentage: Number,
         flowPercentage: Number,
         speedPercentage: Number
@@ -59,17 +59,35 @@ module.exports = function (app) {
         return when(this.aggregate({
             $group: {
                 _id: '',
-                totalCost: { $sum: '$price' }
+                total: { $sum: '$price' }
             }
         }, {
             $project: {
                 _id: 0,
-                totalCost: '$totalCost'
+                total: '$total'
             }
         }).exec())
             .with(this)
             .then(function (result) {
-                return result[0].totalCost;
+                return result[0].total;
+            });
+    };
+
+    filamentSchema.statics.getTotalWeight = function (callback) {
+        return when(this.aggregate({
+            $group: {
+                _id: '',
+                total: { $sum: '$initialMaterialWeight' }
+            }
+        }, {
+            $project: {
+                _id: 0,
+                total: '$total'
+            }
+        }).exec())
+            .with(this)
+            .then(function (result) {
+                return result[0].total;
             });
     };
 
@@ -93,7 +111,6 @@ module.exports = function (app) {
                         return doc;
                     });
 
-                    console.log(result);
                     return result;
                 });
             });
