@@ -8352,4 +8352,8 @@ table.material-list > tbody > tr > td.material-description {
   max-width: 100%;
   max-height: 100%; }
 
+.filament-stats .filament-stats-text {
+  text-align: center;
+  font-size: large; }
+
 /*# sourceMappingURL=style.css.map */

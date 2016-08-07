@@ -270,5 +270,10 @@
   "utils.populate: invalid path. Expected string. Got typeof `undefined`": "utils.populate: invalid path. Expected string. Got typeof `undefined`",
   "(intermediate value).populate is not a function": "(intermediate value).populate is not a function",
   "the $sort key specification must be an object": "the $sort key specification must be an object",
-  "FieldPath field names may not start with '$'.": "FieldPath field names may not start with '$'."
+  "FieldPath field names may not start with '$'.": "FieldPath field names may not start with '$'.",
+  "Totals": "Totaux",
+  "%d filaments": "%d filaments",
+  "%.2f €": "%.2f €",
+  "%.2f Kg": "%.2f Kg",
+  "%.2f m": "%.2f m"
 }

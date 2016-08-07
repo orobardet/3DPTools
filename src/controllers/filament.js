@@ -40,12 +40,29 @@ module.exports = function (app) {
         when.all([
             Filament.count({}).exec(),
             Filament.getTotalCost(),
+            Filament.getTotalWeight(),
             Filament.getCostPerBrands(),
-        ]).spread(function (filamentTotalCount, filamentTotalCost) {
-            console.log(filamentTotalCount);
-            console.log(filamentTotalCost);
+        ]).spread(function (
+            filamentTotalCount,
+            filamentTotalCost,
+            filamentTotalWeight,
+            costPerBrands
+        ) {
+            console.log(filamentTotalWeight);
             return res.render('filament/stats', {
                 pageTitle: 'Filaments statistics',
+                stats: {
+                    totals: {
+                        count: filamentTotalCount,
+                        cost: filamentTotalCost,
+                        weight: filamentTotalWeight,
+                        length: 0
+                    },
+                    cost: {
+                        total: filamentTotalCost,
+                        byBrand: costPerBrands
+                    }
+                },
                 errors: []
             });
         }).otherwise(function (err) {
