@@ -91,6 +91,28 @@ module.exports = function (app) {
             });
     };
 
+    filamentSchema.statics.getTotalLength = function (callback) {
+        return when(this.aggregate({
+            $group: {
+                _id: {diameter: '$diameter',
+                    density: '$density'
+                },
+                weight: { $sum: '$initialMaterialWeight' }
+            }
+        }).exec())
+            .with(this)
+            .then(function (results) {
+                var totalLength = 0;
+
+                var that = this;
+                results = results.forEach(function(doc) {
+                    totalLength += that.getLength(doc.weight, doc._id.density, doc._id.diameter);
+                });
+
+                return totalLength;
+            });
+    };
+
     filamentSchema.statics.getCostPerBrands = function (callback) {
         return when(this.aggregate([
             { $group: {
@@ -114,6 +136,11 @@ module.exports = function (app) {
                     return result;
                 });
             });
+    };
+
+    filamentSchema.statics.getLength = function (weight, density, diameter) {
+        var volume = weight / density;
+        return volume / (Math.PI * Math.pow(diameter / 2 / 1000, 2));
     };
 
     filamentSchema.methods.leftMaterialWeight = function () {
@@ -141,8 +168,7 @@ module.exports = function (app) {
     };
 
     filamentSchema.methods.getLength = function (weight) {
-        var volume = weight / this.density;
-        return volume / (Math.PI * Math.pow(this.diameter / 2 / 1000, 2));
+        return this.constructor.getLength(weight, this.density, this.diameter);
     };
 
     filamentSchema.methods.getInitialLength = function () {
