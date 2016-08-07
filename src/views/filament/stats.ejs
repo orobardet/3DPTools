@@ -19,7 +19,11 @@
         <div class="col-md-3 filament-stats-text"><%- __('%.2f Kg', stats.totals.weight) %></div>
         <% } %>
         <% if (stats.totals.length) { %>
-        <div class="col-md-3 filament-stats-text"><%- __('%.2f m', stats.totals.length) %></div>
+            <% if (stats.totals.length > 1000) { %>
+                <div class="col-md-3 filament-stats-text"><%- __('%.2f km', stats.totals.length / 1000) %></div>
+            <% } else { %>
+                <div class="col-md-3 filament-stats-text"><%- __('%.2f m', stats.totals.length) %></div>
+            <% } %>
         <% } %>
     </div>
 </div>
