@@ -42,7 +42,7 @@ module.exports = function (app) {
             Filament.getTotalCost(),
             Filament.getTotalWeight(),
             Filament.getTotalLength(),
-            Filament.getCostPerBrands(),
+            Filament.getCostPerBrands()
         ]).spread(function (
             filamentTotalCount,
             filamentTotalCost,
@@ -59,7 +59,7 @@ module.exports = function (app) {
                         weight: filamentTotalWeight,
                         length: filamentTotalLength
                     },
-                    cost: {
+                    costs: {
                         total: filamentTotalCost,
                         byBrand: costPerBrands
                     }

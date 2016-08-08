@@ -1,3 +1,24 @@
+<script src="/vendor/highcharts/highcharts.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        Highcharts.setOptions({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                backgroundColor: 'transparent'
+            },
+            // Microsoft Pastel chart series colors
+            //colors: ['#87CEEB', '#32CD32', '#BA55D3', '#F08080', '#4682B4', '#9ACD32', '#40E0D0', '#FF69B4', '#F0E68C', '#D2B48C', '#8FBC8B', '#6495ED', '#DDA0DD', '#5F9EA0', '#FFDAB9', '#FFA07A']
+            // D3 category10
+            //colors: ['#0072AD', '#FF7C15', '#009D37', '#DC141D', '#955EB7', '#8C5049', '#E96FBE', '#7D7D7D', '#B7BD36', '#00BCCB']
+            // D3 category20
+            colors: ['#0072AD', '#A7C4E3', '#FF7C15', '#FFB97A', '#009D37', '#87DD8C', '#DC141D', '#FF9291', '#955EB7', '#C6AAD0', '#8C5049', '#C59790', '#E96FBE', '#FDB1CE', '#7D7D7D', '#C5C5C5', '#B7BD36', '#D6D88E', '#00BCCB', '#91D7E1']
+        });
+    });
+</script>
+
 <ul class="nav nav-tabs nav-tabs-title">
     <li role="presentation" class="active"><h1><i class="fa fa-pie-chart"></i> <%- __('Filaments statistics') %></h1></li>
     <li role="presentation"><a href="/filament"><i class="rs rs-filament"></i>&nbsp;<%- __('Filaments') %></a></li>
@@ -28,3 +49,53 @@
     </div>
 </div>
 <% } %>
+<div class="row">
+<% if (stats && stats.costs) { %>
+    <div class="col-md-6">
+        <div class="panel panel-default filament-stats">
+            <div class="panel-heading">
+                <h2 class="panel-title"><%- __('Costs'); %></h2>
+            </div>
+            <div class="panel-body">
+                <% if (stats.costs.byBrand) { %>
+                <div class="filament-stats-graph">
+                    <div id="filament-stats-cost-by-brand"></div>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#filament-stats-cost-by-brand').highcharts({
+                            chart: {
+                                type: 'pie'
+                            },
+                            title: {
+                                text: '<%- __('By brands'); %>'
+                            },
+                            tooltip: {
+                                pointFormat: '<b>{point.y:.1f}</b> €'
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '<b>{point.name}</b>:<br/>{point.percentage:.1f}%'
+                                    }
+                                }
+                            },        series: [{
+                                name: '<%- __('Cost'); %>',
+                                data: <%- sprintf('%-j', stats.costs.byBrand.map(function(doc) {
+                                    doc.y = doc.cost;
+                                    doc.name = doc.label;
+                                    return doc;
+                                })); %>
+                            }]
+                        });
+                    });
+                </script>
+                <% } %>
+            </div>
+        </div>
+    </div>
+<% } %>
+</div>
