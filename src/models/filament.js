@@ -187,6 +187,81 @@ module.exports = function (app) {
             });
     };
 
+    filamentSchema.statics.getCountPerBrands = function (callback) {
+        return when(this.aggregate([
+            { $group: {
+                _id: '$brand',
+                count: { $sum: 1 }
+            }
+            },
+            { $sort: { 'count': -1 } }
+        ]).exec())
+            .with(this)
+            .then(function (result) {
+                return app.models.brand.populate(result, { "path" : "_id"}, function(err, results) {
+                    if (err) { throw err; }
+
+                    result = result.map(function(doc) {
+                        doc.label = doc._id.name;
+                        doc._id = doc._id._id;
+                        return doc;
+                    });
+
+                    return result;
+                });
+            });
+    };
+
+    filamentSchema.statics.getCountPerShops = function (callback) {
+        return when(this.aggregate([
+            { $group: {
+                _id: '$shop',
+                count: { $sum: 1 }
+            }
+            },
+            { $sort: { 'count': -1 } }
+        ]).exec())
+            .with(this)
+            .then(function (result) {
+                return app.models.shop.populate(result, { "path" : "_id"}, function(err, results) {
+                    if (err) { throw err; }
+
+                    result = result.map(function(doc) {
+                        doc.label = doc._id.name;
+                        doc._id = doc._id._id;
+                        return doc;
+                    });
+
+                    return result;
+                });
+            });
+    };
+
+    filamentSchema.statics.getCountPerMaterials = function (callback) {
+        return when(this.aggregate([
+            { $group: {
+                _id: '$material',
+                count: { $sum: 1 }
+            }
+            },
+            { $sort: { 'count': -1 } }
+        ]).exec())
+            .with(this)
+            .then(function (result) {
+                return app.models.material.populate(result, { "path" : "_id"}, function(err, results) {
+                    if (err) { throw err; }
+
+                    result = result.map(function(doc) {
+                        doc.label = doc._id.name;
+                        doc._id = doc._id._id;
+                        return doc;
+                    });
+
+                    return result;
+                });
+            });
+    };
+
     filamentSchema.statics.getLength = function (weight, density, diameter) {
         var volume = weight / density;
         return volume / (Math.PI * Math.pow(diameter / 2 / 1000, 2));

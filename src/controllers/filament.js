@@ -42,6 +42,9 @@ module.exports = function (app) {
             Filament.getTotalCost(),
             Filament.getTotalWeight(),
             Filament.getTotalLength(),
+            Filament.getCountPerBrands(),
+            Filament.getCountPerShops(),
+            Filament.getCountPerMaterials(),
             Filament.getCostPerBrands(),
             Filament.getCostPerShops(),
             Filament.getCostPerMaterials()
@@ -50,6 +53,9 @@ module.exports = function (app) {
             filamentTotalCost,
             filamentTotalWeight,
             filamentTotalLength,
+            countPerBrands,
+            countPerShops,
+            countPerMaterials,
             costPerBrands,
             costPerShops,
             costPerMaterials
@@ -62,6 +68,12 @@ module.exports = function (app) {
                         cost: filamentTotalCost,
                         weight: filamentTotalWeight,
                         length: filamentTotalLength
+                    },
+                    count: {
+                        total: filamentTotalCount,
+                        byBrands: countPerBrands,
+                        byShops: countPerShops,
+                        byMaterials: countPerMaterials
                     },
                     costs: {
                         total: filamentTotalCost,
