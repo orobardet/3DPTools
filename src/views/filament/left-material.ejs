@@ -1,7 +1,7 @@
 <h1><span class="fa-overlay">
     <i class="rs rs-filament"></i>
-    <i class="fa fa-balance-scale fa-overlay-se" style="color:white"></i>
-    <i class="fa fa-balance-scale fa-overlay-se text-primary"></i>
+    <i class="p3di p3di-weight fa-overlay-se" style="color:white"></i>
+    <i class="p3di p3di-weight fa-overlay-se text-primary"></i>
 </span> <%- __('Left filament %s', filament.name) %></h1>
 
 <div class="row">
@@ -39,7 +39,7 @@
             </tr>
             <tr>
                 <td><%- __('Net material weight:') %></td>
-                <td><i class="fa fa-balance-scale"></i>
+                <td><i class="p3di p3di-weight"></i>
                     <%- __('%s kg', filament.initialMaterialWeight) %></td>
             </tr>
             <tr>
@@ -85,7 +85,7 @@
             <div class="col-md-5">
                 <div class="form-group<%= (errors.leftTotalWeight || errors.weighUnit) ? " has-error" : "" %>">
                     <label for="leftTotalWeight"
-                           class="control-label"><i class="fa fa-balance-scale"></i> <%- __('Left total weight:'); %></label>
+                           class="control-label"><i class="p3di p3di-weight"></i> <%- __('Left total weight:'); %></label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="leftTotalWeight"
                                name="leftTotalWeight"

@@ -39,4 +39,10 @@
 .p3di-printer-bed-heat:before {
     content: "\e904";
 }
+.p3di-ruler:before {
+    content: "\e905";
+}
+.p3di-weight:before {
+    content: "\e906";
+}
 
