@@ -132,6 +132,44 @@
                     });
                 </script>
                 <% } %>
+
+                <% if (stats.costs.byMaterials) { %>
+                <div class="filament-stats-graph">
+                    <div id="filament-stats-cost-by-materials"></div>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#filament-stats-cost-by-materials').highcharts({
+                            chart: {
+                                type: 'pie'
+                            },
+                            title: {
+                                text: '<%- __('By materials'); %>'
+                            },
+                            tooltip: {
+                                pointFormat: '<b>{point.y:.1f}</b> €'
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '<b>{point.name}</b>:<br/>{point.percentage:.1f}%'
+                                    }
+                                }
+                            },        series: [{
+                                name: '<%- __('Cost'); %>',
+                                data: <%- sprintf('%-j', stats.costs.byMaterials.map(function(doc) {
+                                    doc.y = doc.cost;
+                                    doc.name = doc.label;
+                                    return doc;
+                                })); %>
+                            }]
+                        });
+                    });
+                </script>
+                <% } %>
             </div>
         </div>
     </div>

@@ -162,6 +162,30 @@ module.exports = function (app) {
             });
     };
 
+    filamentSchema.statics.getCostPerMaterials = function (callback) {
+        return when(this.aggregate([
+            { $group: {
+                _id: '$material',
+                cost: { $sum: '$price' }
+            }
+            },
+            { $sort: { 'cost': -1 } }
+        ]).exec())
+            .with(this)
+            .then(function (result) {
+                return app.models.material.populate(result, { "path" : "_id"}, function(err, results) {
+                    if (err) { throw err; }
+
+                    result = result.map(function(doc) {
+                        doc.label = doc._id.name;
+                        doc._id = doc._id._id;
+                        return doc;
+                    });
+
+                    return result;
+                });
+            });
+    };
 
     filamentSchema.statics.getLength = function (weight, density, diameter) {
         var volume = weight / density;
