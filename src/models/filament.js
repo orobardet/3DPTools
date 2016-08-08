@@ -117,14 +117,14 @@ module.exports = function (app) {
         return when(this.aggregate([
             { $group: {
                     _id: '$brand',
-                    totalCost: { $sum: '$price' }
+                    cost: { $sum: '$price' }
                 }
             },
-            { $sort: { 'totalCost': -1 } }
+            { $sort: { 'cost': -1 } }
         ]).exec())
             .with(this)
             .then(function (result) {
-                Brand.populate(result, { "path" : "_id"}, function(err,results) {
+                return Brand.populate(result, { "path" : "_id"}, function(err, results) {
                     if (err) { throw err; }
 
                     result = result.map(function(doc) {

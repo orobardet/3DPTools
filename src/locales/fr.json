@@ -269,5 +269,8 @@
   "%.2f €": "%.2f €",
   "%.2f Kg": "%.2f Kg",
   "%.2f m": "%.2f m",
-  "%.2f km": "%.2f km"
+  "%.2f km": "%.2f km",
+  "Costs": "Valeurs",
+  "By brands": "Par marques",
+  "Cost": "Valeur"
 }
