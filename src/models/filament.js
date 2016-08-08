@@ -2,7 +2,6 @@ module.exports = function (app) {
     var when = require('when');
     var mongoose = require('mongoose');
     var Schema = mongoose.Schema;
-    var Brand  = app.models.brand;
 
     var filamentSchema = new Schema({
         name: String,
@@ -124,7 +123,7 @@ module.exports = function (app) {
         ]).exec())
             .with(this)
             .then(function (result) {
-                return Brand.populate(result, { "path" : "_id"}, function(err, results) {
+                return app.models.brand.populate(result, { "path" : "_id"}, function(err, results) {
                     if (err) { throw err; }
 
                     result = result.map(function(doc) {
@@ -137,6 +136,32 @@ module.exports = function (app) {
                 });
             });
     };
+
+    filamentSchema.statics.getCostPerShops = function (callback) {
+        return when(this.aggregate([
+            { $group: {
+                _id: '$shop',
+                cost: { $sum: '$price' }
+            }
+            },
+            { $sort: { 'cost': -1 } }
+        ]).exec())
+            .with(this)
+            .then(function (result) {
+                return app.models.shop.populate(result, { "path" : "_id"}, function(err, results) {
+                    if (err) { throw err; }
+
+                    result = result.map(function(doc) {
+                        doc.label = doc._id.name;
+                        doc._id = doc._id._id;
+                        return doc;
+                    });
+
+                    return result;
+                });
+            });
+    };
+
 
     filamentSchema.statics.getLength = function (weight, density, diameter) {
         var volume = weight / density;
