@@ -62,7 +62,6 @@ module.exports = function (app) {
             costPerMaterials,
             costPerColors
         ) {
-            console.log(costPerColors);
             return res.render('filament/stats', {
                 pageTitle: 'Filaments statistics',
                 stats: {
