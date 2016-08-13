@@ -187,6 +187,47 @@
                     </script>
                 </div>
                 <% } %>
+
+                <% if (stats.count.byColors) { %>
+                <div class="filament-stats-graph">
+                    <div id="filament-stats-count-by-colors"></div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#filament-stats-count-by-colors').highcharts({
+                                chart: {
+                                    type: 'pie'
+                                },
+                                title: {
+                                    text: '<i class="fa fa-tint"></i> <%- __('By colors'); %>'
+                                },
+                                tooltip: {
+                                    pointFormat: '{point.percentage:.1f}%<br/><b>{point.y}</b>'
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        borderColor: '#dddddd',
+                                        allowPointSelect: true,
+                                        cursor: 'pointer',
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '<b>{point.name}</b>'
+                                        }
+                                    }
+                                },
+                                series: [{
+                                    name: '<%- __('Cost'); %>',
+                                    data: <%- sprintf('%-j', stats.count.byColors.map(function(doc) {
+                                        doc.y = doc.count;
+                                        doc.name = doc.label;
+                                        doc.color = doc._id.code;
+                                        return doc;
+                                    })); %>
+                                }]
+                            });
+                        });
+                    </script>
+                </div>
+                <% } %>
             </div>
         </div>
     </div>

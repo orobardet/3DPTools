@@ -47,7 +47,8 @@ module.exports = function (app) {
             Filament.getCountPerMaterials(),
             Filament.getCostPerBrands(),
             Filament.getCostPerShops(),
-            Filament.getCostPerMaterials()
+            Filament.getCostPerMaterials(),
+            Filament.getCountPerColors()
         ]).spread(function (
             filamentTotalCount,
             filamentTotalCost,
@@ -58,8 +59,10 @@ module.exports = function (app) {
             countPerMaterials,
             costPerBrands,
             costPerShops,
-            costPerMaterials
+            costPerMaterials,
+            costPerColors
         ) {
+            console.log(costPerColors);
             return res.render('filament/stats', {
                 pageTitle: 'Filaments statistics',
                 stats: {
@@ -73,7 +76,8 @@ module.exports = function (app) {
                         total: filamentTotalCount,
                         byBrands: countPerBrands,
                         byShops: countPerShops,
-                        byMaterials: countPerMaterials
+                        byMaterials: countPerMaterials,
+                        byColors: costPerColors
                     },
                     costs: {
                         total: filamentTotalCost,
