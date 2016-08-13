@@ -48,7 +48,8 @@ module.exports = function (app) {
             Filament.getCostPerBrands(),
             Filament.getCostPerShops(),
             Filament.getCostPerMaterials(),
-            Filament.getCountPerColors()
+            Filament.getCountPerColors(),
+            Filament.getStatsPerUsage()
         ]).spread(function (
             filamentTotalCount,
             filamentTotalCost,
@@ -60,7 +61,8 @@ module.exports = function (app) {
             costPerBrands,
             costPerShops,
             costPerMaterials,
-            costPerColors
+            costPerColors,
+            statsPerUsage
         ) {
             return res.render('filament/stats', {
                 pageTitle: 'Filaments statistics',
@@ -83,6 +85,23 @@ module.exports = function (app) {
                         byBrands: costPerBrands,
                         byShops: costPerShops,
                         byMaterials: costPerMaterials
+                    },
+                    usage: {
+                        weight: {
+                            total: statsPerUsage.totalWeight,
+                            left: statsPerUsage.totalLeftWeight,
+                            used: statsPerUsage.totalWeight - statsPerUsage.totalLeftWeight
+                        },
+                        length: {
+                            total: statsPerUsage.totalLength,
+                            left: statsPerUsage.totalLeftLength,
+                            used: statsPerUsage.totalLength - statsPerUsage.totalLeftLength
+                        },
+                        cost: {
+                            total: statsPerUsage.totalCost,
+                            left: statsPerUsage.totalLeftCost,
+                            used: statsPerUsage.totalCost - statsPerUsage.totalLeftCost
+                        }
                     }
                 },
                 errors: []
