@@ -282,6 +282,63 @@ module.exports = function (app) {
             });
     };
 
+    filamentSchema.statics.getStatsPerUsage = function (callback) {
+        return when.all([this.aggregate([
+                { $project: {
+                        initialWeight: '$initialMaterialWeight',
+                        price: '$price',
+                        leftPercentage : '$materialLeftPercentage',
+                        leftWeight: { $divide : [ { $multiply: [ '$initialMaterialWeight', '$materialLeftPercentage'] }, 100 ] },
+                        leftPrice: { $divide : [ { $multiply: [ '$price', '$materialLeftPercentage'] }, 100 ] }
+                    }
+                },
+                { $group: {
+                        _id: 'usage',
+                        totalWeight: { $sum: '$initialWeight'},
+                        totalLeftWeight:  { $sum: '$leftWeight'},
+                        totalCost: { $sum: '$price'},
+                        totalLeftCost: { $sum: '$leftPrice'}
+                    }
+                }
+            ]).exec(),
+            this.aggregate( [
+                { $project: {
+                        diameter: '$diameter',
+                        density: '$density',
+                        initialWeight: '$initialMaterialWeight',
+                        leftPercentage : '$materialLeftPercentage',
+                        leftWeight: { $divide : [ { $multiply: [ '$initialMaterialWeight', '$materialLeftPercentage'] }, 100 ] },
+                    }
+                },
+                { $group: {
+                        _id: {diameter: '$diameter',
+                            density: '$density'
+                        },
+                        weight: { $sum: '$initialWeight' },
+                        leftWeight: { $sum: '$leftWeight' }
+                    }
+                }]).exec()
+        ]).with(this)
+        .spread(function (weightAndCostUsage, lengthUsage) {
+            var results = weightAndCostUsage[0];
+
+            var totalLength = 0;
+            var totalLeftLength = 0;
+
+            var that = this;
+            lengthUsage.forEach(function(doc) {
+                totalLength += that.getLength(doc.weight, doc._id.density, doc._id.diameter);
+                totalLeftLength += that.getLength(doc.leftWeight, doc._id.density, doc._id.diameter);
+            });
+
+            results.totalLength = totalLength;
+            results.totalLeftLength = totalLeftLength;
+
+            return results;
+        });
+    };
+
+
     filamentSchema.statics.getLength = function (weight, density, diameter) {
         var volume = weight / density;
         return volume / (Math.PI * Math.pow(diameter / 2 / 1000, 2));
