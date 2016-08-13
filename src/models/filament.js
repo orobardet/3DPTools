@@ -262,6 +262,26 @@ module.exports = function (app) {
             });
     };
 
+    filamentSchema.statics.getCountPerColors = function (callback) {
+        return when(this.aggregate([
+            { $group: {
+                    _id: '$color',
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { '_id.code': 1 } }
+        ]).exec())
+            .with(this)
+            .then(function (result) {
+                result = result.map(function(doc) {
+                    doc.label = doc._id.name;
+                    return doc;
+                });
+
+                return result;
+            });
+    };
+
     filamentSchema.statics.getLength = function (weight, density, diameter) {
         var volume = weight / density;
         return volume / (Math.PI * Math.pow(diameter / 2 / 1000, 2));
