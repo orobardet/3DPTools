@@ -187,6 +187,26 @@ module.exports = function (app) {
             });
     };
 
+    filamentSchema.statics.getCostPerColors = function (callback) {
+        return when(this.aggregate([
+            { $group: {
+                _id: '$color',
+                cost: { $sum: '$price' }
+            }
+            },
+            { $sort: { '_id.code': 1 } }
+        ]).exec())
+            .with(this)
+            .then(function (result) {
+                result = result.map(function(doc) {
+                    doc.label = doc._id.name;
+                    return doc;
+                });
+
+                return result;
+            });
+    };
+
     filamentSchema.statics.getCountPerBrands = function (callback) {
         return when(this.aggregate([
             { $group: {
