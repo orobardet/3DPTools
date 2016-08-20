@@ -64,6 +64,7 @@
     </div>
 </div>
 <% } %>
+
 <% if (stats && stats.usage) { %>
 <div class="panel panel-default filament-stats">
     <div class="panel-heading">
@@ -72,13 +73,16 @@
     <div class="panel-body row">
         <% if (stats.usage.weight) { %>
         <div class="col-md-4 filament-stats-graph">
+            <div class="filament-stats-text">
+                <i class="p3di p3di-weight"></i> <%- __('Weight') %>
+            </div>
             <div id="filament-stats-usage-by-weight"></div>
             <script type="text/javascript">
                 $(function () {
                     $('#filament-stats-usage-by-weight').highcharts({
                         chart: {
                             type: 'pie',
-                            height: 200,
+                            height: 180,
                             spacingTop: 0,
                             marginTop: 0,
                             spacingLeft: 0,
@@ -88,12 +92,7 @@
                             spacingBottom: 0,
                             marginBottom: -200
                         },
-                        title: {
-                            text: '<i class="p3di p3di-weight"></i>',
-                            align: 'center',
-                            verticalAlign: 'middle',
-                            y: 80
-                        },
+                        title: null,
                         tooltip: {
                             pointFormat: '<b>{point.percentage:.1f}%</b>'
                         },
@@ -133,13 +132,16 @@
         <% } %>
         <% if (stats.usage.length) { %>
         <div class="col-md-4 filament-stats-graph">
+            <div class="filament-stats-text">
+                <i class="p3di p3di-ruler"></i> <%- __('Length') %>
+            </div>
             <div id="filament-stats-usage-by-length"></div>
             <script type="text/javascript">
                 $(function () {
                     $('#filament-stats-usage-by-length').highcharts({
                         chart: {
                             type: 'pie',
-                            height: 200,
+                            height: 180,
                             spacingTop: 0,
                             marginTop: 0,
                             spacingLeft: 0,
@@ -149,12 +151,7 @@
                             spacingBottom: 0,
                             marginBottom: -200
                         },
-                        title: {
-                            text: '<i class="p3di p3di-ruler"></i>',
-                            align: 'center',
-                            verticalAlign: 'middle',
-                            y: 80
-                        },
+                        title: null,
                         tooltip: {
                             pointFormat: '<b>{point.percentage:.1f}%</b>'
                         },
@@ -204,13 +201,16 @@
         <% } %>
         <% if (stats.usage.cost) { %>
         <div class="col-md-4 filament-stats-graph">
+            <div class="filament-stats-text">
+                <i class="fa fa-money"></i> <%- __('Cost') %>
+            </div>
             <div id="filament-stats-usage-by-cost"></div>
             <script type="text/javascript">
                 $(function () {
                     $('#filament-stats-usage-by-cost').highcharts({
                         chart: {
                             type: 'pie',
-                            height: 200,
+                            height: 180,
                             spacingTop: 0,
                             marginTop: 0,
                             spacingLeft: 0,
@@ -220,12 +220,7 @@
                             spacingBottom: 0,
                             marginBottom: -200
                         },
-                        title: {
-                            text: '<i class="fa fa-money"></i>',
-                            align: 'center',
-                            verticalAlign: 'middle',
-                            y: 80
-                        },
+                        title: null,
                         tooltip: {
                             pointFormat: '<b>{point.percentage:.1f}%</b>'
                         },
