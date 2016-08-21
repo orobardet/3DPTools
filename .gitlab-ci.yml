@@ -34,7 +34,7 @@ Docker build:
     - docker pull $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
     - docker build -t $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME .
     - docker push $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
-  environment: latest
+  environment: master
   only:
     - master
   except:
