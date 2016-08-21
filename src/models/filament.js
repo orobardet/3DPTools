@@ -358,6 +358,59 @@ module.exports = function (app) {
         });
     };
 
+    filamentSchema.statics.getBoughtTimeline = function (callback) {
+        return when(this.aggregate([
+            { $project: {
+                    yearMonthDay: { $dateToString: { format: "%Y-%m-%d", date: "$buyDate" } },
+                    buyDate: '$buyDate',
+                    price: '$price',
+                    name: '$name',
+                    brandId: '$brand',
+                    shopId: '$shop'
+                }
+            },
+            { $lookup: {
+                    from: 'brands',
+                    localField: 'brandId',
+                    foreignField: '_id',
+                    as: 'brand'
+                }
+            },
+            { $lookup: {
+                from: 'shops',
+                localField: 'shopId',
+                foreignField: '_id',
+                as: 'shop'
+            }
+            },
+            {
+                $project: {
+                    yearMonthDay: '$yearMonthDay',
+                    buyDate: '$buyDate',
+                    price: '$price',
+                    name: '$name',
+                    brand: '$brand.name',
+                    shop: '$shop.name'
+                }
+            },
+            {
+                $unwind: '$brand'
+            },
+            {
+                $unwind: '$shop'
+            },
+            { $group: {
+                    _id: { buyDay:'$yearMonthDay', buyDate: '$buyDate' },
+                    count: { $sum: 1 },
+                    cost: { $sum: '$price' },
+                    names: { $push: '$name' },
+                    brands: { $addToSet: '$brand' },
+                    shops: { $addToSet: '$shop' }
+                }
+            },
+            { $sort: { '_id.buyDay': 1 } }
+        ]).exec());
+    };
 
     filamentSchema.statics.getLength = function (weight, density, diameter) {
         var volume = weight / density;
