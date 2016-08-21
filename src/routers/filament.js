@@ -15,6 +15,7 @@ module.exports = function (app) {
     });
 
     router.get('/', Controller.index);
+    router.get('/stats', Controller.stats);
 
     router.get('/get/:filament_id', Controller.get);
     router.get('/show/:filament_id', Controller.show);

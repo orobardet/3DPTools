@@ -1,0 +1,1002 @@
+<% var chartsColors = config.get('charts:colors'); %>
+<script src="/vendor/highcharts/highcharts.js"></script>
+<script src="/javascripts/highcharts-locales/<%- getLocale() %>.js"></script>
+
+<script type="text/javascript">
+    // Microsoft Pastel chart series colors
+    //var chartsColors = ['#87CEEB', '#32CD32', '#BA55D3', '#F08080', '#4682B4', '#9ACD32', '#40E0D0', '#FF69B4', '#F0E68C', '#D2B48C', '#8FBC8B', '#6495ED', '#DDA0DD', '#5F9EA0', '#FFDAB9', '#FFA07A'];
+    // D3 category10
+    //var colors = ['#0072AD', '#FF7C15', '#009D37', '#DC141D', '#955EB7', '#8C5049', '#E96FBE', '#7D7D7D', '#B7BD36', '#00BCCB'];
+    // D3 category20
+    var chartsColors = <%- sprintf('%-j', chartsColors) %>;
+    $(function () {
+        Highcharts.setOptions({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                backgroundColor: 'transparent',
+                animation: false
+            },
+            plotOptions: {
+                series: {
+                    animation: false
+                },
+                pie: {
+                    dataLabels: {
+                        y: -10
+                    }
+                }
+            },
+            title: {
+                useHTML: true
+            },
+            colors: chartsColors
+        });
+    });
+</script>
+
+<ul class="nav nav-tabs nav-tabs-title">
+    <li role="presentation" class="active"><h1><i class="fa fa-pie-chart"></i> <%- __('Filaments statistics') %></h1></li>
+    <li role="presentation"><a href="/filament"><i class="rs rs-filament"></i>&nbsp;<%- __('Filaments') %></a></li>
+</ul>
+
+<% if (stats && stats.totals) { %>
+<div class="panel panel-default filament-stats">
+    <div class="panel-heading">
+        <h2 class="panel-title"><%- __('Totals'); %></h2>
+    </div>
+    <div class="panel-body row">
+        <% if (stats.totals.count) { %>
+        <div class="col-md-3 filament-stats-text"><i class="rs rs-filament"></i> <%- __('%d filaments', stats.totals.count) %></div>
+        <% } %>
+        <% if (stats.totals.cost) { %>
+        <div class="col-md-3 filament-stats-text"><i class="fa fa-money"></i> <%- __('%.2f €', stats.totals.cost) %></div>
+        <% } %>
+        <% if (stats.totals.weight) { %>
+        <div class="col-md-3 filament-stats-text"><i class="p3di p3di-weight"></i> <%- __('%.2f Kg', stats.totals.weight) %></div>
+        <% } %>
+        <% if (stats.totals.length) { %>
+            <% if (stats.totals.length > 1000) { %>
+                <div class="col-md-3 filament-stats-text"><i class="p3di p3di-ruler"></i>  <%- __('%.2f km', stats.totals.length / 1000) %></div>
+            <% } else { %>
+                <div class="col-md-3 filament-stats-text"><%- __('%.2f m', stats.totals.length) %></div>
+            <% } %>
+        <% } %>
+    </div>
+</div>
+<% } %>
+
+<% if (stats && stats.usage) { %>
+<div class="panel panel-default filament-stats">
+    <div class="panel-heading">
+        <h2 class="panel-title"><%- __('Usage'); %></h2>
+    </div>
+    <div class="panel-body row">
+        <% if (stats.usage.weight) { %>
+        <div class="col-md-4 filament-stats-graph">
+            <div class="filament-stats-text">
+                <i class="p3di p3di-weight"></i> <%- __('Weight') %>
+            </div>
+            <div id="filament-stats-usage-by-weight"></div>
+            <script type="text/javascript">
+                $(function () {
+                    $('#filament-stats-usage-by-weight').highcharts({
+                        chart: {
+                            type: 'pie',
+                            height: 180,
+                            spacingTop: 0,
+                            marginTop: 0,
+                            spacingLeft: 0,
+                            marginLeft: 0,
+                            spacingRight: 0,
+                            marginRight: 0,
+                            spacingBottom: 0,
+                            marginBottom: -200
+                        },
+                        title: null,
+                        tooltip: {
+                            pointFormat: '<b>{point.percentage:.1f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: false,
+                                dataLabels: {
+                                    enabled: true,
+                                    distance: -50,
+                                    format: '{point.y:.2f} Kg'
+                                },
+                                startAngle: -90,
+                                endAngle: 90,
+                                center: ['50%', '50%']
+                            }
+                        },
+                        series: [{
+                            name: '<%- __('Weight'); %>',
+                            innerSize: '50%',
+                            data: [
+                                {
+                                    name: '<%- __('Left:'); %>',
+                                    y: <%- stats.usage.weight.left %>,
+                                    color: chartsColors[0]
+                                },
+                                {
+                                    name: '<%- __('Used:'); %>',
+                                    y: <%- stats.usage.weight.used %>,
+                                    color: chartsColors[1]
+                                }
+                            ]
+                        }]
+                    });
+                });
+            </script>
+        </div>
+        <% } %>
+        <% if (stats.usage.length) { %>
+        <div class="col-md-4 filament-stats-graph">
+            <div class="filament-stats-text">
+                <i class="p3di p3di-ruler"></i> <%- __('Length') %>
+            </div>
+            <div id="filament-stats-usage-by-length"></div>
+            <script type="text/javascript">
+                $(function () {
+                    $('#filament-stats-usage-by-length').highcharts({
+                        chart: {
+                            type: 'pie',
+                            height: 180,
+                            spacingTop: 0,
+                            marginTop: 0,
+                            spacingLeft: 0,
+                            marginLeft: 0,
+                            spacingRight: 0,
+                            marginRight: 0,
+                            spacingBottom: 0,
+                            marginBottom: -200
+                        },
+                        title: null,
+                        tooltip: {
+                            pointFormat: '<b>{point.percentage:.1f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: false,
+                                dataLabels: {
+                                    enabled: true,
+                                    distance: -50,
+                                    format: '{point.valueLabel}'
+                                },
+                                startAngle: -90,
+                                endAngle: 90,
+                                center: ['50%', '50%']
+                            }
+                        },
+                        series: [{
+                            name: '<%- __('Length'); %>',
+                            innerSize: '50%',
+                            data: [
+                                {
+                                    name: '<%- __('Left:'); %>',
+                                    y: <%- stats.usage.length.left %>,
+                                    <% if (stats.usage.length.left>1000) { %>
+                                    valueLabel: '<%- __('%.2f km', stats.usage.length.left/1000) %>',
+                                    <% } else { %>
+                                    valueLabel: '<%- __('%.2f m', stats.usage.length.left) %>',
+                                    <% } %>
+                                    color: chartsColors[2]
+                                },
+                                {
+                                    name: '<%- __('Used:'); %>',
+                                    y: <%- stats.usage.length.used %>,
+                                    <% if (stats.usage.length.used>1000) { %>
+                                    valueLabel: '<%- __('%.2f km', stats.usage.length.used/1000) %>',
+                                    <% } else { %>
+                                    valueLabel: '<%- __('%.2f m', stats.usage.length.used) %>',
+                                    <% } %>
+                                    color: chartsColors[3]
+                                }
+                            ]
+                        }]
+                    });
+                });
+            </script>
+        </div>
+        <% } %>
+        <% if (stats.usage.cost) { %>
+        <div class="col-md-4 filament-stats-graph">
+            <div class="filament-stats-text">
+                <i class="fa fa-money"></i> <%- __('Cost') %>
+            </div>
+            <div id="filament-stats-usage-by-cost"></div>
+            <script type="text/javascript">
+                $(function () {
+                    $('#filament-stats-usage-by-cost').highcharts({
+                        chart: {
+                            type: 'pie',
+                            height: 180,
+                            spacingTop: 0,
+                            marginTop: 0,
+                            spacingLeft: 0,
+                            marginLeft: 0,
+                            spacingRight: 0,
+                            marginRight: 0,
+                            spacingBottom: 0,
+                            marginBottom: -200
+                        },
+                        title: null,
+                        tooltip: {
+                            pointFormat: '<b>{point.percentage:.1f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: false,
+                                dataLabels: {
+                                    enabled: true,
+                                    distance: -50,
+                                    format: '{point.y:.2f} €'
+                                },
+                                startAngle: -90,
+                                endAngle: 90,
+                                center: ['50%', '50%']
+                            }
+                        },
+                        series: [{
+                            name: '<%- __('Cost'); %>',
+                            innerSize: '50%',
+                            data: [
+                                {
+                                    name: '<%- __('Left:'); %>',
+                                    y: <%- stats.usage.cost.left %>,
+                                    color: chartsColors[4]
+                                },
+                                {
+                                    name: '<%- __('Used:'); %>',
+                                    y: <%- stats.usage.cost.used %>,
+                                    color: chartsColors[5]
+                                }
+                            ]
+                        }]
+                    });
+                });
+            </script>
+        </div>
+        <% } %>
+    </div>
+</div>
+<% } %>
+
+<% if (stats && stats.boughtHistory) { %>
+<div class="panel panel-default filament-stats">
+    <div class="panel-heading">
+        <h2 class="panel-title"><%- __('Bought history'); %></h2>
+    </div>
+    <div class="panel-body ">
+        <div id="filament-stats-bought-history"></div>
+        <script type="text/javascript">
+            $(function () {
+                        $('#filament-stats-bought-history').highcharts({
+                            chart: {
+                                zoomType: 'x'
+                            },
+                            title: {
+                                text: ''
+                            },
+                            subtitle: {
+                                verticalAlign: 'bottom',
+                                y: 5,
+                                text: document.ontouchstart === undefined ?
+                                        '<%- __('Click and drag in the plot area to zoom in') %>' : '<%- __('Pinch the chart to zoom in') %>'
+                            },
+                            xAxis: {
+                                type: 'datetime'
+                            },
+                            yAxis: [
+                                {
+                                    title: {
+                                        enabled: false,
+                                        text: '<%- __('Count') %>',
+                                        style: {
+                                            color: chartsColors[0]
+                                        }
+                                    },
+                                    labels: {
+                                        format: '{value}',
+                                        style: {
+                                            color: chartsColors[0]
+                                        }
+                                    }
+                                },
+                                {
+                                    title: {
+                                        enabled: false,
+                                        text: '<%- __('Cost') %>',
+                                        style: {
+                                            color: chartsColors[2]
+                                        }
+                                    },
+                                    labels: {
+                                        format: '{value} €',
+                                        style: {
+                                            color: chartsColors[2]
+                                        }
+                                    },
+                                    opposite: true
+                                }
+                            ],
+                            legend: {
+                                enabled: true
+                            },
+                            plotOptions: {
+                                area: {
+                                    marker: {
+                                        radius: 2
+                                    },
+                                    lineWidth: 1,
+                                    states: {
+                                        hover: {
+                                            lineWidth: 1
+                                        }
+                                    },
+                                    threshold: null
+                                }
+                            },
+                            series: [{
+                                type: 'spline',
+                                name: '<%- __('Count') %>',
+                                yAxis: 0,
+                                color: chartsColors[0],
+                                tooltip: {
+                                    pointFormat: '<b>{series.name}:</b> {point.y}<br/><b><%- __('Names: ') %></b>{point.namesString}<br/><b><%- __('Shops: ') %></b>{point.shopsString}<br/><b><%- __('Brands: ') %></b>{point.brandsString}'
+                                },
+                                data: <%- sprintf('%-j', stats.boughtHistory.map(function(doc) {
+                                    doc.x = doc.buyTimestamp;
+                                    doc.y = doc.count;
+                                    doc.name = doc.label;
+                                    doc.namesString = doc.names.join(', ');
+                                    doc.shopsString = doc.shops.join(', ');
+                                    doc.brandsString = doc.brands.join(', ');
+                                    return doc;
+                                })); %>
+                            },{
+                                type: 'spline',
+                                name: '<%- __('Cost') %>',
+                                yAxis: 1,
+                                color: chartsColors[2],
+                                tooltip: {
+                                    pointFormat: '<b>{series.name}:</b> {point.y:.2f} €<br/><b><%- __('Names: ') %></b>{point.namesString}<br/><b><%- __('Shops: ') %></b>{point.shopsString}<br/><b><%- __('Brands: ') %></b>{point.brandsString}'
+                                },
+                                data: <%- sprintf('%-j', stats.boughtHistory.map(function(doc) {
+                                    doc.x = doc.buyTimestamp;
+                                    doc.y = doc.cost;
+                                    doc.namesString = doc.names.join(', ');
+                                    doc.shopsString = doc.shops.join(', ');
+                                    doc.brandsString = doc.brands.join(', ');
+                                    return doc;
+                                })); %>
+                            }]
+                        });
+                    });
+        </script>
+    </div>
+</div>
+<% } %>
+
+<% if (stats && stats.usagePer) { %>
+<div class="panel panel-default filament-stats">
+    <div class="panel-heading">
+        <h2 class="panel-title"><%- __('Most used'); %></h2>
+    </div>
+    <div class="panel-body filament-stats-graph">
+        <% if (stats && stats.usagePer.colors) { %>
+        <div id="filament-stats-most-used-by-colors"></div>
+        <script type="text/javascript">
+            $(function () {
+                $('#filament-stats-most-used-by-colors').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: '<i class="fa fa-tint"></i> <%- __('By colors'); %>'
+                    },
+                    xAxis: {
+                        categories:  <%- sprintf('%-j', stats.usagePer.colors.map(function(doc) {
+                            return doc._id.name;
+                        })); %>
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            enabled: true,
+                            text: '<%- __('Kg') %>'
+                        },
+                        stackLabels: {
+                            enabled: true,
+                            style: {
+                                fontWeight: 'bold',
+                                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                            }
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        column: {
+                            stacking: 'normal',
+                            dataLabels: {
+                                enabled: false,
+                                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                                style: {
+                                    textShadow: '0 0 3px black'
+                                }
+                            },
+                            tooltip: {
+                                useHTML: true,
+                                pointFormat: '<span style="color:{point.borderColor}">\u25CF</span><b><%- __('Used: ') %></b> {point.totalUsedWeight:.2f} Kg<br/><span style="color:{point.borderColor}">\u25CF</span><b><%- __('Left: ') %></b> {point.totalLeftWeight:.2f} Kg',
+                                borderColor: "red"
+                            }
+                        }
+                    },
+                    series: [{
+                        name: '<%- __('Used') %>',
+                        color: 'transparent',
+                        states: {
+                            hover: {
+                                enabled: false
+                            }
+                        },
+                        data: <% var whiteColor = new Color('#FFFFFF'); %><%- sprintf('%-j', stats.usagePer.colors.map(function(doc) {
+                        doc.y = doc.totalUsedWeight;
+                        var color = new Color(doc._id.code);
+                        if (color.hexString() == whiteColor.hexString()) {
+                            doc.borderColor = '#DDDDDD';
+                        } else {
+                            doc.borderColor = doc._id.code;
+                        }
+                        return doc;
+                    })); %>
+                    },{
+                        name: '<%- __('Left') %>',
+                        states: {
+                            hover: {
+                                enabled: false
+                            }
+                        },
+                        data: <%- sprintf('%-j', stats.usagePer.colors.map(function(doc) {
+                            doc.y = doc.totalLeftWeight;
+                            doc.color = doc._id.code;
+                            return doc;
+                        })); %>
+                    }]
+                });
+            });
+        </script>
+        <% } %>
+
+        <% if (stats.usagePer.materials || stats.usagePer.brands) { %>
+        <div class="row">
+            <% if (stats.usagePer.materials) { %>
+            <div class="col-md-6 filament-stats-graph">
+                <div id="filament-stats-most-used-by-materials"></div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#filament-stats-most-used-by-materials').highcharts({
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: '<i class="fa fa-leaf"></i> <%- __('By materials'); %>'
+                            },
+                            xAxis: {
+                                categories:  <%- sprintf('%-j', stats.usagePer.materials.map(function(doc) {
+                                    return doc.label;
+                                })); %>
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    enabled: true,
+                                    text: '<%- __('Kg') %>'
+                                },
+                                stackLabels: {
+                                    enabled: true,
+                                    style: {
+                                        fontWeight: 'bold',
+                                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                    }
+                                }
+                            },
+                            legend: {
+                                enabled: false
+                            },
+                            plotOptions: {
+                                column: {
+                                    stacking: 'normal',
+                                    dataLabels: {
+                                        enabled: false,
+                                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                                        style: {
+                                            textShadow: '0 0 3px black'
+                                        }
+                                    },
+                                    tooltip: {
+                                        useHTML: true,
+                                        pointFormat: '<span style="color:{point.borderColor}">\u25CF</span><b><%- __('Used: ') %></b> {point.totalUsedWeight:.2f} Kg<br/><span style="color:{point.borderColor}">\u25CF</span><b><%- __('Left: ') %></b> {point.totalLeftWeight:.2f} Kg',
+                                        borderColor: "red"
+                                    }
+                                }
+                            },
+                            series: [{
+                                name: '<%- __('Used') %>',
+                                color: 'transparent',
+                                states: {
+                                    hover: {
+                                        enabled: false
+                                    }
+                                },
+                                data: <% var colorIdx = 0; %><%- sprintf('%-j', stats.usagePer.materials.map(function(doc) {
+                                    doc.y = doc.totalUsedWeight;
+                                    doc.borderColor = chartsColors[colorIdx];
+                                    colorIdx += 2;
+                                    if (colorIdx > chartsColors.length) {
+                                        colorIdx = 0;
+                                    }
+                                    return doc;
+                                })); %>
+                            },{
+                                name: '<%- __('Left') %>',
+                                states: {
+                                    hover: {
+                                        enabled: false
+                                    }
+                                },
+                                data: <% var colorIdx = 0; %><%- sprintf('%-j', stats.usagePer.materials.map(function(doc) {
+                                    doc.y = doc.totalLeftWeight;
+                                    doc.color = chartsColors[colorIdx];
+                                    colorIdx += 2;
+                                    if (colorIdx > chartsColors.length) {
+                                        colorIdx = 0;
+                                    }
+                                    return doc;
+                                })); %>
+                            }]
+                        });
+                    });
+                </script>
+            </div>
+            <% } %>
+
+            <% if (stats.usagePer.brands) { %>
+            <div class="col-md-6 filament-stats-graph">
+                <div id="filament-stats-most-used-by-brands"></div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#filament-stats-most-used-by-brands').highcharts({
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: '<i class="fa fa-trademark"></i> <%- __('By brands'); %>'
+                            },
+                            xAxis: {
+                                categories:  <%- sprintf('%-j', stats.usagePer.brands.map(function(doc) {
+                                    return doc.label;
+                                })); %>
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    enabled: true,
+                                    text: '<%- __('Kg') %>'
+                                },
+                                stackLabels: {
+                                    enabled: true,
+                                    style: {
+                                        fontWeight: 'bold',
+                                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                    }
+                                }
+                            },
+                            legend: {
+                                enabled: false
+                            },
+                            plotOptions: {
+                                column: {
+                                    stacking: 'normal',
+                                    dataLabels: {
+                                        enabled: false,
+                                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                                        style: {
+                                            textShadow: '0 0 3px black'
+                                        }
+                                    },
+                                    tooltip: {
+                                        useHTML: true,
+                                        pointFormat: '<span style="color:{point.borderColor}">\u25CF</span><b><%- __('Used: ') %></b> {point.totalUsedWeight:.2f} Kg<br/><span style="color:{point.borderColor}">\u25CF</span><b><%- __('Left: ') %></b> {point.totalLeftWeight:.2f} Kg',
+                                        borderColor: "red"
+                                    }
+                                }
+                            },
+                            series: [{
+                                name: '<%- __('Used') %>',
+                                color: 'transparent',
+                                states: {
+                                    hover: {
+                                        enabled: false
+                                    }
+                                },
+                                data: <% var colorIdx = 0; %><%- sprintf('%-j', stats.usagePer.brands.map(function(doc) {
+                                doc.y = doc.totalUsedWeight;
+                                doc.borderColor = chartsColors[colorIdx];
+                                colorIdx += 2;
+                                if (colorIdx > chartsColors.length) {
+                                    colorIdx = 0;
+                                }
+                                return doc;
+                            })); %>
+                            },{
+                                name: '<%- __('Left') %>',
+                                states: {
+                                    hover: {
+                                        enabled: false
+                                    }
+                                },
+                                data: <% var colorIdx = 0; %><%- sprintf('%-j', stats.usagePer.brands.map(function(doc) {
+                                doc.y = doc.totalLeftWeight;
+                                doc.color = chartsColors[colorIdx];
+                                colorIdx += 2;
+                                if (colorIdx > chartsColors.length) {
+                                    colorIdx = 0;
+                                }
+                                return doc;
+                            })); %>
+                            }]
+                        });
+                    });
+                </script>
+            </div>
+            <% } %>
+        </div>
+        <% } %>
+    </div>
+</div>
+<% } %>
+
+<div class="row">
+<% if (stats && stats.count) { %>
+    <div class="col-md-6">
+        <div class="panel panel-default filament-stats filament-stats-vertical-stack">
+            <div class="panel-heading">
+                <h2 class="panel-title"><%- __('Counts'); %></h2>
+            </div>
+            <div class="panel-body">
+                <% if (stats.count.byBrands) { %>
+                <div class="filament-stats-graph">
+                    <div id="filament-stats-count-by-brands"></div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#filament-stats-count-by-brands').highcharts({
+                                chart: {
+                                    type: 'pie'
+                                },
+                                title: {
+                                    text: '<i class="fa fa-trademark"></i> <%- __('By brands'); %>'
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>{point.y}</b>'
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        allowPointSelect: true,
+                                        cursor: 'pointer',
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '<b>{point.name}</b>:<br/>{point.percentage:.1f}%'
+                                        }
+                                    }
+                                },
+                                series: [{
+                                    name: '<%- __('Cost'); %>',
+                                    data: <%- sprintf('%-j', stats.count.byBrands.map(function(doc) {
+                                        doc.y = doc.count;
+                                        doc.name = doc.label;
+                                        return doc;
+                                    })); %>
+                                }]
+                            });
+                        });
+                    </script>
+                </div>
+                <% } %>
+
+                <% if (stats.count.byShops) { %>
+                <div class="filament-stats-graph">
+                    <div id="filament-stats-count-by-shops"></div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#filament-stats-count-by-shops').highcharts({
+                                chart: {
+                                    type: 'pie'
+                                },
+                                title: {
+                                    text: '<i class="fa fa-shopping-bag"></i> <%- __('By shops'); %>'
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>{point.y}</b>'
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        allowPointSelect: true,
+                                        cursor: 'pointer',
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '<b>{point.name}</b>:<br/>{point.percentage:.1f}%'
+                                        }
+                                    }
+                                },
+                                series: [{
+                                    name: '<%- __('Cost'); %>',
+                                    data: <%- sprintf('%-j', stats.count.byShops.map(function(doc) {
+                                        doc.y = doc.count;
+                                        doc.name = doc.label;
+                                        return doc;
+                                    })); %>
+                                }]
+                            });
+                        });
+                    </script>
+                </div>
+                <% } %>
+
+                <% if (stats.count.byMaterials) { %>
+                <div class="filament-stats-graph">
+                    <div id="filament-stats-count-by-materials"></div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#filament-stats-count-by-materials').highcharts({
+                                chart: {
+                                    type: 'pie'
+                                },
+                                title: {
+                                    text: '<i class="fa fa-leaf"></i> <%- __('By materials'); %>'
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>{point.y}</b>'
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        allowPointSelect: true,
+                                        cursor: 'pointer',
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '<b>{point.name}</b>:<br/>{point.percentage:.1f}%'
+                                        }
+                                    }
+                                },
+                                series: [{
+                                    name: '<%- __('Cost'); %>',
+                                    data: <%- sprintf('%-j', stats.count.byMaterials.map(function(doc) {
+                                        doc.y = doc.count;
+                                        doc.name = doc.label;
+                                        return doc;
+                                    })); %>
+                                }]
+                            });
+                        });
+                    </script>
+                </div>
+                <% } %>
+
+                <% if (stats.count.byColors) { %>
+                <div class="filament-stats-graph">
+                    <div id="filament-stats-count-by-colors"></div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#filament-stats-count-by-colors').highcharts({
+                                chart: {
+                                    type: 'pie'
+                                },
+                                title: {
+                                    text: '<i class="fa fa-tint"></i> <%- __('By colors'); %>'
+                                },
+                                tooltip: {
+                                    pointFormat: '{point.percentage:.1f}%<br/><b>{point.y}</b>'
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        borderColor: '#dddddd',
+                                        allowPointSelect: true,
+                                        cursor: 'pointer',
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '<b>{point.name}</b>'
+                                        }
+                                    }
+                                },
+                                series: [{
+                                    name: '<%- __('Cost'); %>',
+                                    data: <%- sprintf('%-j', stats.count.byColors.map(function(doc) {
+                                        doc.y = doc.count;
+                                        doc.name = doc.label;
+                                        doc.color = doc._id.code;
+                                        return doc;
+                                    })); %>
+                                }]
+                            });
+                        });
+                    </script>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <% } %>
+
+    <% if (stats && stats.costs) { %>
+    <div class="col-md-6">
+        <div class="panel panel-default filament-stats filament-stats-vertical-stack">
+            <div class="panel-heading">
+                <h2 class="panel-title"><%- __('Costs'); %></h2>
+            </div>
+            <div class="panel-body">
+                <% if (stats.costs.byBrands) { %>
+                <div class="filament-stats-graph">
+                    <div id="filament-stats-cost-by-brands"></div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#filament-stats-cost-by-brands').highcharts({
+                                chart: {
+                                    type: 'pie'
+                                },
+                                title: {
+                                    text: '<i class="fa fa-trademark"></i> <%- __('By brands'); %>'
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>{point.y:.2f}</b> €'
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        allowPointSelect: true,
+                                        cursor: 'pointer',
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '<b>{point.name}</b>:<br/>{point.percentage:.1f}%'
+                                        }
+                                    }
+                                },
+                                series: [{
+                                    name: '<%- __('Cost'); %>',
+                                    data: <%- sprintf('%-j', stats.costs.byBrands.map(function(doc) {
+                                        doc.y = doc.cost;
+                                        doc.name = doc.label;
+                                        return doc;
+                                    })); %>
+                                }]
+                            });
+                        });
+                    </script>
+                </div>
+                <% } %>
+
+                <% if (stats.costs.byShops) { %>
+                <div class="filament-stats-graph">
+                    <div id="filament-stats-cost-by-shops"></div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#filament-stats-cost-by-shops').highcharts({
+                                chart: {
+                                    type: 'pie'
+                                },
+                                title: {
+                                    text: '<i class="fa fa-shopping-bag"></i> <%- __('By shops'); %>'
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>{point.y:.2f}</b> €'
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        allowPointSelect: true,
+                                        cursor: 'pointer',
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '<b>{point.name}</b>:<br/>{point.percentage:.1f}%'
+                                        }
+                                    }
+                                },
+                                series: [{
+                                    name: '<%- __('Cost'); %>',
+                                    data: <%- sprintf('%-j', stats.costs.byShops.map(function(doc) {
+                                        doc.y = doc.cost;
+                                        doc.name = doc.label;
+                                        return doc;
+                                    })); %>
+                                }]
+                            });
+                        });
+                    </script>
+                </div>
+                <% } %>
+
+                <% if (stats.costs.byMaterials) { %>
+                <div class="filament-stats-graph">
+                    <div id="filament-stats-cost-by-materials"></div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#filament-stats-cost-by-materials').highcharts({
+                                chart: {
+                                    type: 'pie'
+                                },
+                                title: {
+                                    text: '<i class="fa fa-leaf"></i> <%- __('By materials'); %>'
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>{point.y:.2f}</b> €'
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        allowPointSelect: true,
+                                        cursor: 'pointer',
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '<b>{point.name}</b>:<br/>{point.percentage:.1f}%'
+                                        }
+                                    }
+                                },
+                                series: [{
+                                    name: '<%- __('Cost'); %>',
+                                    data: <%- sprintf('%-j', stats.costs.byMaterials.map(function(doc) {
+                                        doc.y = doc.cost;
+                                        doc.name = doc.label;
+                                        return doc;
+                                    })); %>
+                                }]
+                            });
+                        });
+                    </script>
+                </div>
+                <% } %>
+
+                <% if (stats.costs.byColors) { %>
+                <div class="filament-stats-graph">
+                    <div id="filament-stats-cost-by-colors"></div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#filament-stats-cost-by-colors').highcharts({
+                                chart: {
+                                    type: 'pie'
+                                },
+                                title: {
+                                    text: '<i class="fa fa-tint"></i> <%- __('By colors'); %>'
+                                },
+                                tooltip: {
+                                    pointFormat: '<b>{point.y:.2f}</b> €'
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        borderColor: '#dddddd',
+                                        allowPointSelect: true,
+                                        cursor: 'pointer',
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '<b>{point.name}</b>:<br/>{point.percentage:.1f}%'
+                                        }
+                                    }
+                                },
+                                series: [{
+                                    name: '<%- __('Cost'); %>',
+                                    data: <%- sprintf('%-j', stats.costs.byColors.map(function(doc) {
+                                        doc.y = doc.cost;
+                                        doc.name = doc.label;
+                                        doc.color = doc._id.code;
+                                        return doc;
+                                    })); %>
+                                }]
+                            });
+                        });
+                    </script>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</div>
