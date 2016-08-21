@@ -379,6 +379,99 @@
 </div>
 <% } %>
 
+<% if (stats && stats.usagePerColors) { %>
+<div class="panel panel-default filament-stats">
+    <div class="panel-heading">
+        <h2 class="panel-title"><%- __('Most used per colors'); %></h2>
+    </div>
+    <div class="panel-body ">
+        <div id="filament-stats-most-used-by-colors"></div>
+        <script type="text/javascript">
+            $(function () {
+                $('#filament-stats-most-used-by-colors').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories:  <%- sprintf('%-j', stats.usagePerColors.map(function(doc) {
+                            return doc._id.name;
+                        })); %>
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            enabled: true,
+                            text: '<%- __('Kg') %>'
+                        },
+                        stackLabels: {
+                            enabled: true,
+                            style: {
+                                fontWeight: 'bold',
+                                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                            }
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        column: {
+                            stacking: 'normal',
+                            dataLabels: {
+                                enabled: false,
+                                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                                style: {
+                                    textShadow: '0 0 3px black'
+                                }
+                            },
+                            tooltip: {
+                                useHTML: true,
+                                pointFormat: '<span style="color:{point.borderColor}">\u25CF</span><b><%- __('Used: ') %></b> {point.totalUsedWeight:.2f} Kg<br/><span style="color:{point.borderColor}">\u25CF</span><b><%- __('Left: ') %></b> {point.totalLeftWeight:.2f} Kg',
+                                borderColor: "red"
+                            }
+                        }
+                    },
+                    series: [{
+                        name: '<%- __('Used') %>',
+                        color: 'transparent',
+                        states: {
+                            hover: {
+                                enabled: false
+                            }
+                        },
+                        data: <% var whiteColor = new Color('#FFFFFF'); %><%- sprintf('%-j', stats.usagePerColors.map(function(doc) {
+                            doc.y = doc.totalUsedWeight;
+                            var color = new Color(doc._id.code);
+                            if (color.hexString() == whiteColor.hexString()) {
+                                doc.borderColor = '#DDDDDD';
+                            } else {
+                                doc.borderColor = doc._id.code;
+                            }
+                            return doc;
+                        })); %>
+                    },{
+                        name: '<%- __('Left') %>',
+                        states: {
+                            hover: {
+                                enabled: false
+                            }
+                        },
+                        data: <%- sprintf('%-j', stats.usagePerColors.map(function(doc) {
+                            doc.y = doc.totalLeftWeight;
+                            doc.color = doc._id.code;
+                            return doc;
+                        })); %>
+                    }]
+                });
+            });
+        </script>
+    </div>
+</div>
+<% } %>
+
 <div class="row">
 <% if (stats && stats.count) { %>
     <div class="col-md-6">

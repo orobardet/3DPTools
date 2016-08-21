@@ -302,6 +302,36 @@ module.exports = function (app) {
             });
     };
 
+    filamentSchema.statics.getUsagePerColors = function (callback) {
+        return when(this.aggregate([
+            { $match: { materialLeftPercentage: { $lt: 100 } } },
+            { $project: {
+                    color: '$color',
+                    initialWeight: '$initialMaterialWeight',
+                    leftPercentage : '$materialLeftPercentage',
+                    leftWeight: { $divide : [ { $multiply: [ '$initialMaterialWeight', '$materialLeftPercentage'] }, 100 ] }
+                }
+            },
+            { $project: {
+                    color: '$color',
+                    initialWeight: '$initialWeight',
+                    leftPercentage : '$leftPercentage',
+                    leftWeight: '$leftWeight',
+                    usedWeight: { $subtract : [ '$initialWeight', '$leftWeight' ] }
+                }
+            },
+            { $group: {
+                    _id: '$color',
+                    count: { $sum: 1 },
+                    totalWeight: { $sum: '$initialWeight'},
+                    totalLeftWeight:  { $sum: '$leftWeight'},
+                    totalUsedWeight:  { $sum: '$usedWeight'}
+                }
+            },
+            { $sort: { 'totalUsedWeight': -1 } }
+        ]).exec());
+    };
+
     filamentSchema.statics.getStatsPerUsage = function (callback) {
         return when.all([this.aggregate([
                 { $project: {
