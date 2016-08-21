@@ -281,5 +281,12 @@
   "By weight": "Par poids",
   "Left:": "Restant :",
   "Used:": "Utilisé :",
-  "Length": "Longueur"
+  "Length": "Longueur",
+  "Bought history": "Historique d'achat",
+  "Count": "Nombre",
+  "Click and drag in the plot area to zoom in": "Sélectionner une zone du graphique pour zoomer",
+  "Pinch the chart to zoom in": "Pincer le graphique pour zoomer",
+  "Names: ": "Noms : ",
+  "Shops: ": "Magasins : ",
+  "Brands: ": "Marques : "
 }
