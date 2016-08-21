@@ -47,7 +47,7 @@ Docker release:
   stage: release
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-    - docker pull $CI_REGISTRY_IMAGE:$CI_BUILD_TAG
+    - docker pull $CI_REGISTRY_IMAGE
     - docker build -t $CI_REGISTRY_IMAGE:$CI_BUILD_TAG .
     - docker push $CI_REGISTRY_IMAGE:$CI_BUILD_TAG
     - docker tag $CI_REGISTRY_IMAGE:$CI_BUILD_TAG $CI_REGISTRY_IMAGE:latest
