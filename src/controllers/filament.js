@@ -51,7 +51,8 @@ module.exports = function (app) {
             Filament.getCostPerShops(),
             Filament.getCostPerMaterials(),
             Filament.getCostPerColors(),
-            Filament.getBoughtTimeline()
+            Filament.getBoughtTimeline(),
+            Filament.getUsagePerColors()
         ]).spread(function (
             filamentTotalCount,
             filamentTotalCost,
@@ -66,7 +67,8 @@ module.exports = function (app) {
             costPerShops,
             costPerMaterials,
             costPerColors,
-            boughtTimeline
+            boughtTimeline,
+            usagePerColors
         ) {
             return res.render('filament/stats', {
                 pageTitle: 'Filaments statistics',
@@ -108,7 +110,8 @@ module.exports = function (app) {
                             used: statsPerUsage.totalCost - statsPerUsage.totalLeftCost
                         }
                     },
-                    boughtHistory: boughtTimeline
+                    boughtHistory: boughtTimeline,
+                    usagePerColors: usagePerColors
                 },
                 errors: []
             });
