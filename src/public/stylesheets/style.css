@@ -8028,6 +8028,25 @@ h1 {
   .navbar-inverse .navbar-nav .dropdown-menu > li.divider, .navbar-inverse .navbar-nav .dropdown-menu-col > li.divider {
     background-color: #090909; }
 
+.nav-tabs-title {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  border-bottom: 0; }
+  .nav-tabs-title > li {
+    bottom: 0; }
+    .nav-tabs-title > li > a {
+      border: 0;
+      padding: 0 15px;
+      position: relative;
+      bottom: -12px;
+      font-size: 18px; }
+    .nav-tabs-title > li > a:hover {
+      background-color: inherit; }
+    .nav-tabs-title > li.active {
+      margin-right: 50px; }
+    .nav-tabs-title > li > h1 {
+      margin: 0 !important; }
+
 .dropdown.language-selector > .dropdown-menu > li.active.active > a {
   background-color: transparent; }
 
@@ -8332,5 +8351,16 @@ table.material-list > tbody > tr > td.material-description {
 .confirm-modal .modal-body .picture {
   max-width: 100%;
   max-height: 100%; }
+
+.filament-stats .filament-stats-text {
+  text-align: center;
+  font-size: x-large; }
+
+.filament-stats-vertical-stack .panel-body > .filament-stats-graph {
+  border-top: 1px solid #ddd;
+  padding-top: 10px; }
+  .filament-stats-vertical-stack .panel-body > .filament-stats-graph:first-of-type {
+    border-top: 0px;
+    padding-top: 0px; }
 
 /*# sourceMappingURL=style.css.map */

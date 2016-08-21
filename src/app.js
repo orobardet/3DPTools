@@ -13,6 +13,7 @@ var flash = require('connect-flash');
 var mongoose = require('mongoose');
 var consign = require('consign');
 var moment = require('moment');
+var color = require('color');
 
 var app = express();
 app.locals = {
@@ -39,6 +40,7 @@ if (config.get('config-file')) {
 config.file('default', 'config/default.json');
 app.locals.config = config;
 app.locals.moment = moment;
+app.locals.Color = color;
 app.set('config', config);
 
 // init sessions

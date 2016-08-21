@@ -36,6 +36,98 @@ module.exports = function (app) {
             });
     };
 
+    this.stats = function (req, res, next) {
+        when.all([
+            Filament.count({}).exec(),
+            Filament.getTotalCost(),
+            Filament.getTotalWeight(),
+            Filament.getTotalLength(),
+            Filament.getStatsPerUsage(),
+            Filament.getCountPerBrands(),
+            Filament.getCountPerShops(),
+            Filament.getCountPerMaterials(),
+            Filament.getCountPerColors(),
+            Filament.getCostPerBrands(),
+            Filament.getCostPerShops(),
+            Filament.getCostPerMaterials(),
+            Filament.getCostPerColors(),
+            Filament.getBoughtTimeline(),
+            Filament.getUsagePerColors(),
+            Filament.getUsagePerMaterials(),
+            Filament.getUsagePerBrands()
+        ]).spread(function (
+            filamentTotalCount,
+            filamentTotalCost,
+            filamentTotalWeight,
+            filamentTotalLength,
+            statsPerUsage,
+            countPerBrands,
+            countPerShops,
+            countPerMaterials,
+            countPerColors,
+            costPerBrands,
+            costPerShops,
+            costPerMaterials,
+            costPerColors,
+            boughtTimeline,
+            usagePerColors,
+            usagePerMaterials,
+            usagePerBrands
+        ) {
+            return res.render('filament/stats', {
+                pageTitle: 'Filaments statistics',
+                stats: {
+                    totals: {
+                        count: filamentTotalCount,
+                        cost: filamentTotalCost,
+                        weight: filamentTotalWeight,
+                        length: filamentTotalLength
+                    },
+                    count: {
+                        total: filamentTotalCount,
+                        byBrands: countPerBrands,
+                        byShops: countPerShops,
+                        byMaterials: countPerMaterials,
+                        byColors: countPerColors
+                    },
+                    costs: {
+                        total: filamentTotalCost,
+                        byBrands: costPerBrands,
+                        byShops: costPerShops,
+                        byMaterials: costPerMaterials,
+                        byColors: costPerColors
+                    },
+                    usage: {
+                        weight: {
+                            total: statsPerUsage.totalWeight,
+                            left: statsPerUsage.totalLeftWeight,
+                            used: statsPerUsage.totalWeight - statsPerUsage.totalLeftWeight
+                        },
+                        length: {
+                            total: statsPerUsage.totalLength,
+                            left: statsPerUsage.totalLeftLength,
+                            used: statsPerUsage.totalLength - statsPerUsage.totalLeftLength
+                        },
+                        cost: {
+                            total: statsPerUsage.totalCost,
+                            left: statsPerUsage.totalLeftCost,
+                            used: statsPerUsage.totalCost - statsPerUsage.totalLeftCost
+                        }
+                    },
+                    boughtHistory: boughtTimeline,
+                    usagePer: {
+                        colors: usagePerColors,
+                        materials: usagePerMaterials,
+                        brands: usagePerBrands
+                    }
+                },
+                errors: []
+            });
+        }).otherwise(function (err) {
+            next(err);
+        });
+    };
+
     this.add = function (req, res, next) {
         if (!req.form.isValid) {
             return thisController.addForm(req, res, next);
