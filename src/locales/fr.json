@@ -289,10 +289,10 @@
   "Names: ": "Noms : ",
   "Shops: ": "Magasins : ",
   "Brands: ": "Marques : ",
-  "Most used per colors": "Les plus utilisés par couleur",
   "Left": "Restant",
   "Used": "Utilisé",
   "Saumon": "Saumon",
   "Used: ": "Utilisé : ",
-  "Left: ": "Restant : "
+  "Left: ": "Restant : ",
+  "Most used": "Les plus utilisés"
 }

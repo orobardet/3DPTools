@@ -1,3 +1,4 @@
+<% var chartsColors = config.get('charts:colors'); %>
 <script src="/vendor/highcharts/highcharts.js"></script>
 <script src="/javascripts/highcharts-locales/<%- getLocale() %>.js"></script>
 
@@ -7,7 +8,7 @@
     // D3 category10
     //var colors = ['#0072AD', '#FF7C15', '#009D37', '#DC141D', '#955EB7', '#8C5049', '#E96FBE', '#7D7D7D', '#B7BD36', '#00BCCB'];
     // D3 category20
-    var chartsColors = ['#0072AD', '#A7C4E3', '#FF7C15', '#FFB97A', '#009D37', '#87DD8C', '#DC141D', '#FF9291', '#955EB7', '#C6AAD0', '#8C5049', '#C59790', '#E96FBE', '#FDB1CE', '#7D7D7D', '#C5C5C5', '#B7BD36', '#D6D88E', '#00BCCB', '#91D7E1'];
+    var chartsColors = <%- sprintf('%-j', chartsColors) %>;
     $(function () {
         Highcharts.setOptions({
             credits: {
@@ -379,12 +380,13 @@
 </div>
 <% } %>
 
-<% if (stats && stats.usagePerColors) { %>
+<% if (stats && stats.usagePer) { %>
 <div class="panel panel-default filament-stats">
     <div class="panel-heading">
-        <h2 class="panel-title"><%- __('Most used per colors'); %></h2>
+        <h2 class="panel-title"><%- __('Most used'); %></h2>
     </div>
-    <div class="panel-body ">
+    <div class="panel-body filament-stats-graph">
+        <% if (stats && stats.usagePer.colors) { %>
         <div id="filament-stats-most-used-by-colors"></div>
         <script type="text/javascript">
             $(function () {
@@ -393,10 +395,10 @@
                         type: 'column'
                     },
                     title: {
-                        text: ''
+                        text: '<i class="fa fa-tint"></i> <%- __('By colors'); %>'
                     },
                     xAxis: {
-                        categories:  <%- sprintf('%-j', stats.usagePerColors.map(function(doc) {
+                        categories:  <%- sprintf('%-j', stats.usagePer.colors.map(function(doc) {
                             return doc._id.name;
                         })); %>
                     },
@@ -442,16 +444,16 @@
                                 enabled: false
                             }
                         },
-                        data: <% var whiteColor = new Color('#FFFFFF'); %><%- sprintf('%-j', stats.usagePerColors.map(function(doc) {
-                            doc.y = doc.totalUsedWeight;
-                            var color = new Color(doc._id.code);
-                            if (color.hexString() == whiteColor.hexString()) {
-                                doc.borderColor = '#DDDDDD';
-                            } else {
-                                doc.borderColor = doc._id.code;
-                            }
-                            return doc;
-                        })); %>
+                        data: <% var whiteColor = new Color('#FFFFFF'); %><%- sprintf('%-j', stats.usagePer.colors.map(function(doc) {
+                        doc.y = doc.totalUsedWeight;
+                        var color = new Color(doc._id.code);
+                        if (color.hexString() == whiteColor.hexString()) {
+                            doc.borderColor = '#DDDDDD';
+                        } else {
+                            doc.borderColor = doc._id.code;
+                        }
+                        return doc;
+                    })); %>
                     },{
                         name: '<%- __('Left') %>',
                         states: {
@@ -459,7 +461,7 @@
                                 enabled: false
                             }
                         },
-                        data: <%- sprintf('%-j', stats.usagePerColors.map(function(doc) {
+                        data: <%- sprintf('%-j', stats.usagePer.colors.map(function(doc) {
                             doc.y = doc.totalLeftWeight;
                             doc.color = doc._id.code;
                             return doc;
@@ -468,6 +470,193 @@
                 });
             });
         </script>
+        <% } %>
+
+        <% if (stats.usagePer.materials || stats.usagePer.brands) { %>
+        <div class="row">
+            <% if (stats.usagePer.materials) { %>
+            <div class="col-md-6 filament-stats-graph">
+                <div id="filament-stats-most-used-by-materials"></div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#filament-stats-most-used-by-materials').highcharts({
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: '<i class="fa fa-leaf"></i> <%- __('By materials'); %>'
+                            },
+                            xAxis: {
+                                categories:  <%- sprintf('%-j', stats.usagePer.materials.map(function(doc) {
+                                    return doc.label;
+                                })); %>
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    enabled: true,
+                                    text: '<%- __('Kg') %>'
+                                },
+                                stackLabels: {
+                                    enabled: true,
+                                    style: {
+                                        fontWeight: 'bold',
+                                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                    }
+                                }
+                            },
+                            legend: {
+                                enabled: false
+                            },
+                            plotOptions: {
+                                column: {
+                                    stacking: 'normal',
+                                    dataLabels: {
+                                        enabled: false,
+                                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                                        style: {
+                                            textShadow: '0 0 3px black'
+                                        }
+                                    },
+                                    tooltip: {
+                                        useHTML: true,
+                                        pointFormat: '<span style="color:{point.borderColor}">\u25CF</span><b><%- __('Used: ') %></b> {point.totalUsedWeight:.2f} Kg<br/><span style="color:{point.borderColor}">\u25CF</span><b><%- __('Left: ') %></b> {point.totalLeftWeight:.2f} Kg',
+                                        borderColor: "red"
+                                    }
+                                }
+                            },
+                            series: [{
+                                name: '<%- __('Used') %>',
+                                color: 'transparent',
+                                states: {
+                                    hover: {
+                                        enabled: false
+                                    }
+                                },
+                                data: <% var colorIdx = 0; %><%- sprintf('%-j', stats.usagePer.materials.map(function(doc) {
+                                    doc.y = doc.totalUsedWeight;
+                                    doc.borderColor = chartsColors[colorIdx];
+                                    colorIdx += 2;
+                                    if (colorIdx > chartsColors.length) {
+                                        colorIdx = 0;
+                                    }
+                                    return doc;
+                                })); %>
+                            },{
+                                name: '<%- __('Left') %>',
+                                states: {
+                                    hover: {
+                                        enabled: false
+                                    }
+                                },
+                                data: <% var colorIdx = 0; %><%- sprintf('%-j', stats.usagePer.materials.map(function(doc) {
+                                    doc.y = doc.totalLeftWeight;
+                                    doc.color = chartsColors[colorIdx];
+                                    colorIdx += 2;
+                                    if (colorIdx > chartsColors.length) {
+                                        colorIdx = 0;
+                                    }
+                                    return doc;
+                                })); %>
+                            }]
+                        });
+                    });
+                </script>
+            </div>
+            <% } %>
+
+            <% if (stats.usagePer.brands) { %>
+            <div class="col-md-6 filament-stats-graph">
+                <div id="filament-stats-most-used-by-brands"></div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#filament-stats-most-used-by-brands').highcharts({
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: '<i class="fa fa-trademark"></i> <%- __('By brands'); %>'
+                            },
+                            xAxis: {
+                                categories:  <%- sprintf('%-j', stats.usagePer.brands.map(function(doc) {
+                                    return doc.label;
+                                })); %>
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    enabled: true,
+                                    text: '<%- __('Kg') %>'
+                                },
+                                stackLabels: {
+                                    enabled: true,
+                                    style: {
+                                        fontWeight: 'bold',
+                                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                    }
+                                }
+                            },
+                            legend: {
+                                enabled: false
+                            },
+                            plotOptions: {
+                                column: {
+                                    stacking: 'normal',
+                                    dataLabels: {
+                                        enabled: false,
+                                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                                        style: {
+                                            textShadow: '0 0 3px black'
+                                        }
+                                    },
+                                    tooltip: {
+                                        useHTML: true,
+                                        pointFormat: '<span style="color:{point.borderColor}">\u25CF</span><b><%- __('Used: ') %></b> {point.totalUsedWeight:.2f} Kg<br/><span style="color:{point.borderColor}">\u25CF</span><b><%- __('Left: ') %></b> {point.totalLeftWeight:.2f} Kg',
+                                        borderColor: "red"
+                                    }
+                                }
+                            },
+                            series: [{
+                                name: '<%- __('Used') %>',
+                                color: 'transparent',
+                                states: {
+                                    hover: {
+                                        enabled: false
+                                    }
+                                },
+                                data: <% var colorIdx = 0; %><%- sprintf('%-j', stats.usagePer.brands.map(function(doc) {
+                                doc.y = doc.totalUsedWeight;
+                                doc.borderColor = chartsColors[colorIdx];
+                                colorIdx += 2;
+                                if (colorIdx > chartsColors.length) {
+                                    colorIdx = 0;
+                                }
+                                return doc;
+                            })); %>
+                            },{
+                                name: '<%- __('Left') %>',
+                                states: {
+                                    hover: {
+                                        enabled: false
+                                    }
+                                },
+                                data: <% var colorIdx = 0; %><%- sprintf('%-j', stats.usagePer.brands.map(function(doc) {
+                                doc.y = doc.totalLeftWeight;
+                                doc.color = chartsColors[colorIdx];
+                                colorIdx += 2;
+                                if (colorIdx > chartsColors.length) {
+                                    colorIdx = 0;
+                                }
+                                return doc;
+                            })); %>
+                            }]
+                        });
+                    });
+                </script>
+            </div>
+            <% } %>
+        </div>
+        <% } %>
     </div>
 </div>
 <% } %>

@@ -332,6 +332,94 @@ module.exports = function (app) {
         ]).exec());
     };
 
+    filamentSchema.statics.getUsagePerMaterials = function (callback) {
+        return when(this.aggregate([
+            { $match: { materialLeftPercentage: { $lt: 100 } } },
+            { $project: {
+                material: '$material',
+                initialWeight: '$initialMaterialWeight',
+                leftPercentage : '$materialLeftPercentage',
+                leftWeight: { $divide : [ { $multiply: [ '$initialMaterialWeight', '$materialLeftPercentage'] }, 100 ] }
+            }
+            },
+            { $project: {
+                material: '$material',
+                initialWeight: '$initialWeight',
+                leftPercentage : '$leftPercentage',
+                leftWeight: '$leftWeight',
+                usedWeight: { $subtract : [ '$initialWeight', '$leftWeight' ] }
+            }
+            },
+            { $group: {
+                _id: '$material',
+                count: { $sum: 1 },
+                totalWeight: { $sum: '$initialWeight'},
+                totalLeftWeight:  { $sum: '$leftWeight'},
+                totalUsedWeight:  { $sum: '$usedWeight'}
+            }
+            },
+            { $sort: { 'totalUsedWeight': -1 } }
+        ]).exec())
+            .with(this)
+            .then(function (result) {
+                return app.models.material.populate(result, { "path" : "_id"}, function(err, results) {
+                    if (err) { throw err; }
+
+                    result = result.map(function(doc) {
+                        doc.label = doc._id.name;
+                        doc._id = doc._id._id;
+                        return doc;
+                    });
+
+                    return result;
+                });
+            });
+    };
+
+    filamentSchema.statics.getUsagePerBrands = function (callback) {
+        return when(this.aggregate([
+            { $match: { materialLeftPercentage: { $lt: 100 } } },
+            { $project: {
+                brand: '$brand',
+                initialWeight: '$initialMaterialWeight',
+                leftPercentage : '$materialLeftPercentage',
+                leftWeight: { $divide : [ { $multiply: [ '$initialMaterialWeight', '$materialLeftPercentage'] }, 100 ] }
+            }
+            },
+            { $project: {
+                brand: '$brand',
+                initialWeight: '$initialWeight',
+                leftPercentage : '$leftPercentage',
+                leftWeight: '$leftWeight',
+                usedWeight: { $subtract : [ '$initialWeight', '$leftWeight' ] }
+            }
+            },
+            { $group: {
+                _id: '$brand',
+                count: { $sum: 1 },
+                totalWeight: { $sum: '$initialWeight'},
+                totalLeftWeight:  { $sum: '$leftWeight'},
+                totalUsedWeight:  { $sum: '$usedWeight'}
+            }
+            },
+            { $sort: { 'totalUsedWeight': -1 } }
+        ]).exec())
+            .with(this)
+            .then(function (result) {
+                return app.models.brand.populate(result, { "path" : "_id"}, function(err, results) {
+                    if (err) { throw err; }
+
+                    result = result.map(function(doc) {
+                        doc.label = doc._id.name;
+                        doc._id = doc._id._id;
+                        return doc;
+                    });
+
+                    return result;
+                });
+            });
+    };
+
     filamentSchema.statics.getStatsPerUsage = function (callback) {
         return when.all([this.aggregate([
                 { $project: {
@@ -407,11 +495,11 @@ module.exports = function (app) {
                 }
             },
             { $lookup: {
-                from: 'shops',
-                localField: 'shopId',
-                foreignField: '_id',
-                as: 'shop'
-            }
+                    from: 'shops',
+                    localField: 'shopId',
+                    foreignField: '_id',
+                    as: 'shop'
+                }
             },
             {
                 $project: {
