@@ -409,7 +409,16 @@ module.exports = function (app) {
                 }
             },
             { $sort: { '_id.buyDay': 1 } }
-        ]).exec());
+        ]).exec())
+            .with(this)
+            .then(function (result) {
+                result = result.map(function(doc) {
+                    doc.buyTimestamp = doc._id.buyDate.getTime();
+                    return doc;
+                });
+
+                return result;
+            });
     };
 
     filamentSchema.statics.getLength = function (weight, density, diameter) {
