@@ -26,8 +26,6 @@ Unit tests:
 
 Docker build:
   image: docker:git
-  services:
-    - docker:dind
   stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
@@ -42,8 +40,6 @@ Docker build:
 
 Docker release:
   image: docker:git
-  services:
-    - docker:dind
   stage: release
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
