@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+
+var app = require('../app')({
+    loadConfig:true,
+    initSession: false,
+    initDb: true,
+    initI18n: true,
+    initViews: false,
+    initLogger: true,
+    loadComponents: true,
+    loadNavigation: false,
+    setupHttpRouting: false
+});
+var mongoose = require('mongoose');
+var debug = require('debug')('3DPTools:server');
+var consign = require('consign');
+
+app.program = require('commander');
+app.cliStop = function() {
+    mongoose.connection.close();
+};
+
+app.program
+    .version(app.config.get('version'));
+
+// Autoload CLI controllers
+consign({
+    verbose: false
+}).include('cli')
+    .into(app);
+
+app.program.parse(process.argv);
+
+if (!app.program.args.length) {
+    app.program.help();
+}
