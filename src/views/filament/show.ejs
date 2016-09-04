@@ -120,34 +120,6 @@
     </div>
 
     <div class="filament-content">
-        <div class="description markdown">
-            <%- marked(filament.description) %>
-        </div>
-        <div class="buy-data">
-            <table>
-                <tr>
-                    <td class="shop-data">
-                        <% if (filament.shop.url) { %>
-                        <a href="<%- filament.shop.url %>" target="_blank">
-                            <% } %>
-                            <% if (filament.shop.logo && filament.shop.logo.size) { %>
-                            <img alt="<%- filament.shop.name %>" title="<%- filament.shop.name %>" class="shop-logo"
-                                 src="/shop/get-logo/<%- filament.shop.id %>">
-                            <% } else { %>
-                            <%- filament.shop.name %>
-                            <% } %>
-                            <% if (filament.shop.url) { %>
-                        </a>
-                        <% } %>
-                    </td>
-                    <td>
-                        <b><%- __('Purchased on:') %></b> <%- moment(filament.buyDate).format('LL') %>
-                        <br/>
-                        <b><%- __('Price:') %></b> <%- __('%.2f € TTC', filament.price) %>
-                    </td>
-                </tr>
-            </table>
-        </div>
         <div class="filament-left-data">
             <%- __('Material left: ~ %.2f Kg / %.2f Kg', filament.leftMaterialWeight(), filament.initialMaterialWeight) %>
             <a href="/filament/left-material/<%- filament.id %>" class="pull-right"><i class="fa fa-pencil"></i></a>
@@ -177,6 +149,41 @@
             </div>
             <%- __('Length left: ~ %.2f m / ~ %.2f m', filament.getLeftLength(), filament.getInitialLength()) %>
         </div>
+        <div class="description markdown">
+            <%- marked(filament.description) %>
+        </div>
+        <div class="buy-data">
+            <table>
+                <tr>
+                    <td class="shop-data">
+                        <% if (filament.shop.url) { %>
+                        <a href="<%- filament.shop.url %>" target="_blank">
+                            <% } %>
+                            <% if (filament.shop.logo && filament.shop.logo.size) { %>
+                            <img alt="<%- filament.shop.name %>" title="<%- filament.shop.name %>" class="shop-logo"
+                                 src="/shop/get-logo/<%- filament.shop.id %>">
+                            <% } else { %>
+                            <%- filament.shop.name %>
+                            <% } %>
+                            <% if (filament.shop.url) { %>
+                        </a>
+                        <% } %>
+                    </td>
+                    <td>
+                        <b><%- __('Purchased on:') %></b> <%- moment(filament.buyDate).format('LL') %>
+                        <br/>
+                        <b><%- __('Price:') %></b> <%- __('%.2f € TTC', filament.price) %>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <% if (filament.creationDate) { %>
+        <div class="buy-data">
+            <% if (filament.creationDate) { %>
+            <b><%- __('Created on:') %></b> <%- moment(filament.creationDate).format('LL') %>
+            <% } %>
+        </div>
+        <% } %>
     </div>
 
     <% if (filament.pictures && filament.pictures.length) { %>
