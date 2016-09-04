@@ -3,9 +3,20 @@ module.exports = function (app) {
     var mongoose = require('mongoose');
     var Schema = mongoose.Schema;
 
+    /**
+     * Current schema version
+     *
+     * @type {number}
+     *
+     * <b>Version history:</b>
+     * - 1: add creationDate. Migrating to buyDate.
+     */
+    var currentVersion = 1;
+
     var filamentSchema = new Schema({
         name: String,
         description: String,
+        creationDate: { type: Date, default: null },
         brand: {type: Schema.Types.ObjectId, ref: 'Brand'},
         material: {type: Schema.Types.ObjectId, ref: 'Material'},
         diameter: Number,   // in mm
@@ -38,8 +49,38 @@ module.exports = function (app) {
         initialTotalWeight: Number,  // in Kgram
         materialLeftPercentage: Number,
         flowPercentage: Number,
-        speedPercentage: Number
+        speedPercentage: Number,
+        _version : { type: Number }
     });
+
+    filamentSchema.pre('save', function(next) {
+        if (!this.creationDate) {
+            this.creationDate = Date.now();
+        }
+        next();
+    });
+
+    filamentSchema.methods.migrate = function() {
+        var that = this;
+
+        var migrated = false;
+        if (app.models.migrate && app.models.migrate.filament) {
+            Object.keys(app.models.migrate.filament).forEach(function (element, index) {
+                var migrator = new app.models.migrate.filament[element](that, currentVersion);
+
+                if (migrator.needMigration && typeof migrator.needMigration === 'function' && migrator.needMigration()) {
+                    migrated = true;
+                    if (migrator.migrate && typeof migrator.migrate === 'function') {
+                        migrator.migrate();
+                    }
+                }
+            });
+        }
+
+        this._version = currentVersion;
+
+        return migrated;
+    };
 
     filamentSchema.statics.findById = function (id, cb) {
         return this.findOne({_id: id}, cb);
