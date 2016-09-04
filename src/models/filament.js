@@ -10,15 +10,17 @@ module.exports = function (app) {
      *
      * <b>Version history:</b>
      * - 1: add creationDate. Migrating to buyDate.
-     * - 12: add modificationDate. Migrating to creationDate.
+     * - 2: add modificationDate. Migrating to creationDate.
+     * - 3: add lastUsedDate. Migrating to modificationDate.
      */
-    var currentVersion = 2;
+    var currentVersion = 3;
 
     var filamentSchema = new Schema({
         name: String,
         description: String,
         creationDate: { type: Date, default: null },
         modificationDate: { type: Date, default: null },
+        lastUsedDate: { type: Date, default: null },
         brand: {type: Schema.Types.ObjectId, ref: 'Brand'},
         material: {type: Schema.Types.ObjectId, ref: 'Material'},
         diameter: Number,   // in mm
@@ -623,6 +625,14 @@ module.exports = function (app) {
 
         return true;
     };
+
+    filamentSchema.methods.setLastUsed = function(lastDate) {
+        if (!lastDate) {
+            lastDate = Date.now();
+        }
+
+        this.lastUsedDate = lastDate;
+    }
 
     filamentSchema.methods.setLeftLength = function (leftLength) {
         var volume = Math.PI * Math.pow(this.diameter / 2 / 1000, 2) * leftLength;
