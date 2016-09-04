@@ -99,10 +99,10 @@ module.exports = function (app) {
                     var processed = 0;
                     var saved = 0;
                     process.stdout.write(sprintf('-> %'+countCharacters+'d/%'+countCharacters+'d - %3f%%   \r', processed, nbItems, processed?Math.round(nbItems/processed*100):0));
-                    var items2 = [ items[0]];
-                    var savePromises = items2.map(function (item) {
+                    var savePromises = items.map(function (item) {
                         var promise = false;
                         if (item.migrate()) {
+                            item.setInMigration();
                             saved++;
                             promise = item.save();
                         }
