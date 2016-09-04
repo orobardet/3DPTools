@@ -10,13 +10,15 @@ module.exports = function (app) {
      *
      * <b>Version history:</b>
      * - 1: add creationDate. Migrating to buyDate.
+     * - 12: add modificationDate. Migrating to creationDate.
      */
-    var currentVersion = 1;
+    var currentVersion = 2;
 
     var filamentSchema = new Schema({
         name: String,
         description: String,
         creationDate: { type: Date, default: null },
+        modificationDate: { type: Date, default: null },
         brand: {type: Schema.Types.ObjectId, ref: 'Brand'},
         material: {type: Schema.Types.ObjectId, ref: 'Material'},
         diameter: Number,   // in mm
@@ -53,10 +55,32 @@ module.exports = function (app) {
         _version : { type: Number }
     });
 
+
+    filamentSchema.methods.setInMigration = function() {
+        this.inMigration = true;
+    }
+
+    filamentSchema.methods.isInMigration = function() {
+        return this.inMigration;
+    }
+
+    filamentSchema.methods.resetInMigration = function() {
+        delete this.inMigration;
+    }
+
     filamentSchema.pre('save', function(next) {
+        if (this.isInMigration()) {
+            this.resetInMigration();
+            next();
+            return;
+        }
+
         if (!this.creationDate) {
             this.creationDate = Date.now();
         }
+
+        this.modificationDate = Date.now();
+
         next();
     });
 
