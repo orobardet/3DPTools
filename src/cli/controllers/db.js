@@ -28,7 +28,8 @@ module.exports = function (app) {
             }).on('--help', function () {
             console.log('  Actions:');
             console.log();
-            console.log('    resave : Resave every items in the collections. Useful to force schema update on existing data.');
+            console.log('    migrate : Migrate every items in the collections to the last version, saving them if needed.');
+            console.log('    resave : Resave every items in the collections. Useful to force schema update on existing data. Try migrate before resave.');
             console.log();
         });
 
@@ -69,6 +70,51 @@ module.exports = function (app) {
                             }
                         });
                     });
+                });
+
+            }));
+        } else {
+            console.error(colors.red('*** No models found for collection "'+collectionName+'"'));
+            app.cliStop();
+        }
+    };
+
+    /**
+     * Migrate of each items in a collection of the database
+     *
+     * @param {string} collectionName - Name of the collection as received on the command line.
+     * @param {Command} program - A commander object representing the parsed command line
+     *
+     * @returns {Promise}
+     */
+    this.migrate = function(collectionName, program) {
+        var itemName = this.modelNameFromCollectionParameter(collectionName);
+        if (app.models[itemName] && (typeof app.models[itemName] === "function") && app.models[itemName].base.Mongoose) {
+            var model = app.models[itemName];
+            return when(model.count().exec().then(function(nbItems){
+                console.log("Migrating " + nbItems + " " + itemName + "(s)...");
+                var countCharacters = sprintf('%d', nbItems).length;
+
+                when(model.find().exec()).then(function(items) {
+                    var processed = 0;
+                    var saved = 0;
+                    process.stdout.write(sprintf('-> %'+countCharacters+'d/%'+countCharacters+'d - %3f%%   \r', processed, nbItems, processed?Math.round(nbItems/processed*100):0));
+                    var items2 = [ items[0]];
+                    var savePromises = items2.map(function (item) {
+                        var promise = false;
+                        if (item.migrate()) {
+                            saved++;
+                            promise = item.save();
+                        }
+                        processed++;
+                        process.stdout.write(sprintf('-> %'+countCharacters+'d/%'+countCharacters+'d - %3f%%   \r', processed, nbItems, processed?Math.round(nbItems/processed*100):0));
+                        return promise;
+                    });
+                    Promise.all(savePromises).then(function(results){
+                        app.cliStop();
+                    });
+
+                    console.log("\n" + saved + " " + itemName + "(s) migrated.");
                 });
 
             }));
