@@ -440,6 +440,7 @@ module.exports = function (app) {
                     filament.setLeftTotalWeight(weight);
                     responseData.length = filament.getLeftLength();
                 }
+                responseData.percentageLeft = filament.materialLeftPercentage;
                 return res.json(responseData);
             });
     };
