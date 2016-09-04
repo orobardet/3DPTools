@@ -392,6 +392,7 @@ module.exports = function (app) {
 
                 if (req.form.leftLength) {
                     filament.setLeftLength(req.form.leftLength);
+                    filament.setLastUsed();
 
                     filament.save(function (err) {
                         if (err) {
@@ -405,6 +406,7 @@ module.exports = function (app) {
                         weight /= 1000;
                     }
                     filament.setLeftTotalWeight(weight);
+                    filament.setLastUsed();
 
                     filament.save(function (err) {
                         if (err) {

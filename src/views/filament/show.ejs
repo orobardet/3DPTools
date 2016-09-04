@@ -177,13 +177,16 @@
                 </tr>
             </table>
         </div>
-        <% if (filament.creationDate || filament.modificationDate) { %>
+        <% if (filament.creationDate || filament.modificationDate || filament.lastUsedDate) { %>
         <div class="buy-data">
             <% if (filament.creationDate) { %>
             <b><%- __('Created on:') %></b> <%- moment(filament.creationDate).format('LL') %><br/>
             <% } %>
             <% if (filament.modificationDate) { %>
             <b><%- __('Modified on:') %></b> <%- moment(filament.modificationDate).format('LL') %><br/>
+            <% } %>
+            <% if (filament.lastUsedDate) { %>
+            <b><%- __('Last used on:') %></b> <%- moment(filament.lastUsedDate).format('LL') %><br/>
             <% } %>
         </div>
         <% } %>
