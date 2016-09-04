@@ -14,7 +14,6 @@ module.exports = function (app) {
             'filament/view',
             'filament/add',
             'filament/edit',
-            'filament/delete',
             'filament/left-material',
             'filament/add-picture'
         ], req.originalUrl);
@@ -326,7 +325,6 @@ module.exports = function (app) {
             'filament/view',
             'filament/add',
             'filament/edit',
-            'filament/delete',
             'filament/left-material',
             'filament/add-picture'
         ], req.originalUrl);
