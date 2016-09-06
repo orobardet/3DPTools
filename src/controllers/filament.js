@@ -15,7 +15,8 @@ module.exports = function (app) {
             'filament/add',
             'filament/edit',
             'filament/left-material',
-            'filament/add-picture'
+            'filament/add-picture',
+            'filament/cost-calculator'
         ], req.originalUrl);
 
         when(Filament.find().populate('material brand shop').sort({
@@ -568,6 +569,18 @@ module.exports = function (app) {
                 res.status(404);
                 return res.json(res.__('Filament %s not found.', filamentId));
             });
+    };
+
+    this.costCalculatorForm = function (req, res, next) {
+        when.all([
+            Filament.find().sort('name').exec()
+        ]).spread(function (filaments) {
+            return res.render('filament/cost-calculator', {
+                cancelUrl: req.getOriginUrl("filament/cost-calculator", "/filament"),
+                filaments: filaments,
+                errors: (req.form) ? req.form.getErrors() : []
+            });
+        });
     };
 
     return this;
