@@ -572,9 +572,11 @@ module.exports = function (app) {
     };
 
     this.costCalculatorForm = function (req, res, next) {
-        when.all([
-            Filament.find().sort('name').exec()
-        ]).spread(function (filaments) {
+        when(Filament.find().populate('material brand shop').sort({
+            'material.name': 1,
+            'color.code': 1,
+            'brand.name': 1
+        })).then(function (filaments) {
             return res.render('filament/cost-calculator', {
                 cancelUrl: req.getOriginUrl("filament/cost-calculator", "/filament"),
                 filaments: filaments,
