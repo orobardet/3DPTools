@@ -75,8 +75,8 @@
     </div>
 
 
-    <div class="col-md-6">
-        <table class="table filament-list filament-details" style="display:none;">
+    <div id="compute-form" class="col-md-6" style="display:none;">
+        <table class="table filament-list filament-details">
             <tr>
                 <td>
                     <div class="color-preview-container">
@@ -234,7 +234,7 @@ $(function() {
         $filamentDetails.find('.filament-buy-date').text(moment(filament.buyDate).format('LL'));
         $filamentDetails.find('.filament-price').text(Locale3DPTools.__('%.2f € TTC', filament.price));
 
-        $filamentDetails.show();
+        $('#compute-form').show();
     })
 });
 </script>
