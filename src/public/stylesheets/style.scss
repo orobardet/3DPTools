@@ -392,6 +392,35 @@ table.material-list {
     .filament-left-data {
       text-align: center;
     }
+    &.filament-details td {
+      border-top: 0;
+    }
+  }
+
+  .filaments-list-container {
+    margin-bottom: 10px;
+
+    .filament-list {
+      display: block;
+      height: 100%;
+      overflow: auto;
+
+      .filament-item {
+        border-top: 1px #ddd solid;
+
+        &:first-child {
+          border-top: 0;
+        }
+
+        &.selected {
+          background-color: $brand-info;
+        }
+
+        .title {
+          font-weight: bold;
+        }
+      }
+    }
   }
 }
 
