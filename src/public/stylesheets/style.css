@@ -8269,6 +8269,11 @@ table.material-list > tbody > tr > td.material-description {
         background-color: #5bc0de; }
       .filament-section .filaments-list-container .filament-list .filament-item .title {
         font-weight: bold; }
+.filament-section #computed-filament-results {
+  text-align: center;
+  font-size: x-large;
+  margin: 10px;
+  font-weight: bold; }
 
 .filament-content .brand-logo-container {
   text-align: center; }
