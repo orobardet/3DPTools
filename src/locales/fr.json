@@ -236,7 +236,7 @@
   "Length:": "Longueur :",
   "Length left: ~ %.2f m / ~ %.2f m": "Longueur restante : ~ %.2f m / ~ %.2f m",
   "~ %.2f m": "~ %.2f m",
-  "add picture": "Ajouter une image",
+  "add picture": "ajouter une image",
   "Add %s filament's picture": "Ajouter une image au filament %s",
   "Picture:": "Image :",
   "You can choose a picture.": "Vous pouvez choisir une image.",
@@ -300,5 +300,7 @@
   "Last used on:": "Dernière utilisation le :",
   "Cost calculator": "Calculateur de coût",
   "Filament:": "Filament:",
-  "Weight:": "Poids :"
+  "Weight:": "Poids :",
+  "cost calculator": "calculateur de coût",
+  "other actions": "autres actions"
 }

@@ -289,7 +289,17 @@ $(function() {
         $filamentDetails.find('.filament-price').text(Locale3DPTools.__('%.2f € TTC', filament.price));
 
         $('#compute-form').show();
+
+        window.location.hash = filament._id;
+
         $('form.form-filament').trigger('submit');
     })
+
+    if (window.location.hash) {
+        var $item = $('.filament-item#filament-'+window.location.hash.replace(/^#/, ''));
+        $item.trigger('click');
+        $('#filament-list').scrollTop($item.position().top - $item.height());
+    }
+
 });
 </script>
