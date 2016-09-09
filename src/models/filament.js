@@ -58,6 +58,26 @@ module.exports = function (app) {
     });
 
 
+    filamentSchema.methods.getData = function(noPictures) {
+        var data = this.toObject({getters: false, virtuals: true, versionKey: false});
+
+        if (noPictures) {
+            data.pictures = data.pictures.map(function(picture) {
+                picture.data = null;
+                return picture;
+            });
+            if (data.shop && data.shop.logo) {
+                data.shop.logo.data = null;
+            }
+            if (data.brand && data.brand.logo) {
+                data.brand.logo.data = null;
+            }
+        }
+
+        return data;
+    }
+
+
     filamentSchema.methods.setInMigration = function() {
         this.inMigration = true;
     }

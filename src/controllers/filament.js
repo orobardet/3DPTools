@@ -15,7 +15,8 @@ module.exports = function (app) {
             'filament/add',
             'filament/edit',
             'filament/left-material',
-            'filament/add-picture'
+            'filament/add-picture',
+            'filament/cost-calculator'
         ], req.originalUrl);
 
         when(Filament.find().populate('material brand shop').sort({
@@ -567,6 +568,58 @@ module.exports = function (app) {
             .catch(function (err) {
                 res.status(404);
                 return res.json(res.__('Filament %s not found.', filamentId));
+            });
+    };
+
+    this.costCalculatorForm = function (req, res, next) {
+        when(Filament.find().populate('material brand shop').sort({
+            'material.name': 1,
+            'color.code': 1,
+            'brand.name': 1
+        })).then(function (filaments) {
+            return res.render('filament/cost-calculator', {
+                cancelUrl: req.getOriginUrl("filament/cost-calculator", "/filament"),
+                filaments: filaments,
+                errors: (req.form) ? req.form.getErrors() : []
+            });
+        });
+    };
+
+    this.costCalculator = function (req, res, next) {
+        var filamentId = req.params.filament_id;
+
+        when(Filament.findById(filamentId).exec())
+            .then(function (filament) {
+                if (!req.form.isValid) {
+                    return res.json({ errors: req.form.errors });
+                }
+
+                var responseData = {
+                    cost: null,
+                    weight: null,
+                    length: null
+                };
+
+                if (req.form.length) {
+                    filament.setLeftLength(req.form.length);
+                    responseData.weight = filament.leftMaterialWeight();
+                    responseData.length = req.form.length;
+                }
+
+                if (req.form.weight) {
+                    responseData.weight = req.form.weight;
+                    if (req.form.weighUnit === "g") {
+                        responseData.weight /= 1000;
+                    }
+                    filament.setLeftTotalWeight(responseData.weight);
+                    responseData.length = filament.getLeftLength();
+                }
+
+                if (responseData.weight) {
+                    responseData.cost = responseData.weight * filament.price / filament.initialMaterialWeight;
+                }
+
+                return res.json(responseData);
             });
     };
 

@@ -8253,6 +8253,27 @@ table.material-list > tbody > tr > td.material-description {
   margin-bottom: 0; }
 .filament-section .table.filament-list .filament-left-data {
   text-align: center; }
+.filament-section .table.filament-list.filament-details td {
+  border-top: 0; }
+.filament-section .filaments-list-container {
+  margin-bottom: 10px; }
+  .filament-section .filaments-list-container .filament-list {
+    display: block;
+    height: 100%;
+    overflow: auto; }
+    .filament-section .filaments-list-container .filament-list .filament-item {
+      border-top: 1px #ddd solid; }
+      .filament-section .filaments-list-container .filament-list .filament-item:first-child {
+        border-top: 0; }
+      .filament-section .filaments-list-container .filament-list .filament-item.selected {
+        background-color: #5bc0de; }
+      .filament-section .filaments-list-container .filament-list .filament-item .title {
+        font-weight: bold; }
+.filament-section #computed-filament-results {
+  text-align: center;
+  font-size: x-large;
+  margin: 10px;
+  font-weight: bold; }
 
 .filament-content .brand-logo-container {
   text-align: center; }
