@@ -106,7 +106,7 @@
     <div class="filament-actions">
         <title><%- __('Actions') %></title>
         <a href="/filament/edit/<%- filament.id %>" class="btn btn-default btn-block trg-edit-filament"><i
-                    class=" fa fa-pencil"></i>&nbsp;<%- __("edit") %>
+                    class="fa fa-pencil"></i>&nbsp;<%- __("edit") %>
         </a>
         <a href="/filament/delete/<%- filament.id %>" data-id="<%- filament.id %>"
            class="btn btn-default btn-block trg-delete-filament"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %>
@@ -116,6 +116,9 @@
         </a>
         <a href="/filament/add-picture/<%- filament.id %>" class="btn btn-default btn-block"><i
                     class="fa fa-image"></i>&nbsp;<%- __("add picture") %>
+        </a>
+        <a href="/filament/cost-calculator#<%- filament.id %>" class="btn btn-default btn-block"><i
+                    class="fa fa-money"></i>&nbsp;<%- __("cost calculator") %>
         </a>
     </div>
 
