@@ -1,7 +1,11 @@
 <ul class="nav nav-tabs nav-tabs-title">
     <li role="presentation" class="active"><h1><i class="rs rs-filament"></i>&nbsp;<%- __('Filaments') %></h1></li>
     <li role="presentation"><a href="/filament/stats"><i class="fa fa-pie-chart"></i> <%- __('Statistics') %></a></li>
+    <div class="pull-right">
+        <a href="/filament/cost-calculator" class="btn btn-default"><i class="fa fa-money"></i> <%- __('Cost calculator'); %></a>
+    </div>
 </ul>
+
 
 <div class="panel panel-default">
     <div class="panel-heading with-button">
@@ -23,8 +27,8 @@
             <th></th>
         </tr>
         <% filaments.forEach(function (filament) { %>
-        <tr class="trg-show-filament" data-url="/filament/show/<%- filament.id %>">
-            <td>
+        <tr data-url="/filament/show/<%- filament.id %>">
+            <td class="trg-show-filament" >
                 <div class="color-preview-container">
                     <div title="<%- filament.color.name %>" class="color-preview"
                    style="background-color: <%- filament.color.code %> %>;">
@@ -32,18 +36,18 @@
                     </div>
                 </div>
             </td>
-            <td>
+            <td class="trg-show-filament" >
                 <%- filament.material.name %>
                 <br/>
                 <i class="p3di p3di-weight"></i>
                 <%- __('%s kg', filament.initialMaterialWeight) %>
             </td>
-            <td>
+            <td class="trg-show-filament" >
                 <b>∅</b> <%- filament.diameter %>
                 <br/>
                 <%- __('%s kg/m³', filament.density) %>
             </td>
-            <td>
+            <td class="trg-show-filament" >
                 <% if (filament.headTemp.experienced) { %>
                 <i class="rs rs-extruder"></i>
                 <%- __('%s°C', filament.headTemp.experienced) %>
@@ -54,7 +58,7 @@
                 <%- __('%s°C', filament.bedTemp.experienced) %>
                 <% } %>
             </td>
-            <td>
+            <td class="trg-show-filament" >
                 <% if (filament.brand.logo && filament.brand.logo.size) { %>
                 <img alt="<%- filament.brand.name %>" title="<%- filament.brand.name %>" class="brand-logo"
                      src="/brand/get-logo/<%- filament.brand.id %>">
@@ -62,7 +66,7 @@
                 <%- filament.brand.name %>
                 <% } %>
             </td>
-            <td>
+            <td class="trg-show-filament">
                 <div class="progress">
                     <%
                         var leftPercentage = filament.materialLeftPercentage;
@@ -99,7 +103,16 @@
                        class="trg-delete-filament"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
                     <br/>
                     <a href="/filament/left-material/<%- filament.id %>"><i class="p3di p3di-weight"></i>&nbsp;<%- __("left material") %></a>
-                    <a href="/filament/add-picture/<%- filament.id %>"><i class="fa fa-image"></i>&nbsp;<%- __("add picture") %></a>
+                    <span class="dropdown">
+                        <a href="#" class="trg-dropdown" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <%- __("other actions") %>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/filament/add-picture/<%- filament.id %>"><i class="fa fa-image"></i>&nbsp;<%- __("add picture") %></a></li>
+                            <li><a href="/filament/cost-calculator#<%- filament.id %>"><i class=" fa fa-money"></i>&nbsp;<%- __("cost calculator") %></a></li>
+                        </ul>
+                    </span>
                 </div>
             </td>
         </tr>
@@ -180,9 +193,14 @@
         $('.trg-show-filament').click(function (e) {
             var url = $(this).data('url');
 
+            if (!url) {
+                url = $(this).parent().data('url');
+            }
+
             if (url) {
                 document.location = url;
             }
         });
+
     });
 </script>

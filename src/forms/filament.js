@@ -155,5 +155,36 @@ module.exports = function (app) {
 
     );
 
+
+    this.costCalculator = form(
+        field("weight", "Weight")
+            .trim()
+            .isNumeric()
+            .custom(function (value) {
+                if (value <= 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            }),
+        field("length", "Length")
+            .trim()
+            .isNumeric()
+            .custom(function (value) {
+                if (value <= 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            }),
+        field("weighUnit", "Weight's unit")
+            .trim()
+            .ifNull('g')
+            .toLower()
+            .required()
+            .custom(function (value) {
+                if ((value !== "g") && (value !== "kg")) {
+                    throw new Error('%s must be "g" or "kg".');
+                }
+            })
+
+    );
+
     return this;
 };
