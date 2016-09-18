@@ -264,6 +264,79 @@
 </div>
 <% } %>
 
+<% if (stats && stats.pricePerKg) { %>
+<div class="panel panel-default filament-stats">
+    <div class="panel-heading">
+        <h2 class="panel-title"><%- __('Price per Kg'); %></h2>
+    </div>
+    <div class="panel-body ">
+        <div id="filament-stats-price-per-kg"></div>
+        <script type="text/javascript">
+            $(function () {
+                $('#filament-stats-price-per-kg').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: '<i class="fa fa-leaf"></i> <%- __('By materials'); %>'
+                    },
+                    xAxis: {
+                        categories:  <%- sprintf('%-j', stats.pricePerKg.map(function(doc) {
+                            return doc.material.name;
+                        })); %>
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            enabled: true,
+                            text: '<%- __('€/Kg') %>'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        series: {
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y:.2f}',
+                                style: {
+                                    color: 'gray'
+                                }
+                            }
+                        },
+                        column: {
+                            tooltip: {
+                                useHTML: true,
+                                pointFormat: '<span style="color:{point.borderColor}">\u25CF</span><b>{point.pricePerKg:.2f} €/Kg</b>' +
+                                '<br/><span style="color:{point.borderColor}">\u25CF</span><b><%- __('Count: ') %></b> {point.count}' +
+                                '<br/><span style="color:{point.borderColor}">\u25CF</span><b><%- __('Total: ') %></b> {point.materialWeight:.2f} Kg' +
+                                '<br/><span style="color:{point.borderColor}">\u25CF</span><b><%- __('Total: ') %></b> {point.totalCost:.2f} €'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: '<%- __('Used') %>',
+                        data: <% var colorIdx = 0; %><%- sprintf('%-j', stats.pricePerKg.map(function(doc) {
+                        doc.y = doc.pricePerKg;
+                        doc.color = chartsColors[colorIdx];
+                        doc.borderColor = chartsColors[colorIdx];
+                        colorIdx += 2;
+                        if (colorIdx > chartsColors.length) {
+                            colorIdx = 0;
+                        }
+                        return doc;
+                    })); %>
+                    }]
+                });
+            });
+        </script>
+    </div>
+</div>
+<% } %>
+
+
 <% if (stats && stats.boughtHistory) { %>
 <div class="panel panel-default filament-stats">
     <div class="panel-heading">
