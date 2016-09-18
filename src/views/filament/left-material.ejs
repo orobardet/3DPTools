@@ -89,7 +89,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control" id="leftTotalWeight"
                                name="leftTotalWeight"
-                               value="<%- (locals.leftTotalWeight) ? leftTotalWeight : ''; %>">
+                               value="<%- (locals.leftTotalWeight) ? leftTotalWeight : ''; %>" autofocus>
                         <div class="input-group-addon">
                             <label for="weight-unit-g"><input type="radio" name="weighUnit" value="g" id="weight-unit-g" <%- (locals.weighUnit) ? (weighUnit=='g'?'checked':'') : 'checked' %>> <%- __('g'); %></label>
                             /
