@@ -290,6 +290,15 @@ $(function() {
 
         $('#compute-form').show();
 
+        var $lengthInput = $('#length');
+        var $weightInput = $('#weight');
+        if (($weightInput.val() != '') && ($lengthInput.val() == '')) {
+            $weightInput.focus();
+        } else {
+            $lengthInput.focus();
+        }
+
+
         window.location.hash = filament._id;
 
         $('form.form-filament').trigger('submit');
