@@ -68,7 +68,7 @@
                         <div class="col-sm-7">
                             <input type="email" class="form-control" id="email" name="email"
                                    placeholder="<%- __('Email'); %>" value="<%- (locals.email) ? email : '' %>"
-                                   required>
+                                   required autofocus>
                         </div>
                         <ul class="col-sm-offset-3 col-sm-9 help-block with-errors"></ul>
                     </div>
@@ -134,7 +134,11 @@
 
 <script type="text/javascript">
     $(function () {
-        var $userFormDialog = $('#user-form-dlg');
+        var $userFormDialog = $('#user-form-dlg').on('show.bs.modal', function() {
+            $('#email').focus();
+        }).on('shown.bs.modal', function() {
+            $('#email').focus();
+        });
         var $userForm = $('form', $userFormDialog).first();
 
         function userFormClearError() {
