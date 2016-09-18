@@ -148,7 +148,7 @@
         }
 
         $userFormDialog.on('show.bs.modal', function() {
-            $('fieldset', $userFormDialog).removeAttr('disabled');
+            $('fieldset', $userFormDialog).prop('disabled', false);
             $userForm[0].reset();
             $userForm.show();
             userFormClearError();
