@@ -633,6 +633,7 @@ module.exports = function (app) {
             { $project: {
                 materialId: '$material',
                 materialWeight: '$initialMaterialWeight',
+                price: '$price',
                 pricePerKg: { $divide : [ '$price', '$initialMaterialWeight'] }
             }
             },
@@ -640,15 +641,8 @@ module.exports = function (app) {
                 _id: '$materialId',
                 count: { $sum: 1 },
                 materialWeight: { $sum: '$materialWeight' },
+                totalCost: { $sum: '$price' },
                 pricePerKg: { $avg: '$pricePerKg'}
-            }
-            },
-            { $project: {
-                count: '$count',
-                materialId: '$material',
-                materialWeight: '$materialWeight',
-                pricePerKg: '$pricePerKg',
-                totalCost: { $multiply: [ '$pricePerKg', '$materialWeight' ] }
             }
             },
             { $lookup: {
