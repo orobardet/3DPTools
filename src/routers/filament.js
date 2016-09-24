@@ -14,7 +14,7 @@ module.exports = function (app) {
         next();
     });
 
-    router.get('/', Controller.index);
+    router.get('/', FilamentForm.search, Controller.index);
     router.get('/stats', Controller.stats);
 
     router.get('/get/:filament_id', Controller.get);

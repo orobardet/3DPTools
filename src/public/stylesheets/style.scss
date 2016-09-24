@@ -218,6 +218,12 @@ table.table {
 }
 
 table.shop-list, table.brand-list, table.material-list, table.filament-list {
+  & > tbody > tr > th {
+    border-top: 0;
+    & input, & select, & textarea, & label, & button {
+      font-weight: normal;
+    }
+  }
   & > tbody > tr > td {
     vertical-align: middle;
   }
