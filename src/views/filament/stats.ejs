@@ -285,13 +285,38 @@
                             return doc.material.name;
                         })); %>
                     },
-                    yAxis: {
+                    yAxis: [{
                         min: 0,
                         title: {
                             enabled: true,
-                            text: '<%- __('€/Kg') %>'
-                        }
+                            text: '<%- __('€/Kg') %>',
+                            style: {
+                                color: 'gray'
+                            }
+                        },
+                        labels:{
+                            style: {
+                                color: 'gray'
+                            }
+                        },
                     },
+                    {
+                        min: 0,
+                        title: {
+                            enabled: false,
+                            text: '<%- __('Kg') %>',
+                            style: {
+                                color: 'lightgray'
+                            }
+                        },
+                        labels:{
+                            format: '{value} Kg',
+                            style: {
+                                color: 'lightgray'
+                            }
+                        },
+                        opposite: true
+                    }],
                     legend: {
                         enabled: false
                     },
@@ -317,9 +342,40 @@
                         }
                     },
                     series: [{
-                        name: '<%- __('Used') %>',
+                        name: 'perKg',
+                        yAxis: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.2f}',
+                            style: {
+                                color: 'gray',
+                                textShadow: 0
+                            }
+                        },
                         data: <% var colorIdx = 0; %><%- sprintf('%-j', stats.pricePerKg.map(function(doc) {
                         doc.y = doc.pricePerKg;
+                        doc.color = chartsColors[colorIdx];
+                        doc.borderColor = chartsColors[colorIdx];
+                        colorIdx += 2;
+                        if (colorIdx > chartsColors.length) {
+                            colorIdx = 0;
+                        }
+                        return doc;
+                    })); %>
+                    },
+                    {
+                        name: 'totalWeight',
+                        yAxis: 1,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.2f}',
+                            style: {
+                                color: 'lightgray',
+                                textShadow: 0
+                            }
+                        },
+                        data: <% var colorIdx = 1; %><%- sprintf('%-j', stats.pricePerKg.map(function(doc) {
+                        doc.y = doc.materialWeight;
                         doc.color = chartsColors[colorIdx];
                         doc.borderColor = chartsColors[colorIdx];
                         colorIdx += 2;
