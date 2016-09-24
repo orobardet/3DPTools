@@ -19,13 +19,30 @@ module.exports = function (app) {
             'filament/cost-calculator'
         ], req.originalUrl);
 
-        when(Filament.find().populate('material brand shop').sort({
+        var search = req.form;
+        var filamentFilter = {};
+
+        if (search.material && search.material !== '') {
+            filamentFilter.material = search.material;
+        }
+
+        when.all([
+            Filament.find(filamentFilter).populate('material brand shop').sort({
             'material.name': 1,
             'color.code': 1,
             'brand.name': 1
-        }).exec())
-            .then(function (filaments) {
+        }).exec(),
+            Material.find().sort('name').exec(),
+            Brand.find().sort('name').exec(),
+            Shop.find().sort('name').exec()
+        ]).spread(function (filaments, materials, brands, shops) {
+
+                materials.unshift({name:'', id:''});
                 return res.render('filament/index', {
+                    search: search,
+                    materials: materials,
+                    brands: brands,
+                    shops: shops,
                     filaments: filaments,
                     pageTitle: 'Filaments',
                     errors: []

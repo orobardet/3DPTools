@@ -186,5 +186,9 @@ module.exports = function (app) {
 
     );
 
+    this.search = form(
+        field("material", "Material")
+    );
+
     return this;
 };
