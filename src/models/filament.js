@@ -626,6 +626,39 @@ module.exports = function (app) {
             });
     };
 
+
+    filamentSchema.statics.getStatsCostPerKg = function (callback) {
+        return when(this.aggregate([
+            { $match: { price: { $gt: 0 } } },
+            { $project: {
+                materialId: '$material',
+                materialWeight: '$initialMaterialWeight',
+                price: '$price',
+                pricePerKg: { $divide : [ '$price', '$initialMaterialWeight'] }
+            }
+            },
+            { $group: {
+                _id: '$materialId',
+                count: { $sum: 1 },
+                materialWeight: { $sum: '$materialWeight' },
+                totalCost: { $sum: '$price' },
+                pricePerKg: { $avg: '$pricePerKg'}
+            }
+            },
+            { $lookup: {
+                from: 'materials',
+                localField: '_id',
+                foreignField: '_id',
+                as: 'material'
+            }
+            },
+            {
+                $unwind: '$material'
+            },
+            { $sort: { 'pricePerKg': 1 } }
+        ]).exec());
+    };
+
     filamentSchema.statics.getLength = function (weight, density, diameter) {
         var volume = weight / density;
         return volume / (Math.PI * Math.pow(diameter / 2 / 1000, 2));
