@@ -391,7 +391,6 @@ module.exports = function (app) {
 
     filamentSchema.statics.getUsagePerColors = function (callback) {
         return when(this.aggregate([
-            { $match: { materialLeftPercentage: { $lt: 100 } } },
             { $project: {
                     color: '$color',
                     initialWeight: '$initialMaterialWeight',
@@ -415,13 +414,13 @@ module.exports = function (app) {
                     totalUsedWeight:  { $sum: '$usedWeight'}
                 }
             },
+            { $match: { totalUsedWeight: { $gt: 0 } } },
             { $sort: { 'totalUsedWeight': -1 } }
         ]).exec());
     };
 
     filamentSchema.statics.getUsagePerMaterials = function (callback) {
         return when(this.aggregate([
-            { $match: { materialLeftPercentage: { $lt: 100 } } },
             { $project: {
                 material: '$material',
                 initialWeight: '$initialMaterialWeight',
@@ -445,6 +444,7 @@ module.exports = function (app) {
                 totalUsedWeight:  { $sum: '$usedWeight'}
             }
             },
+            { $match: { totalUsedWeight: { $gt: 0 } } },
             { $sort: { 'totalUsedWeight': -1 } }
         ]).exec())
             .with(this)
@@ -465,7 +465,6 @@ module.exports = function (app) {
 
     filamentSchema.statics.getUsagePerBrands = function (callback) {
         return when(this.aggregate([
-            { $match: { materialLeftPercentage: { $lt: 100 } } },
             { $project: {
                 brand: '$brand',
                 initialWeight: '$initialMaterialWeight',
@@ -489,6 +488,7 @@ module.exports = function (app) {
                 totalUsedWeight:  { $sum: '$usedWeight'}
             }
             },
+            { $match: { totalUsedWeight: { $gt: 0 } } },
             { $sort: { 'totalUsedWeight': -1 } }
         ]).exec())
             .with(this)
@@ -629,7 +629,6 @@ module.exports = function (app) {
 
     filamentSchema.statics.getStatsCostPerKg = function (callback) {
         return when(this.aggregate([
-            { $match: { price: { $gt: 0 } } },
             { $project: {
                 materialId: '$material',
                 materialWeight: '$initialMaterialWeight',
