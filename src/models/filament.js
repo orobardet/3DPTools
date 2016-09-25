@@ -141,6 +141,22 @@ module.exports = function (app) {
             });
     };
 
+    filamentSchema.statics.getColors = function (callback) {
+        return when(this.aggregate([
+            { $group: {
+                _id: '$color',
+            }
+            },
+            { $sort: { '_id.code': 1 } },
+            { $project: {
+                _id: 0,
+                name: '$_id.name',
+                code: '$_id.code'
+            }
+            },
+        ]).exec());
+    };
+
     filamentSchema.statics.getTotalCost = function (callback) {
         return when(this.aggregate({
             $group: {
