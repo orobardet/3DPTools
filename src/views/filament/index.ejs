@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="/css/bootstrap-select.min.css">
+<script src="/js/bootstrap-select.min.js"></script>
+
 <ul class="nav nav-tabs nav-tabs-title">
     <li role="presentation" class="active"><h1><i class="rs rs-filament"></i>&nbsp;<%- __('Filaments') %></h1></li>
     <li role="presentation"><a href="/filament/stats"><i class="fa fa-pie-chart"></i> <%- __('Statistics') %></a></li>
@@ -17,7 +20,6 @@
         <%- __('No filament found.') %>
         <% } %>
     </div>
-    <% if (filaments && filaments.length) { %>
     <form id="filament-search" method="GET" class="form-inline">
     <table class="table table-hover filament-list">
         <tr>
@@ -35,12 +37,31 @@
                     <% }); %>
                     <% } %>
                 </select>
+                &nbsp;
                 <i class="fa fa-shopping-bag"></i>
+                <select class="form-control selectpicker" id="shop" name="shop" data-width="120px" required>
+                    <% if (locals.shops && shops.length) { selected = (locals.search && locals.search.shop) ? search.shop : ''; %>
+                    <% shops.forEach(function (shop) { %>
+                    <option value="<%- shop.id %>"
+                            <% if (shop.logo) { %>
+                            data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>' title='<%- shop.name %>'></img><span class='name'><%- shop.name %></span>"
+                            <% } else { %>
+                            data-content="<%- shop.name %> "
+                            <% } %>
+                            <% if (shop.id == selected) { %>
+                            selected
+                            <% } %>
+                    ><%- shop.name %></option>
+                    <% }); %>
+                    <% } %>
+                </select>
+
             </th>
             <th><i class="fa fa-trademark"></i></th>
             <th></th>
             <th></th>
         </tr>
+        <% if (filaments && filaments.length) { %>
         <% filaments.forEach(function (filament) { %>
         <tr data-url="/filament/show/<%- filament.id %>">
             <td class="trg-show-filament" >
@@ -131,10 +152,9 @@
                 </div>
             </td>
         </tr>
-        <% }); %>
+        <% }); } %>
     </table>
     </form>
-    <% } %>
 </div>
 
 <div id="filament-message-container"></div>
@@ -165,6 +185,8 @@
                 }
             });
         }
+
+        $('.selectpicker').selectpicker();
 
         $('.trg-delete-filament').click(function (e) {
             e.preventDefault();
