@@ -43,7 +43,7 @@ module.exports = function (app) {
                 shops.unshift({name:'&nbsp;', id:''});
 
                 return res.render('filament/index', {
-                    search: search,
+                    search: Object.keys(filamentFilter).length?search:null,
                     materials: materials,
                     brands: brands,
                     shops: shops,
