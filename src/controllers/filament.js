@@ -28,6 +28,9 @@ module.exports = function (app) {
         if (search.shop && search.shop !== '') {
             filamentFilter.shop = search.shop;
         }
+        if (search.brand && search.brand !== '') {
+            filamentFilter.brand = search.brand;
+        }
 
         when.all([
             Filament.find(filamentFilter).populate('material brand shop').sort({
@@ -41,6 +44,7 @@ module.exports = function (app) {
         ]).spread(function (filaments, materials, brands, shops) {
                 materials.unshift({name:'&nbsp;', id:''});
                 shops.unshift({name:'&nbsp;', id:''});
+                brands.unshift({name:'&nbsp;', id:''});
 
                 return res.render('filament/index', {
                     search: Object.keys(filamentFilter).length?search:null,
