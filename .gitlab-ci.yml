@@ -55,9 +55,9 @@ Docker release:
     - triggers
 
 Github and Docker Hub:
-  cache:
   image: ubuntu
   stage: mirror
+  cache:
   script:
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update && apt-get install --no-install-recommends -y git openssh-client curl
@@ -69,6 +69,7 @@ Github and Docker Hub:
     - git fetch github
     - git push --mirror -f github
     - curl -k "$DOCKER_HUB_TRIGGER_URL"
+  environment: github
   when: manual
   only:
     - master
