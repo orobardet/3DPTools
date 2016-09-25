@@ -59,7 +59,11 @@
             </th>
             <th><i class="fa fa-trademark"></i></th>
             <th></th>
-            <th><a href="#" id="clear-search"><i class="fa fa-eraser"></i></a></th>
+            <th>
+                <% if (locals.search && search != {}) { %>
+                <a href="#" id="clear-search" title="<%- __('Cancel search'); %>"><i class="fa fa-eraser"></i></a>
+                <% } %>
+            </th>
         </tr>
         <% if (filaments && filaments.length) { %>
         <% filaments.forEach(function (filament) { %>
