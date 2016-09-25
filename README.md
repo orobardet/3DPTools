@@ -8,7 +8,7 @@ Web-based 3DPrinting tools
 
 - [NodeJS](https://nodejs.org/) (6.x) with npm
 - ImageMagick
-- [MongoDB](https://www.mongodb.com/) ()3.2)
+- [MongoDB](https://www.mongodb.com/) (3.2)
 - [Redis](http://redis.io/)
 - Any OS where the previous requirements runs. Has been proven to work on Linux (Ubuntu and Debian tested) and Windows (Windows 10 tested).
 - Of course MongoDB and Redis does not needs to run on the same host as the Node app.
@@ -55,12 +55,4 @@ NODE_ENV=production npm start
 ## Using Docker
 
 TODO
-
-# Development
-
-## Build docker image
-
-```shell
-docker build -t ${USER}/3dptools:$(cat VERSION) .
-```
 
