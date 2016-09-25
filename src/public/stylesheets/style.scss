@@ -364,21 +364,6 @@ table.material-list {
 
 .filament-section {
 
-  .bootstrap-select {
-    .filter-option {
-      .brand-logo, .shop-logo {
-        max-height: 16px;
-      }
-    }
-
-    .dropdown-menu {
-      .brand-logo, .shop-logo {
-        float: right !important;
-        max-height: 16px;
-      }
-    }
-  }
-
   .filament-left-data {
     font-size: small;
   }
@@ -434,6 +419,29 @@ table.material-list {
     font-size: x-large;
     margin: 10px;
     font-weight: bold;
+  }
+
+  .bootstrap-select {
+    .filter-option {
+      .brand-logo, .shop-logo {
+        max-height: 16px;
+      }
+    }
+
+    .dropdown-menu {
+      .name {
+        margin-right: 100px;
+      }
+      .brand-logo, .shop-logo {
+        float: right !important;
+        max-height: 16px;
+        max-width: 120px;
+      }
+    }
+  }
+
+  .table.filament-list .bootstrap-select button.dropdown-toggle span.name {
+    display: none;
   }
 }
 

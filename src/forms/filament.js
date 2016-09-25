@@ -187,7 +187,8 @@ module.exports = function (app) {
     );
 
     this.search = form(
-        field("material", "Material")
+        field("material", "Material"),
+        field("shop", "Shop")
     );
 
     return this;
