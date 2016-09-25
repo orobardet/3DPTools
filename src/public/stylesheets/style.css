@@ -254,7 +254,7 @@ th {
     border: 1px solid #ddd !important; } }
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url(font-url('bootstrap/glyphicons-halflings-regular.eot' , true));
+  src: url(font-url("bootstrap/glyphicons-halflings-regular.eot", true));
   src: url(font-url("bootstrap/glyphicons-halflings-regular.eot?#iefix", true)) format("embedded-opentype"), url(font-url("bootstrap/glyphicons-halflings-regular.woff2", true)) format("woff2"), url(font-url("bootstrap/glyphicons-halflings-regular.woff", true)) format("woff"), url(font-url("bootstrap/glyphicons-halflings-regular.ttf", true)) format("truetype"), url(font-url("bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular", true)) format("svg"); }
 .glyphicon {
   position: relative;
@@ -8159,6 +8159,9 @@ h1 {
 .dropdown.language-selector > .dropdown-menu > li.active.active > a {
   background-color: transparent; }
 
+.panel > .table, .filament-show-layout .filament-details > .table, .panel > form > .table, .filament-show-layout .filament-details > form > .table {
+  margin-bottom: 0; }
+
 .modal-header.draggable {
   cursor: move; }
 
@@ -8226,6 +8229,10 @@ table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
   table.table > tr td.table-actions a:not(:last-of-type), table.table tbody > tr td.table-actions a:not(:last-of-type) {
     margin-right: 5px; }
 
+table.shop-list > tbody > tr > th, table.brand-list > tbody > tr > th, table.material-list > tbody > tr > th, table.filament-list > tbody > tr > th {
+  border-top: 0; }
+  table.shop-list > tbody > tr > th input, table.shop-list > tbody > tr > th select, table.shop-list > tbody > tr > th textarea, table.shop-list > tbody > tr > th label, table.shop-list > tbody > tr > th button, table.brand-list > tbody > tr > th input, table.brand-list > tbody > tr > th select, table.brand-list > tbody > tr > th textarea, table.brand-list > tbody > tr > th label, table.brand-list > tbody > tr > th button, table.material-list > tbody > tr > th input, table.material-list > tbody > tr > th select, table.material-list > tbody > tr > th textarea, table.material-list > tbody > tr > th label, table.material-list > tbody > tr > th button, table.filament-list > tbody > tr > th input, table.filament-list > tbody > tr > th select, table.filament-list > tbody > tr > th textarea, table.filament-list > tbody > tr > th label, table.filament-list > tbody > tr > th button {
+    font-weight: normal; }
 table.shop-list > tbody > tr > td, table.brand-list > tbody > tr > td, table.material-list > tbody > tr > td, table.filament-list > tbody > tr > td {
   vertical-align: middle; }
 table.shop-list td.table-actions > .actions-block, table.brand-list td.table-actions > .actions-block, table.material-list td.table-actions > .actions-block, table.filament-list td.table-actions > .actions-block {
@@ -8345,14 +8352,9 @@ table.material-list > tbody > tr > td.material-description {
       font-size: smaller;
       word-wrap: break-word; }
 
-.filament-section .bootstrap-select .filter-option .brand-logo, .filament-section .bootstrap-select .filter-option .shop-logo {
-  max-height: 16px; }
-.filament-section .bootstrap-select .dropdown-menu .brand-logo, .filament-section .bootstrap-select .dropdown-menu .shop-logo {
-  float: right !important;
-  max-height: 16px; }
 .filament-section .filament-left-data {
   font-size: small; }
-.filament-section .table.filament-list .color-preview-container {
+.filament-section .table.filament-list td .color-preview-container {
   height: 46px;
   width: 46px; }
 .filament-section .table.filament-list .brand-logo, .filament-section .table.filament-list .shop-logo {
@@ -8364,6 +8366,14 @@ table.material-list > tbody > tr > td.material-description {
   text-align: center; }
 .filament-section .table.filament-list.filament-details td {
   border-top: 0; }
+.filament-section .table.filament-list tr th {
+  vertical-align: middle; }
+  .filament-section .table.filament-list tr th i {
+    font-size: larger; }
+.filament-section .table.filament-list #clear-search {
+  color: #d9534f;
+  float: right;
+  text-align: right; }
 .filament-section .filaments-list-container {
   margin-bottom: 10px; }
   .filament-section .filaments-list-container .filament-list {
@@ -8383,6 +8393,16 @@ table.material-list > tbody > tr > td.material-description {
   font-size: x-large;
   margin: 10px;
   font-weight: bold; }
+.filament-section .bootstrap-select .filter-option .brand-logo, .filament-section .bootstrap-select .filter-option .shop-logo {
+  max-height: 16px; }
+.filament-section .bootstrap-select .dropdown-menu .logo-name {
+  margin-right: 100px; }
+.filament-section .bootstrap-select .dropdown-menu .brand-logo, .filament-section .bootstrap-select .dropdown-menu .shop-logo {
+  float: right !important;
+  max-height: 16px;
+  max-width: 120px; }
+.filament-section .table.filament-list .bootstrap-select button.dropdown-toggle span.name {
+  display: none; }
 
 .filament-content .brand-logo-container {
   text-align: center; }
@@ -8492,5 +8512,8 @@ table.material-list > tbody > tr > td.material-description {
   .filament-stats-vertical-stack .panel-body > .filament-stats-graph:first-of-type {
     border-top: 0px;
     padding-top: 0px; }
+
+table td.not-found {
+  text-align: center; }
 
 /*# sourceMappingURL=style.css.map */
