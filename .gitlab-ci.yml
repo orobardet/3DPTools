@@ -67,7 +67,7 @@ Github and Docker Hub:
     - git remote add github git@github.com:orobardet/3dptools.git
     - git fetch github
     - git push --mirror -f github "$CI_BUILD_REF_NAME"
-    - curl -k "https://registry.hub.docker.com/u/orobardet/3dptools/trigger/5342d440-a38f-4510-b0a2-15aa1e59f339/"
+    - curl -k "$DOCKER_HUB_TRIGGER_URL"
   when: manual
   only:
     - master
