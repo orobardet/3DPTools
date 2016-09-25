@@ -4,6 +4,7 @@ stages:
   - tests
   - build
   - release
+  - mirror
 
 cache:
   key: 3dptools-ci
@@ -52,3 +53,18 @@ Docker release:
   only:
     - tags
     - triggers
+
+Github and Docker Hub:
+  image: ubuntu
+  script:
+    - mkdir -p ~/.ssh
+    - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
+    - ssh-keyscan -H github.com > ~/.ssh/known_hosts
+    - chmod -R 0600 ~/.ssh/
+    - git remote add github git@github.com:orobardet/3dptools.git
+    - git fetch github
+    - git push github "$CI_BUILD_REF_NAME" -f
+    - curl "https://registry.hub.docker.com/u/orobardet/3dptools/trigger/5342d440-a38f-4510-b0a2-15aa1e59f339/"
+  when: manual
+  only:
+    - master
