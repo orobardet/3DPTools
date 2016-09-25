@@ -66,7 +66,7 @@ Github and Docker Hub:
     - chmod -R 0600 ~/.ssh/
     - git remote | grep github > /dev/null && git remote set-url github git@github.com:orobardet/3dptools.git || git remote add github git@github.com:orobardet/3dptools.git
     - git fetch github
-    - git push --mirror -f github "$CI_BUILD_REF_NAME"
+    - git push --mirror -f github
     - curl -k "$DOCKER_HUB_TRIGGER_URL"
   when: manual
   only:
