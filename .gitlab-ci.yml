@@ -63,6 +63,7 @@ Github and Docker Hub:
     - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
     - ssh-keyscan -H github.com > ~/.ssh/known_hosts
     - chmod -R 0600 ~/.ssh/
+    - echp "> This is an automated mirror of [$CI_PROJECT_NAME on Gitlab]($CI_PROJECT_URL). The original Gitlab repository is the only reference to use." | cat - README.md > /tmp/README.md && mv /tmp/README.md README.md
     - git remote add github git@github.com:orobardet/3dptools.git
     - git fetch github
     - git push github "$CI_BUILD_REF_NAME" -f
