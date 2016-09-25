@@ -122,6 +122,10 @@ h1 {
   }
 }
 
+.panel > .table, .panel > form > .table {
+  margin-bottom: 0;
+}
+
 .modal-header.draggable {
   cursor: move;
 }
@@ -218,6 +222,12 @@ table.table {
 }
 
 table.shop-list, table.brand-list, table.material-list, table.filament-list {
+  & > tbody > tr > th {
+    border-top: 0;
+    & input, & select, & textarea, & label, & button {
+      font-weight: normal;
+    }
+  }
   & > tbody > tr > td {
     vertical-align: middle;
   }
@@ -358,27 +368,12 @@ table.material-list {
 
 .filament-section {
 
-  .bootstrap-select {
-    .filter-option {
-      .brand-logo, .shop-logo {
-        max-height: 16px;
-      }
-    }
-
-    .dropdown-menu {
-      .brand-logo, .shop-logo {
-        float: right !important;
-        max-height: 16px;
-      }
-    }
-  }
-
   .filament-left-data {
     font-size: small;
   }
 
   .table.filament-list {
-    .color-preview-container {
+    td .color-preview-container {
       height: 46px;
       width: 46px;
     }
@@ -394,6 +389,19 @@ table.material-list {
     }
     &.filament-details td {
       border-top: 0;
+    }
+
+    tr th {
+      vertical-align: middle;
+      i {
+        font-size: larger;
+      }
+    }
+
+    #clear-search {
+      color: $brand-danger;
+      float: right;
+      text-align: right;
     }
   }
 
@@ -428,6 +436,29 @@ table.material-list {
     font-size: x-large;
     margin: 10px;
     font-weight: bold;
+  }
+
+  .bootstrap-select {
+    .filter-option {
+      .brand-logo, .shop-logo {
+        max-height: 16px;
+      }
+    }
+
+    .dropdown-menu {
+      .logo-name {
+        margin-right: 100px;
+      }
+      .brand-logo, .shop-logo {
+        float: right !important;
+        max-height: 16px;
+        max-width: 120px;
+      }
+    }
+  }
+
+  .table.filament-list .bootstrap-select button.dropdown-toggle span.name {
+    display: none;
   }
 }
 
@@ -616,4 +647,8 @@ table.material-list {
       }
     }
   }
+}
+
+table td.not-found {
+  text-align: center;
 }

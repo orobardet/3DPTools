@@ -19,13 +19,44 @@ module.exports = function (app) {
             'filament/cost-calculator'
         ], req.originalUrl);
 
-        when(Filament.find().populate('material brand shop').sort({
+        var search = req.form;
+        var filamentFilter = {};
+
+        if (search.material && search.material !== '') {
+            filamentFilter.material = search.material;
+        }
+        if (search.shop && search.shop !== '') {
+            filamentFilter.shop = search.shop;
+        }
+        if (search.brand && search.brand !== '') {
+            filamentFilter.brand = search.brand;
+        }
+        if (search.color && search.color !== '') {
+            filamentFilter['color.code'] = search.color;
+        }
+
+        when.all([
+            Filament.find(filamentFilter).populate('material brand shop').sort({
             'material.name': 1,
             'color.code': 1,
             'brand.name': 1
-        }).exec())
-            .then(function (filaments) {
+        }).exec(),
+            Material.find().sort('name').exec(),
+            Brand.find().sort('name').exec(),
+            Shop.find().sort('name').exec(),
+            Filament.getColors()
+        ]).spread(function (filaments, materials, brands, shops, colors) {
+                materials.unshift({name:'&nbsp;', id:null});
+                shops.unshift({name:'&nbsp;', id:null});
+                brands.unshift({name:'&nbsp;', id:null});
+                colors.unshift({name:'&nbsp;', code: null});
+
                 return res.render('filament/index', {
+                    search: Object.keys(filamentFilter).length?search:null,
+                    materials: materials,
+                    brands: brands,
+                    shops: shops,
+                    colors: colors,
                     filaments: filaments,
                     pageTitle: 'Filaments',
                     errors: []

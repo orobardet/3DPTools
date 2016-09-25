@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="/css/bootstrap-select.min.css">
+<script src="/js/bootstrap-select.min.js"></script>
+
 <ul class="nav nav-tabs nav-tabs-title">
     <li role="presentation" class="active"><h1><i class="rs rs-filament"></i>&nbsp;<%- __('Filaments') %></h1></li>
     <li role="presentation"><a href="/filament/stats"><i class="fa fa-pie-chart"></i> <%- __('Statistics') %></a></li>
@@ -17,15 +20,84 @@
         <%- __('No filament found.') %>
         <% } %>
     </div>
-    <% if (filaments && filaments.length) { %>
+    <form id="filament-search" method="GET" class="form-inline">
     <table class="table table-hover filament-list">
         <tr>
+            <th>
+                <select class="form-control selectpicker" id="color" name="color" data-width="60px" title="<%- __('Color'); %>">
+                    <% if (locals.colors && colors.length) { selected = (locals.search && search.color) ? search.color : ''; %>
+                    <% colors.forEach(function (color) { %>
+                    <option value="<%- color.code %>"
+                            <% if (color.code) { %>
+                            data-content="<div class='color-preview-container'><i class='color-preview' style='background-color: <%- color.code %>;'></i></div> <span class='name'><%- color.name %></span>"
+                            <% } else { %>
+                            data-content="<span class='name'><%- color.name %></span>"
+                            <% } %>
+                            <% if (color.code == selected) { %>
+                            selected
+                            <% } %>
+                    ><%- color.name %></option>
+                    <% }); %>
+                    <% } %>
+                </select>
+            </th>
+            <th colspan="3">
+                <select class="form-control selectpicker" id="material" name="material" data-width="auto"  title="<%- __('Material'); %>">
+                    <% if (locals.materials && materials.length) { selected = (locals.search && locals.search.material) ? search.material : ''; %>
+                    <% materials.forEach(function (material) { %>
+                    <option value="<%- material.id %>"
+                            <% if (material.id == selected) { %>
+                            selected
+                            <% } %>
+                    ><%- material.name %></option>
+                    <% }); %>
+                    <% } %>
+                </select>
+                &nbsp;
+                <select class="form-control selectpicker" id="shop" name="shop" data-width="120px" title="<%- __('Shop'); %>">
+                    <% if (locals.shops && shops.length) { selected = (locals.search && locals.search.shop) ? search.shop : ''; %>
+                    <% shops.forEach(function (shop) { %>
+                    <option value="<%- shop.id %>"
+                            <% if (shop.logo) { %>
+                            data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>' title='<%- shop.name %>'></img> <span class='name logo-name'><%- shop.name %></span>"
+                            <% } else { %>
+                            data-content="<%- shop.name %> "
+                            <% } %>
+                            <% if (shop.id == selected) { %>
+                            selected
+                            <% } %>
+                    ><%- shop.name %></option>
+                    <% }); %>
+                    <% } %>
+                </select>
+
+            </th>
+            <th>
+                <select class="form-control selectpicker" id="brand" name="brand" data-width="120px" title="<%- __('Brand'); %>">
+                    <% if (locals.brands && brands.length) { selected = (locals.search && locals.search.brand) ? search.brand : ''; %>
+                    <% brands.forEach(function (brand) { %>
+                    <option value="<%- brand.id %>"
+                            <% if (brand.logo) { %>
+                            data-content="<img class='brand-logo' src='/brand/get-logo/<%- brand.id %>' title='<%- brand.name %>'></img> <span class='name logo-name'><%- brand.name %></span>"
+                            <% } else { %>
+                            data-content="<%- brand.name %> "
+                            <% } %>
+                            <% if (brand.id == selected) { %>
+                            selected
+                            <% } %>
+                    ><%- brand.name %></option>
+                    <% }); %>
+                    <% } %>
+                </select>
+            </th>
             <th></th>
-            <th colspan="3"><%- __('Specifications') %></th>
-            <th><%- __('Brand') %></th>
-            <th><%- __('Material left') %></th>
-            <th></th>
+            <th>
+                <% if (locals.search && search != {}) { %>
+                <a href="#" id="clear-search" title="<%- __('Cancel search'); %>"><i class="fa fa-eraser"></i></a>
+                <% } %>
+            </th>
         </tr>
+        <% if (filaments && filaments.length) { %>
         <% filaments.forEach(function (filament) { %>
         <tr data-url="/filament/show/<%- filament.id %>">
             <td class="trg-show-filament" >
@@ -117,8 +189,13 @@
             </td>
         </tr>
         <% }); %>
+        <% } else { %>
+        <tr>
+            <td colspan="7" class="not-found"><%- __('No filament found.') %></td>
+        </tr>
+        <% } %>
     </table>
-    <% } %>
+    </form>
 </div>
 
 <div id="filament-message-container"></div>
@@ -149,6 +226,8 @@
                 }
             });
         }
+
+        $('.selectpicker').selectpicker();
 
         $('.trg-delete-filament').click(function (e) {
             e.preventDefault();
@@ -202,5 +281,30 @@
             }
         });
 
+        $('form#filament-search').on('change', 'input, select', function() {
+            $('form#filament-search').submit();
+        }).on('submit', function() {
+            $('.form-control:input', $(this)).each(function() {
+                var $input = $(this);
+
+                var value = $input.val();
+                if (!value || value == '') {
+                    $input.prop('disabled', true);
+                }
+
+            });
+            $(':input', $(this)).prop('readonly', true);
+            $('button', $(this)).prop('disabled', true);
+        });
+
+        $('#clear-search').click(function(e) {
+            e.preventDefault();
+            $(':input', 'form#filament-search')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+            $('form#filament-search').submit();
+        });
     });
 </script>
