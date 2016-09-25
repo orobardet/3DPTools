@@ -58,7 +58,7 @@ Github and Docker Hub:
   image: ubuntu
   stage: mirror
   script:
-    - apt-get update && apt-get install git openssl-client curl
+    - apt-get update && apt-get install git openssh-client curl
     - mkdir -p ~/.ssh
     - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
     - ssh-keyscan -H github.com > ~/.ssh/known_hosts
