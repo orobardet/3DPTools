@@ -55,6 +55,7 @@ Docker release:
     - triggers
 
 Github and Docker Hub:
+  cache:
   image: ubuntu
   stage: mirror
   script:
