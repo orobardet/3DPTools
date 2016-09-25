@@ -58,12 +58,12 @@ Github and Docker Hub:
   image: ubuntu
   stage: mirror
   script:
-    - apt-get update && apt-get install git openssh-client curl
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update && apt-get install --no-install-recommends -y git openssh-client curl
     - mkdir -p ~/.ssh
     - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
     - ssh-keyscan -H github.com > ~/.ssh/known_hosts
     - chmod -R 0600 ~/.ssh/
-    - echp "> This is an automated mirror of [$CI_PROJECT_NAME on Gitlab]($CI_PROJECT_URL). The original Gitlab repository is the only reference to use." | cat - README.md > /tmp/README.md && mv /tmp/README.md README.md
     - git remote add github git@github.com:orobardet/3dptools.git
     - git fetch github
     - git push github "$CI_BUILD_REF_NAME" -f
