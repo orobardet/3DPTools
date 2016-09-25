@@ -8159,6 +8159,9 @@ h1 {
 .dropdown.language-selector > .dropdown-menu > li.active.active > a {
   background-color: transparent; }
 
+.panel > .table, .filament-show-layout .filament-details > .table, .panel > form > .table, .filament-show-layout .filament-details > form > .table {
+  margin-bottom: 0; }
+
 .modal-header.draggable {
   cursor: move; }
 
@@ -8363,6 +8366,14 @@ table.material-list > tbody > tr > td.material-description {
   text-align: center; }
 .filament-section .table.filament-list.filament-details td {
   border-top: 0; }
+.filament-section .table.filament-list tr th {
+  vertical-align: middle; }
+  .filament-section .table.filament-list tr th i {
+    font-size: larger; }
+.filament-section .table.filament-list #clear-search {
+  color: #d9534f;
+  float: right;
+  text-align: right; }
 .filament-section .filaments-list-container {
   margin-bottom: 10px; }
   .filament-section .filaments-list-container .filament-list {
@@ -8501,5 +8512,8 @@ table.material-list > tbody > tr > td.material-description {
   .filament-stats-vertical-stack .panel-body > .filament-stats-graph:first-of-type {
     border-top: 0px;
     padding-top: 0px; }
+
+table td.not-found {
+  text-align: center; }
 
 /*# sourceMappingURL=style.css.map */

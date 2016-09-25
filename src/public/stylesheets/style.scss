@@ -122,6 +122,10 @@ h1 {
   }
 }
 
+.panel > .table, .panel > form > .table {
+  margin-bottom: 0;
+}
+
 .modal-header.draggable {
   cursor: move;
 }
@@ -386,6 +390,19 @@ table.material-list {
     &.filament-details td {
       border-top: 0;
     }
+
+    tr th {
+      vertical-align: middle;
+      i {
+        font-size: larger;
+      }
+    }
+
+    #clear-search {
+      color: $brand-danger;
+      float: right;
+      text-align: right;
+    }
   }
 
   .filaments-list-container {
@@ -630,4 +647,8 @@ table.material-list {
       }
     }
   }
+}
+
+table td.not-found {
+  text-align: center;
 }

@@ -59,7 +59,7 @@
             </th>
             <th><i class="fa fa-trademark"></i></th>
             <th></th>
-            <th></th>
+            <th><a href="#" id="clear-search"><i class="fa fa-eraser"></i></a></th>
         </tr>
         <% if (filaments && filaments.length) { %>
         <% filaments.forEach(function (filament) { %>
@@ -152,7 +152,12 @@
                 </div>
             </td>
         </tr>
-        <% }); } %>
+        <% }); %>
+        <% } else { %>
+        <tr>
+            <td colspan="7" class="not-found"><%- __('No filament found.') %></td>
+        </tr>
+        <% } %>
     </table>
     </form>
 </div>
@@ -241,6 +246,28 @@
         });
 
         $('form#filament-search').on('change', 'input, select', function() {
+            $('form#filament-search').submit();
+        }).on('submit', function() {
+            $('.form-control:input', $(this)).each(function() {
+                var $input = $(this);
+
+                var value = $input.val();
+                if (!value || value == '') {
+                    $input.prop('disabled', true);
+                }
+
+            });
+            $(':input', $(this)).prop('readonly', true);
+            $('button', $(this)).prop('disabled', true);
+        });
+
+        $('#clear-search').click(function(e) {
+            e.preventDefault();
+            $(':input', 'form#filament-search')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
             $('form#filament-search').submit();
         });
     });
