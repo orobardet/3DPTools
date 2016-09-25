@@ -44,7 +44,7 @@
                     <% shops.forEach(function (shop) { %>
                     <option value="<%- shop.id %>"
                             <% if (shop.logo) { %>
-                            data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>' title='<%- shop.name %>'></img><span class='name'><%- shop.name %></span>"
+                            data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>' title='<%- shop.name %>'></img> <span class='name'><%- shop.name %></span>"
                             <% } else { %>
                             data-content="<%- shop.name %> "
                             <% } %>
@@ -57,7 +57,25 @@
                 </select>
 
             </th>
-            <th><i class="fa fa-trademark"></i></th>
+            <th>
+                <i class="fa fa-trademark"></i>
+                <select class="form-control selectpicker" id="brand" name="brand" data-width="120px" required>
+                    <% if (locals.brands && brands.length) { selected = (locals.search && locals.search.brand) ? search.brand : ''; %>
+                    <% brands.forEach(function (brand) { %>
+                    <option value="<%- brand.id %>"
+                            <% if (brand.logo) { %>
+                            data-content="<img class='brand-logo' src='/brand/get-logo/<%- brand.id %>' title='<%- brand.name %>'></img> <span class='name'><%- brand.name %></span>"
+                            <% } else { %>
+                            data-content="<%- brand.name %> "
+                            <% } %>
+                            <% if (brand.id == selected) { %>
+                            selected
+                            <% } %>
+                    ><%- brand.name %></option>
+                    <% }); %>
+                    <% } %>
+                </select>
+            </th>
             <th></th>
             <th>
                 <% if (locals.search && search != {}) { %>
