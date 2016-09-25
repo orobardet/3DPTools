@@ -31,6 +31,9 @@ module.exports = function (app) {
         if (search.brand && search.brand !== '') {
             filamentFilter.brand = search.brand;
         }
+        if (search.color && search.color !== '') {
+            filamentFilter['color.code'] = search.color;
+        }
 
         when.all([
             Filament.find(filamentFilter).populate('material brand shop').sort({
@@ -40,17 +43,20 @@ module.exports = function (app) {
         }).exec(),
             Material.find().sort('name').exec(),
             Brand.find().sort('name').exec(),
-            Shop.find().sort('name').exec()
-        ]).spread(function (filaments, materials, brands, shops) {
-                materials.unshift({name:'&nbsp;', id:''});
-                shops.unshift({name:'&nbsp;', id:''});
-                brands.unshift({name:'&nbsp;', id:''});
+            Shop.find().sort('name').exec(),
+            Filament.getColors()
+        ]).spread(function (filaments, materials, brands, shops, colors) {
+                materials.unshift({name:'&nbsp;', id:null});
+                shops.unshift({name:'&nbsp;', id:null});
+                brands.unshift({name:'&nbsp;', id:null});
+                colors.unshift({name:'&nbsp;', code: null});
 
                 return res.render('filament/index', {
                     search: Object.keys(filamentFilter).length?search:null,
                     materials: materials,
                     brands: brands,
                     shops: shops,
+                    colors: colors,
                     filaments: filaments,
                     pageTitle: 'Filaments',
                     errors: []

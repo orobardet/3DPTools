@@ -23,10 +23,26 @@
     <form id="filament-search" method="GET" class="form-inline">
     <table class="table table-hover filament-list">
         <tr>
-            <th><i class="fa fa-tint"></i></th>
+            <th>
+                <select class="form-control selectpicker" id="color" name="color" data-width="60px" title="<%- __('Color'); %>">
+                    <% if (locals.colors && colors.length) { selected = (locals.search && search.color) ? search.color : ''; %>
+                    <% colors.forEach(function (color) { %>
+                    <option value="<%- color.code %>"
+                            <% if (color.code) { %>
+                            data-content="<div class='color-preview-container'><i class='color-preview' style='background-color: <%- color.code %>;'></i></div> <span class='name'><%- color.name %></span>"
+                            <% } else { %>
+                            data-content="<span class='name'><%- color.name %></span>"
+                            <% } %>
+                            <% if (color.code == selected) { %>
+                            selected
+                            <% } %>
+                    ><%- color.name %></option>
+                    <% }); %>
+                    <% } %>
+                </select>
+            </th>
             <th colspan="3">
-                <i class="fa fa-leaf"></i>
-                <select class="form-control" id="material" name="material" required>
+                <select class="form-control selectpicker" id="material" name="material" data-width="auto"  title="<%- __('Material'); %>">
                     <% if (locals.materials && materials.length) { selected = (locals.search && locals.search.material) ? search.material : ''; %>
                     <% materials.forEach(function (material) { %>
                     <option value="<%- material.id %>"
@@ -38,13 +54,12 @@
                     <% } %>
                 </select>
                 &nbsp;
-                <i class="fa fa-shopping-bag"></i>
-                <select class="form-control selectpicker" id="shop" name="shop" data-width="120px" required>
+                <select class="form-control selectpicker" id="shop" name="shop" data-width="120px" title="<%- __('Shop'); %>">
                     <% if (locals.shops && shops.length) { selected = (locals.search && locals.search.shop) ? search.shop : ''; %>
                     <% shops.forEach(function (shop) { %>
                     <option value="<%- shop.id %>"
                             <% if (shop.logo) { %>
-                            data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>' title='<%- shop.name %>'></img> <span class='name'><%- shop.name %></span>"
+                            data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>' title='<%- shop.name %>'></img> <span class='name logo-name'><%- shop.name %></span>"
                             <% } else { %>
                             data-content="<%- shop.name %> "
                             <% } %>
@@ -58,13 +73,12 @@
 
             </th>
             <th>
-                <i class="fa fa-trademark"></i>
-                <select class="form-control selectpicker" id="brand" name="brand" data-width="120px" required>
+                <select class="form-control selectpicker" id="brand" name="brand" data-width="120px" title="<%- __('Brand'); %>">
                     <% if (locals.brands && brands.length) { selected = (locals.search && locals.search.brand) ? search.brand : ''; %>
                     <% brands.forEach(function (brand) { %>
                     <option value="<%- brand.id %>"
                             <% if (brand.logo) { %>
-                            data-content="<img class='brand-logo' src='/brand/get-logo/<%- brand.id %>' title='<%- brand.name %>'></img> <span class='name'><%- brand.name %></span>"
+                            data-content="<img class='brand-logo' src='/brand/get-logo/<%- brand.id %>' title='<%- brand.name %>'></img> <span class='name logo-name'><%- brand.name %></span>"
                             <% } else { %>
                             data-content="<%- brand.name %> "
                             <% } %>

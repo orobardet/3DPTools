@@ -8354,7 +8354,7 @@ table.material-list > tbody > tr > td.material-description {
 
 .filament-section .filament-left-data {
   font-size: small; }
-.filament-section .table.filament-list .color-preview-container {
+.filament-section .table.filament-list td .color-preview-container {
   height: 46px;
   width: 46px; }
 .filament-section .table.filament-list .brand-logo, .filament-section .table.filament-list .shop-logo {
@@ -8395,7 +8395,7 @@ table.material-list > tbody > tr > td.material-description {
   font-weight: bold; }
 .filament-section .bootstrap-select .filter-option .brand-logo, .filament-section .bootstrap-select .filter-option .shop-logo {
   max-height: 16px; }
-.filament-section .bootstrap-select .dropdown-menu .name {
+.filament-section .bootstrap-select .dropdown-menu .logo-name {
   margin-right: 100px; }
 .filament-section .bootstrap-select .dropdown-menu .brand-logo, .filament-section .bootstrap-select .dropdown-menu .shop-logo {
   float: right !important;

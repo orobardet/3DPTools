@@ -373,7 +373,7 @@ table.material-list {
   }
 
   .table.filament-list {
-    .color-preview-container {
+    td .color-preview-container {
       height: 46px;
       width: 46px;
     }
@@ -446,7 +446,7 @@ table.material-list {
     }
 
     .dropdown-menu {
-      .name {
+      .logo-name {
         margin-right: 100px;
       }
       .brand-logo, .shop-logo {
