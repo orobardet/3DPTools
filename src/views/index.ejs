@@ -46,7 +46,7 @@
             </div>
             <div class="panel-body">
                 <div class="row-fluid filament-stats">
-                    <div class="col-md-4">
+                    <div class="col-sm-4">
                         <% if (filament.stats.totalCount) { %>
                         <div class="filament-stats-text"><i class="rs rs-filament"></i> <%- __('%d filaments', filament.stats.totalCount) %></div>
                         <% } %>
@@ -66,10 +66,13 @@
                         <% if (filament.stats.totalUnusedCount) { %>
                         <div class="filament-stats-text"><i class="fa fa-battery-full"></i> <%- __('%d unused', filament.stats.totalUnusedCount) %></div>
                         <% } %>
+                        <div style="margin-top:3px;">
+                            <a href="/filament/stats"><%- __('More statistics...') %></a>
+                        </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-sm-8">
                         <% if (filament.stats.countPerMaterials) { %>
-                        <div id="filament-stats-count-per-materials" style="height: 200px"></div>
+                        <div id="filament-stats-count-per-materials" style="height: 210px"></div>
                         <script type="text/javascript">
                             $(function () {
                                 $('#filament-stats-count-per-materials').highcharts({
