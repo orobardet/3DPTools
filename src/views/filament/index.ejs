@@ -99,7 +99,7 @@
         </tr>
         <% if (filaments && filaments.length) { %>
         <% filaments.forEach(function (filament) { %>
-        <tr data-url="/filament/show/<%- filament.id %>">
+        <tr data-url="/filament/show/<%- filament.id %>"<% if (filament.finished) { %> class="filament-finished"<% } %>>
             <td class="trg-show-filament" >
                 <div class="color-preview-container">
                     <div title="<%- filament.color.name %>" class="color-preview"

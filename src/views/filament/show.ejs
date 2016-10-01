@@ -1,7 +1,7 @@
 <h1><i class="rs rs-filament" style="color:<%- filament.color.code %>"></i>&nbsp;<%- filament.name %></h1>
 
 <div class="filament-show-layout">
-    <div class="filament-details">
+    <div class="filament-details<% if (filament.finished) { %> filament-finished<% } %>">
         <table>
             <tr>
                 <td><%- __('Material:') %></td>
@@ -128,6 +128,12 @@
     </div>
 
     <div class="filament-content">
+        <% if (filament.finished) { %>
+            <b class="text-warning"><%- __('Filament finished on: '); %></b> <%- moment(filament.finishedDate).format('LL') %>
+            <div class="filament-left-data">
+                <%- __('Length left: ~ %.2f m', filament.getLeftLength()) %>
+            </div>
+        <% } else { %>
         <div class="filament-left-data">
             <%- __('Material left: ~ %.2f Kg / %.2f Kg', filament.leftMaterialWeight(), filament.initialMaterialWeight) %>
             <a href="/filament/left-material/<%- filament.id %>" class="pull-right"><i class="fa fa-pencil"></i></a>
@@ -157,6 +163,7 @@
             </div>
             <%- __('Length left: ~ %.2f m / ~ %.2f m', filament.getLeftLength(), filament.getInitialLength()) %>
         </div>
+        <% } %>
         <div class="description markdown">
             <%- marked(filament.description) %>
         </div>

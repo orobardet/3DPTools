@@ -310,5 +310,7 @@
   "Total: ": "Total : ",
   "Cancel search": "Annuler la recherche",
   "finished": "terminé",
-  "not finished": "non terminé"
+  "not finished": "non terminé",
+  "Filament finished on: ": "Filament terminé : ",
+  "Length left: ~ %.2f m": "Longueur restante: ~ %.2f m"
 }

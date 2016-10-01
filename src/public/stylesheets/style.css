@@ -8229,6 +8229,10 @@ table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
   table.table > tr td.table-actions a:not(:last-of-type), table.table tbody > tr td.table-actions a:not(:last-of-type) {
     margin-right: 5px; }
 
+.filament-finished {
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, #eee 20px, #eee 40px);
+  box-shadow: inset 5px 5px 5px 0px #ccc,inset -5px -5px 5px 0px #ccc; }
+
 table.shop-list > tbody > tr > th, table.brand-list > tbody > tr > th, table.material-list > tbody > tr > th, table.filament-list > tbody > tr > th {
   border-top: 0; }
   table.shop-list > tbody > tr > th input, table.shop-list > tbody > tr > th select, table.shop-list > tbody > tr > th textarea, table.shop-list > tbody > tr > th label, table.shop-list > tbody > tr > th button, table.brand-list > tbody > tr > th input, table.brand-list > tbody > tr > th select, table.brand-list > tbody > tr > th textarea, table.brand-list > tbody > tr > th label, table.brand-list > tbody > tr > th button, table.material-list > tbody > tr > th input, table.material-list > tbody > tr > th select, table.material-list > tbody > tr > th textarea, table.material-list > tbody > tr > th label, table.material-list > tbody > tr > th button, table.filament-list > tbody > tr > th input, table.filament-list > tbody > tr > th select, table.filament-list > tbody > tr > th textarea, table.filament-list > tbody > tr > th label, table.filament-list > tbody > tr > th button {
@@ -8432,6 +8436,8 @@ table.material-list > tbody > tr > td.material-description {
   padding: 5px;
   width: 350px;
   margin-right: 10px; }
+  .filament-show-layout .filament-details.filament-finished {
+    box-shadow: inset 5px 5px 5px 0px #ccc,inset -5px -5px 5px 0px #ccc; }
 .filament-show-layout .filament-content > div {
   margin-top: 20px; }
   .filament-show-layout .filament-content > div:first-of-type {
