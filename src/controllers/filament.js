@@ -16,6 +16,7 @@ module.exports = function (app) {
             'filament/edit',
             'filament/left-material',
             'filament/add-picture',
+            'filament/finished',
             'filament/cost-calculator'
         ], req.originalUrl);
 
@@ -34,6 +35,14 @@ module.exports = function (app) {
         if (search.color && search.color !== '') {
             filamentFilter['color.code'] = search.color;
         }
+        filamentFilter.finished = false;
+        if (search.finished) {
+            if (search.finished == 'finished') {
+                filamentFilter.finished = true;
+            } else if (search.finished == 'all') {
+                delete filamentFilter.finished;
+            }
+        }
 
         when.all([
             Filament.find(filamentFilter).populate('material brand shop').sort({
@@ -51,8 +60,16 @@ module.exports = function (app) {
                 brands.unshift({name:'&nbsp;', id:null});
                 colors.unshift({name:'&nbsp;', code: null});
 
+                var formSearchData = filamentFilter;
+                if (search.finished) {
+                    filamentFilter.finished = search.finished;
+                }
+                if (typeof formSearchData.finished != 'undefined' && formSearchData.finished == false) {
+                    delete formSearchData.finished;
+                }
+
                 return res.render('filament/index', {
-                    search: Object.keys(filamentFilter).length?search:null,
+                    search: Object.keys(formSearchData).length?search:null,
                     materials: materials,
                     brands: brands,
                     shops: shops,
@@ -361,6 +378,7 @@ module.exports = function (app) {
             'filament/add',
             'filament/edit',
             'filament/left-material',
+            'filament/finished',
             'filament/add-picture'
         ], req.originalUrl);
 
@@ -654,6 +672,37 @@ module.exports = function (app) {
                 }
 
                 return res.json(responseData);
+            });
+    };
+
+    this.finished = function (req, res, next) {
+        var filamentId = req.params.filament_id;
+
+        if ((req.params.status != "1") && (req.params.status != "0")) {
+            return res.redirect(req.getOriginUrl("filament/finished", "/filament"));
+        }
+
+        when(Filament.findById(filamentId).exec())
+            .then(function (filament) {
+                var status = (req.params.status == "1")?true:false;
+
+                if (filament.finished === status) {
+                    return res.redirect(req.getOriginUrl("filament/finished", "/filament"));
+                }
+
+                filament.finished = status;
+                if (status) {
+                    filament.finishedDate = Date.now();
+                } else {
+                    filament.finishedDate = null;
+                }
+
+                filament.save(function (err) {
+                    if (err) {
+                        return next(err);
+                    }
+                    return res.redirect(req.getOriginUrl("filament/finished", "/filament"));
+                });
             });
     };
 

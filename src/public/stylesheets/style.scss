@@ -221,6 +221,11 @@ table.table {
   }
 }
 
+.filament-finished {
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, #eee 20px, #eee 40px);
+  box-shadow: inset 5px 5px 5px 0px #ccc,inset -5px -5px 5px 0px #ccc;
+}
+
 table.shop-list, table.brand-list, table.material-list, table.filament-list {
   & > tbody > tr > th {
     border-top: 0;
@@ -513,6 +518,9 @@ table.material-list {
     padding: 5px;
     width: 350px;
     margin-right: 10px;
+    &.filament-finished {
+      box-shadow: inset 5px 5px 5px 0px #ccc,inset -5px -5px 5px 0px #ccc;
+    }
   }
 
   .filament-content {

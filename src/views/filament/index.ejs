@@ -90,7 +90,14 @@
                     <% } %>
                 </select>
             </th>
-            <th></th>
+            <th>
+                <select class="form-control selectpicker" id="finished" name="finished" title="<%- __('Finished?'); %>">
+                    <% selected = (locals.search && locals.search.finished) ? search.finished : ''; %>
+                    <% [{value:'', label:'Not finished'}, {value:'finished', label: 'Finished'}, {value: 'all', label:'All'}].forEach(function (status) { %>
+                    <option value="<%- status.value %>"<% if (status.value == selected) { %> selected<% } %>><%- __(status.label) %></option>
+                    <% }); %>
+                </select>
+            </th>
             <th>
                 <% if (locals.search && search != {}) { %>
                 <a href="#" id="clear-search" title="<%- __('Cancel search'); %>"><i class="fa fa-eraser"></i></a>
@@ -99,7 +106,7 @@
         </tr>
         <% if (filaments && filaments.length) { %>
         <% filaments.forEach(function (filament) { %>
-        <tr data-url="/filament/show/<%- filament.id %>">
+        <tr data-url="/filament/show/<%- filament.id %>"<% if (filament.finished) { %> class="filament-finished"<% } %>>
             <td class="trg-show-filament" >
                 <div class="color-preview-container">
                     <div title="<%- filament.color.name %>" class="color-preview"
@@ -182,7 +189,12 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="/filament/add-picture/<%- filament.id %>"><i class="fa fa-image"></i>&nbsp;<%- __("add picture") %></a></li>
-                            <li><a href="/filament/cost-calculator#<%- filament.id %>"><i class=" fa fa-money"></i>&nbsp;<%- __("cost calculator") %></a></li>
+                            <li><a href="/filament/cost-calculator#<%- filament.id %>"><i class="fa fa-money"></i>&nbsp;<%- __("cost calculator") %></a></li>
+                            <% if (filament.finished) { %>
+                            <li><a href="/filament/finished/<%- filament.id %>/0"><i class="fa fa-battery-half"></i>&nbsp;<%- __("not finished") %></a></li>
+                            <% } else { %>
+                            <li><a href="/filament/finished/<%- filament.id %>/1"><i class="fa fa-battery-empty"></i>&nbsp;<%- __("finished") %></a></li>
+                            <% } %>
                         </ul>
                     </span>
                 </div>
