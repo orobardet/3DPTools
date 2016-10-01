@@ -643,6 +643,10 @@ table.material-list {
     font-size: x-large;
   }
 }
+.home-section .filament-stats .filament-stats-text {
+  text-align: left;
+}
+
 .filament-stats-vertical-stack {
   .panel-body {
     & > .filament-stats-graph {

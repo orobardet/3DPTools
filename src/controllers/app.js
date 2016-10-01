@@ -4,6 +4,7 @@ module.exports = function (app) {
     var Shop = app.models.shop;
     var Brand = app.models.brand;
     var Material = app.models.material;
+    var Filament = app.models.filament;
 
     this.index = function (req, res, next) {
         when.all([
@@ -12,8 +13,27 @@ module.exports = function (app) {
             Material.count().exec(),
             Shop.findOneRandom(),
             Brand.findOneRandom(),
-            Material.findOneRandom()
-        ]).spread(function (shopCount, brandCount, materialCount, randomShop, randomBrand, randomMaterial) {
+            Material.findOneRandom(),
+            Filament.count({}).exec(),
+            Filament.count({finished:true}).exec(),
+            Filament.count({materialLeftPercentage:100}).exec(),
+            Filament.getTotalWeight(),
+            Filament.getTotalLength(),
+            Filament.getCountPerMaterials()
+        ]).spread(function (
+            shopCount,
+            brandCount,
+            materialCount,
+            randomShop,
+            randomBrand,
+            randomMaterial,
+            filamentTotalCount,
+            filamentTotalFinishedCount,
+            filamentTotalUnusedCount,
+            filamentTotalWeight,
+            filamentTotalLength,
+            countPerMaterials
+        ) {
             return res.render('index', {
                 pageTitle: 'Home',
                 navModule: 'home',
@@ -22,7 +42,17 @@ module.exports = function (app) {
                 materialCount: materialCount,
                 randomShop: randomShop,
                 randomBrand: randomBrand,
-                randomMaterial: randomMaterial
+                randomMaterial: randomMaterial,
+                filament: {
+                    stats: {
+                        totalCount: filamentTotalCount,
+                        totalFinishedCount: filamentTotalFinishedCount,
+                        totalUnusedCount: filamentTotalUnusedCount,
+                        totalWeight:filamentTotalWeight,
+                        totalLength: filamentTotalLength,
+                        countPerMaterials: countPerMaterials
+                    }
+                }
             });
         }).otherwise(function (err) {
             next(err);

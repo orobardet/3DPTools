@@ -1,3 +1,41 @@
+<% var chartsColors = config.get('charts:colors'); %>
+<script src="/vendor/highcharts/highcharts.js"></script>
+<script src="/javascripts/highcharts-locales/<%- getLocale() %>.js"></script>
+
+<script type="text/javascript">
+    // Microsoft Pastel chart series colors
+    //var chartsColors = ['#87CEEB', '#32CD32', '#BA55D3', '#F08080', '#4682B4', '#9ACD32', '#40E0D0', '#FF69B4', '#F0E68C', '#D2B48C', '#8FBC8B', '#6495ED', '#DDA0DD', '#5F9EA0', '#FFDAB9', '#FFA07A'];
+    // D3 category10
+    //var colors = ['#0072AD', '#FF7C15', '#009D37', '#DC141D', '#955EB7', '#8C5049', '#E96FBE', '#7D7D7D', '#B7BD36', '#00BCCB'];
+    // D3 category20
+    var chartsColors = <%- sprintf('%-j', chartsColors) %>;
+    $(function () {
+        Highcharts.setOptions({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                backgroundColor: 'transparent',
+                animation: false
+            },
+            plotOptions: {
+                series: {
+                    animation: false
+                },
+                pie: {
+                    dataLabels: {
+                        y: -10
+                    }
+                }
+            },
+            title: {
+                useHTML: true
+            },
+            colors: chartsColors
+        });
+    });
+</script>
+
 <div class="row">
     <div class="col-md-8">
 
@@ -6,7 +44,91 @@
                 <h2 class="panel-title"><i class="rs rs-filament"></i>&nbsp;<%- __('Filaments'); %></h2>
             </div>
             <div class="panel-body">
-                TODO
+                <div class="row-fluid filament-stats">
+                    <div class="col-md-4">
+                        <% if (filament.stats.totalCount) { %>
+                        <div class="filament-stats-text"><i class="rs rs-filament"></i> <%- __('%d filaments', filament.stats.totalCount) %></div>
+                        <% } %>
+                        <% if (filament.stats.totalWeight) { %>
+                        <div class="filament-stats-text"><i class="p3di p3di-weight"></i> <%- __('%.2f Kg', filament.stats.totalWeight) %></div>
+                        <% } %>
+                        <% if (filament.stats.totalLength) { %>
+                        <% if (filament.stats.totalLength > 1000) { %>
+                        <div class="filament-stats-text"><i class="p3di p3di-ruler"></i>  <%- __('%.2f km', filament.stats.totalLength / 1000) %></div>
+                        <% } else { %>
+                        <div class="filament-stats-text"><%- __('%.2f m', filament.stats.totalLength) %></div>
+                        <% } %>
+                        <% } %>
+                        <% if (filament.stats.totalFinishedCount) { %>
+                        <div class="filament-stats-text"><i class="fa fa-battery-empty"></i> <%- __('%d finished', filament.stats.totalFinishedCount) %></div>
+                        <% } %>
+                        <% if (filament.stats.totalUnusedCount) { %>
+                        <div class="filament-stats-text"><i class="fa fa-battery-full"></i> <%- __('%d unused', filament.stats.totalUnusedCount) %></div>
+                        <% } %>
+                    </div>
+                    <div class="col-md-8">
+                        <% if (filament.stats.countPerMaterials) { %>
+                        <div id="filament-stats-count-per-materials" style="height: 200px"></div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#filament-stats-count-per-materials').highcharts({
+                                    chart: {
+                                        type: 'bar'
+                                    },
+                                    title: {
+                                        enabled: false,
+                                        text: ''
+                                    },
+                                    xAxis: {
+                                        categories: <%- sprintf('%-j', filament.stats.countPerMaterials.map(function(doc) {
+                                            return doc.label;
+                                        })); %>,
+                                        title: {
+                                            text: null
+                                        },
+                                    },
+                                    yAxis: {
+                                        min: 0,
+                                        title: {
+                                            enabled: false
+                                        },
+                                        labels: {
+                                            overflow: 'justify'
+                                        }
+                                    },
+                                    plotOptions: {
+                                        bar: {
+                                            dataLabels: {
+                                                enabled: true
+                                            },
+                                            pointWidth: 10
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    credits: {
+                                        enabled: false
+                                    },
+                                    series: [{
+                                        name: '<%- __('Count') %>',
+                                        data: <% var colorIdx = 1; %><%- sprintf('%-j', filament.stats.countPerMaterials.map(function(doc) {
+                                            doc.y = doc.count;
+                                            doc.color = chartsColors[colorIdx];
+                                            doc.borderColor = chartsColors[colorIdx];
+                                            colorIdx += 2;
+                                            if (colorIdx > chartsColors.length) {
+                                                colorIdx = 0;
+                                            }
+                                            return doc;
+                                        })); %>
+                                    }]
+                                });
+                            });
+                        </script>
+                    <% } %>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
