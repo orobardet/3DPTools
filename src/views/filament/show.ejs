@@ -120,6 +120,11 @@
         <a href="/filament/cost-calculator#<%- filament.id %>" class="btn btn-default btn-block"><i
                     class="fa fa-money"></i>&nbsp;<%- __("cost calculator") %>
         </a>
+        <% if (filament.finished) { %>
+            <a href="/filament/finished/<%- filament.id %>/0" class="btn btn-default btn-block"><i class="fa fa-battery-half"></i>&nbsp;<%- __("not finished") %></a></li>
+        <% } else { %>
+            <a href="/filament/finished/<%- filament.id %>/1" class="btn btn-default btn-block"><i class="fa fa-battery-empty"></i>&nbsp;<%- __("finished") %></a></li>
+        <% } %>
     </div>
 
     <div class="filament-content">

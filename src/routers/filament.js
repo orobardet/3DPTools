@@ -42,6 +42,8 @@ module.exports = function (app) {
 
     router.delete('/delete/:filament_id', Controller.delete);
 
+    router.get('/finished/:filament_id/:status', Controller.finished);
+
     app.use('/filament', router);
     return this;
 };

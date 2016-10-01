@@ -308,5 +308,7 @@
   "Price per Kg: ": "Price per Kg: ",
   "Count: ": "Nombre : ",
   "Total: ": "Total : ",
-  "Cancel search": "Annuler la recherche"
+  "Cancel search": "Annuler la recherche",
+  "finished": "terminé",
+  "not finished": "non terminé"
 }

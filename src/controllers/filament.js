@@ -16,6 +16,7 @@ module.exports = function (app) {
             'filament/edit',
             'filament/left-material',
             'filament/add-picture',
+            'filament/finished',
             'filament/cost-calculator'
         ], req.originalUrl);
 
@@ -361,6 +362,7 @@ module.exports = function (app) {
             'filament/add',
             'filament/edit',
             'filament/left-material',
+            'filament/finished',
             'filament/add-picture'
         ], req.originalUrl);
 
@@ -654,6 +656,32 @@ module.exports = function (app) {
                 }
 
                 return res.json(responseData);
+            });
+    };
+
+    this.finished = function (req, res, next) {
+        var filamentId = req.params.filament_id;
+
+        if ((req.params.status != "1") && (req.params.status != "0")) {
+            return res.redirect(req.getOriginUrl("filament/finished", "/filament"));
+        }
+
+        when(Filament.findById(filamentId).exec())
+            .then(function (filament) {
+                var status = (req.params.status == "1")?true:false;
+
+                if (filament.finished === status) {
+                    return res.redirect(req.getOriginUrl("filament/finished", "/filament"));
+                }
+
+                filament.finished = status;
+
+                filament.save(function (err) {
+                    if (err) {
+                        return next(err);
+                    }
+                    return res.redirect(req.getOriginUrl("filament/finished", "/filament"));
+                });
             });
     };
 
