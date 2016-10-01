@@ -675,6 +675,11 @@ module.exports = function (app) {
                 }
 
                 filament.finished = status;
+                if (status) {
+                    filament.finishedDate = Date.now();
+                } else {
+                    filament.finishedDate = null;
+                }
 
                 filament.save(function (err) {
                     if (err) {

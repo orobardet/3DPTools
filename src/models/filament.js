@@ -12,7 +12,7 @@ module.exports = function (app) {
      * - 1: add creationDate. Migrating to buyDate.
      * - 2: add modificationDate. Migrating to creationDate.
      * - 3: add lastUsedDate. Migrating to modificationDate.
-     * - 4: add finished
+     * - 4: add finished and finishedDate
      */
     var currentVersion = 4;
 
@@ -56,6 +56,7 @@ module.exports = function (app) {
         flowPercentage: Number,
         speedPercentage: Number,
         finished: { type: Boolean, default: false },
+        finishedDate: { type: Date, default: null },
         _version : { type: Number }
     });
 
