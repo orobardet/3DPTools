@@ -190,7 +190,8 @@ module.exports = function (app) {
         field("material", "Material"),
         field("shop", "Shop"),
         field("brand", "Brand"),
-        field("color", "Color")
+        field("color", "Color"),
+        field("finished", "Finished?")
     );
 
     return this;

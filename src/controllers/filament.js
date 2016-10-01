@@ -35,6 +35,14 @@ module.exports = function (app) {
         if (search.color && search.color !== '') {
             filamentFilter['color.code'] = search.color;
         }
+        filamentFilter.finished = false;
+        if (search.finished) {
+            if (search.finished == 'finished') {
+                filamentFilter.finished = true;
+            } else if (search.finished == 'all') {
+                delete filamentFilter.finished;
+            }
+        }
 
         when.all([
             Filament.find(filamentFilter).populate('material brand shop').sort({
@@ -52,8 +60,16 @@ module.exports = function (app) {
                 brands.unshift({name:'&nbsp;', id:null});
                 colors.unshift({name:'&nbsp;', code: null});
 
+                var formSearchData = filamentFilter;
+                if (search.finished) {
+                    filamentFilter.finished = search.finished;
+                }
+                if (typeof formSearchData.finished != 'undefined' && formSearchData.finished == false) {
+                    delete formSearchData.finished;
+                }
+
                 return res.render('filament/index', {
-                    search: Object.keys(filamentFilter).length?search:null,
+                    search: Object.keys(formSearchData).length?search:null,
                     materials: materials,
                     brands: brands,
                     shops: shops,

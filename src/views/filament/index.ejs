@@ -90,7 +90,14 @@
                     <% } %>
                 </select>
             </th>
-            <th></th>
+            <th>
+                <select class="form-control selectpicker" id="finished" name="finished" title="<%- __('Finished?'); %>">
+                    <% selected = (locals.search && locals.search.finished) ? search.finished : ''; %>
+                    <% [{value:'', label:'Not finished'}, {value:'finished', label: 'Finished'}, {value: 'all', label:'All'}].forEach(function (status) { %>
+                    <option value="<%- status.value %>"<% if (status.value == selected) { %> selected<% } %>><%- __(status.label) %></option>
+                    <% }); %>
+                </select>
+            </th>
             <th>
                 <% if (locals.search && search != {}) { %>
                 <a href="#" id="clear-search" title="<%- __('Cancel search'); %>"><i class="fa fa-eraser"></i></a>

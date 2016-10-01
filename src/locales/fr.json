@@ -309,8 +309,12 @@
   "Count: ": "Nombre : ",
   "Total: ": "Total : ",
   "Cancel search": "Annuler la recherche",
-  "finished": "terminé",
-  "not finished": "non terminé",
   "Filament finished on: ": "Filament terminé : ",
-  "Length left: ~ %.2f m": "Longueur restante: ~ %.2f m"
+  "Length left: ~ %.2f m": "Longueur restante: ~ %.2f m",
+  "Finished?": "Terminé ?",
+  "Not finished": "Non terminé",
+  "Finished": "Terminé",
+  "All": "Tous",
+  "finished": "terminé",
+  "not finished": "non terminé"
 }
