@@ -1,10 +1,11 @@
-image: node:5
+image: node:6
 
 stages:
   - tests
   - build
   - release
   - mirror
+  - dockerhub
 
 cache:
   key: 3dptools-ci
@@ -24,6 +25,8 @@ Unit tests:
     - npm t
   only:
     - branches
+  except:
+    - tags
 
 Docker build:
   image: docker:git
@@ -52,15 +55,12 @@ Docker release:
   environment: production
   only:
     - tags
-    - triggers
 
-Github and Docker Hub:
-  image: ubuntu
+Github mirror:
+  image: docker:git
   stage: mirror
   cache:
   script:
-    - export DEBIAN_FRONTEND=noninteractive
-    - apt-get update && apt-get install --no-install-recommends -y git openssh-client curl
     - mkdir -p ~/.ssh
     - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
     - ssh-keyscan -H github.com > ~/.ssh/known_hosts
@@ -68,8 +68,18 @@ Github and Docker Hub:
     - git remote | grep github > /dev/null && git remote set-url github git@github.com:orobardet/3dptools.git || git remote add github git@github.com:orobardet/3dptools.git
     - git fetch github
     - git push --mirror -f github
-    - curl -k "$DOCKER_HUB_TRIGGER_URL"
   environment: github
-  when: manual
   only:
-    - master
+    - tags
+
+Docker Hub:
+  image: tutum/curl
+  stage: dockerhub
+  cache:
+  script:
+    - curl -H "Content-Type: application/json" --data '{"source_type": "Tag", "source_name": "$CI_BUILD_TAG"}' -X POST https://registry.hub.docker.com/u/orobardet/3dptools/trigger/5342d440-a38f-4510-b0a2-15aa1e59f339/
+  environment: github
+  only:
+    - tags
+
+
