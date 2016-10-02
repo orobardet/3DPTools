@@ -47,31 +47,31 @@
             <div class="panel-body">
                 <div class="row-fluid filament-stats">
                     <div class="col-sm-4">
-                        <% if (filament.stats.totalCount) { %>
-                        <div class="filament-stats-text"><i class="rs rs-filament"></i> <%- __('%d filaments', filament.stats.totalCount) %></div>
+                        <% if (filaments.stats.totalCount) { %>
+                        <div class="filament-stats-text"><i class="rs rs-filament"></i> <%- __('%d filaments', filaments.stats.totalCount) %></div>
                         <% } %>
-                        <% if (filament.stats.totalWeight) { %>
-                        <div class="filament-stats-text"><i class="p3di p3di-weight"></i> <%- __('%.2f Kg', filament.stats.totalWeight) %></div>
+                        <% if (filaments.stats.totalWeight) { %>
+                        <div class="filament-stats-text"><i class="p3di p3di-weight"></i> <%- __('%.2f Kg', filaments.stats.totalWeight) %></div>
                         <% } %>
-                        <% if (filament.stats.totalLength) { %>
-                        <% if (filament.stats.totalLength > 1000) { %>
-                        <div class="filament-stats-text"><i class="p3di p3di-ruler"></i>  <%- __('%.2f km', filament.stats.totalLength / 1000) %></div>
+                        <% if (filaments.stats.totalLength) { %>
+                        <% if (filaments.stats.totalLength > 1000) { %>
+                        <div class="filament-stats-text"><i class="p3di p3di-ruler"></i>  <%- __('%.2f km', filaments.stats.totalLength / 1000) %></div>
                         <% } else { %>
-                        <div class="filament-stats-text"><%- __('%.2f m', filament.stats.totalLength) %></div>
+                        <div class="filament-stats-text"><%- __('%.2f m', filaments.stats.totalLength) %></div>
                         <% } %>
                         <% } %>
-                        <% if (filament.stats.totalFinishedCount) { %>
-                        <div class="filament-stats-text"><i class="fa fa-battery-empty"></i> <%- __('%d finished', filament.stats.totalFinishedCount) %></div>
+                        <% if (filaments.stats.totalFinishedCount) { %>
+                        <div class="filament-stats-text"><i class="fa fa-battery-empty"></i> <%- __('%d finished', filaments.stats.totalFinishedCount) %></div>
                         <% } %>
-                        <% if (filament.stats.totalUnusedCount) { %>
-                        <div class="filament-stats-text"><i class="fa fa-battery-full"></i> <%- __('%d unused', filament.stats.totalUnusedCount) %></div>
+                        <% if (filaments.stats.totalUnusedCount) { %>
+                        <div class="filament-stats-text"><i class="fa fa-battery-full"></i> <%- __('%d unused', filaments.stats.totalUnusedCount) %></div>
                         <% } %>
                         <div style="margin-top:3px;">
                             <a href="/filament/stats"><%- __('More statistics...') %></a>
                         </div>
                     </div>
                     <div class="col-sm-8">
-                        <% if (filament.stats.countPerMaterials) { %>
+                        <% if (filaments.stats.countPerMaterials) { %>
                         <div id="filament-stats-count-per-materials" style="height: 210px"></div>
                         <script type="text/javascript">
                             $(function () {
@@ -84,7 +84,7 @@
                                         text: ''
                                     },
                                     xAxis: {
-                                        categories: <%- sprintf('%-j', filament.stats.countPerMaterials.map(function(doc) {
+                                        categories: <%- sprintf('%-j', filaments.stats.countPerMaterials.map(function(doc) {
                                             return doc.label;
                                         })); %>,
                                         title: {
@@ -116,7 +116,7 @@
                                     },
                                     series: [{
                                         name: '<%- __('Count') %>',
-                                        data: <% var colorIdx = 1; %><%- sprintf('%-j', filament.stats.countPerMaterials.map(function(doc) {
+                                        data: <% var colorIdx = 1; %><%- sprintf('%-j', filaments.stats.countPerMaterials.map(function(doc) {
                                             doc.y = doc.count;
                                             doc.color = chartsColors[colorIdx];
                                             doc.borderColor = chartsColors[colorIdx];
@@ -133,6 +133,70 @@
                     <% } %>
                     </div>
                 </div>
+
+                <% if (filaments.lastUsed && filaments.lastUsed.length) { %>
+
+                <h3><%- __('Last used'); %></h3>
+                <table class="table table-hover filament-list">
+                <% filaments.lastUsed.forEach(function (filament) { %>
+                    <tr>
+                        <td class="color-cell">
+                            <div class="color-preview-container">
+                                <div title="<%- filament.color.name %>" class="color-preview"
+                                     style="background-color: <%- filament.color.code %> %>;">
+                                </div>
+                            </div>
+                        </td>
+                        <td class="material-cell"><%- filament.material.name %></td>
+                        <td class="brand-cell">
+                            <% if (filament.brand.logo && filament.brand.logo.size) { %>
+                            <img alt="<%- filament.brand.name %>" title="<%- filament.brand.name %>" class="brand-logo"
+                                 src="/brand/get-logo/<%- filament.brand.id %>">
+                            <% } else { %>
+                            <%- filament.brand.name %>
+                            <% } %>
+                        </td>
+                        <td>
+                            <div class="filament-left-data">
+                                <%- __('~ %.2f m', filament.getLeftLength()) %>
+                            </div>
+                            <div class="progress">
+                                <%
+                                    var leftPercentage = filament.materialLeftPercentage;
+                                    var progressbarClass = 'progress-bar-success';
+                                    if (leftPercentage <= config.get('filament:leftThresholds:warning')) {
+                                        progressbarClass = 'progress-bar-warning'
+                                    }
+                                    if (leftPercentage <= config.get('filament:leftThresholds:danger')) {
+                                        progressbarClass = 'progress-bar-danger'
+                                    }
+                                %>
+                                <div title="<%- leftPercentage %>%" class="progress-bar <%- progressbarClass %>"
+                                     role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                     style="width: <%- leftPercentage %>%;">
+                                    <% if (filament.materialLeftPercentage > 50) { %>
+                                    <%- sprintf('%.2f', leftPercentage) %>%
+                                    <% } %>
+                                </div>
+                                <% if (filament.materialLeftPercentage <= 50) { %>
+                                <div class="progress-text" style="padding-left:<%- leftPercentage%>%"><%- sprintf('%.2f', leftPercentage) %>%</div>
+                                <% } %>
+                            </div>
+                        </td>
+                        <td class="table-actions">
+                            <div class="actions-block">
+                                <a href="/filament/show/<%- filament.id %>" title="<%- __("show") %>"><i class=" fa fa-eye"></i></a>
+                                <a href="/filament/cost-calculator#<%- filament.id %>"><i class="fa fa-money" title="<%- __("cost calculator") %>"></i></a>
+                                <a href="/filament/left-material/<%- filament.id %>"><i class="p3di p3di-weight" title="<%- __("left material") %>"></i></a>
+                                <a href="/filament/edit/<%- filament.id %>" title="<%- __("edit") %>"><i class=" fa fa-pencil"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                <% }); %>
+                </table>
+                <% } %>
+
+
             </div>
         </div>
     </div>

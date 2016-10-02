@@ -319,5 +319,6 @@
   "not finished": "non terminé",
   "%d finished": "%d terminé(s)",
   "%d unused": "%d non utilisé(s)",
-  "More statistics...": "Plus de statistiques..."
+  "More statistics...": "Plus de statistiques...",
+  "Last used": "Derniers utilisés"
 }

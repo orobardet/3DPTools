@@ -7,6 +7,13 @@ module.exports = function (app) {
     var Filament = app.models.filament;
 
     this.index = function (req, res, next) {
+        var config = res.app.get('config');
+        var lastUsedCount = config.get("filament:index:lastUsedCount");
+
+        if (typeof lastUsedCount === 'undefined') {
+            lastUsedCount = 5;
+        }
+
         when.all([
             Shop.count().exec(),
             Brand.count().exec(),
@@ -19,7 +26,8 @@ module.exports = function (app) {
             Filament.count({materialLeftPercentage:100}).exec(),
             Filament.getTotalWeight(),
             Filament.getTotalLength(),
-            Filament.getCountPerMaterials()
+            Filament.getCountPerMaterials(),
+            Filament.find({finished:false}).sort({lastUsedDate:-1}).limit(lastUsedCount).populate('material brand shop').exec()
         ]).spread(function (
             shopCount,
             brandCount,
@@ -32,7 +40,8 @@ module.exports = function (app) {
             filamentTotalUnusedCount,
             filamentTotalWeight,
             filamentTotalLength,
-            countPerMaterials
+            countPerMaterials,
+            lastUsedFilaments
         ) {
             return res.render('index', {
                 pageTitle: 'Home',
@@ -43,7 +52,7 @@ module.exports = function (app) {
                 randomShop: randomShop,
                 randomBrand: randomBrand,
                 randomMaterial: randomMaterial,
-                filament: {
+                filaments: {
                     stats: {
                         totalCount: filamentTotalCount,
                         totalFinishedCount: filamentTotalFinishedCount,
@@ -51,7 +60,8 @@ module.exports = function (app) {
                         totalWeight:filamentTotalWeight,
                         totalLength: filamentTotalLength,
                         countPerMaterials: countPerMaterials
-                    }
+                    },
+                    lastUsed: lastUsedFilaments
                 }
             });
         }).otherwise(function (err) {

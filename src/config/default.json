@@ -59,6 +59,9 @@
     "leftThresholds": {
       "warning": 35,
       "danger": 10
+    },
+    "index": {
+      "lastUsedCount": 5
     }
   },
   "charts": {
