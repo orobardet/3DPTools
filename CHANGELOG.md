@@ -1,3 +1,8 @@
+# v1.0
+
+- [New] Filament section in home page (#6)
+- [New] Finished filament feature (#26)
+
 # v0.9.6
 
 - [New] Filtering (by color, material, brand and shop) in filament list (#4)
