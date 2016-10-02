@@ -2,9 +2,6 @@
 
 - [New] Filament section in home page (#6)
 - [New] Finished filament feature (#26)
-
-# v0.9.6
-
 - [New] Filtering (by color, material, brand and shop) in filament list (#4)
 - [New] Stats: average price per Kg, for each material (#31)
 - [Imp] Autofocus on main field in forms (#34)
