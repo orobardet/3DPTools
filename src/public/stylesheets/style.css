@@ -8356,6 +8356,24 @@ table.material-list > tbody > tr > td.material-description {
       font-size: smaller;
       word-wrap: break-word; }
 
+.home-section .table.filament-list td.color-cell {
+  width: 32px; }
+.home-section .table.filament-list td.material-cell {
+  width: 100px; }
+.home-section .table.filament-list td.brand-cell {
+  width: 146px;
+  text-align: center; }
+.home-section .table.filament-list td.table-actions {
+  width: 116px; }
+.home-section .table.filament-list .brand-logo, .home-section .table.filament-list .shop-logo {
+  max-height: 24px;
+  max-width: 130px; }
+.home-section .table.filament-list .progress {
+  margin-bottom: 0; }
+.home-section .table.filament-list .filament-left-data {
+  float: right;
+  margin-left: 5px; }
+
 .filament-section .filament-left-data {
   font-size: small; }
 .filament-section .table.filament-list td .color-preview-container {
@@ -8511,6 +8529,9 @@ table.material-list > tbody > tr > td.material-description {
 .filament-stats .filament-stats-text {
   text-align: center;
   font-size: x-large; }
+
+.home-section .filament-stats .filament-stats-text {
+  text-align: left; }
 
 .filament-stats-vertical-stack .panel-body > .filament-stats-graph {
   border-top: 1px solid #ddd;

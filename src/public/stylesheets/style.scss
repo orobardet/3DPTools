@@ -371,6 +371,35 @@ table.material-list {
   }
 }
 
+.home-section {
+  .table.filament-list {
+    td.color-cell {
+      width: 32px;
+    }
+    td.material-cell {
+      width: 100px;
+    }
+    td.brand-cell {
+      width: 146px;
+      text-align: center;
+    }
+    td.table-actions {
+      width: 116px;
+    }
+    .brand-logo, .shop-logo {
+      max-height: 24px;
+      max-width: 130px;
+    }
+    .progress {
+      margin-bottom: 0;
+    }
+    .filament-left-data {
+      float: right;
+      margin-left: 5px;
+    }
+  }
+}
+
 .filament-section {
 
   .filament-left-data {
@@ -643,6 +672,10 @@ table.material-list {
     font-size: x-large;
   }
 }
+.home-section .filament-stats .filament-stats-text {
+  text-align: left;
+}
+
 .filament-stats-vertical-stack {
   .panel-body {
     & > .filament-stats-graph {

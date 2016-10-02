@@ -4,16 +4,51 @@ module.exports = function (app) {
     var Shop = app.models.shop;
     var Brand = app.models.brand;
     var Material = app.models.material;
+    var Filament = app.models.filament;
 
     this.index = function (req, res, next) {
+        var config = res.app.get('config');
+        var lastUsedCount = config.get("filament:index:lastUsedCount");
+        var almostFinishedThreshold = config.get("filament:index:almostFinishedPercentThreshold");
+
+        if (typeof lastUsedCount === 'undefined') {
+            lastUsedCount = 5;
+        }
+        if (typeof almostFinishedThreshold === 'undefined') {
+            almostFinishedThreshold = 15;
+        }
+
         when.all([
             Shop.count().exec(),
             Brand.count().exec(),
             Material.count().exec(),
             Shop.findOneRandom(),
             Brand.findOneRandom(),
-            Material.findOneRandom()
-        ]).spread(function (shopCount, brandCount, materialCount, randomShop, randomBrand, randomMaterial) {
+            Material.findOneRandom(),
+            Filament.count({}).exec(),
+            Filament.count({finished:true}).exec(),
+            Filament.count({materialLeftPercentage:100}).exec(),
+            Filament.getTotalWeight(),
+            Filament.getTotalLength(),
+            Filament.getCountPerMaterials(),
+            Filament.find({finished:false}).sort({lastUsedDate:-1}).limit(lastUsedCount).populate('material brand shop').exec(),
+            Filament.find({finished:false, materialLeftPercentage: {$lt : almostFinishedThreshold}}).sort({materialLeftPercentage:1}).populate('material brand shop').exec()
+        ]).spread(function (
+            shopCount,
+            brandCount,
+            materialCount,
+            randomShop,
+            randomBrand,
+            randomMaterial,
+            filamentTotalCount,
+            filamentTotalFinishedCount,
+            filamentTotalUnusedCount,
+            filamentTotalWeight,
+            filamentTotalLength,
+            countPerMaterials,
+            lastUsedFilaments,
+            almostFinishedFilaments
+        ) {
             return res.render('index', {
                 pageTitle: 'Home',
                 navModule: 'home',
@@ -22,7 +57,19 @@ module.exports = function (app) {
                 materialCount: materialCount,
                 randomShop: randomShop,
                 randomBrand: randomBrand,
-                randomMaterial: randomMaterial
+                randomMaterial: randomMaterial,
+                filaments: {
+                    stats: {
+                        totalCount: filamentTotalCount,
+                        totalFinishedCount: filamentTotalFinishedCount,
+                        totalUnusedCount: filamentTotalUnusedCount,
+                        totalWeight:filamentTotalWeight,
+                        totalLength: filamentTotalLength,
+                        countPerMaterials: countPerMaterials
+                    },
+                    lastUsed: lastUsedFilaments,
+                    almostFinished: almostFinishedFilaments
+                }
             });
         }).otherwise(function (err) {
             next(err);

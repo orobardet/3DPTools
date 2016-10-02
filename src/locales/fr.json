@@ -316,5 +316,11 @@
   "Finished": "Terminé",
   "All": "Tous",
   "finished": "terminé",
-  "not finished": "non terminé"
+  "not finished": "non terminé",
+  "%d finished": "%d terminé(s)",
+  "%d unused": "%d non utilisé(s)",
+  "More statistics...": "Plus de statistiques...",
+  "Last used": "Derniers utilisés",
+  "Almost finished": "Presque terminés",
+  "View all filaments": "Voir tous les filaments"
 }

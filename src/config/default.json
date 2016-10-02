@@ -59,6 +59,10 @@
     "leftThresholds": {
       "warning": 35,
       "danger": 10
+    },
+    "index": {
+      "lastUsedCount": 5,
+      "almostFinishedPercentThreshold": 25
     }
   },
   "charts": {
