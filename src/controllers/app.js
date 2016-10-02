@@ -9,9 +9,13 @@ module.exports = function (app) {
     this.index = function (req, res, next) {
         var config = res.app.get('config');
         var lastUsedCount = config.get("filament:index:lastUsedCount");
+        var almostFinishedThreshold = config.get("filament:index:almostFinishedPercentThreshold");
 
         if (typeof lastUsedCount === 'undefined') {
             lastUsedCount = 5;
+        }
+        if (typeof almostFinishedThreshold === 'undefined') {
+            almostFinishedThreshold = 15;
         }
 
         when.all([
@@ -27,7 +31,8 @@ module.exports = function (app) {
             Filament.getTotalWeight(),
             Filament.getTotalLength(),
             Filament.getCountPerMaterials(),
-            Filament.find({finished:false}).sort({lastUsedDate:-1}).limit(lastUsedCount).populate('material brand shop').exec()
+            Filament.find({finished:false}).sort({lastUsedDate:-1}).limit(lastUsedCount).populate('material brand shop').exec(),
+            Filament.find({finished:false, materialLeftPercentage: {$lt : almostFinishedThreshold}}).sort({materialLeftPercentage:1}).populate('material brand shop').exec()
         ]).spread(function (
             shopCount,
             brandCount,
@@ -41,7 +46,8 @@ module.exports = function (app) {
             filamentTotalWeight,
             filamentTotalLength,
             countPerMaterials,
-            lastUsedFilaments
+            lastUsedFilaments,
+            almostFinishedFilaments
         ) {
             return res.render('index', {
                 pageTitle: 'Home',
@@ -61,7 +67,8 @@ module.exports = function (app) {
                         totalLength: filamentTotalLength,
                         countPerMaterials: countPerMaterials
                     },
-                    lastUsed: lastUsedFilaments
+                    lastUsed: lastUsedFilaments,
+                    almostFinished: almostFinishedFilaments
                 }
             });
         }).otherwise(function (err) {

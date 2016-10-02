@@ -1,0 +1,53 @@
+<tr>
+    <td class="color-cell">
+        <div class="color-preview-container">
+            <div title="<%- filament.color.name %>" class="color-preview"
+                 style="background-color: <%- filament.color.code %> %>;">
+            </div>
+        </div>
+    </td>
+    <td class="material-cell"><%- filament.material.name %></td>
+    <td class="brand-cell">
+        <% if (filament.brand.logo && filament.brand.logo.size) { %>
+        <img alt="<%- filament.brand.name %>" title="<%- filament.brand.name %>" class="brand-logo"
+             src="/brand/get-logo/<%- filament.brand.id %>">
+        <% } else { %>
+        <%- filament.brand.name %>
+        <% } %>
+    </td>
+    <td>
+        <div class="filament-left-data">
+            <%- __('~ %.2f m', filament.getLeftLength()) %>
+        </div>
+        <div class="progress">
+            <%
+            var leftPercentage = filament.materialLeftPercentage;
+            var progressbarClass = 'progress-bar-success';
+            if (leftPercentage <= config.get('filament:leftThresholds:warning')) {
+                progressbarClass = 'progress-bar-warning'
+            }
+            if (leftPercentage <= config.get('filament:leftThresholds:danger')) {
+                progressbarClass = 'progress-bar-danger'
+            }
+            %>
+            <div title="<%- leftPercentage %>%" class="progress-bar <%- progressbarClass %>"
+                 role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                 style="width: <%- leftPercentage %>%;">
+                <% if (filament.materialLeftPercentage > 50) { %>
+                <%- sprintf('%.2f', leftPercentage) %>%
+                <% } %>
+            </div>
+            <% if (filament.materialLeftPercentage <= 50) { %>
+            <div class="progress-text" style="padding-left:<%- leftPercentage%>%"><%- sprintf('%.2f', leftPercentage) %>%</div>
+            <% } %>
+        </div>
+    </td>
+    <td class="table-actions">
+        <div class="actions-block">
+            <a href="/filament/show/<%- filament.id %>" title="<%- __("show") %>"><i class=" fa fa-eye"></i></a>
+            <a href="/filament/cost-calculator#<%- filament.id %>"><i class="fa fa-money" title="<%- __("cost calculator") %>"></i></a>
+            <a href="/filament/left-material/<%- filament.id %>"><i class="p3di p3di-weight" title="<%- __("left material") %>"></i></a>
+            <a href="/filament/edit/<%- filament.id %>" title="<%- __("edit") %>"><i class=" fa fa-pencil"></i></a>
+        </div>
+    </td>
+</tr>
