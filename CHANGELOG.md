@@ -1,3 +1,5 @@
+- [Fix] Index: filtering out 100% filament from unused list (#39)
+
 # v1.0
 
 - [New] Filament section in home page (#6)
@@ -18,7 +20,7 @@
 # v0.9.4
 
 - [New] Material left form: live display of the left % (#32)
-- [New] Schéma migration system (#30)
+- [New] Schema migration system (#30)
 - [New] Filament: creation, modification and last usage dates (#27, #28, #29)
 - [Fix] Deleting a filament was redirecting to the deleted filament page (#33)
 
