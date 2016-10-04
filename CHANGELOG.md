@@ -1,3 +1,5 @@
+- [Fix] Index: Exclude finished filament from counts per materials (#40)
+
 # v1.0
 
 - [New] Filament section in home page (#6)
