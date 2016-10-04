@@ -363,15 +363,23 @@ module.exports = function (app) {
             });
     };
 
-    filamentSchema.statics.getCountPerMaterials = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getCountPerMaterials = function (remove_finished, callback) {
+        var aggregation = [
             { $group: {
                 _id: '$material',
                 count: { $sum: 1 }
             }
             },
             { $sort: { 'count': -1 } }
-        ]).exec())
+        ];
+
+        if (remove_finished === true) {
+            aggregation.unshift({
+                $match: { finished: false }
+            });
+        }
+
+        return when(this.aggregate(aggregation).exec())
             .with(this)
             .then(function (result) {
                 return app.models.material.populate(result, { "path" : "_id"}, function(err, results) {

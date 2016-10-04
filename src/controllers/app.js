@@ -30,7 +30,7 @@ module.exports = function (app) {
             Filament.count({materialLeftPercentage:100}).exec(),
             Filament.getTotalWeight(),
             Filament.getTotalLength(),
-            Filament.getCountPerMaterials(),
+            Filament.getCountPerMaterials(true),
             Filament.find({finished:false, materialLeftPercentage: {$lt : 100}}).sort({lastUsedDate:-1}).limit(lastUsedCount).populate('material brand shop').exec(),
             Filament.find({finished:false, materialLeftPercentage: {$lt : almostFinishedThreshold}}).sort({materialLeftPercentage:1}).populate('material brand shop').exec()
         ]).spread(function (
