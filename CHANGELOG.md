@@ -1,3 +1,5 @@
+# v1.1
+
 - [Fix] Index: Exclude finished filament from counts per materials (#40)
 - [Fix] Index: filtering out 100% filament from unused list (#39)
 
