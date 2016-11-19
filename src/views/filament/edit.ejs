@@ -421,7 +421,7 @@
                             </span>
                         <input type="number" class="form-control" id="density"
                                name="density"
-                               value="<%- (locals.density) ? density : filament.density %>" required min="0" step="10">
+                               value="<%- (locals.density) ? density : filament.density %>" required min="0" step="1">
                         <div class="input-group-addon"><%- __('kg/m³'); %></div>
                     </div>
                     <% if (errors.density) { %>
