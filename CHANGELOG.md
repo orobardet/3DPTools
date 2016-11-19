@@ -1,3 +1,8 @@
+# v1.2
+
+- [Imp] Upgrade do NodeJS 7 (#43) 
+- [Imp] Upgrade to latest NPM & Bower dependencies versions
+
 # v1.1
 
 - [Fix] Index: Exclude finished filament from counts per materials (#40)
