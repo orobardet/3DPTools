@@ -8341,12 +8341,14 @@ h1 {
   display: table; }
 .panel-heading.with-button:after {
   clear: both; }
-.panel-heading.with-button > .btn, .panel-heading.with-button .btn-group {
+.panel-heading.with-button > .btn, .panel-heading.with-button > .btn-group, .panel-heading.with-button > form.form-inline {
   float: right !important;
   margin-top: -7px;
   margin-bottom: -7px;
-  margin-right: -12px; }
-.panel-heading.with-button > .btn, .panel-heading.with-button .btn-group > .btn {
+  margin-right: 4px; }
+  .panel-heading.with-button > .btn:first-child, .panel-heading.with-button > .btn-group:first-child, .panel-heading.with-button > form.form-inline:first-child {
+    margin-right: -12px; }
+.panel-heading.with-button > .btn, .panel-heading.with-button > .btn-group > .btn {
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;

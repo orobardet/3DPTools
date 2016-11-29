@@ -186,13 +186,17 @@ h1 {
 
 .panel-heading.with-button {
   @include clearfix();
-  > .btn, .btn-group {
+  & > .btn, & > .btn-group, & > form.form-inline {
     float: right !important;
     margin-top: -7px;
     margin-bottom: -7px;
-    margin-right: -12px;
+    margin-right: 4px;
+
+    &:first-child {
+      margin-right: -12px;
+    }
   }
-  > .btn, .btn-group > .btn {
+  & > .btn, & > .btn-group > .btn {
     @include button-size($padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small, $btn-border-radius-small);
   }
 }
