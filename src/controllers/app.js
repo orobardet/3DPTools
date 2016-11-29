@@ -32,7 +32,9 @@ module.exports = function (app) {
             Filament.getTotalLength(),
             Filament.getCountPerMaterials(true),
             Filament.find({finished:false, materialLeftPercentage: {$lt : 100}}).sort({lastUsedDate:-1}).limit(lastUsedCount).populate('material brand shop').exec(),
-            Filament.find({finished:false, materialLeftPercentage: {$lt : almostFinishedThreshold}}).sort({materialLeftPercentage:1}).populate('material brand shop').exec()
+            Filament.find({finished:false, materialLeftPercentage: {$lt : almostFinishedThreshold}}).sort({materialLeftPercentage:1}).populate('material brand shop').exec(),
+            Material.find().sort('name').exec(),
+            Filament.getColors()
         ]).spread(function (
             shopCount,
             brandCount,
@@ -47,8 +49,13 @@ module.exports = function (app) {
             filamentTotalLength,
             countPerMaterials,
             lastUsedFilaments,
-            almostFinishedFilaments
+            almostFinishedFilaments,
+            materials,
+            colors
         ) {
+            materials.unshift({name:'&nbsp;', id:null});
+            colors.unshift({name:'&nbsp;', code: null});
+
             return res.render('index', {
                 pageTitle: 'Home',
                 navModule: 'home',
@@ -69,7 +76,9 @@ module.exports = function (app) {
                     },
                     lastUsed: lastUsedFilaments,
                     almostFinished: almostFinishedFilaments
-                }
+                },
+                materials: materials,
+                colors: colors,
             });
         }).otherwise(function (err) {
             next(err);
