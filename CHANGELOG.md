@@ -1,6 +1,7 @@
 # v1.2
 
 - [Imp] Upgrade do NodeJS 7 (#43) 
+- [Imp] Add quick access on homepage to colors and materials filament filtering (#44) 
 - [Imp] Upgrade to latest NPM & Bower dependencies versions
 
 # v1.1
