@@ -56,3 +56,8 @@ NODE_ENV=production npm start
 
 TODO
 
+# FAQ
+
+## Error `req.flash() requires sessions`
+
+Is Redis installed, running and correctly configured in 3DPTools?
