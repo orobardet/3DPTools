@@ -2,6 +2,7 @@ module.exports = function (app) {
     var when = require('when');
     var mongoose = require('mongoose');
     var Schema = mongoose.Schema;
+    var merge = require('merge');
 
     /**
      * Current schema version
@@ -142,6 +143,19 @@ module.exports = function (app) {
                 var rand = Math.floor(Math.random() * count);
                 return this.findOne({}, {}, {skip: rand}, callback);
             });
+    };
+
+    filamentSchema.statics.list = function (options, callback) {
+        options = merge({
+            filter: {},
+            sort: {
+                'material.name': 1,
+                'color.code': 1,
+                'brand.name': 1
+            }
+        }, options);
+
+        return when(this.find(options.filter).populate('material brand shop').sort(options.sort).exec());
     };
 
     filamentSchema.statics.getColors = function (callback) {

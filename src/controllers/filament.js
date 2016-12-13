@@ -45,11 +45,9 @@ module.exports = function (app) {
         }
 
         when.all([
-            Filament.find(filamentFilter).populate('material brand shop').sort({
-            'material.name': 1,
-            'color.code': 1,
-            'brand.name': 1
-        }).exec(),
+            Filament.list({
+                filter: filamentFilter
+            }),
             Material.find().sort('name').exec(),
             Brand.find().sort('name').exec(),
             Shop.find().sort('name').exec(),
