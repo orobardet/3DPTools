@@ -11,6 +11,9 @@ ENV PORT=3000
 ENV NODE_ENV=production
 
 COPY src /3dptools
+COPY docker/docker_start.sh /docker_start.sh
+RUN chmod +x /docker_start.sh
+
 WORKDIR /3dptools
 
 RUN npm install && node_modules/.bin/bower --allow-root install
@@ -18,5 +21,5 @@ RUN scss -f public/stylesheets/style.scss public/stylesheets/style.css
 
 EXPOSE $PORT
 
-CMD ["npm", "start"]
+CMD ["/docker_start.sh"]
 
