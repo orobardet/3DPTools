@@ -91,33 +91,58 @@ module.exports = function (app) {
         var itemName = this.modelNameFromCollectionParameter(collectionName);
         if (app.models[itemName] && (typeof app.models[itemName] === "function") && app.models[itemName].base.Mongoose) {
             var model = app.models[itemName];
-            return when(model.count().exec().then(function(nbItems){
-                console.log("Migrating " + nbItems + " " + itemName + "(s)...");
-                var countCharacters = sprintf('%d', nbItems).length;
 
-                when(model.find().exec()).then(function(items) {
-                    var processed = 0;
-                    var saved = 0;
-                    process.stdout.write(sprintf('-> %'+countCharacters+'d/%'+countCharacters+'d - %3f%%   \r', processed, nbItems, processed?Math.round(nbItems/processed*100):0));
-                    var savePromises = items.map(function (item) {
-                        var promise = false;
-                        if (item.migrate()) {
-                            item.setInMigration();
-                            saved++;
-                            promise = item.save();
-                        }
-                        processed++;
-                        process.stdout.write(sprintf('-> %'+countCharacters+'d/%'+countCharacters+'d - %3f%%   \r', processed, nbItems, processed?Math.round(nbItems/processed*100):0));
-                        return promise;
+            var versionFilter = {
+                $or: [
+                    { _version: { $exists : false } },
+                    { _version: null }
+                ]
+            };
+            if (model.currentVersion) {
+                versionFilter = {
+                    $or: [
+                        { _version: { $exists : false } },
+                        { _version: null },
+                        { _version: { $lt : 5 } }
+                    ]
+                };
+            }
+
+            return when.all([
+                model.count().exec(),
+                model.count(versionFilter).exec()
+            ]).spread(function(nbItems, nbItemsToMigrate) {
+                if (nbItemsToMigrate) {
+                    console.log("Migrating " + nbItemsToMigrate + " " + itemName + "(s) out of " + nbItems + "...");
+                    var countCharacters = sprintf('%d', nbItemsToMigrate).length;
+
+                    when(model.find(versionFilter).exec()).then(function (items) {
+                        var processed = 0;
+                        var saved = 0;
+                        process.stdout.write(sprintf('-> %' + countCharacters + 'd/%' + countCharacters + 'd - %3f%%   \r', processed, nbItemsToMigrate, processed ? Math.round(nbItemsToMigrate / processed * 100) : 0));
+                        var savePromises = items.map(function (item) {
+                            var promise = false;
+                            if (item.migrate()) {
+                                item.setInMigration();
+                                saved++;
+                                promise = item.save();
+                            }
+                            processed++;
+                            process.stdout.write(sprintf('-> %' + countCharacters + 'd/%' + countCharacters + 'd - %3f%%   \r', processed, nbItemsToMigrate, processed ? Math.round(nbItemsToMigrate / processed * 100) : 0));
+                            return promise;
+                        });
+                        Promise.all(savePromises).then(function (results) {
+                            app.cliStop();
+                        });
+
+                        console.log("\n" + saved + " " + itemName + "(s) migrated.");
                     });
-                    Promise.all(savePromises).then(function(results){
-                        app.cliStop();
-                    });
+                } else {
+                    console.log("Migrating " + nbItemsToMigrate + " " + itemName + "(s) out of " + nbItems + "...");
+                    app.cliStop();
+                }
 
-                    console.log("\n" + saved + " " + itemName + "(s) migrated.");
-                });
-
-            }));
+            });
         } else {
             console.error(colors.red('*** No models found for collection "'+collectionName+'"'));
             app.cliStop();
