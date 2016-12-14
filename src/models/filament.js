@@ -4,19 +4,6 @@ module.exports = function (app) {
     var Schema = mongoose.Schema;
     var merge = require('merge');
 
-    /**
-     * Current schema version
-     *
-     * @type {number}
-     *
-     * <b>Version history:</b>
-     * - 1: add creationDate. Migrating to buyDate.
-     * - 2: add modificationDate. Migrating to creationDate.
-     * - 3: add lastUsedDate. Migrating to modificationDate.
-     * - 4: add finished and finishedDate
-     */
-    var currentVersion = 4;
-
     var filamentSchema = new Schema({
         name: String,
         description: String,
@@ -50,6 +37,7 @@ module.exports = function (app) {
         density: Number,
         buyDate: Date,
         price: Number,
+        pricePerKg: {type: Number, default: null },
         shop: {type: Schema.Types.ObjectId, ref: 'Shop'},
         initialMaterialWeight: Number,  // in Kgram
         initialTotalWeight: Number,  // in Kgram
@@ -61,6 +49,20 @@ module.exports = function (app) {
         _version : { type: Number }
     });
 
+
+    /**
+     * Current schema version
+     *
+     * @type {number}
+     *
+     * <b>Version history:</b>
+     * - 1: add creationDate. Migrating to buyDate.
+     * - 2: add modificationDate. Migrating to creationDate.
+     * - 3: add lastUsedDate. Migrating to modificationDate.
+     * - 4: add finished and finishedDate
+     * - 5: add pricePerKG
+     */
+    filamentSchema.statics.currentVersion = 5;
 
     filamentSchema.methods.getData = function(noPictures) {
         var data = this.toObject({getters: false, virtuals: true, versionKey: false});
@@ -81,7 +83,6 @@ module.exports = function (app) {
         return data;
     }
 
-
     filamentSchema.methods.setInMigration = function() {
         this.inMigration = true;
     }
@@ -95,17 +96,30 @@ module.exports = function (app) {
     }
 
     filamentSchema.pre('save', function(next) {
+        // No pre save during migration, to avoid updating unwanted data
         if (this.isInMigration()) {
             this.resetInMigration();
             next();
             return;
         }
 
+        // If no creationDate defined, set it to now (it means we are creating the entry
         if (!this.creationDate) {
             this.creationDate = Date.now();
         }
 
+        // Updating modification date
         this.modificationDate = Date.now();
+
+        // Compute price per Kg
+        if (this.initialMaterialWeight) {
+            var pricePerKg = this.price / this.initialMaterialWeight;
+            if (this.pricePerKg !== pricePerKg) {
+                this.pricePerKg = pricePerKg;
+            }
+        }
+
+        this._version = filamentSchema.statics.currentVersion;
 
         next();
     });
@@ -116,7 +130,7 @@ module.exports = function (app) {
         var migrated = false;
         if (app.models.migrate && app.models.migrate.filament) {
             Object.keys(app.models.migrate.filament).forEach(function (element, index) {
-                var migrator = new app.models.migrate.filament[element](that, currentVersion);
+                var migrator = new app.models.migrate.filament[element](that, filamentSchema.statics.currentVersion);
 
                 if (migrator.needMigration && typeof migrator.needMigration === 'function' && migrator.needMigration()) {
                     migrated = true;
@@ -127,7 +141,7 @@ module.exports = function (app) {
             });
         }
 
-        this._version = currentVersion;
+        this._version = filamentSchema.statics.currentVersion;
 
         return migrated;
     };

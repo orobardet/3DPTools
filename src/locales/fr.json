@@ -322,5 +322,11 @@
   "More statistics...": "Plus de statistiques...",
   "Last used": "Derniers utilisés",
   "Almost finished": "Presque terminés",
-  "View all filaments": "Voir tous les filaments"
+  "View all filaments": "Voir tous les filaments",
+  "%s €": "%s €",
+  "Turquoise": "Turquoise",
+  "%s €/kg": "%s €/kg",
+  "%f.2 €": "%f.2 €",
+  "%f.2 €/kg": "%f.2 €/kg",
+  "%.2f €/kg": "%.2f €/kg"
 }

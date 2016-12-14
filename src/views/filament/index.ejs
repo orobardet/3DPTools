@@ -41,7 +41,7 @@
                     <% } %>
                 </select>
             </th>
-            <th colspan="3">
+            <th colspan="4">
                 <select class="form-control selectpicker" id="material" name="material" data-width="auto"  title="<%- __('Material'); %>">
                     <% if (locals.materials && materials.length) { selected = (locals.search && locals.search.material) ? search.material : ''; %>
                     <% materials.forEach(function (material) { %>
@@ -125,6 +125,13 @@
                 <b>∅</b> <%- filament.diameter %>
                 <br/>
                 <%- __('%s kg/m³', filament.density) %>
+            </td>
+            <td class="trg-show-filament" >
+                <%- __('%.2f €', filament.price) %>
+                <br/>
+                <% if (filament.pricePerKg !== null) { %>
+                <%- __('%.2f €/kg', filament.pricePerKg) %>
+                <% } %>
             </td>
             <td class="trg-show-filament" >
                 <% if (filament.headTemp.experienced) { %>
