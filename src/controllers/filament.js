@@ -9,6 +9,57 @@ module.exports = function (app) {
     var gm = require('gm').subClass({imageMagick: true});
     var thatController = this;
 
+    var filamentSortDefinition = {
+        'default': {
+            label: 'Default sort',
+            sort: {
+                'color.code': 1,
+                'material.name': 1,
+                'brand.name': 1
+            }
+        },
+        'price_kg_asc': {
+            label: 'Price/Kg - to +',
+            sort: {
+                'pricePerKg': 1,
+                'material.name': 1,
+                'color.code': 1,
+                'brand.name': 1
+            }
+        },
+        'price_kg_desc': {
+            label: 'Price/Kg + to -',
+            sort: {
+                'pricePerKg': -1,
+                'material.name': 1,
+                'color.code': 1,
+                'brand.name': 1
+            }
+        },
+        'material_left_asc': {
+            label: 'Material left - to +',
+            sort: {
+                'materialLeftPercentage': 1,
+                'material.name': 1,
+                'color.code': 1,
+                'brand.name': 1
+            }
+        },
+        'material_left_desc': {
+            label: 'Material left + to -',
+            sort: {
+                'materialLeftPercentage': -1,
+                'material.name': 1,
+                'color.code': 1,
+                'brand.name': 1
+            }
+        }
+    };
+    var sortList = [];
+    Object.keys(filamentSortDefinition).forEach(function(sortId) {
+        sortList.push({value: sortId, label: filamentSortDefinition[sortId].label});
+    });
+
     this.index = function (req, res, next) {
         req.setOriginUrl([
             'filament/view',
@@ -44,9 +95,15 @@ module.exports = function (app) {
             }
         }
 
+        var selectedSort = 'default';
+        if (search.sort && Object.keys(filamentSortDefinition).indexOf(search.sort) > -1) {
+            selectedSort = search.sort;
+        }
+
         when.all([
             Filament.list({
-                filter: filamentFilter
+                filter: filamentFilter,
+                sort: filamentSortDefinition[selectedSort].sort
             }),
             Material.find().sort('name').exec(),
             Brand.find().sort('name').exec(),
@@ -73,6 +130,8 @@ module.exports = function (app) {
                     shops: shops,
                     colors: colors,
                     filaments: filaments,
+                    sortList: sortList,
+                    selectedSort: selectedSort,
                     pageTitle: 'Filaments',
                     errors: []
                 });

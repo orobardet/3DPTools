@@ -8532,10 +8532,6 @@ table.material-list > tbody > tr > td.material-description {
   vertical-align: middle; }
   .filament-section .table.filament-list tr th i {
     font-size: larger; }
-.filament-section .table.filament-list #clear-search {
-  color: #d9534f;
-  float: right;
-  text-align: right; }
 .filament-section .filaments-list-container {
   margin-bottom: 10px; }
   .filament-section .filaments-list-container .filament-list {

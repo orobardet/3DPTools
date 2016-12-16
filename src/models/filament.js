@@ -163,8 +163,8 @@ module.exports = function (app) {
         options = merge({
             filter: {},
             sort: {
-                'material.name': 1,
                 'color.code': 1,
+                'material.name': 1,
                 'brand.name': 1
             }
         }, options);
