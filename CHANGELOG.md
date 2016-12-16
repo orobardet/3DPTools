@@ -1,6 +1,7 @@
 # v1.2
 
 - [New] Show sppol price and price per Kg in filament list (#46)
+- [New] Add sorting feature on filament list (#47)
 - [Imp] Upgrade do NodeJS 7 (#43) 
 - [Imp] Add quick access on homepage to colors and materials filament filtering (#44)
 - [Imp] Upgrade to latest NPM & Bower dependencies versions

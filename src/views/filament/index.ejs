@@ -14,6 +14,10 @@
     <div class="panel-heading with-button">
         <a href="/filament/add" class="btn btn-primary trg-add-filament"><i
                     class="fa fa-plus"></i>&nbsp;<%- __('Add filament') %></a>
+        <% if (locals.search && search != {}) { %>
+            <a href="#" id="clear-search" class="btn btn-danger"><i
+                        class="fa fa-eraser"></i>&nbsp;<%- __('Clear search') %></a>
+        <% } %>
         <% if (filaments && filaments.length) { %>
         <h3 class="panel-title"><%- __n("%s filament", "%s filaments", filaments.length || 0); %></h3>
         <% } else { %>
@@ -99,9 +103,11 @@
                 </select>
             </th>
             <th>
-                <% if (locals.search && search != {}) { %>
-                <a href="#" id="clear-search" title="<%- __('Cancel search'); %>"><i class="fa fa-eraser"></i></a>
-                <% } %>
+                <select class="pull-right form-control selectpicker" id="sort" name="sort" data-width="fit" title="<%- __('Sort'); %>">
+                    <% sortList.forEach(function (sort) { %>
+                    <option value="<%- sort.value %>"<% if (sort.value == selectedSort) { %> selected<% } %>><%- __(sort.label) %></option>
+                    <% }); %>
+                </select>
             </th>
         </tr>
         <% if (filaments && filaments.length) { %>

@@ -328,5 +328,12 @@
   "%s €/kg": "%s €/kg",
   "%f.2 €": "%f.2 €",
   "%f.2 €/kg": "%f.2 €/kg",
-  "%.2f €/kg": "%.2f €/kg"
+  "%.2f €/kg": "%.2f €/kg",
+  "Sort": "Tri",
+  "Clear search": "Annuler la recherche",
+  "Default sort": "Tri par défaut",
+  "Price/Kg - to +": "Prix/Kg - au +",
+  "Price/Kg + to -": "Prix/Kg + au -",
+  "Material left - to +": "Matière restante - au +",
+  "Material left + to -": "Matière restante + au -"
 }
