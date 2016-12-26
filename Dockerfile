@@ -1,11 +1,8 @@
-FROM node:7
+FROM node:7-alpine
 MAINTAINER Olivier Robardet <olivier.robardet@gmail.com>
 
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y ruby imagemagick \
-    && gem install sass \
-    && apt-get clean \
-    && rm -rf /tmp/* /var/lib/apt/lists/*
+RUN apk add --no-cache bash ruby imagemagick ca-certificates git && \
+	gem install -N sass
 
 ENV PORT=3000
 ENV NODE_ENV=production
