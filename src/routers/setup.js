@@ -2,6 +2,11 @@ module.exports = function (app) {
     var express = require('express');
     var router = express.Router();
     var Controller = app.controllers.setup;
+    var User = app.models.user;
+    var UserForm = app.forms.user;
+
+    /* setup finished */
+    router.get('/done', Controller.done);
 
     router.use(function (req, res, next) {
         if (req.isAuthenticated()) {
@@ -12,20 +17,20 @@ module.exports = function (app) {
             if (count) {
                 return res.redirect('/');
             }
+            res.locals.navModule = 'setup';
+            next();
+        }).catch(function (err) {
+            console.error(err);
+            next();
         });
 
-        res.locals.navModule = 'setup';
-        next();
     });
 
     /* add user */
-    router.post('/', Controller.createUser);
+    router.post('/', UserForm.createUser, Controller.createUser);
 
     /* setup root */
     router.get('/', Controller.index);
-
-    /* setup finished */
-    router.get('/done', Controller.done);
 
     app.use('/setup', router);
     return this;

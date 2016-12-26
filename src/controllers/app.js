@@ -105,7 +105,7 @@ module.exports = function (app) {
         }
     };
 
-    this.needLogin = function (req, res) {
+    this.needLogin = function (req, res, next) {
         if (req.isAuthenticated()) {
             return res.redirect('/');
         }
@@ -114,12 +114,15 @@ module.exports = function (app) {
             if (!count) {
                 return res.redirect('/setup');
             }
-        });
 
-        res.render('login', {
-            pageTitle: 'Login',
-            navModule: 'login',
-            showNavbar: false
+            res.render('login', {
+                pageTitle: 'Login',
+                navModule: 'login',
+                showNavbar: false
+            });
+        }).catch(function (err) {
+            console.error(err);
+            next();
         });
     };
 
