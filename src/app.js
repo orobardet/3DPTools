@@ -138,7 +138,11 @@ module.exports = function (bootstrapOptions) {
     // Init logger
     if (bootstrapOptions.initLogger) {
         var logger = require('morgan');
-        app.use(logger('dev'));
+        if (app.get('env') === 'production') {
+            app.use(logger('common'));
+        } else {
+            app.use(logger('dev'));
+        }
     }
 
     // Autoload app components
