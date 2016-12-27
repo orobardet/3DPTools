@@ -202,7 +202,11 @@ module.exports = function (app) {
         }).exec())
             .with(this)
             .then(function (result) {
-                return result[0].total;
+                if (result.length) {
+                    return result[0].total;
+                } else {
+                    return null;
+                }
             });
     };
 
@@ -220,7 +224,11 @@ module.exports = function (app) {
         }).exec())
             .with(this)
             .then(function (result) {
-                return result[0].total;
+                if (result.length) {
+                    return result[0].total;
+                } else {
+                    return null;
+                }
             });
     };
 
@@ -600,7 +608,10 @@ module.exports = function (app) {
                 }]).exec()
         ]).with(this)
         .spread(function (weightAndCostUsage, lengthUsage) {
-            var results = weightAndCostUsage[0];
+            var results = {}
+            if (weightAndCostUsage.length) {
+                results = weightAndCostUsage[0];
+            }
 
             var totalLength = 0;
             var totalLeftLength = 0;
