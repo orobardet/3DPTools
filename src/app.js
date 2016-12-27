@@ -182,6 +182,8 @@ module.exports = function (bootstrapOptions) {
         if (app.get('env') === 'development') {
             app.use(function (err, req, res, next) {
                 res.status(err.status || 500);
+                console.error(err.message);
+                console.error(err.stack);
                 res.render('error', {
                     pageTitle: 'An error occured',
                     message: err.message,
@@ -195,6 +197,8 @@ module.exports = function (bootstrapOptions) {
         // no stacktraces leaked to user
         app.use(function (err, req, res, next) {
             res.status(err.status || 500);
+            console.error(err.message);
+            console.error(err.stack);
             res.render('error', {
                 pageTitle: 'An error occured',
                 message: err.message,
