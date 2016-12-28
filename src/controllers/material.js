@@ -143,5 +143,27 @@ module.exports = function (app) {
             });
     };
 
+    this.fileForm = function (req, res, next) {
+        var materialId = req.params.material_id;
+
+        when(Material.findById(materialId).exec())
+            .then(function (material) {
+                return res.render('material/file', {
+                    materialId: materialId,
+                    material: material,
+                    errors: []
+                });
+            })
+            .catch(function (err) {
+                return next(err);
+            });
+    };
+
+    this.addFile = function (req, res, next) {
+        var materialId = req.params.material_id;
+
+        return res.redirect("/material");
+    };
+
     return this;
 };

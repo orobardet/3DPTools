@@ -335,5 +335,11 @@
   "Price/Kg - to +": "Prix/Kg - au +",
   "Price/Kg + to -": "Prix/Kg + au -",
   "Material left - to +": "Matière restante - au +",
-  "Material left + to -": "Matière restante + au -"
+  "Material left + to -": "Matière restante + au -",
+  "add a file": "ajouter un fichier",
+  "Add file to %s material": "Ajouter un fichier à la matière %s",
+  "File:": "Fichier :",
+  "Choose a local file.": "Choisissez un fichier local.",
+  "Add": "Ajouter",
+  "Display name of the file.": "Nom d'affichage du fichier."
 }
