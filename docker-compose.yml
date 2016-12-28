@@ -3,12 +3,14 @@ version: '2'
 services:
   mongo:
     image: mongo
+    volumes:
+    - "./docker-volumes/mongo/db:/data/db"
 
   redis:
     image: redis:alpine
 
   3dptools:
-    image: 3dptools-alpine
+    image: orobardet/3dptools
     depends_on:
     - mongo
     - redis

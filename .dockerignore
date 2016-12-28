@@ -3,6 +3,7 @@
 /src/public/vendor
 /src/tmp
 /src/.nyc_output/
+/docker-volumes/
 .sass-cache/
 .gitignore
 .gitlab-ci.yml
