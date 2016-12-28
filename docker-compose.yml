@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  mongo:
+    image: mongo
+    volumes:
+    - "./docker-volumes/mongo/db:/data/db"
+
+  redis:
+    image: redis:alpine
+
+  3dptools:
+    image: orobardet/3dptools
+    depends_on:
+    - mongo
+    - redis
+    ports:
+    - "3000:3000"
+    environment:
+      redis__host: "redis"
+      database__url: "mongodb://mongo/3dptools"
+      database__connectOptions__user: ""
+      database__connectOptions__pass: ""

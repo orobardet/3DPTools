@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  mongo:
+    volumes:
+    # change the first part before ':' below to any path you want data to persist
+    - "./docker-volumes/mongo/db:/data/db"
+
+  3dptools:
+    ports:
+    # change the first 3000 below to any other port you cant to listen to
+    - "3000:3000"
+    environment:
+      NODE_ENV: "dev"

@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  mongo:
+    command: "mongo --auth"
+
+  3dptools:
+    environment:
+      # Note: you must manually add the user and password to use in MongoDB configuration
+      database__connectOptions__user: "user"
+      database__connectOptions__pass: "password"
