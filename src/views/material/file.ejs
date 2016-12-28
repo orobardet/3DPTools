@@ -9,8 +9,8 @@
         <div class="row-or">
             <div class="cell-upload-logo">
                 <div class="form-group<%= (errors.logo) ? " has-error" : "" %>">
-                    <label for="logo"><%- __('File:'); %></label>
-                    <input type="file" id="logo" name="logo">
+                    <label class="control-label required" for="file"><%- __('File:'); %></label>
+                    <input type="file" id="file" name="file">
                     <p class="help-block"><%- __('Choose a local file.'); %></p>
                     <% if (errors.logo) { %>
                     <ul class="help-block with-errors">
@@ -31,7 +31,7 @@
                 <ul class="help-block with-errors">
                     <% errors.name.forEach(function(msg) { %>
                     <li><%= __(msg) %></li>
-                    <% }); %>
+                    <% }); %>)
                 </ul>
                 <% } %>
             </div>
@@ -43,3 +43,11 @@
         </p>
     </fieldset>
 </form>
+
+<script type="text/javascript">
+    $(function () {
+        $('input[name=file]').change(function () {
+            $('input[name=name]').val($(this).val());
+        });
+    });
+</script>
