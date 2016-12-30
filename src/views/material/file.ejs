@@ -1,0 +1,53 @@
+<h1><span class="fa-overlay">
+    <i class="fa fa-file-o"></i>
+    <i class="fa fa-plus fa-overlay-se" style="color:white"></i>
+    <i class="fa fa-plus-circle fa-overlay-se text-success"></i>
+</span> <%- __("Add file to %s material", material.name) %></h1>
+
+<form class="file-material" method="POST" enctype="multipart/form-data">
+    <fieldset>
+        <div class="row-or">
+            <div class="cell-upload-logo">
+                <div class="form-group<%= (errors.file) ? " has-error" : "" %>">
+                    <label class="control-label required" for="file"><%- __('File:'); %></label>
+                    <input type="file" id="file" name="file">
+                    <p class="help-block"><%- __('Choose a local file.'); %></p>
+                    <% if (errors.file) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.file.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+            <div class="form-group<%= (errors.name)?" has-error":"" %>">
+                <label for="name" class="control-label required"><%- __('Name:'); %></label>
+                <input type="text" class="form-control" id="name" name="name"
+                       placeholder="<%- __('Name'); %>" value="<%- (locals.name) ? name : '' %>"
+                       required autofocus>
+                <p class="help-block"><%- __('Display name of the file.'); %></p>
+                <% if (errors.name) { %>
+                <ul class="help-block with-errors">
+                    <% errors.name.forEach(function(msg) { %>
+                    <li><%= __(msg) %></li>
+                    <% }); %>
+                </ul>
+                <% } %>
+            </div>
+        </div>
+
+        <p class="button-bar">
+            <a href="/material" class="btn btn-default"><%- __('Cancel') %></a>
+            <button type="submit" class="btn btn-primary"><%- __('Add') %></button>
+        </p>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+    $(function () {
+        $('input[name=file]').change(function () {
+            $('input[name=name]').val($(this).val());
+        });
+    });
+</script>

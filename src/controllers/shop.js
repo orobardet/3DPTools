@@ -94,7 +94,7 @@ module.exports = function (app) {
                 shop.logo.mimeType = logo.mimetype;
                 shop.logo.data = fs.readFileSync(logo.path);
 
-                fs.unlink(logo.path);
+                fs.unlinkSync(logo.path);
 
                 shop.save(function (err) {
                     if (err) {

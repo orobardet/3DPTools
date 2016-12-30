@@ -48,12 +48,16 @@
                     <a href="/material/edit/<%- material.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
                     <a href="/material/delete/<%- material.id %>" data-id="<%- material.id %>"
                        class="trg-delete-material"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                    <a href="/material/add-file/<%- material.id %>"><i class="fa fa-paperclip"></i>&nbsp;<%- __("add a file") %></a>
                 </div>
             </td>
         </tr>
         <% if (material.description) { %>
         <tr>
-            <td colspan="5" class="material-description"><%- marked(material.description) %></td>
+            <td colspan="5" class="material-description">
+                <% include partial/files.ejs %>
+                <%- marked(material.description) %>
+            </td>
         </tr>
         <% } %>
         <% }); %>
@@ -65,6 +69,43 @@
 
 <script type="text/javascript">
     $(function () {
+        $('.trg-delete-file').click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var $this = $(this);
+            var $fileLink = $this.closest('li').find('a.get span.link-label').first();
+            var fileIcon = $this.closest('li').find('a.get i').first().attr('class');
+            console.log(fileIcon);
+
+            var confirmContent = $('<div>').text(Locale3DPTools.__('Do you really want to delete this file?'));
+            confirmContent.append($('<br>'));
+            confirmContent.append($('<i>').addClass(fileIcon));
+            confirmContent.append('&nbsp;'+$fileLink.text());
+
+            App3DPTools.confirmModal(confirmContent, function () {
+                $.ajax({
+                    type: "DELETE",
+                    url: $this.attr('href'),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function (data) {
+                        document.location = document.location;
+                    },
+                    error: function (xhr, status, errorMsg) {
+                        if (xhr.responseJSON) {
+                            var data = xhr.responseJSON;
+                            if (data.message) {
+                                App3DPTools.errorFlash('#filament-message-container', data.message);
+                                return;
+                            }
+                        }
+                        App3DPTools.errorFlash('#filament-message-container', errorMsg);
+                    }
+                });
+            });
+        });
+
         function deleteMaterial(materialId) {
             $.ajax({
                 type: "DELETE",

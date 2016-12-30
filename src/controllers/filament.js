@@ -574,7 +574,7 @@ module.exports = function (app) {
                     }
                     filament.addPicture(picture);
 
-                    fs.unlink(uploadedPicture.path);
+                    fs.unlinkSync(uploadedPicture.path);
 
                     filament.save(function (err) {
                         if (err) {

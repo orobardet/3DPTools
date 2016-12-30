@@ -1,6 +1,7 @@
 module.exports = function (app) {
     var when = require('when');
     var Material = app.models.material;
+    var fs = require('fs');
 
     this.index = function (req, res, next) {
         when(Material.find().sort('name').exec())
@@ -140,6 +141,123 @@ module.exports = function (app) {
                 return res.json({
                     message: res.__(err.message)
                 });
+            });
+    };
+
+    this.fileForm = function (req, res, next) {
+        var materialId = req.params.material_id;
+
+        when(Material.findById(materialId).exec())
+            .then(function (material) {
+                return res.render('material/file', {
+                    materialId: materialId,
+                    material: material,
+                    errors: []
+                });
+            })
+            .catch(function (err) {
+                return next(err);
+            });
+    };
+
+    this.addFile = function (req, res, next) {
+        var materialId = req.params.material_id;
+
+        when(Material.findById(materialId).exec())
+            .then(function (material) {
+                var errors = {};
+                if (!req.form.isValid) {
+                    errors = req.form.getErrors();
+                }
+
+                if (!req.file) {
+                    errors.file = ['File is required'];
+                }
+
+                if (Object.keys(errors).length) {
+                    return res.render('material/file', {
+                        materialId: materialId,
+                        material: material,
+                        errors: errors
+                    });
+                } else {
+                    var uploadedFile = req.file;
+                    var file = {
+                        displayName: req.form.name,
+                        fileName: uploadedFile.originalname,
+                        size: uploadedFile.size,
+                        mimeType: uploadedFile.mimetype,
+                        data: fs.readFileSync(uploadedFile.path)
+                    }
+                    material.addFile(file);
+
+                    fs.unlinkSync(uploadedFile.path);
+
+                    material.save(function (err) {
+                        if (err) {
+                            return next(err);
+                        }
+                        return res.redirect("/material");
+                    });
+                }
+            })
+            .catch(function (err) {
+                return next(err);
+            });
+    };
+
+    this.getFile = function (req, res) {
+        var materialId = req.params.material_id;
+        var fileId = req.params.file_id;
+
+        when(Material.findById(materialId).exec())
+            .then(function (material) {
+                var file = material.getFile(fileId);
+                if (file) {
+                    res.set('Content-Type', file.mimeType);
+                    res.set('Content-Length', file.size);
+                    res.set('Content-Disposition', 'inline; filename="' + file.fileName + '"');
+                    return res.send(file.data);
+                }
+                res.status(404);
+                return res.send(res.__('File %s not found.', fileId));
+            })
+            .catch(function (err) {
+                res.status(404);
+                return res.json(res.__('Material %s not found.', materialId));
+            });
+    };
+
+    this.deleteFile = function (req, res, next) {
+        var materialId = req.params.material_id;
+        var fileId = req.params.file_id;
+
+        when(Material.findById(materialId).exec())
+            .then(function (material) {
+                if (material.deleteFile(fileId)) {
+                    material.save(function (err) {
+                        if (err) {
+                            return next(err);
+                        }
+                        if (req.method === 'DELETE') {
+                            return res.json({});
+                        }
+
+                        return res.redirect("/material");
+                    });
+                } else {
+                    res.status(404);
+                    if (req.method === 'DELETE') {
+                        return res.json({
+                            message: res.__("File %s not found.", fileId)
+                        });
+                    }
+
+                    return next(new Error(res.__("File %s not found.", fileId)));
+                }
+            }).catch(function (err) {
+                res.status(404);
+                return res.json(res.__('Material %s not found.', materialId));
             });
     };
 

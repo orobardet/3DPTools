@@ -51,5 +51,11 @@ module.exports = function (app) {
             })
     );
 
+    this.file = form(
+        field("name", "Name of the file")
+            .trim()
+            .required()
+    );
+
     return this;
 };

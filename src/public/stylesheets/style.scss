@@ -309,6 +309,36 @@ table.material-list {
     border-top: 0;
     padding-top: 0;
     vertical-align: top;
+
+  }
+}
+
+ul.material-files {
+  float: right;
+
+  & > li {
+    & > a.get {
+      color: inherit;
+      text-decoration: $text-color;
+
+      & > .link-label {
+        border-bottom: $text-color 1px dotted;
+      }
+
+      &:hover {
+        color: $link-color;
+        & > .link-label {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    & > a.delete {
+      visibility: hidden;
+    }
+    &:hover > a.delete {
+      visibility: visible;
+    }
   }
 }
 
@@ -614,6 +644,10 @@ table.material-list {
       margin-left: 0;
     }
   }
+}
+
+.filament-material {
+  margin-top: 10px;
 }
 
 .progress .progress-text {
