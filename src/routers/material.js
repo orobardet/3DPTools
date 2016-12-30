@@ -21,7 +21,7 @@ module.exports = function (app) {
     router.post('/add', MaterialForm.material, Controller.add);
     router.get('/add', Controller.addForm);
 
-    router.post('/add-file/:material_id', fileUpload.single('logo'), Controller.addFile);
+    router.post('/add-file/:material_id', fileUpload.single('file'), MaterialForm.file, Controller.addFile);
     router.get('/add-file/:material_id', Controller.fileForm);
 
     router.post('/edit/:material_id', MaterialForm.material, Controller.edit);

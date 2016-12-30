@@ -162,7 +162,31 @@ module.exports = function (app) {
     this.addFile = function (req, res, next) {
         var materialId = req.params.material_id;
 
-        return res.redirect("/material");
+        when(Material.findById(materialId).exec())
+            .then(function (material) {
+                var errors = {};
+                if (!req.form.isValid) {
+                    errors = req.form.getErrors();
+                }
+
+                if (!req.file) {
+                    errors.file = ['File is required'];
+                }
+
+                if (Object.keys(errors).length) {
+                    return res.render('material/file', {
+                        materialId: materialId,
+                        material: material,
+                        errors: errors
+                    });
+                } else {
+                    console.log('form is ok');
+                    return res.redirect("/material");
+                }
+            })
+            .catch(function (err) {
+                return next(err);
+            });
     };
 
     return this;
