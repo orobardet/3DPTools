@@ -8449,6 +8449,17 @@ table.material-list > tbody > tr > td.material-description {
   border-top: 0;
   padding-top: 0;
   vertical-align: top; }
+  table.material-list > tbody > tr > td.material-description ul.material-files {
+    float: right; }
+    table.material-list > tbody > tr > td.material-description ul.material-files > li > a {
+      color: inherit;
+      text-decoration: #333333; }
+      table.material-list > tbody > tr > td.material-description ul.material-files > li > a > .link-label {
+        border-bottom: #333333 1px dotted; }
+      table.material-list > tbody > tr > td.material-description ul.material-files > li > a:hover {
+        color: #337ab7; }
+        table.material-list > tbody > tr > td.material-description ul.material-files > li > a:hover > .link-label {
+          border-bottom: 0; }
 
 .home-section > .container {
   padding-top: 30px; }
