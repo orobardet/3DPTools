@@ -345,5 +345,6 @@
   "Name of the file is required": "Le nom du fichier est obligatoire",
   "File is required": "Le fichier est obligatoire",
   "Material %s not found.": "La matière %s est introuvable.",
-  "Do you really want to delete this file?": "Voulez-vous vraiment supprimer ce fichier ?"
+  "Do you really want to delete this file?": "Voulez-vous vraiment supprimer ce fichier ?",
+  "Material: %s": "Matière : %s"
 }

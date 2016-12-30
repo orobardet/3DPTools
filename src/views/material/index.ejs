@@ -55,31 +55,7 @@
         <% if (material.description) { %>
         <tr>
             <td colspan="5" class="material-description">
-                <% if (material.files && material.files.length) { %>
-                <ul class="material-files">
-                    <% material.files.forEach(function(file) { %>
-                    <% var fileIconClass = "fa fa-file-o";
-                    switch (file.mimeType) {
-                        case "application/x-zip-compressed":
-                            fileIconClass = "fa fa-file-archive-o";
-                            break;
-                        case "application/pdf":
-                            fileIconClass = "fa fa-file-pdf-o";
-                            break;
-                        case "application/msword":
-                            fileIconClass = "fa fa-file-word-o";
-                            break;
-                        case "application/msexcel":
-                            fileIconClass = "fa fa-file-excel-o";
-                            break;
-                    } %>
-                    <li>
-                        <a href="/material/get-file/<%- material.id %>/<%- file._id %>" class="get"><i class="<%- fileIconClass %>"></i>&nbsp;<span class="link-label"><%- file.displayName; %></span></a>
-                        <a href="/material/delete-file/<%- material.id %>/<%- file._id %>" class="delete trg-delete-file"><i class="fa fa-trash-o"></i></a>
-                    </li>
-                    <% }); %>
-                </ul>
-                <% } %>
+                <% include partial/files.ejs %>
                 <%- marked(material.description) %>
             </td>
         </tr>

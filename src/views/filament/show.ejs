@@ -207,6 +207,14 @@
         <% } %>
     </div>
 
+    <% if (filament.material) { %>
+    <div class="filament-material">
+    <div><b><%- __("Material: %s", filament.material.name) %></b></div>
+    <% material = filament.material; %><% include ../material/partial/files.ejs %>
+    <%- marked(filament.material.description) %>
+    </div>
+    <% } %>
+
     <% if (filament.pictures && filament.pictures.length) { %>
     <div class="filament-pictures">
         <% filament.pictures.forEach(function(picture) { %>
