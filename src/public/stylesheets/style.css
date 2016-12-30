@@ -8451,15 +8451,19 @@ table.material-list > tbody > tr > td.material-description {
   vertical-align: top; }
   table.material-list > tbody > tr > td.material-description ul.material-files {
     float: right; }
-    table.material-list > tbody > tr > td.material-description ul.material-files > li > a {
+    table.material-list > tbody > tr > td.material-description ul.material-files > li > a.get {
       color: inherit;
       text-decoration: #333333; }
-      table.material-list > tbody > tr > td.material-description ul.material-files > li > a > .link-label {
+      table.material-list > tbody > tr > td.material-description ul.material-files > li > a.get > .link-label {
         border-bottom: #333333 1px dotted; }
-      table.material-list > tbody > tr > td.material-description ul.material-files > li > a:hover {
+      table.material-list > tbody > tr > td.material-description ul.material-files > li > a.get:hover {
         color: #337ab7; }
-        table.material-list > tbody > tr > td.material-description ul.material-files > li > a:hover > .link-label {
+        table.material-list > tbody > tr > td.material-description ul.material-files > li > a.get:hover > .link-label {
           border-bottom: 0; }
+    table.material-list > tbody > tr > td.material-description ul.material-files > li > a.delete {
+      visibility: hidden; }
+    table.material-list > tbody > tr > td.material-description ul.material-files > li:hover > a.delete {
+      visibility: visible; }
 
 .home-section > .container {
   padding-top: 30px; }

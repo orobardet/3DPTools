@@ -228,5 +228,38 @@ module.exports = function (app) {
             });
     };
 
+    this.deleteFile = function (req, res, next) {
+        var materialId = req.params.material_id;
+        var fileId = req.params.file_id;
+
+        when(Material.findById(materialId).exec())
+            .then(function (material) {
+                if (material.deleteFile(fileId)) {
+                    material.save(function (err) {
+                        if (err) {
+                            return next(err);
+                        }
+                        if (req.method === 'DELETE') {
+                            return res.json({});
+                        }
+
+                        return res.redirect("/material");
+                    });
+                } else {
+                    res.status(404);
+                    if (req.method === 'DELETE') {
+                        return res.json({
+                            message: res.__("File %s not found.", fileId)
+                        });
+                    }
+
+                    return next(new Error(res.__("File %s not found.", fileId)));
+                }
+            }).catch(function (err) {
+                res.status(404);
+                return res.json(res.__('Material %s not found.', materialId));
+            });
+    };
+
     return this;
 };

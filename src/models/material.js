@@ -99,6 +99,25 @@ module.exports = function (app) {
         return false;
     };
 
+    materialSchema.methods.deleteFile = function (id) {
+        if (this.files && this.files.length) {
+            var deleteIndex = -1;
+            for (var i = 0; i < this.files.length; i++) {
+                if (this.files[i]._id == id) {
+                    deleteIndex = i;
+                    break;
+                }
+            }
+
+            if (deleteIndex >= 0) {
+                this.files.splice(deleteIndex, 1);
+                return true;
+            }
+        }
+
+        return false;
+    };
+
     materialSchema.statics.findById = function (id, cb) {
         return this.findOne({_id: id}, cb);
     };

@@ -29,6 +29,7 @@ module.exports = function (app) {
     router.post('/add-file/:material_id', fileUpload.single('file'), MaterialForm.file, Controller.addFile);
     router.get('/add-file/:material_id', Controller.fileForm);
     router.get('/get-file/:material_id/:file_id', Controller.getFile);
+    router.delete('/delete-file/:material_id/:file_id', Controller.deleteFile);
 
     app.use('/material', router);
     return this;

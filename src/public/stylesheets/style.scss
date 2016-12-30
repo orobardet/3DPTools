@@ -313,22 +313,30 @@ table.material-list {
     ul.material-files {
       float: right;
 
-      & > li > a {
-        color: inherit;
-        text-decoration: $text-color;
+      & > li {
+        & > a.get {
+          color: inherit;
+          text-decoration: $text-color;
 
-        & > .link-label {
-          border-bottom: $text-color 1px dotted;
-        }
-
-        &:hover {
-          color: $link-color;
           & > .link-label {
-            border-bottom: 0;
+            border-bottom: $text-color 1px dotted;
+          }
+
+          &:hover {
+            color: $link-color;
+            & > .link-label {
+              border-bottom: 0;
+            }
           }
         }
-      }
 
+        & > a.delete {
+          visibility: hidden;
+        }
+        &:hover > a.delete {
+          visibility: visible;
+        }
+      }
     }
   }
 }
