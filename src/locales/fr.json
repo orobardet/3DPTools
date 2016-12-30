@@ -343,5 +343,6 @@
   "Add": "Ajouter",
   "Display name of the file.": "Nom d'affichage du fichier.",
   "Name of the file is required": "Le nom du fichier est obligatoire",
-  "File is required": "Le fichier est obligatoire"
+  "File is required": "Le fichier est obligatoire",
+  "Material %s not found.": "La matière %s est introuvable."
 }

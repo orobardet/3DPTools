@@ -21,13 +21,14 @@ module.exports = function (app) {
     router.post('/add', MaterialForm.material, Controller.add);
     router.get('/add', Controller.addForm);
 
-    router.post('/add-file/:material_id', fileUpload.single('file'), MaterialForm.file, Controller.addFile);
-    router.get('/add-file/:material_id', Controller.fileForm);
-
     router.post('/edit/:material_id', MaterialForm.material, Controller.edit);
     router.get('/edit/:material_id', Controller.editForm);
 
     router.delete('/delete/:material_id', Controller.delete);
+
+    router.post('/add-file/:material_id', fileUpload.single('file'), MaterialForm.file, Controller.addFile);
+    router.get('/add-file/:material_id', Controller.fileForm);
+    router.get('/get-file/:material_id/:file_id', Controller.getFile);
 
     app.use('/material', router);
     return this;

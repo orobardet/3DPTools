@@ -206,5 +206,27 @@ module.exports = function (app) {
             });
     };
 
+    this.getFile = function (req, res) {
+        var materialId = req.params.material_id;
+        var fileId = req.params.file_id;
+
+        when(Material.findById(materialId).exec())
+            .then(function (material) {
+                var file = material.getFile(fileId);
+                if (file) {
+                    res.set('Content-Type', file.mimeType);
+                    res.set('Content-Length', file.size);
+                    res.set('Content-Disposition', 'inline; filename="' + file.fileName + '"');
+                    return res.send(file.data);
+                }
+                res.status(404);
+                return res.send(res.__('File %s not found.', fileId));
+            })
+            .catch(function (err) {
+                res.status(404);
+                return res.json(res.__('Material %s not found.', materialId));
+            });
+    };
+
     return this;
 };

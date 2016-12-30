@@ -87,6 +87,18 @@ module.exports = function (app) {
         this.files.push(file);
     };
 
+    materialSchema.methods.getFile = function (id) {
+        if (this.files && this.files.length) {
+            for (var i = 0; i < this.files.length; i++) {
+                if (this.files[i]._id == id) {
+                    return this.files[i];
+                }
+            }
+        }
+
+        return false;
+    };
+
     materialSchema.statics.findById = function (id, cb) {
         return this.findOne({_id: id}, cb);
     };
