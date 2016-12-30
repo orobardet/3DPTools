@@ -1,6 +1,7 @@
 module.exports = function (app) {
     var when = require('when');
     var Material = app.models.material;
+    var fs = require('fs');
 
     this.index = function (req, res, next) {
         when(Material.find().sort('name').exec())
@@ -180,8 +181,24 @@ module.exports = function (app) {
                         errors: errors
                     });
                 } else {
-                    console.log('form is ok');
-                    return res.redirect("/material");
+                    var uploadedFile = req.file;
+                    var file = {
+                        displayName: req.form.name,
+                        fileName: uploadedFile.originalname,
+                        size: uploadedFile.size,
+                        mimeType: uploadedFile.mimetype,
+                        data: fs.readFileSync(uploadedFile.path)
+                    }
+                    material.addFile(file);
+
+                    fs.unlinkSync(uploadedFile.path);
+
+                    material.save(function (err) {
+                        if (err) {
+                            return next(err);
+                        }
+                        return res.redirect("/material");
+                    });
                 }
             })
             .catch(function (err) {

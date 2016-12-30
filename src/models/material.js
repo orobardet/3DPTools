@@ -15,6 +15,14 @@ module.exports = function (app) {
             min: Number,
             max: Number
         },
+        files: [{
+            id: Schema.Types.ObjectId,
+            displayName: String,
+            fileName: String,
+            mimeType: String,
+            size: Number,
+            data: Buffer
+        }],
         _version : { type: Number }
     });
 
@@ -73,6 +81,10 @@ module.exports = function (app) {
         this._version = materialSchema.statics.currentVersion;
 
         return migrated;
+    };
+
+    materialSchema.methods.addFile = function(file) {
+        this.files.push(file);
     };
 
     materialSchema.statics.findById = function (id, cb) {
