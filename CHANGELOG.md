@@ -1,10 +1,14 @@
 # v1.2
 
+- [New] Attach file to material (#42)
 - [New] Show spool price and price per Kg in filament list (#46)
 - [New] Add sorting feature on filament list (#47)
-- [Imp] Upgrade do NodeJS 7 (#43) 
 - [Imp] Add quick access on homepage to colors and materials filament filtering (#44)
-- [Imp] Upgrade to latest NPM & Bower dependencies versions
+- [Fix] Fix Node 7 deprecation/incompatibilities (#50)
+- [Fix] Fix incomplete support of empty database, when starting the app for the first time (#49, #51)
+- [Tec] Upgrade do NodeJS 7 (#43) 
+- [Tec] Upgrade to latest NPM & Bower dependencies versions
+- [Tec] Docker image base on Node Alpine + add Docker & docker-compose usage documentation (#48)
 
 # v1.1
 
