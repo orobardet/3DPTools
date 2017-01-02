@@ -81,6 +81,12 @@ module.exports = function (app) {
                 if (req.form.bedTempMax) {
                     material.bedTemp.max = req.form.bedTempMax;
                 }
+                if (req.form.printingSpeedMin) {
+                    material.printingSpeed.min = req.form.printingSpeedMin;
+                }
+                if (req.form.printingSpeedMax) {
+                    material.printingSpeed.max = req.form.printingSpeedMax;
+                }
 
                 material.save(function (err) {
                     if (err) {

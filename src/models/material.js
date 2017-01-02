@@ -15,6 +15,10 @@ module.exports = function (app) {
             min: Number,
             max: Number
         },
+        printingSpeed: { // in mm/s
+            min: Number,
+            max: Number
+        },
         files: [{
             id: Schema.Types.ObjectId,
             displayName: String,
@@ -32,9 +36,9 @@ module.exports = function (app) {
      * @type {number}
      *
      * <b>Version history:</b>
-     * - 0: initial model
+     * - 1: printing speed range
      */
-    materialSchema.statics.currentVersion = 0;
+    materialSchema.statics.currentVersion = 1;
 
     materialSchema.methods.setInMigration = function() {
         this.inMigration = true;

@@ -48,6 +48,22 @@ module.exports = function (app) {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
+            }),
+        field("printingSpeedMin", "Minimal printing speed")
+            .trim()
+            .isInt()
+            .custom(function (value) {
+                if (value < 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            }),
+        field("printingSpeedMax", "Maximal printing speed")
+            .trim()
+            .isInt()
+            .custom(function (value) {
+                if (value < 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
             })
     );
 
