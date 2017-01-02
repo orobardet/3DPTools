@@ -8445,10 +8445,12 @@ form.logo-shop .row-or, form.logo-brand .row-or {
 .form-material .input-temperature {
   max-width: 75px; }
 
-table.material-list > tbody > tr > td.material-description {
+table.material-list > tbody > tr > td.material-description, table.material-list > tbody > tr td.material-data {
   border-top: 0;
   padding-top: 0;
   vertical-align: top; }
+table.material-list > tbody > tr > td.material-data > div {
+  white-space: nowrap; }
 
 ul.material-files {
   float: right; }

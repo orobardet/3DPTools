@@ -348,5 +348,7 @@
   "Do you really want to delete this file?": "Voulez-vous vraiment supprimer ce fichier ?",
   "Material: %s": "Matière : %s",
   "Printing speed:": "Vitesse d'impression :",
-  "mm/s": "mm/s"
+  "mm/s": "mm/s",
+  "Printing speed": "Printing speed",
+  "From %s mm/s to %s mm/s": "From %s mm/s to %s mm/s"
 }

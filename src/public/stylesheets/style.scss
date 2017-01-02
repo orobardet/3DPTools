@@ -305,11 +305,16 @@ form.logo-shop, form.logo-brand {
 
 table.material-list {
 
-  & > tbody > tr > td.material-description {
-    border-top: 0;
-    padding-top: 0;
-    vertical-align: top;
+  & > tbody > tr {
+    > td.material-description, td.material-data {
+      border-top: 0;
+      padding-top: 0;
+      vertical-align: top;
+    }
 
+    > td.material-data > div {
+      white-space: nowrap;
+    }
   }
 }
 
