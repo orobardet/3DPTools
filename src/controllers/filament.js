@@ -258,8 +258,7 @@ module.exports = function (app) {
             initialMaterialWeight: req.form.initialMaterialWeight,
             initialTotalWeight: req.form.initialTotalWeight,
             materialLeftPercentage: 100,
-            flowPercentage: 100,
-            speedPercentage: 100
+            flowPercentage: 100
         });
         if (req.form.headTempMin) {
             filament.headTemp.min = req.form.headTempMin;
@@ -282,8 +281,11 @@ module.exports = function (app) {
         if (req.form.flowPercentage && req.form.flowPercentage !== '') {
             filament.flowPercentage = req.form.flowPercentage;
         }
-        if (req.form.speedPercentage && req.form.speedPercentage !== '') {
-            filament.speedPercentage = req.form.speedPercentage;
+        if (req.form.printingSpeedMin) {
+            filament.printingSpeed.min = req.form.printingSpeedMin;
+        }
+        if (req.form.printingSpeedMax) {
+            filament.printingSpeed.max = req.form.printingSpeedMax;
         }
         filament.save(function (err) {
             if (err) {
@@ -361,7 +363,8 @@ module.exports = function (app) {
                 filament.bedTemp.max = req.form.bedTempMax;
                 filament.bedTemp.experienced = req.form.bedTempExperienced;
                 filament.flowPercentage = (req.form.flowPercentage !== '') ? req.form.flowPercentage : 100;
-                filament.speedPercentage = (req.form.speedPercentage !== '') ? req.form.speedPercentage : 100;
+                filament.printingSpeed.min = req.form.printingSpeedMin;
+                filament.printingSpeed.max = req.form.printingSpeedMax;
                 filament.name = req.form.name;
 
                 filament.save(function (err) {

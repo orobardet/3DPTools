@@ -3,6 +3,7 @@
 - [New] Attach file to material (#42)
 - [New] Show spool price and price per Kg in filament list (#46)
 - [New] Add sorting feature on filament list (#47)
+- [New] Add speed printing range for material and filament (#45)
 - [Imp] Add quick access on homepage to colors and materials filament filtering (#44)
 - [Fix] Fix Node 7 deprecation/incompatibilities (#50)
 - [Fix] Fix incomplete support of empty database, when starting the app for the first time (#49, #51)

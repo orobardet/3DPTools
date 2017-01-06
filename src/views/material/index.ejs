@@ -12,13 +12,6 @@
     </div>
     <% if (materials && materials.length) { %>
     <table class="table material-list">
-        <tr>
-            <th><%- __('Name') %></th>
-            <th><%- __('Density') %></th>
-            <th><%- __('Extrusion temperature') %></th>
-            <th><%- __('Bed temperature') %></th>
-            <th></th>
-        </tr>
         <% materials.forEach(function (material) { %>
         <tr>
             <td>
@@ -26,21 +19,6 @@
                 <% if (material.url && (material.url != '')) { %>
                 <br/>
                 <a href="<%- material.url %>" target="_blank"><%- material.url %></a>
-                <% } %>
-            </td>
-            <td><%- __('%s kg/m³', material.density) %></td>
-            <td>
-                <% if (material.headTemp) {
-                    temp = material.headTemp;
-                    iconClass = "rs rs-extruder"; %>
-                <% include partial/tempRange.ejs %>
-                <% } %>
-            </td>
-            <td>
-                <% if (material.bedTemp) {
-                    temp = material.bedTemp;
-                    iconClass = "rs rs-heated-bed"; %>
-                <% include partial/tempRange.ejs %>
                 <% } %>
             </td>
             <td class="table-actions">
@@ -52,14 +30,48 @@
                 </div>
             </td>
         </tr>
-        <% if (material.description) { %>
         <tr>
-            <td colspan="5" class="material-description">
+            <td class="material-data">
+                <div>
+                    <b><%- __('Density:') %></b>
+                    <%- __('%s kg/m³', material.density) %>
+                </div>
+                <% if (material.headTemp && (material.headTemp.min || material.headTemp.max)) { %>
+                <div>
+                    <% temp = material.headTemp;
+                       iconClass = "rs rs-extruder"; %>
+                    <% include partial/tempRange.ejs %>
+                </div>
+                <% } %>
+                <% if (material.bedTemp && (material.bedTemp.min || material.bedTemp.max)) { %>
+                <div>
+                    <% temp = material.bedTemp;
+                    iconClass = "rs rs-heated-bed"; %>
+                    <% include partial/tempRange.ejs %>
+                </div>
+                <% } %>
+                <% if (material.printingSpeed && (material.printingSpeed.min || material.printingSpeed.max)) { %>
+                <div>
+                    <% if (material.printingSpeed.min && material.printingSpeed.max) { %>
+                    <i class="rs rs-speed"></i> <%- __('From %s mm/s to %s mm/s', material.printingSpeed.min, material.printingSpeed.max) %>
+                    <% } else { %>
+                    <% if (material.printingSpeed.min) { %>
+                    <i class="rs rs-speed"></i> <%- __('%s mm/s min', material.printingSpeed.min) %>
+                    <% } %>
+                    <% if (material.printingSpeed.max) { %>
+                    <i class="rs rs-speed"></i> <%- __('%s mm/s max', material.printingSpeed.max) %>
+                    <% } %>
+                    <% } %>
+                </div>
+                <% } %>
+            </td>
+            <td class="material-description">
                 <% include partial/files.ejs %>
+                <% if (material.description) { %>
                 <%- marked(material.description) %>
+                <% } %>
             </td>
         </tr>
-        <% } %>
         <% }); %>
     </table>
     <% } %>

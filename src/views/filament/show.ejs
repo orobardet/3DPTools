@@ -41,15 +41,21 @@
                     <% } %>
                 </td>
             </tr>
+            <% if (filament.printingSpeed && (filament.printingSpeed.min || filament.printingSpeed.max)) {%>
             <tr>
                 <td><%- __('Speed:') %></td>
                 <td>
-                    <% if (filament.speedPercentage) { %>
                     <i class="rs rs-speed"></i>
-                    <%- __('%s %%', filament.speedPercentage) %>
+                    <% if (filament.printingSpeed.min && filament.printingSpeed.max) { %>
+                    <%- __('From %s mm/s to %s mm/s', filament.printingSpeed.min, filament.printingSpeed.max) %>
+                    <% } else if (filament.printingSpeed.min) { %>
+                    <%- __('%s mm/s min', filament.printingSpeed.min) %>
+                    <% } else if (filament.printingSpeed.max) { %>
+                    <%- __('%s mm/s max', filament.printingSpeed.max) %>
                     <% } %>
                 </td>
             </tr>
+            <% } %>
             <tr>
                 <td><%- __('Extrusion temperature:') %></td>
                 <td>
