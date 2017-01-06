@@ -6,7 +6,7 @@ Web-based 3DPrinting tools
 
 ## Run
 
-- [NodeJS](https://nodejs.org/) (6.x) with npm
+- [NodeJS](https://nodejs.org/) (7.x) with npm
 - ImageMagick
 - [MongoDB](https://www.mongodb.com/) (3.2)
 - [Redis](http://redis.io/)
