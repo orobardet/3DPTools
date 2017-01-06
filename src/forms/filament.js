@@ -97,11 +97,19 @@ module.exports = function (app) {
                     throw new Error('%s must be greater than 0.');
                 }
             }),
-        field("speedPercentage", "Speed")
+        field("printingSpeedMin", "Minimal printing speed")
             .trim()
             .isInt()
             .custom(function (value) {
-                if (value <= 0) {
+                if (value < 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            }),
+        field("printingSpeedMax", "Maximal printing speed")
+            .trim()
+            .isInt()
+            .custom(function (value) {
+                if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
             }),

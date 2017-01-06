@@ -407,8 +407,60 @@
         </div>
 
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
+                <label class="control-label"><i
+                            class="rs rs-speed"></i>&nbsp;<%- __('Printing speed:'); %></label>
+                <div class="row form-inline">
+                    <div class="col-md-6 form-group<%= (errors.printingSpeedMin) ? " has-error" : "" %>">
+                        <label for="printingSpeedMin" class="control-label"><%- __('Min:'); %></label>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="printingSpeedMin"
+                                        data-temp-type="printingSpeed" , data-temp-field="min"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i>
+                                </button>
+                            </span>
+                            <input type="number" class="form-control input-speed" id="printingSpeedMin"
+                                   name="printingSpeedMin"
+                                   value="<%- (locals.printingSpeedMin) ? printingSpeedMin : '' %>" min="0">
+                            <div class="input-group-addon"><%- __('mm/s'); %></div>
+                        </div>
+                        <% if (errors.printingSpeedMin) { %>
+                        <ul class="help-block with-errors">
+                            <% errors.printingSpeedMin.forEach(function(msg) { %>
+                            <li><%= __(msg) %></li>
+                            <% }); %>
+                        </ul>
+                        <% } %>
+                    </div>
+                    <div class="col-md-6 form-group<%= (errors.printingSpeedMax) ? " has-error" : "" %>">
+                        <label for="printingSpeedMax" class="control-label"><%- __('Max:'); %></label>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-temp-from-material" data-temp-id="printingSpeedMax"
+                                        data-temp-type="printingSpeed" , data-temp-field="max"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-leaf"></i>
+                                </button>
+                            </span>
+                            <input type="number" class="form-control input-speed" id="printingSpeedMax"
+                                   name="printingSpeedMax"
+                                   value="<%- (locals.printingSpeedMax) ? printingSpeedMax : '' %>" min="0">
+                            <div class="input-group-addon"><%- __('mm/s'); %></div>
+                        </div>
+                        <% if (errors.printingSpeedMax) { %>
+                        <ul class="help-block with-errors">
+                            <% errors.printingSpeedMax.forEach(function(msg) { %>
+                            <li><%= __(msg) %></li>
+                            <% }); %>
+                        </ul>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-offset-1 col-md-3">
                 <div class="form-group<%= (errors.density) ? " has-error" : "" %>">
+                    <br/>
                     <label for="density" class="control-label required"><%- __('Density:'); %></label>
                     <div class="input-group">
                             <span class="input-group-btn">
@@ -433,6 +485,7 @@
 
             <div class="col-md-offset-1 col-md-3">
                 <div class="form-group<%= (errors.flowPercentage) ? " has-error" : "" %>">
+                    <br/>
                     <label for="flowPercentage" class="control-label"><%- __('Flow:'); %></label>
                     <div class="input-group">
                         <input type="number" class="form-control" id="flowPercentage"
@@ -443,25 +496,6 @@
                     <% if (errors.flowPercentage) { %>
                     <ul class="help-block with-errors">
                         <% errors.flowPercentage.forEach(function(msg) { %>
-                        <li><%= __(msg) %></li>
-                        <% }); %>
-                    </ul>
-                    <% } %>
-                </div>
-            </div>
-
-            <div class="col-md-offset-1 col-md-3">
-                <div class="form-group<%= (errors.speedPercentage) ? " has-error" : "" %>">
-                    <label for="speedPercentage" class="control-label"><%- __('Speed:'); %></label>
-                    <div class="input-group">
-                        <input type="number" class="form-control" id="speedPercentage"
-                               name="speedPercentage"
-                               value="<%- (locals.speedPercentage) ? speedPercentage : '' %>" min="0">
-                        <div class="input-group-addon"><%- __('%'); %></div>
-                    </div>
-                    <% if (errors.speedPercentage) { %>
-                    <ul class="help-block with-errors">
-                        <% errors.speedPercentage.forEach(function(msg) { %>
                         <li><%= __(msg) %></li>
                         <% }); %>
                     </ul>

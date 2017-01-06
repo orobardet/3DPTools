@@ -34,6 +34,10 @@ module.exports = function (app) {
             max: Number,
             experienced: Number
         },
+        printingSpeed: { // in mm/s
+            min: Number,
+            max: Number
+        },
         density: Number,
         buyDate: Date,
         price: Number,
@@ -60,7 +64,7 @@ module.exports = function (app) {
      * - 3: add lastUsedDate. Migrating to modificationDate.
      * - 4: add finished and finishedDate
      * - 5: add pricePerKG
-     * - 6: replade speedPercentage with printingSpeed range
+     * - 6: replace speedPercentage with printingSpeed range
      */
     filamentSchema.statics.currentVersion = 6;
 
