@@ -1,3 +1,7 @@
+# v1.2.1
+
+- [Fix] Filaments stats: were never displayed even if DB contains filaments (#52)
+
 # v1.2
 
 - [New] Attach file to material (#42)
