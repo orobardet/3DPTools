@@ -41,7 +41,7 @@
     <li role="presentation"><a href="/filament"><i class="rs rs-filament"></i>&nbsp;<%- __('Filaments') %></a></li>
 </ul>
 
-<% if (stats.totals.count.filamentTotalCount) { %>
+<% if (stats.totals.count) { %>
 
     <% if (stats && stats.totals) { %>
     <div class="panel panel-default filament-stats">
@@ -1131,7 +1131,7 @@
         </div>
         <% } %>
     </div>
-<% } else { /* if (stats.totals.count.filamentTotalCount) */ %>
+<% } else { /* if (stats.totals.count) */ %>
 <center>
     <%- __('No filament found.') %><br><br>
     <a href="/filament/add" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;<%- __('Add filament') %></a>
