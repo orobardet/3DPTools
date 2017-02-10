@@ -78,5 +78,8 @@ module.exports = function (app) {
     // show user profile
     router.get('/profile', Controller.userProfile);
 
+    // changelog
+    router.get('/changelog', Controller.changelog);
+
     app.use('/', router);
 };

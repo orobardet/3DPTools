@@ -352,5 +352,7 @@
   "Printing speed": "Printing speed",
   "From %s mm/s to %s mm/s": "De %s mm/s à %s mm/s",
   "%s mm/s min": "%s mm/s min",
-  "%s mm/s max": "%s mm/s max"
+  "%s mm/s max": "%s mm/s max",
+  "Changelog": "Changelog",
+  "No changelog file available.": "Pas de fichier de changelog disponible."
 }

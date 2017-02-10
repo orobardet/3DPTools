@@ -8700,4 +8700,16 @@ ul.material-files {
 table td.not-found {
   text-align: center; }
 
+.changelog .changelog-type {
+  font-family: monospace;
+  margin-right: 5px; }
+.changelog .changelog-type-new {
+  color: green; }
+.changelog .changelog-type-imp {
+  color: blue; }
+.changelog .changelog-type-fix {
+  color: orange; }
+.changelog .changelog-type-tec {
+  color: gray; }
+
 /*# sourceMappingURL=style.css.map */

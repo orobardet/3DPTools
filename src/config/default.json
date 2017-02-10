@@ -1,5 +1,9 @@
 {
   "version": "1.2.1",
+  "changelog": {
+    "filePath": "CHANGELOG.md",
+    "issueRootURL": "https://gitlab.com/orobardet/3DPTools/issues/"
+  },
   "session": {
     "name": "3dptools",
     "secret": [

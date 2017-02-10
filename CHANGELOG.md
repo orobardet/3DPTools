@@ -1,3 +1,7 @@
+# v1.3
+
+- [New] Show changelog when clicking on version number (#54)
+
 # v1.2.1
 
 - [Fix] Filaments stats: were never displayed even if DB contains filaments (#52)
@@ -69,4 +73,4 @@
 
 # v0.9
 
-First tracker release
+- First tracked release

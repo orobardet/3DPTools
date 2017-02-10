@@ -1,5 +1,6 @@
 module.exports = function (bootstrapOptions) {
     var merge = require('merge');
+    const fs = require('fs');
 
     bootstrapOptions = merge({
         loadConfig: true,
@@ -50,6 +51,9 @@ module.exports = function (bootstrapOptions) {
         app.locals.Color = color;
         app.config = config;
         app.set('config', config);
+        if (fs.existsSync(config.get('changelog:filePath'))) {
+            app.locals.changelogAvailable = true;
+        }
     }
 
     // Init sessions

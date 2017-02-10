@@ -1,4 +1,5 @@
 module.exports = function (app) {
+    const fs = require('fs-promise');
     var when = require('when');
     var User = app.models.user;
     var Shop = app.models.shop;
@@ -144,6 +145,21 @@ module.exports = function (app) {
 
     this.userProfile = function (req, res) {
         res.render('profile');
+    };
+
+    this.changelog = function (req, res) {
+        var changelogFilePath = app.config.get('changelog:filePath');
+        fs.exists(changelogFilePath).then(function() {
+            return fs.readFile(changelogFilePath, {encoding: 'utf8'});
+        }).then(function(changelog) {
+            res.render('changelog',  {
+                changelog: changelog
+            });
+        }).catch(function() {
+            res.render('changelog',  {
+                changelog: req.__('No changelog file available.')
+            });
+        });
     };
 
     return this;

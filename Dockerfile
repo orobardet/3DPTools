@@ -8,6 +8,7 @@ ENV PORT=3000
 ENV NODE_ENV=production
 
 COPY src /3dptools
+COPY CHANGELOG.md /3dptools/CHANGELOG.md
 COPY docker/docker_start.sh /docker_start.sh
 RUN chmod +x /docker_start.sh
 

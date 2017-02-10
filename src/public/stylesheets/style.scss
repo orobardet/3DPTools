@@ -731,3 +731,22 @@ ul.material-files {
 table td.not-found {
   text-align: center;
 }
+
+.changelog {
+  .changelog-type {
+    font-family: monospace;
+    margin-right: 5px;
+  }
+  .changelog-type-new {
+    color: green;
+  }
+  .changelog-type-imp {
+    color: blue;
+  }
+  .changelog-type-fix {
+    color: orange;
+  }
+  .changelog-type-tec {
+    color: gray;
+  }
+}

@@ -66,6 +66,11 @@
 <div class="container">
     <%- body %>
 </div>
-<div id="version">v<%- config.get('version') %></div>
+<div id="version">
+    <% if (locals.changelogAvailable) { %><a href="/changelog">
+    <% } %>
+    v<%- config.get('version') %>
+    <% if (locals.changelogAvailable) { %></a> <% } %>
+</div>
 </body>
 </html>
