@@ -578,7 +578,7 @@
                             data: <% var whiteColor = new Color('#FFFFFF'); %><%- sprintf('%-j', stats.usagePer.colors.map(function(doc) {
                             doc.y = doc.totalUsedWeight;
                             var color = new Color(doc._id.code);
-                            if (color.hexString() == whiteColor.hexString()) {
+                            if (color.hex() == whiteColor.hex()) {
                                 doc.borderColor = '#DDDDDD';
                             } else {
                                 doc.borderColor = doc._id.code;
