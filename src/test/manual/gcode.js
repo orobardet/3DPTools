@@ -10,8 +10,10 @@ var app = require('../../app')({
     setupHttpRouting: false
 });
 
+var when = require('when');
 var colors = require('colors');
 var dataDirectory = '../data/test_gcode';
+var GCodeAnalyzer = require('../../lib/gcodeAnalyzer');
 
 app.program = require('commander');
 
@@ -27,11 +29,39 @@ app.program
         }
 
         var testData = testsSuite[testName];
-        console.log('Expected:');
-        console.log(testData);
 
-        var gcode = new require('../../lib/gcodeAnalyser')(app);
-        gcode.analyze(dataDirectory+'/'+testData.gcode);
+        var gcode = new GCodeAnalyzer(dataDirectory+'/'+testData.gcode);
+        when(gcode.analyze())
+            .then(function () {
+                // Layers
+                var layersCount = gcode.getLayersCount();
+                if (layersCount === parseInt(testData.layersCount)) {
+                    console.log(layersCount + ' layers: ' + colors.green("OK"));
+                } else {
+                    console.log(layersCount + ' layers: ' + colors.red("KO") + ', ' + testData.layersCount + ' expected');
+                }
+
+                // Filament length
+                var filamentLength = Math.round(gcode.getFilamentLength());
+                if (filamentLength === parseInt(testData.filamentLength)) {
+                    console.log(filamentLength + ' mm of filament: ' + colors.green("OK"));
+                } else {
+                    console.log(filamentLength + ' mm of filament: ' + colors.red("KO") + ', ' + testData.filamentLength + ' mm expected');
+                }
+
+                // Lines count
+                var linesCount = gcode.getLinesCount();
+                if (linesCount === parseInt(testData.linesCount)) {
+                    console.log(linesCount + ' lines: ' + colors.green("OK"));
+                } else {
+                    console.log(linesCount + ' lines: ' + colors.red("KO") + ', ' + testData.linesCount + ' expected');
+                }
+
+                var unkownCommands = gcode.getUnknownCommands();
+                if (unkownCommands && Object.keys(unkownCommands).length) {
+                    console.log(Object.keys(unkownCommands).length + ' unknow GCode commands found in the file :\n', unkownCommands);
+                }
+            });
     });
 
 app.program.parse(process.argv);

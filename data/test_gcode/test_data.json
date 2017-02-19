@@ -4,7 +4,7 @@
 		"gcode": "30x30x1.gcode",
 		"filamentLength": "356",
 		"layersCount": "25",
-		"linesCount": "7601",
+		"linesCount": "7602",
 		"printingTime": "298"
 	},
 	"box30x30": {
@@ -15,7 +15,7 @@
 		"linesCount": "16185",
 		"printingTime": "1579"
 	},
-	"tubs15mm": {
+	"tube15mm": {
 		"stl": "tube15mm.stl",
 		"gcode": "tube15mm.gcode",
 		"filamentLength": "2412",
