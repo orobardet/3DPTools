@@ -116,6 +116,13 @@ h1 {
   }
 }
 
+a.anchor {
+  display: block;
+  position: relative;
+  top: -60px;
+  visibility: hidden;
+}
+
 .dropdown.language-selector > .dropdown-menu > li.active {
   &.active > a {
     background-color: transparent;

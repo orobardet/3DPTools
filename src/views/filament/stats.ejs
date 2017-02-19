@@ -44,6 +44,7 @@
 <% if (stats.totals.count) { %>
 
     <% if (stats && stats.totals) { %>
+    <a name="totals" class="anchor"></a>
     <div class="panel panel-default filament-stats">
         <div class="panel-heading">
             <h2 class="panel-title"><%- __('Totals'); %></h2>
@@ -70,6 +71,7 @@
     <% } %>
 
     <% if (stats && stats.usage) { %>
+    <a name="global-usage" class="anchor"></a>
     <div class="panel panel-default filament-stats">
         <div class="panel-heading">
             <h2 class="panel-title"><%- __('Usage'); %></h2>
@@ -267,6 +269,7 @@
     <% } %>
 
     <% if (stats && stats.pricePerKg) { %>
+    <a name="price-per-kg" class="anchor"></a>
     <div class="panel panel-default filament-stats">
         <div class="panel-heading">
             <h2 class="panel-title"><%- __('Price per Kg'); %></h2>
@@ -396,6 +399,7 @@
 
 
     <% if (stats && stats.boughtHistory) { %>
+    <a name="buy-history" class="anchor"></a>
     <div class="panel panel-default filament-stats">
         <div class="panel-heading">
             <h2 class="panel-title"><%- __('Bought history'); %></h2>
@@ -512,12 +516,14 @@
     <% } %>
 
     <% if (stats && stats.usagePer) { %>
+    <a name="usages" class="anchor"></a>
     <div class="panel panel-default filament-stats">
         <div class="panel-heading">
             <h2 class="panel-title"><%- __('Most used'); %></h2>
         </div>
         <div class="panel-body filament-stats-graph">
             <% if (stats && stats.usagePer.colors) { %>
+            <a name="usage-per-color" class="anchor"></a>
             <div id="filament-stats-most-used-by-colors"></div>
             <script type="text/javascript">
                 $(function () {
@@ -604,8 +610,10 @@
             <% } %>
 
             <% if (stats.usagePer.materials || stats.usagePer.brands) { %>
+            <a name="usage-per-brand" class="anchor"></a>
             <div class="row">
                 <% if (stats.usagePer.materials) { %>
+                <a name="usage-per-material" class="anchor"></a>
                 <div class="col-md-6 filament-stats-graph">
                     <div id="filament-stats-most-used-by-materials"></div>
                     <script type="text/javascript">
@@ -697,6 +705,7 @@
                 <% } %>
 
                 <% if (stats.usagePer.brands) { %>
+                <a name="usage-per-brand" class="anchor"></a>
                 <div class="col-md-6 filament-stats-graph">
                     <div id="filament-stats-most-used-by-brands"></div>
                     <script type="text/javascript">
@@ -794,6 +803,7 @@
 
     <div class="row">
     <% if (stats && stats.count) { %>
+        <a name="counts" class="anchor"></a>
         <div class="col-md-6">
             <div class="panel panel-default filament-stats filament-stats-vertical-stack">
                 <div class="panel-heading">
@@ -801,6 +811,7 @@
                 </div>
                 <div class="panel-body">
                     <% if (stats.count.byBrands) { %>
+                    <a name="count-per-brand" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-count-by-brands"></div>
                         <script type="text/javascript">
@@ -840,6 +851,7 @@
                     <% } %>
 
                     <% if (stats.count.byShops) { %>
+                    <a name="count-per-shop" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-count-by-shops"></div>
                         <script type="text/javascript">
@@ -879,6 +891,7 @@
                     <% } %>
 
                     <% if (stats.count.byMaterials) { %>
+                    <a name="count-per-material" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-count-by-materials"></div>
                         <script type="text/javascript">
@@ -918,6 +931,7 @@
                     <% } %>
 
                     <% if (stats.count.byColors) { %>
+                    <a name="count-per-color" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-count-by-colors"></div>
                         <script type="text/javascript">
@@ -963,6 +977,7 @@
         <% } %>
 
         <% if (stats && stats.costs) { %>
+        <a name="costs" class="anchor"></a>
         <div class="col-md-6">
             <div class="panel panel-default filament-stats filament-stats-vertical-stack">
                 <div class="panel-heading">
@@ -970,6 +985,7 @@
                 </div>
                 <div class="panel-body">
                     <% if (stats.costs.byBrands) { %>
+                    <a name="cost-per-brand" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-cost-by-brands"></div>
                         <script type="text/javascript">
@@ -1009,6 +1025,7 @@
                     <% } %>
 
                     <% if (stats.costs.byShops) { %>
+                    <a name="cost-per-shop" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-cost-by-shops"></div>
                         <script type="text/javascript">
@@ -1048,6 +1065,7 @@
                     <% } %>
 
                     <% if (stats.costs.byMaterials) { %>
+                    <a name="cost-per-material" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-cost-by-materials"></div>
                         <script type="text/javascript">
@@ -1087,6 +1105,7 @@
                     <% } %>
 
                     <% if (stats.costs.byColors) { %>
+                    <a name="cost-per-color" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-cost-by-colors"></div>
                         <script type="text/javascript">
