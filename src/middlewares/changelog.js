@@ -11,7 +11,7 @@ module.exports = function (app) {
 
             text = text.replace(/#(\d+)/ug, "[#$1]($1)");
 
-            var issueRootURL = app.config.get('changelog:issueRootURL');
+            var issueRootURL = app.config.get('sourceCode:changelog:issueRootURL');
             var renderer = new marked.Renderer();
             renderer.link = function(href, title, text) {
                 return '<a href="'+issueRootURL+href+'" target="_blank">'+text+'</a>';

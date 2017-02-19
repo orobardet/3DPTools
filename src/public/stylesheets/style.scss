@@ -732,6 +732,17 @@ table td.not-found {
   text-align: center;
 }
 
+.changelog-section {
+  .project-link {
+    font-size: large;
+    font-weight: bold;
+
+    img {
+      height: 1em
+    }
+  }
+}
+
 .changelog {
   .changelog-type {
     font-family: monospace;

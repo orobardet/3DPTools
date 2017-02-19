@@ -51,7 +51,7 @@ module.exports = function (bootstrapOptions) {
         app.locals.Color = color;
         app.config = config;
         app.set('config', config);
-        if (fs.existsSync(config.get('changelog:filePath'))) {
+        if (fs.existsSync(config.get('sourceCode:changelog:filePath'))) {
             app.locals.changelogAvailable = true;
         }
     }

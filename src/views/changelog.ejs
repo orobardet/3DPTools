@@ -1,5 +1,9 @@
 <h1><%- __("Changelog") %></h1>
 
+<p class="project-link">
+<a href="<%- config.get('sourceCode:projectUrl') %>" target="_blank"><img src="images/gitlab_logo.svg"/> <%- __('Open project page') %></a>
+</p>
+
 <div class="changelog">
 <%- changelogFormatter(changelog) %>
 </div>

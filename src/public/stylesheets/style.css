@@ -8700,6 +8700,12 @@ ul.material-files {
 table td.not-found {
   text-align: center; }
 
+.changelog-section .project-link {
+  font-size: large;
+  font-weight: bold; }
+  .changelog-section .project-link img {
+    height: 1em; }
+
 .changelog .changelog-type {
   font-family: monospace;
   margin-right: 5px; }

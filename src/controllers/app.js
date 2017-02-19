@@ -148,15 +148,17 @@ module.exports = function (app) {
     };
 
     this.changelog = function (req, res) {
-        var changelogFilePath = app.config.get('changelog:filePath');
+        var changelogFilePath = app.config.get('sourceCode:changelog:filePath');
         fs.exists(changelogFilePath).then(function() {
             return fs.readFile(changelogFilePath, {encoding: 'utf8'});
         }).then(function(changelog) {
             res.render('changelog',  {
+                navModule: 'changelog',
                 changelog: changelog
             });
         }).catch(function() {
             res.render('changelog',  {
+                navModule: 'changelog',
                 changelog: req.__('No changelog file available.')
             });
         });
