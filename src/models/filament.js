@@ -641,7 +641,8 @@ module.exports = function (app) {
                     price: '$price',
                     name: '$name',
                     brandId: '$brand',
-                    shopId: '$shop'
+                    shopId: '$shop',
+                    materialWeight: '$initialMaterialWeight',
                 }
             },
             { $lookup: {
@@ -664,6 +665,7 @@ module.exports = function (app) {
                     buyDate: '$buyDate',
                     price: '$price',
                     name: '$name',
+                    materialWeight: '$materialWeight',
                     brand: '$brand.name',
                     shop: '$shop.name'
                 }
@@ -678,6 +680,7 @@ module.exports = function (app) {
                     _id: { buyDay:'$yearMonthDay', buyDate: '$buyDate' },
                     count: { $sum: 1 },
                     cost: { $sum: '$price' },
+                    materialWeight: { $sum: '$materialWeight' },
                     names: { $push: '$name' },
                     brands: { $addToSet: '$brand' },
                     shops: { $addToSet: '$shop' }

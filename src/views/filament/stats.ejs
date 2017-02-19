@@ -455,108 +455,144 @@
             <div id="filament-stats-bought-history"></div>
             <script type="text/javascript">
                 $(function () {
-                            $('#filament-stats-bought-history').highcharts({
-                                chart: {
-                                    zoomType: 'x'
-                                },
+                    $('#filament-stats-bought-history').highcharts({
+                        chart: {
+                            zoomType: 'x'
+                        },
+                        title: {
+                            text: ''
+                        },
+                        subtitle: {
+                            verticalAlign: 'bottom',
+                            y: 5,
+                            text: document.ontouchstart === undefined ?
+                                    '<%- __('Click and drag in the plot area to zoom in') %>' : '<%- __('Pinch the chart to zoom in') %>'
+                        },
+                        xAxis: {
+                            type: 'datetime'
+                        },
+                        yAxis: [
+                            {
                                 title: {
-                                    text: ''
-                                },
-                                subtitle: {
-                                    verticalAlign: 'bottom',
-                                    y: 5,
-                                    text: document.ontouchstart === undefined ?
-                                            '<%- __('Click and drag in the plot area to zoom in') %>' : '<%- __('Pinch the chart to zoom in') %>'
-                                },
-                                xAxis: {
-                                    type: 'datetime'
-                                },
-                                yAxis: [
-                                    {
-                                        title: {
-                                            enabled: false,
-                                            text: '<%- __('Count') %>',
-                                            style: {
-                                                color: chartsColors[0]
-                                            }
-                                        },
-                                        labels: {
-                                            format: '{value}',
-                                            style: {
-                                                color: chartsColors[0]
-                                            }
-                                        }
-                                    },
-                                    {
-                                        title: {
-                                            enabled: false,
-                                            text: '<%- __('Cost') %>',
-                                            style: {
-                                                color: chartsColors[2]
-                                            }
-                                        },
-                                        labels: {
-                                            format: '{value} €',
-                                            style: {
-                                                color: chartsColors[2]
-                                            }
-                                        },
-                                        opposite: true
-                                    }
-                                ],
-                                legend: {
-                                    enabled: true
-                                },
-                                plotOptions: {
-                                    area: {
-                                        marker: {
-                                            radius: 2
-                                        },
-                                        lineWidth: 1,
-                                        states: {
-                                            hover: {
-                                                lineWidth: 1
-                                            }
-                                        },
-                                        threshold: null
+                                    enabled: false,
+                                    text: '<%- __('Count') %>',
+                                    style: {
+                                        color: chartsColors[0]
                                     }
                                 },
-                                series: [{
-                                    type: 'spline',
-                                    name: '<%- __('Count') %>',
-                                    yAxis: 0,
-                                    color: chartsColors[0],
-                                    tooltip: {
-                                        pointFormat: '<b>{series.name}:</b> {point.y}<br/><b><%- __('Names: ') %></b>{point.namesString}<br/><b><%- __('Shops: ') %></b>{point.shopsString}<br/><b><%- __('Brands: ') %></b>{point.brandsString}'
-                                    },
-                                    data: <%- sprintf('%-j', stats.boughtHistory.map(function(doc) {
-                                        doc.x = doc.buyTimestamp;
-                                        doc.y = doc.count;
-                                        doc.name = doc.label;
-                                        doc.namesString = doc.names.join(', ');
-                                        doc.shopsString = doc.shops.join(', ');
-                                        doc.brandsString = doc.brands.join(', ');
-                                        return doc;
-                                    })); %>
-                                },{
-                                    type: 'spline',
-                                    name: '<%- __('Cost') %>',
-                                    yAxis: 1,
-                                    color: chartsColors[2],
-                                    tooltip: {
-                                        pointFormat: '<b>{series.name}:</b> {point.y:.2f} €<br/><b><%- __('Names: ') %></b>{point.namesString}<br/><b><%- __('Shops: ') %></b>{point.shopsString}<br/><b><%- __('Brands: ') %></b>{point.brandsString}'
-                                    },
-                                    data: <%- sprintf('%-j', stats.boughtHistory.map(function(doc) {
-                                        doc.x = doc.buyTimestamp;
-                                        doc.y = doc.cost;
-                                        doc.namesString = doc.names.join(', ');
-                                        doc.shopsString = doc.shops.join(', ');
-                                        doc.brandsString = doc.brands.join(', ');
-                                        return doc;
-                                    })); %>
-                                }]
-                            });
-                        });
+                                labels: {
+                                    format: '{value}',
+                                    style: {
+                                        color: chartsColors[0]
+                                    }
+                                }
+                            },
+                            {
+                                title: {
+                                    enabled: false,
+                                    text: '<%- __('Cost') %>',
+                                    style: {
+                                        color: chartsColors[2]
+                                    }
+                                },
+                                labels: {
+                                    format: '{value} €',
+                                    style: {
+                                        color: chartsColors[2]
+                                    }
+                                },
+                                opposite: true
+                            }
+                        ],
+                        tooltip: {
+                            crosshairs: true
+                        },
+                        legend: {
+                            enabled: true
+                        },
+                        plotOptions: {
+                            spline: {
+                                marker: {
+                                    enabled: true,
+                                    radius: 3
+                                },
+                                lineWidth: 1
+                            }
+                        },
+                        series: [{
+                            type: 'spline',
+                            name: '<%- __('Count') %>',
+                            yAxis: 0,
+                            color: chartsColors[0],
+                            tooltip: {
+                                pointFormat: '<b>{series.name}:</b> {point.y}<br/><b><%- __('Names: ') %></b>{point.namesString}<br/><b><%- __('Shops: ') %></b>{point.shopsString}<br/><b><%- __('Brands: ') %></b>{point.brandsString}'
+                            },
+                            data: <%- sprintf('%-j', stats.boughtHistory.map(function(doc) {
+                                doc.x = doc.buyTimestamp;
+                                doc.y = doc.count;
+                                doc.name = doc.label;
+                                doc.namesString = doc.names.join(', ');
+                                doc.shopsString = doc.shops.join(', ');
+                                doc.brandsString = doc.brands.join(', ');
+                                return doc;
+                            })); %>
+                        },{
+                            type: 'spline',
+                            name: '<%- __('Cost') %>',
+                            yAxis: 1,
+                            color: chartsColors[2],
+                            tooltip: {
+                                pointFormat: '<b>{series.name}:</b> {point.y:.2f} €<br/><b><%- __('Names: ') %></b>{point.namesString}<br/><b><%- __('Shops: ') %></b>{point.shopsString}<br/><b><%- __('Brands: ') %></b>{point.brandsString}'
+                            },
+                            data: <%- sprintf('%-j', stats.boughtHistory.map(function(doc) {
+                                doc.x = doc.buyTimestamp;
+                                doc.y = doc.cost;
+                                doc.namesString = doc.names.join(', ');
+                                doc.shopsString = doc.shops.join(', ');
+                                doc.brandsString = doc.brands.join(', ');
+                                return doc;
+                            })); %>
+                        },{
+                            type: 'spline',
+                            name: '<%- __('Cost/filament') %>',
+                            yAxis: 1,
+                            color: chartsColors[4],
+                            tooltip: {
+                                pointFormat: '<b>{series.name}:</b> {point.y:.2f} €<br/><b><%- __('Names: ') %></b>{point.namesString}<br/><b><%- __('Shops: ') %></b>{point.shopsString}<br/><b><%- __('Brands: ') %></b>{point.brandsString}'
+                            },
+                            visible: false,
+                            data: <%- sprintf('%-j', stats.boughtHistory.map(function(doc) {
+                                if (doc.count > 0) {
+                                    doc.x = doc.buyTimestamp;
+                                    doc.y = doc.cost / doc.count;
+                                    doc.namesString = doc.names.join(', ');
+                                    doc.shopsString = doc.shops.join(', ');
+                                    doc.brandsString = doc.brands.join(', ');
+                                    return doc;
+                                }
+                            })); %>
+                        },{
+                            type: 'spline',
+                            name: '<%- __('Cost/Kg') %>',
+                            yAxis: 1,
+                            color: chartsColors[6],
+                            tooltip: {
+                                pointFormat: '<b>{series.name}:</b> {point.y:.2f} €<br/><b><%- __('Names: ') %></b>{point.namesString}<br/><b><%- __('Shops: ') %></b>{point.shopsString}<br/><b><%- __('Brands: ') %></b>{point.brandsString}'
+                            },
+                            visible: false,
+                            data: <%- sprintf('%-j', stats.boughtHistory.map(function(doc) {
+                                if (doc.materialWeight > 0) {
+                                    doc.x = doc.buyTimestamp;
+                                    doc.y = doc.cost / doc.materialWeight;
+                                    doc.namesString = doc.names.join(', ');
+                                    doc.shopsString = doc.shops.join(', ');
+                                    doc.brandsString = doc.brands.join(', ');
+                                    return doc;
+                                }
+                            })); %>
+                        }]
+                    });
+                });
             </script>
         </div>
     </div>
