@@ -1,0 +1,50 @@
+{
+	"30x30x1": {
+		"stl": "30x30x1.stl",
+		"gcode": "30x30x1.gcode",
+		"filamentLength": "356",
+		"layersCount": "25",
+		"linesCount": "7601",
+		"printingTime": "298"
+	},
+	"box30x30": {
+		"stl": "box30x30.stl",
+		"gcode": "box30x30.gcode",
+		"filamentLength": "2580",
+		"layersCount": "115",
+		"linesCount": "16185",
+		"printingTime": "1579"
+	},
+	"tubs15mm": {
+		"stl": "tube15mm.stl",
+		"gcode": "tube15mm.gcode",
+		"filamentLength": "2412",
+		"layersCount": "150",
+		"linesCount": "26689",
+		"printingTime": "1442"
+	},
+	"100x100_avec_formes": {
+		"stl": "100x100_avec_formes.stl",
+		"gcode": "100x100_avec_formes.gcode",
+		"filamentLength": "5656",
+		"layersCount": "10",
+		"linesCount": "14407",
+		"printingTime": "3803"
+	},
+	"100x100x1": {
+		"stl": "100x100x1.stl",
+		"gcode": "100x100x1.gcode",
+		"filamentLength": "881",
+		"layersCount": "5",
+		"linesCount": "6920",
+		"printingTime": "701"
+	},
+	"equerre": {
+		"stl": "equerre.stl",
+		"gcode": "equerre.gcode",
+		"filamentLength": "1425",
+		"layersCount": "25",
+		"linesCount": "9138",
+		"printingTime": "919"
+	}
+}

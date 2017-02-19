@@ -27,6 +27,7 @@
     "express-form": "^0.12.6",
     "express-session": "^1.13.0",
     "fs-promise": "^2.0.0",
+    "gcode-interpreter": "^1.1.1",
     "gm": "^1.21.1",
     "hjs": "~0.0.6",
     "hogan.js": "^3.0.2",
