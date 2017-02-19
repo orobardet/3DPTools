@@ -26,7 +26,7 @@
     "express-flash": "0.0.2",
     "express-form": "^0.12.6",
     "express-session": "^1.13.0",
-    "fs-promise": "^1.0.0",
+    "fs-promise": "^2.0.0",
     "gm": "^1.21.1",
     "hjs": "~0.0.6",
     "hogan.js": "^3.0.2",
