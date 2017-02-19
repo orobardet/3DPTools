@@ -1,3 +1,4 @@
+<a name="page-top" id="page-top" class="anchor"></a>
 <% var chartsColors = config.get('charts:colors'); %>
 <script src="/vendor/highcharts/highcharts.js"></script>
 <script src="/javascripts/highcharts-locales/<%- getLocale() %>.js"></script>
@@ -43,8 +44,54 @@
 
 <% if (stats.totals.count) { %>
 
+<div id="stats-container">
+
+    <div id="stats-menu">
+        <nav class="nav-sidemenu hidden-print hidden-sm hidden-xs affix" data-offset-top="78" data-spy="affix">
+            <ul class="nav">
+                <li class="active"><a href="#page-top"><%- __('Page top'); %></a></li>
+            </ul>
+            <br/>
+            <ul class="nav">
+                <li><a href="#totals"><%- __('Totals'); %></a></li>
+                <li><a href="#global-usage"><%- __('Usage'); %></a></li>
+                <li><a href="#price-per-kg"><%- __('Price per Kg'); %></a></li>
+                <li><a href="#buy-history"><%- __('Bought history'); %></a></li>
+                <li>
+                    <a href="#usages"><%- __('Most used'); %></a>
+                    <ul class="nav">
+                        <li><a href="#usage-per-color"><%- __('By colors'); %></a></li>
+                        <li><a href="#usage-per-material"><%- __('By materials'); %></a></li>
+                        <li><a href="#usage-per-brand"><%- __('By brands'); %></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#counts"><%- __('Counts'); %></a>
+                    <ul class="nav">
+                        <li><a href="#count-per-brand"><%- __('By brands'); %></a></li>
+                        <li><a href="#count-per-shop"><%- __('By shops'); %></a></li>
+                        <li><a href="#count-per-material"><%- __('By materials'); %></a></li>
+                        <li><a href="#count-per-color"><%- __('By colors'); %></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#costs"><%- __('Costs'); %></a>
+                    <ul class="nav">
+                        <li><a href="#cost-per-brand"><%- __('By brands'); %></a></li>
+                        <li><a href="#cost-per-shop"><%- __('By shops'); %></a></li>
+                        <li><a href="#cost-per-material"><%- __('By materials'); %></a></li>
+                        <li><a href="#cost-per-color"><%- __('By colors'); %></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+
+    <div id="stats-graphs">
+
     <% if (stats && stats.totals) { %>
-    <a name="totals" class="anchor"></a>
+    <a name="totals" id="totals" class="anchor"></a>
     <div class="panel panel-default filament-stats">
         <div class="panel-heading">
             <h2 class="panel-title"><%- __('Totals'); %></h2>
@@ -71,7 +118,7 @@
     <% } %>
 
     <% if (stats && stats.usage) { %>
-    <a name="global-usage" class="anchor"></a>
+    <a name="global-usage" id="global-usage" class="anchor"></a>
     <div class="panel panel-default filament-stats">
         <div class="panel-heading">
             <h2 class="panel-title"><%- __('Usage'); %></h2>
@@ -269,7 +316,7 @@
     <% } %>
 
     <% if (stats && stats.pricePerKg) { %>
-    <a name="price-per-kg" class="anchor"></a>
+    <a name="price-per-kg" id="price-per-kg" class="anchor"></a>
     <div class="panel panel-default filament-stats">
         <div class="panel-heading">
             <h2 class="panel-title"><%- __('Price per Kg'); %></h2>
@@ -399,7 +446,7 @@
 
 
     <% if (stats && stats.boughtHistory) { %>
-    <a name="buy-history" class="anchor"></a>
+    <a name="buy-history" id="buy-history" class="anchor"></a>
     <div class="panel panel-default filament-stats">
         <div class="panel-heading">
             <h2 class="panel-title"><%- __('Bought history'); %></h2>
@@ -516,14 +563,14 @@
     <% } %>
 
     <% if (stats && stats.usagePer) { %>
-    <a name="usages" class="anchor"></a>
+    <a name="usages" id="usages" class="anchor"></a>
     <div class="panel panel-default filament-stats">
         <div class="panel-heading">
             <h2 class="panel-title"><%- __('Most used'); %></h2>
         </div>
         <div class="panel-body filament-stats-graph">
             <% if (stats && stats.usagePer.colors) { %>
-            <a name="usage-per-color" class="anchor"></a>
+            <a name="usage-per-color" id="usage-per-color" class="anchor"></a>
             <div id="filament-stats-most-used-by-colors"></div>
             <script type="text/javascript">
                 $(function () {
@@ -610,10 +657,9 @@
             <% } %>
 
             <% if (stats.usagePer.materials || stats.usagePer.brands) { %>
-            <a name="usage-per-brand" class="anchor"></a>
             <div class="row">
                 <% if (stats.usagePer.materials) { %>
-                <a name="usage-per-material" class="anchor"></a>
+                <a name="usage-per-material" id="usage-per-material" class="anchor"></a>
                 <div class="col-md-6 filament-stats-graph">
                     <div id="filament-stats-most-used-by-materials"></div>
                     <script type="text/javascript">
@@ -705,7 +751,7 @@
                 <% } %>
 
                 <% if (stats.usagePer.brands) { %>
-                <a name="usage-per-brand" class="anchor"></a>
+                <a name="usage-per-brand" id="usage-per-brand" class="anchor"></a>
                 <div class="col-md-6 filament-stats-graph">
                     <div id="filament-stats-most-used-by-brands"></div>
                     <script type="text/javascript">
@@ -803,7 +849,7 @@
 
     <div class="row">
     <% if (stats && stats.count) { %>
-        <a name="counts" class="anchor"></a>
+        <a name="counts" id="counts" class="anchor"></a>
         <div class="col-md-6">
             <div class="panel panel-default filament-stats filament-stats-vertical-stack">
                 <div class="panel-heading">
@@ -811,7 +857,7 @@
                 </div>
                 <div class="panel-body">
                     <% if (stats.count.byBrands) { %>
-                    <a name="count-per-brand" class="anchor"></a>
+                    <a name="count-per-brand" id="count-per-brand" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-count-by-brands"></div>
                         <script type="text/javascript">
@@ -851,7 +897,7 @@
                     <% } %>
 
                     <% if (stats.count.byShops) { %>
-                    <a name="count-per-shop" class="anchor"></a>
+                    <a name="count-per-shop" id="count-per-shop" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-count-by-shops"></div>
                         <script type="text/javascript">
@@ -891,7 +937,7 @@
                     <% } %>
 
                     <% if (stats.count.byMaterials) { %>
-                    <a name="count-per-material" class="anchor"></a>
+                    <a name="count-per-material" id="count-per-material" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-count-by-materials"></div>
                         <script type="text/javascript">
@@ -931,7 +977,7 @@
                     <% } %>
 
                     <% if (stats.count.byColors) { %>
-                    <a name="count-per-color" class="anchor"></a>
+                    <a name="count-per-color" id="count-per-color" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-count-by-colors"></div>
                         <script type="text/javascript">
@@ -977,7 +1023,7 @@
         <% } %>
 
         <% if (stats && stats.costs) { %>
-        <a name="costs" class="anchor"></a>
+        <a name="costs" id="costs" class="anchor"></a>
         <div class="col-md-6">
             <div class="panel panel-default filament-stats filament-stats-vertical-stack">
                 <div class="panel-heading">
@@ -985,7 +1031,7 @@
                 </div>
                 <div class="panel-body">
                     <% if (stats.costs.byBrands) { %>
-                    <a name="cost-per-brand" class="anchor"></a>
+                    <a name="cost-per-brand" id="cost-per-brand" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-cost-by-brands"></div>
                         <script type="text/javascript">
@@ -1025,7 +1071,7 @@
                     <% } %>
 
                     <% if (stats.costs.byShops) { %>
-                    <a name="cost-per-shop" class="anchor"></a>
+                    <a name="cost-per-shop" id="cost-per-shop" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-cost-by-shops"></div>
                         <script type="text/javascript">
@@ -1065,7 +1111,7 @@
                     <% } %>
 
                     <% if (stats.costs.byMaterials) { %>
-                    <a name="cost-per-material" class="anchor"></a>
+                    <a name="cost-per-material" id="cost-per-material" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-cost-by-materials"></div>
                         <script type="text/javascript">
@@ -1105,7 +1151,7 @@
                     <% } %>
 
                     <% if (stats.costs.byColors) { %>
-                    <a name="cost-per-color" class="anchor"></a>
+                    <a name="cost-per-color" id="cost-per-color" class="anchor"></a>
                     <div class="filament-stats-graph">
                         <div id="filament-stats-cost-by-colors"></div>
                         <script type="text/javascript">
@@ -1150,9 +1196,19 @@
         </div>
         <% } %>
     </div>
+
+    </div> <!-- end graphs -->
+
+</div>
 <% } else { /* if (stats.totals.count) */ %>
 <center>
     <%- __('No filament found.') %><br><br>
     <a href="/filament/add" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;<%- __('Add filament') %></a>
 </center>
 <% } %>
+
+<script type="text/javascript">
+    $(function() {
+        $('body').scrollspy({ target: '#stats-menu' });
+    });
+</script>

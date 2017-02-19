@@ -19,7 +19,7 @@
     <script src="/javascripts/app.js"></script>
     <%- script %>
 </head>
-<body class="<%- navModule %>-section">
+<body class="<%- navModule %>-section<% if (locals.navSubModule) { %> <%- navSubModule %>-subsection<% } %>">
 
 <% if (isUserLogged && showNavbar) { %>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -63,7 +63,7 @@
     </div>
 </nav>
 <% } %>
-<div class="container">
+<div id="main-container" class="container">
     <%- body %>
 </div>
 <div id="version">

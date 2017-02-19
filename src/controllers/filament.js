@@ -182,6 +182,7 @@ module.exports = function (app) {
             pricePerKg
         ) {
             return res.render('filament/stats', {
+                navSubModule: 'stats',
                 pageTitle: 'Filaments statistics',
                 stats: {
                     totals: {

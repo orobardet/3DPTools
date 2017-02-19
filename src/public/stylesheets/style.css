@@ -8294,6 +8294,30 @@ h1 {
     .nav-tabs-title > li > h1 {
       margin: 0 !important; }
 
+.nav-sidemenu a {
+  color: #333333; }
+  .nav-sidemenu a:hover {
+    color: #337ab7; }
+.nav-sidemenu ul.nav > li > a {
+  padding: 0px;
+  padding-left: 15px; }
+  .nav-sidemenu ul.nav > li > a:hover {
+    background: none;
+    border-left: 1px solid #337ab7;
+    padding-left: 14px; }
+.nav-sidemenu ul.nav > li.active > a {
+  font-weight: bold;
+  color: #337ab7;
+  border-left: 2px solid #337ab7;
+  padding-left: 13px; }
+.nav-sidemenu ul.nav ul.nav > li > a {
+  padding-left: 30px; }
+  .nav-sidemenu ul.nav ul.nav > li > a:hover {
+    padding-left: 29px; }
+.nav-sidemenu ul.nav ul.nav > li.active > a {
+  font-weight: normal;
+  padding-left: 28px; }
+
 a.anchor {
   display: block;
   position: relative;
@@ -8585,6 +8609,25 @@ ul.material-files {
   max-width: 120px; }
 .filament-section .table.filament-list .bootstrap-select button.dropdown-toggle span.name {
   display: none; }
+.filament-section.stats-subsection {
+  position: relative; }
+  .filament-section.stats-subsection #main-container {
+    width: 100%; }
+  .filament-section.stats-subsection #stats-container {
+    vertical-align: top; }
+    .filament-section.stats-subsection #stats-container > div {
+      vertical-align: top; }
+    .filament-section.stats-subsection #stats-container #stats-graphs {
+      width: 100%;
+      padding-right: 170px; }
+    .filament-section.stats-subsection #stats-container #stats-menu {
+      float: right;
+      width: 150px;
+      position: relative; }
+      .filament-section.stats-subsection #stats-container #stats-menu .affix-top {
+        position: absolute; }
+      .filament-section.stats-subsection #stats-container #stats-menu .affix {
+        margin-top: -78px; }
 
 .filament-content .brand-logo-container {
   text-align: center; }

@@ -355,5 +355,6 @@
   "%s mm/s max": "%s mm/s max",
   "Changelog": "Changelog",
   "No changelog file available.": "Pas de fichier de changelog disponible.",
-  "Open project page": "Ouvrir la page du projet"
+  "Open project page": "Ouvrir la page du projet",
+  "Page top": "Début de la page"
 }

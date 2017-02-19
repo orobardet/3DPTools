@@ -116,6 +116,47 @@ h1 {
   }
 }
 
+.nav-sidemenu {
+  a {
+    color: $text-color;
+    &:hover {
+      color: $link-color;
+    }
+  }
+
+  $nav-sidemenu-indent: 15px;
+  ul.nav > li {
+    & > a {
+      padding: 0px;
+      padding-left: $nav-sidemenu-indent;
+      &:hover {
+        background: none;
+        border-left: 1px solid $link-color;
+        padding-left: $nav-sidemenu-indent - 1;
+      }
+    }
+    &.active > a {
+      font-weight: bold;
+      color: $link-color;
+      border-left: 2px solid $link-color;
+      padding-left: $nav-sidemenu-indent - 2;
+    }
+  }
+
+  ul.nav ul.nav > li {
+    & > a {
+      padding-left: $nav-sidemenu-indent * 2;
+      &:hover {
+        padding-left: $nav-sidemenu-indent * 2 - 1;
+      }
+    }
+    &.active > a {
+      font-weight: normal;
+      padding-left: $nav-sidemenu-indent * 2 - 2;
+    }
+  }
+}
+
 a.anchor {
   display: block;
   position: relative;
@@ -535,6 +576,42 @@ ul.material-files {
   .table.filament-list .bootstrap-select button.dropdown-toggle span.name {
     display: none;
   }
+
+  &.stats-subsection {
+    position: relative;
+
+    #main-container {
+      width: 100%;
+    }
+
+    $filament-stats-menu-width: 150px;
+    #stats-container {
+      vertical-align: top;
+      & > div {
+        vertical-align: top;
+      }
+
+      #stats-graphs {
+        width: 100%;
+        padding-right: $filament-stats-menu-width + 20px;
+      }
+
+      #stats-menu {
+        float: right;
+        width: $filament-stats-menu-width;
+        position: relative;
+
+        .affix-top {
+          position: absolute;
+        }
+
+        .affix {
+          margin-top: -78px;
+        }
+      }
+    }
+  }
+
 }
 
 .filament-content {
