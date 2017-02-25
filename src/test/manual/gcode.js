@@ -57,6 +57,10 @@ app.program
                     console.log(linesCount + ' lines: ' + colors.red("KO") + ', ' + testData.linesCount + ' expected');
                 }
 
+                // Retractation
+                console.log(gcode.getRetractsCount() + " retractations");
+
+                // List unknown commands, if any
                 var unkownCommands = gcode.getUnknownCommands();
                 if (unkownCommands && Object.keys(unkownCommands).length) {
                     console.log(Object.keys(unkownCommands).length + ' unknow GCode commands found in the file :\n', unkownCommands);
