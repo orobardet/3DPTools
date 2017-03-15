@@ -23,6 +23,14 @@ var Point = function(point) {
         }
         return false;
     };
+
+    this.distance = function(point) {
+        if (point instanceof Point) {
+            return Math.sqrt(Math.pow(this.x - point.x, 2) + Math.pow(this.y - point.y, 2) + Math.pow(this.z - point.z, 2));
+        } else {
+            return 0;
+        }
+    };
 };
 
 var Tool = function() {
@@ -51,7 +59,9 @@ module.exports = function (file, options) {
     // Counters
     this.commandsCounts = {};
     this.retractsCount = 0;
-    this.lines = [];
+    this.lines = []; // list of point pairs (segments)
+    this.distanceTraveled = 0; // mm
+    this.workDuration = 0;  // seconds
 
     // Layers stats
     this.layersCount = 0;
@@ -65,6 +75,7 @@ module.exports = function (file, options) {
     this.isRelative = false;
     this.bed = new Bed();
     this.fans = [];
+    this.lastLinearMoveFeedrate = 0; // mm/s
 
     this.analyze = function(callback) {
         var that = this;
@@ -160,6 +171,16 @@ module.exports = function (file, options) {
         return this.retractsCount;
     }
 
+    // in mm
+    this.getTraveledDistance = function() {
+        return this.distanceTraveled;
+    }
+
+    // in s
+    this.getWorkDuration = function() {
+        return this.workDuration;
+    }
+
     //--------------------------------------------------
 
     this.declareNewTool = function(tool) {
@@ -183,7 +204,15 @@ module.exports = function (file, options) {
         this.isRelative = isRelative;
     };
 
+    // TODO : calcul temps de déplacement
     this.doMove = function(startPoint, endPoint) {
+        var distance = startPoint.distance(endPoint);
+        this.distanceTraveled += distance;
+
+        if (this.lastLinearMoveFeedrate) {
+            this.workDuration += distance/this.lastLinearMoveFeedrate;
+        }
+
         this.position = endPoint;
     };
 
@@ -192,7 +221,7 @@ module.exports = function (file, options) {
             this.tools[this.currentTool].extrudeurPosition += extruderMove;
             if (!startPoint.equals(endPoint)) {
                 if (extruderMove > 0) {
-                    // Extrude including previous retractation distancess
+                    // Extrude including previous retractation distances
                     this.tools[this.currentTool].filamentLength += extruderMove + this.tools[this.currentTool].currentRetractation;
                     this.tools[this.currentTool].currentRetractation = 0;
                 } else {
@@ -210,7 +239,6 @@ module.exports = function (file, options) {
         this.doMove(startPoint, endPoint);
     };
 
-    // TODO : calcul temps de déplacement
     this.linearMove = function(params) {
         var newPosition = new Point(this.position);
         var extruderMove = 0;
@@ -242,6 +270,10 @@ module.exports = function (file, options) {
             if (typeof params.E !== 'undefined') {
                 extruderMove = params.E - this.tools[this.currentTool].extrudeurPosition;
             }
+        }
+
+        if (typeof params.F !== 'undefined') {
+            this.lastLinearMoveFeedrate = params.F / 60;
         }
 
         // Detect layer height

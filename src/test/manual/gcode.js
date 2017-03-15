@@ -14,6 +14,7 @@ var when = require('when');
 var colors = require('colors');
 var dataDirectory = '../data/test_gcode';
 var GCodeAnalyzer = require('../../lib/gcodeAnalyzer');
+var Format = require('../../lib/format');
 
 app.program = require('commander');
 
@@ -40,15 +41,26 @@ app.program
                 } else {
                     console.log(layersCount + ' layers: ' + colors.red("KO") + ', ' + testData.layersCount + ' expected');
                 }
-                console.log("Z resolution: " + (gcode.getMeanLayerHeight()*1000) + "µm");
+                console.log("Z resolution: " + (gcode.getMeanLayerHeight()*1000) +  "µm");
 
                 // Filament length
                 var filamentLength = Math.round(gcode.getFilamentLength());
                 if (filamentLength === parseInt(testData.filamentLength)) {
-                    console.log(filamentLength + ' mm of filament: ' + colors.green("OK"));
+                    console.log(filamentLength + 'mm (' + Format.distance(filamentLength) + ') of filament: ' + colors.green("OK"));
                 } else {
-                    console.log(filamentLength + ' mm of filament: ' + colors.red("KO") + ', ' + testData.filamentLength + ' mm expected');
+                    console.log(filamentLength + 'mm (' + Format.distance(filamentLength) + ') of filament: ' + colors.red("KO") + ', ' + testData.filamentLength + ' mm expected');
                 }
+
+                // PrintingTime
+                var printingTime = Math.round(gcode.getWorkDuration());
+                if (printingTime === parseInt(testData.printingTime)) {
+                    console.log(printingTime + 's (' + Format.duration(printingTime) + ') of printing time: ' + colors.green("OK"));
+                } else {
+                    console.log(printingTime + 's (' + Format.duration(printingTime) + ') of printing time: ' + colors.red("KO") + ', ' + testData.printingTime + ' s expected');
+                }
+
+                var traveledDistance = Math.round(gcode.getTraveledDistance());
+                console.log("Distance traveled: " + traveledDistance + 'mm (' + Format.distance(traveledDistance) + ') ');
 
                 // Lines count
                 var linesCount = gcode.getLinesCount();
@@ -66,6 +78,7 @@ app.program
                 if (unkownCommands && Object.keys(unkownCommands).length) {
                     console.log(Object.keys(unkownCommands).length + ' unknow GCode commands found in the file :\n', unkownCommands);
                 }
+
             });
     });
 
