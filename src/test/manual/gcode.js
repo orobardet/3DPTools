@@ -40,6 +40,7 @@ app.program
                 } else {
                     console.log(layersCount + ' layers: ' + colors.red("KO") + ', ' + testData.layersCount + ' expected');
                 }
+                console.log("Z resolution: " + (gcode.getMeanLayerHeight()*1000) + "µm");
 
                 // Filament length
                 var filamentLength = Math.round(gcode.getFilamentLength());

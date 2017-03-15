@@ -41,8 +41,6 @@ var Fan = function() {
     this.speed = 0;
 }
 
-
-
 module.exports = function (file, options) {
     var extend = require('util')._extend;
     var GCodeInterpreter = require('gcode-interpreter').GCodeInterpreter;
@@ -52,9 +50,13 @@ module.exports = function (file, options) {
 
     // Counters
     this.commandsCounts = {};
-    this.layersCount = 0;
     this.retractsCount = 0;
     this.lines = [];
+
+    // Layers stats
+    this.layersCount = 0;
+    this.layersHeight = [];
+    this.previousLayerZ = 0;
 
     // Internal states
     this.currentTool = 0;
@@ -117,6 +119,24 @@ module.exports = function (file, options) {
 
     this.getLayersCount = function() {
         return this.layersCount;
+    };
+
+    this.getLayersHeight = function() {
+        return this.layersHeight;
+    };
+
+    this.getMeanLayerHeight = function() {
+        var height = 0;
+
+        var layersCount = this.layersHeight.length;
+        if (layersCount) {
+            for (var i = 0; i < layersCount; i++) {
+                height += this.layersHeight[i];
+            }
+            height /= layersCount;
+        }
+
+        return height;
     };
 
     this.getLinesCount = function() {
@@ -191,7 +211,7 @@ module.exports = function (file, options) {
     };
 
     // TODO : calcul temps de déplacement
-    this.linearMove = function (params) {
+    this.linearMove = function(params) {
         var newPosition = new Point(this.position);
         var extruderMove = 0;
 
@@ -224,6 +244,16 @@ module.exports = function (file, options) {
             }
         }
 
+        // Detect layer height
+        if (typeof params.Z !== 'undefined' && typeof this.layersHeight[this.layersCount - 1] === 'undefined') {
+            var zOffset = newPosition.z - this.previousLayerZ;
+            if (zOffset < 1 && zOffset > 0) {
+                this.layersHeight[this.layersCount - 1] = zOffset;
+                this.previousLayerZ = newPosition.z;
+            }
+        }
+
+        // Do a line or just a move? A line if the extruder is at work
         if (typeof params.E !== 'undefined') {
             this.doLine(this.position, newPosition, extruderMove);
         } else {
