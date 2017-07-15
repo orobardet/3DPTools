@@ -85,3 +85,4 @@ src/tmp
 /src/.nyc_output/
 /docker-volumes/
 yarn.lock
+.yarn-integrity
