@@ -6,8 +6,9 @@
 - [New] Filament stats, buy history, 2 splines added : (#53)
   - Cost per filament count
   - Cost per Kg
-- [Tec] Upgrade to latest NPM & Bower dependencies versions
-- [Tec] Upgrade to NodeJS 7.5
+- [Imp] Filament stats, buy history: add points on splines (#67)
+- [Tec] Upgrade to latest NPM & Bower dependencies versions (#64)
+- [Tec] Upgrade to NodeJS 8.1 (#64)
 
 # v1.2.1
 
