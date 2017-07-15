@@ -1,4 +1,4 @@
-FROM node:7-alpine
+FROM node:8-alpine
 MAINTAINER Olivier Robardet <olivier.robardet@gmail.com>
 
 RUN apk add --no-cache bash ruby imagemagick ca-certificates git && \
