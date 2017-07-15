@@ -1,6 +1,7 @@
 module.exports = function (bootstrapOptions) {
     var merge = require('merge');
     const fs = require('fs');
+    let fmt = require('util').format;
 
     bootstrapOptions = merge({
         loadConfig: true,
@@ -85,12 +86,20 @@ module.exports = function (bootstrapOptions) {
             throw new Error('Database initialisation require configuration to be loaded!');
         }
 
-        var mongoose = require('mongoose');
+        let mongoose = require('mongoose');
 
-        mongoose.Promise = global.Promise;
-        var mongoOptions = config.get("database:connectOptions");
+        let mongoOptions = config.get("database:connectOptions");
+        mongoOptions.useMongoClient = true;
         mongoOptions.promiseLibrary = global.Promise;
-        mongoose.connect(config.get("database:url"), mongoOptions);
+        mongoose.Promise = global.Promise;
+        let mongoUrl = fmt("mongodb://%s:%s@%s:%d/%s",
+            encodeURIComponent(config.get("database:user")),
+            encodeURIComponent(config.get("database:pass")),
+            encodeURIComponent(config.get("database:host")),
+            encodeURIComponent(config.get("database:port")),
+            encodeURIComponent(config.get("database:name"))
+        );
+        mongoose.connect(mongoUrl, mongoOptions);
     }
 
     // Setting up i18n

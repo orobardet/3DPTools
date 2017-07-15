@@ -25,10 +25,12 @@
     "port": "6379"
   },
   "database": {
-    "url": "mongodb://localhost/3dptools",
+    "host": "localhost",
+    "port": "27017",
+    "name": "3dptools",
+    "user": "3dptools",
+    "pass": "3dpt",
     "connectOptions": {
-      "user": "3dptools",
-      "pass": "3dpt"
     }
   },
   "upload": {
