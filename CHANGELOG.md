@@ -1,4 +1,4 @@
-# v1.3
+# v1.3.0
 
 - [New] Show changelog when clicking on version number (#54)
 - [New] Add project source link (to Gitlab) on changelog page (#58)
