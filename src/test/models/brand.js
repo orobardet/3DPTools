@@ -10,7 +10,7 @@ describe('Brand', function () {
                 url: "http://www.marque.com"
             });
 
-            brand.save();
+            return brand.save();
         });
         describe('name', function () {
             it('should be a string', function () {
