@@ -2,6 +2,7 @@ module.exports = function (bootstrapOptions) {
     var merge = require('merge');
     const fs = require('fs');
     let fmt = require('util').format;
+    let package = require('./package.json');
 
     bootstrapOptions = merge({
         loadConfig: true,
@@ -47,6 +48,10 @@ module.exports = function (bootstrapOptions) {
             config.file('user', config.get('config-file'));
         }
         config.file('default', 'config/default.json');
+
+        if (package && package.version) {
+            config.set('version', package.version);
+        }
         app.locals.config = config;
         app.locals.moment = moment;
         app.locals.Color = color;
