@@ -13,7 +13,7 @@ beforeEach(done => {
 
     mongoose.Promise = global.Promise;
     if (mongoose.connection.readyState === 0) {
-        mongoose.connect(process.env.MONGO_URL, {
+        return mongoose.connect(process.env.MONGO_URL, {
             useMongoClient: true,
             promiseLibrary: global.Promise
         }).catch(err => {
@@ -21,7 +21,7 @@ beforeEach(done => {
                 throw err;
             }
             return clearDB();
-        });
+        }).then(clearDB());
     } else {
         return clearDB();
     }

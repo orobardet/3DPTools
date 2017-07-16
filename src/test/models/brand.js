@@ -9,7 +9,6 @@ describe('Brand', function () {
                 name: "Marque",
                 url: "http://www.marque.com"
             });
-
             return brand.save();
         });
         describe('name', function () {
