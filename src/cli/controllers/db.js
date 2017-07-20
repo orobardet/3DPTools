@@ -1,31 +1,33 @@
-module.exports = function (app) {
-    var colors = require('colors');
-    var mongoose = require('mongoose');
-    var when = require('when');
-    var sprintf = require('sprintf-js').sprintf;
+'use strict';
 
-    var that = this;
+module.exports = app => {
+    const colors = require('colors');
+    const mongoose = require('mongoose');
+    const when = require('when');
+    const sprintf = require('sprintf-js').sprintf;
+
+    const that = this;
 
     /**
      * @constructor
      * @returns {exports}
      */
-    this.constructor = function() {
+    this.constructor = () => {
         app.program
             .command('database')
             .alias('db')
             .arguments('<action> <collection>')
             .description('Run maintenance operations on collection of the database')
-            .action(function (action, collection, program) {
+            .action((action, collection, program) => {
                 if (that[action] && (typeof that[action] === 'function')) {
                     that[action](collection, program);
                 } else {
-                    app.program.outputHelp(function (text) {
+                    app.program.outputHelp(text => {
                         return colors.red('*** Unknown action "' + action + '"\n') + text;
                     });
                     app.cliStop();
                 }
-            }).on('--help', function () {
+            }).on('--help', () => {
             console.log('  Actions:');
             console.log();
             console.log('    migrate : Migrate every items in the collections to the last version, saving them if needed.');
@@ -44,19 +46,19 @@ module.exports = function (app) {
      *
      * @returns {Promise}
      */
-    this.resave = function(collectionName, program) {
-        var itemName = this.modelNameFromCollectionParameter(collectionName);
+    this.resave = (collectionName, program) => {
+        let itemName = this.modelNameFromCollectionParameter(collectionName);
         if (app.models[itemName] && (typeof app.models[itemName] === "function") && app.models[itemName].base.Mongoose) {
-            var model = app.models[itemName];
-            return when(model.count().exec().then(function(nbItems){
+            let model = app.models[itemName];
+            return when(model.count().exec().then(nbItems => {
                 console.log("Re-saving " + nbItems + " " + collectionName + "(s)...");
-                var countCharacters = sprintf('%d', nbItems).length;
+                let countCharacters = sprintf('%d', nbItems).length;
 
-                when(model.find().exec()).then(function(items) {
-                    var saved = 0;
+                when(model.find().exec()).then(item => {
+                    let saved = 0;
                     process.stdout.write(sprintf('-> %'+countCharacters+'d/%'+countCharacters+'d - %3f%%   \r', saved, nbItems, saved?Math.round(nbItems/saved*100):0));
-                    items.forEach(function (item) {
-                        item.save(function (err) {
+                    items.forEach(item => {
+                        item.save(err => {
                             if (err) {
                                 process.stdout.write("\n");
                                 console.error(colors.red(err));
@@ -87,12 +89,12 @@ module.exports = function (app) {
      *
      * @returns {Promise}
      */
-    this.migrate = function(collectionName, program) {
-        var itemName = this.modelNameFromCollectionParameter(collectionName);
+    this.migrate = (collectionName, program) => {
+        let itemName = this.modelNameFromCollectionParameter(collectionName);
         if (app.models[itemName] && (typeof app.models[itemName] === "function") && app.models[itemName].base.Mongoose) {
-            var model = app.models[itemName];
+            let model = app.models[itemName];
 
-            var versionFilter = {
+            let versionFilter = {
                 $or: [
                     { _version: { $exists : false } },
                     { _version: null }
@@ -111,17 +113,17 @@ module.exports = function (app) {
             return when.all([
                 model.count().exec(),
                 model.count(versionFilter).exec()
-            ]).spread(function(nbItems, nbItemsToMigrate) {
+            ]).spread((nbItems, nbItemsToMigrate) => {
                 if (nbItemsToMigrate) {
                     console.log("Migrating " + nbItemsToMigrate + " " + itemName + "(s) out of " + nbItems + "...");
-                    var countCharacters = sprintf('%d', nbItemsToMigrate).length;
+                    let countCharacters = sprintf('%d', nbItemsToMigrate).length;
 
-                    when(model.find(versionFilter).exec()).then(function (items) {
-                        var processed = 0;
-                        var saved = 0;
+                    when(model.find(versionFilter).exec()).then(items => {
+                        let processed = 0;
+                        let saved = 0;
                         process.stdout.write(sprintf('-> %' + countCharacters + 'd/%' + countCharacters + 'd - %3f%%   \r', processed, nbItemsToMigrate, processed ? Math.round(nbItemsToMigrate / processed * 100) : 0));
-                        var savePromises = items.map(function (item) {
-                            var promise = false;
+                        let savePromises = items.map(item => {
+                            let promise = false;
                             if (item.migrate()) {
                                 item.setInMigration();
                                 saved++;
@@ -131,7 +133,7 @@ module.exports = function (app) {
                             process.stdout.write(sprintf('-> %' + countCharacters + 'd/%' + countCharacters + 'd - %3f%%   \r', processed, nbItemsToMigrate, processed ? Math.round(nbItemsToMigrate / processed * 100) : 0));
                             return promise;
                         });
-                        Promise.all(savePromises).then(function (results) {
+                        Promise.all(savePromises).then(results => {
                             app.cliStop();
                         });
 
@@ -161,7 +163,7 @@ module.exports = function (app) {
      *
      * @returns {string} The name of the model
      */
-    this.modelNameFromCollectionParameter = function(collectionName) {
+    this.modelNameFromCollectionParameter = collectionName => {
         return String(collectionName).toLowerCase().replace(/s$/, '');
     };
 
