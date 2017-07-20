@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-var app = require('../app')({
+'use strict';
+
+const app = require('../app')({
     loadConfig:true,
     initCliOptions: false,
     initSession: false,
@@ -12,12 +14,12 @@ var app = require('../app')({
     loadNavigation: false,
     setupHttpRouting: false
 });
-var mongoose = require('mongoose');
-var debug = require('debug')('3DPTools:server');
-var consign = require('consign');
+const mongoose = require('mongoose');
+const debug = require('debug')('3DPTools:server');
+const consign = require('consign');
 
 app.program = require('commander');
-app.cliStop = function() {
+app.cliStop = () => {
     mongoose.connection.close();
 };
 
