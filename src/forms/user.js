@@ -1,15 +1,17 @@
+'use strict';
+
 module.exports = function (app) {
-    var form = require('express-form');
-    var field = form.field;
-    var User = app.models.user;
+    const form = require('express-form');
+    const field = form.field;
+    const User = app.models.user;
 
     this.createUser = form(
         field("email", "Email")
             .trim()
             .required()
             .isEmail()
-            .custom(function (email, source, validatorCb) {
-                User.count({'email': email}).exec(function (err, count) {
+            .custom((email, source, validatorCb) => {
+                User.count({'email': email}).exec((err, count) => {
                     if (err) {
                         validatorCb(err);
                     } else if (count) {

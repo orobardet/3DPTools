@@ -1,71 +1,99 @@
-module.exports = function (app) {
-    var when = require('when');
-    var libLocale = new app.lib.locale();
-    var User = app.models.user;
+'use strict';
 
-    this.adminIndex = function (req, res, next) {
-        when(User.find().sort('name').exec())
-            .then(function (users) {
-                return res.render('admin/index', {
-                    users: users,
-                    pageTitle: 'Administration',
-                    errors: []
-                });
-            })
-            .catch(function (err) {
-                return next(err);
-            });
+module.exports = function(app) {
+    const libLocale = app.lib.locale;
+    const User = app.models.user;
+
+    /**
+     * Index page of the admin section
+     */
+    this.adminIndex = async (req, res, next) => {
+        let users;
+
+        // Get all users from database
+        try {
+            users = await User.find().sort('name').exec();
+        } catch(err) {
+            return next(err);
+        }
+
+        return res.render('admin/index', {
+            users: users,
+            pageTitle: 'Administration',
+            errors: []
+        });
     };
 
-    this.addUser = function (req, res, next) {
+    /**
+     * Add a new user
+     */
+    this.addUser = async (req, res, next) => {
+        // Check if user data from form is valid
         if (!req.form.isValid) {
             res.status(400);
             return res.json({
                 errors: libLocale.localizeFormErrors(res, req.form.getErrors())
             });
         }
-        var user = new User({
+
+        // Create a new user object from form's data
+        let user = new User({
             email: req.form.email,
             firstname: req.form.firstname,
             lastname: req.form.lastname,
             passwordHash: User.generateHash(req.form.password),
             isAdmin: req.form.isAdmin
         });
-        user.save(function (err) {
-            if (err) {
-                res.status(500);
-                return res.json({
-                    errors: res.__(err.message)
-                });
-            }
 
+        // Save this new user to database
+        try {
+            await user.save();
+        } catch (err) {
+            // Handling of save error
+            res.status(500);
             return res.json({
-                message: res.__('User %s successfully added.', user.name)
+                errors: res.__(err.message)
             });
+        }
+
+        // Return the appropriate result
+        return res.json({
+            message: res.__('User %s successfully added.', user.name)
         });
 
     };
 
-    this.getUser = function (req, res, next) {
-        var userId = req.params.user_id;
+    /**
+     * Get data of an user
+     *
+     * **Route params:**
+     *  - user_id: database id of the user
+     */
+    this.getUser = async (req, res, next) => {
+        let userId = req.params.user_id;
 
-        when(User.findById(userId).exec())
-            .then(function (user) {
-                var userData = user.toObject({ getters: false, virtuals: true, versionKey: false });
-                delete userData.passwordHash;
-                return res.json({
-                    user: userData
-                });
-            })
-            .catch(function (err) {
-                res.status(404);
-                return res.json({
-                    message: res.__('User %s not found.', userId)
-                });
+        let user;
+        try {
+            user = await User.findById(userId).exec();
+        } catch (err) {
+            res.status(404);
+            return res.json({
+                message: res.__('User %s not found.', userId)
             });
+        }
+
+        let userData = user.toObject({ getters: false, virtuals: true, versionKey: false });
+        delete userData.passwordHash;
+        return res.json({
+            user: userData
+        });
     };
 
-    this.editUser = function (req, res, next) {
+    /**
+     * Modify an existing user
+     */
+    this.editUser = async (req, res, next) => {
+        // Check if user data from form is valid
         if (!req.form.isValid) {
             res.status(400);
             return res.json({
@@ -73,54 +101,64 @@ module.exports = function (app) {
             });
         }
 
-        var userId = req.params.user_id;
+        let userId = req.params.user_id;
 
-        when(User.findById(userId).exec())
-            .then(function (user) {
-                user.email = req.form.email;
-                user.lastname = req.form.lastname;
-                user.firstname = req.form.firstname;
-                user.isAdmin = req.form.isAdmin;
-                if (req.form.password && req.form.password != '') {
-                    user.passwordHash = User.generateHash(req.form.password);
-                }
-
-                user.save(function (err) {
-                    if (err) {
-                        res.status(500);
-                        return res.json({
-                            errors: res.__(err.message)
-                        });
-                    }
-
-                    return res.json({
-                        message: res.__('User %s successfully edited.', user.name)
-                    });
-                });
-            })
-            .catch(function (err) {
-                res.status(404);
-                return res.json({
-                    message: res.__('User %s not found.', userId)
-                });
+        // Find and get the user to modify
+        let user;
+        try {
+            user = await User.findById(userId).exec()
+        } catch (err) {
+            res.status(404);
+            return res.json({
+                message: res.__('User %s not found.', userId)
             });
+        }
+
+        // Apply the new data to the user
+        user.email = req.form.email;
+        user.lastname = req.form.lastname;
+        user.firstname = req.form.firstname;
+        user.isAdmin = req.form.isAdmin;
+        if (req.form.password && req.form.password !== '') {
+            user.passwordHash = User.generateHash(req.form.password);
+        }
+
+        // Save the modified user
+        try {
+            await user.save();
+        } catch (err) {
+            res.status(500);
+            return res.json({
+                errors: res.__(err.message)
+            });
+        }
+
+        // Return the appropriate result
+        return res.json({
+            message: res.__('User %s successfully edited.', user.name)
+        });
     };
 
-    this.deleteUser = function (req, res, next) {
-        var userId = req.params.user_id;
+    /**
+     * Modify a user
+     */
+    this.deleteUser = async (req, res, next) => {
+        let userId = req.params.user_id;
 
-        when(User.findById(userId).remove().exec())
-            .then(function (user) {
-                return res.json({
-                    message: res.__('User %s successfully deleted.', userId)
-                });
-            })
-            .catch(function (err) {
-                res.status(500);
-                return res.json({
-                    message: res.__(err.message)
-                });
+        // Delete the user
+        try {
+            await User.findById(userId).remove().exec()
+        } catch (err) {
+            res.status(500);
+            return res.json({
+                message: res.__(err.message)
             });
+        }
+
+        // Return the appropriate result
+        return res.json({
+            message: res.__('User %s successfully deleted.', userId)
+        });
     };
 
     return this;

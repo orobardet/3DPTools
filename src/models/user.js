@@ -1,9 +1,9 @@
-module.exports = function (app) {
-    var mongoose = require('mongoose');
-    var Schema = mongoose.Schema;
-    var bcrypt = require('bcrypt-nodejs');
+module.exports = function(app) {
+    const mongoose = require('mongoose');
+    const Schema = mongoose.Schema;
+    const bcrypt = require('bcrypt-nodejs');
 
-    var userSchema = new Schema({
+    let userSchema = new Schema({
         email: {type: String, index: {unique: true}},
         lastname: String,
         firstname: String,
@@ -15,8 +15,8 @@ module.exports = function (app) {
     userSchema.virtual('name').get(function () {
         return (this.firstname + ' ' + this.lastname).trim();
     });
-    userSchema.virtual('name').set(function (name) {
-        var split = name.split(' ');
+    userSchema.virtual('name').set(function(name) {
+        let split = name.split(' ');
         this.firstname = split[0].trim();
         this.lastname = split[1].trim();
     });
@@ -37,7 +37,7 @@ module.exports = function (app) {
         return this.findOne({_id: id}, cb);
     };
 
-    var User = mongoose.model('User', userSchema);
+    const User = mongoose.model('User', userSchema);
 
     return User;
 };

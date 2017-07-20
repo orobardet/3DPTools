@@ -1,12 +1,14 @@
-module.exports = function (app) {
-    var express = require('express');
-    var router = express.Router();
-    var Controller = app.controllers.admin;
-    var UserForm = app.forms.user;
+'use strict';
 
-    router.use(function (req, res, next) {
+module.exports = function(app) {
+    const express = require('express');
+    const router = express.Router();
+    const Controller = app.controllers.admin;
+    const UserForm = app.forms.user;
+
+    router.use((req, res, next) => {
         if (!req.user.isAdmin) {
-            var err = new Error('Unauthorized');
+            let err = new Error('Unauthorized');
             err.status = 401;
             return next(err);
         }
@@ -22,5 +24,6 @@ module.exports = function (app) {
     router.get('/', Controller.adminIndex);
 
     app.use('/admin', router);
+
     return this;
 };
