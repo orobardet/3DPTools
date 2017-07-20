@@ -41,13 +41,22 @@ module.exports = function (bootstrapOptions) {
                 required: false,
                 default: null,
                 type: 'string'
+            },
+            "h": {
+                alias: 'help',
+                description: 'Show this help'
             }
-        });
+        }, "Launch 3DPTools web app");
         config.env({separator: '__'});
         if (config.get('config-file')) {
             config.file('user', config.get('config-file'));
         }
         config.file('default', 'config/default.json');
+
+        if (config.get('help')) {
+            config.stores.argv.showHelp('log');
+            process.exit(0);
+        }
 
         if (package && package.version) {
             config.set('version', package.version);
