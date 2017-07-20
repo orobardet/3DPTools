@@ -1,14 +1,16 @@
-module.exports = function (app) {
+'use strict';
 
-    this.localizeFormErrors = function (res, messages) {
-        var localizedMessages = {};
+module.exports = app => {
 
-        for (var field in messages) {
+    this.localizeFormErrors = (res, messages) => {
+        let localizedMessages = {};
+
+        for (const field of Object.keys(messages)) {
             localizedMessages[field] = [];
             if (messages[field].length) {
-                messages[field].forEach(function (message) {
+                for (const message of messages[field]) {
                     localizedMessages[field].push(res.__(message));
-                });
+                }
             }
         }
 
