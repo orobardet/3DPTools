@@ -1,8 +1,10 @@
-module.exports = function (bootstrapOptions) {
-    var merge = require('merge');
+'use strict';
+
+module.exports = bootstrapOptions => {
+    const merge = require('merge');
     const fs = require('fs');
-    let fmt = require('util').format;
-    let package = require('./package.json');
+    const fmt = require('util').format;
+    const packageInfo = require('./package.json');
 
     bootstrapOptions = merge({
         loadConfig: true,
@@ -16,11 +18,11 @@ module.exports = function (bootstrapOptions) {
         setupHttpRouting: true
     }, bootstrapOptions);
 
-    var express = require('express');
-    var config = null;
+    const express = require('express');
+    let config = null;
 
     // Create Express App
-    var app = express();
+    let app = express();
     app.locals = {
         siteTitle: '3DPTools',
         navModule: 'unknown',
@@ -30,8 +32,8 @@ module.exports = function (bootstrapOptions) {
     // Load configuration
     if (bootstrapOptions.loadConfig) {
         config = require("nconf");
-        var moment = require('moment');
-        var color = require('color');
+        const moment = require('moment');
+        const color = require('color');
 
         config.use('memory');
         config.argv({
@@ -58,8 +60,8 @@ module.exports = function (bootstrapOptions) {
             process.exit(0);
         }
 
-        if (package && package.version) {
-            config.set('version', package.version);
+        if (packageInfo && packageInfo.version) {
+            config.set('version', packageInfo.version);
         }
         app.locals.config = config;
         app.locals.moment = moment;
@@ -77,12 +79,13 @@ module.exports = function (bootstrapOptions) {
             throw new Error('Session initialisation require configuration to be loaded!');
         }
 
-        var session = require('express-session');
-        var RedisSessionStore = require('connect-redis')(session);
-        var redisStoreOptions = config.get("redis");
-        var flash = require('connect-flash');
+        const session = require('express-session');
+        const RedisSessionStore = require('connect-redis')(session);
+        const flash = require('connect-flash');
 
+        let redisStoreOptions = config.get("redis");
         redisStoreOptions.prefix = config.get('session:name') + ':sessions:';
+
         app.use(session({
             name: config.get('session:name'),
             resave: false,
@@ -122,7 +125,7 @@ module.exports = function (bootstrapOptions) {
             throw new Error('i18n initialisation require configuration to be loaded!');
         }
 
-        var i18n = require("i18n");
+        const i18n = require("i18n");
 
         i18n.configure({
             locales: ['en', 'fr'],
@@ -138,11 +141,11 @@ module.exports = function (bootstrapOptions) {
 
     // view engine setup
     if (bootstrapOptions.initViews) {
-        var path = require('path');
-        var bodyParser = require('body-parser');
-        var expressLayouts = require('express-ejs-layouts');
-        var favicon = require('serve-favicon');
-        var cookieParser = require('cookie-parser');
+        const path = require('path');
+        const bodyParser = require('body-parser');
+        const expressLayouts = require('express-ejs-layouts');
+        const favicon = require('serve-favicon');
+        const cookieParser = require('cookie-parser');
 
         app.use(expressLayouts);
         app.set('views', path.join(__dirname, 'views'));
@@ -155,7 +158,7 @@ module.exports = function (bootstrapOptions) {
         app.use(bodyParser.urlencoded({extended: false}));
 
         app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
-        config.get('httpStatics').forEach(function (staticPath) {
+        config.get('httpStatics').forEach(staticPath => {
             app.use(express.static(path.join(__dirname, staticPath)));
         });
 
@@ -164,7 +167,7 @@ module.exports = function (bootstrapOptions) {
 
     // Init logger
     if (bootstrapOptions.initLogger) {
-        var logger = require('morgan');
+        const logger = require('morgan');
         if (app.get('env') === 'production') {
             app.use(logger('common'));
         } else {
@@ -174,7 +177,7 @@ module.exports = function (bootstrapOptions) {
 
     // Autoload app components
     if (bootstrapOptions.loadComponents) {
-        var consign = require('consign');
+        const consign = require('consign');
 
         consign({
             verbose: false
@@ -190,15 +193,15 @@ module.exports = function (bootstrapOptions) {
 
     // loading navigation
     if (bootstrapOptions.loadNavigation) {
-        var navigation = require('./config/navigation');
+        const navigation = require('./config/navigation');
         app.locals.navigation = navigation;
         app.set('navigation', navigation);
     }
 
     if (bootstrapOptions.setupHttpRouting) {
         // catch 404 and forward to error.ejs handler
-        app.use(function (req, res, next) {
-            var err = new Error('Not Found');
+        app.use((req, res, next) => {
+            let err = new Error('Not Found');
             err.status = 404;
             next(err);
         });
@@ -207,7 +210,7 @@ module.exports = function (bootstrapOptions) {
         // development error.ejs handler
         // will print stacktrace
         if (app.get('env') === 'development') {
-            app.use(function (err, req, res, next) {
+            app.use((err, req, res, next) => {
                 res.status(err.status || 500);
                 console.error(err.message);
                 console.error(err.stack);
@@ -222,7 +225,7 @@ module.exports = function (bootstrapOptions) {
 
         // production error.ejs handler
         // no stacktraces leaked to user
-        app.use(function (err, req, res, next) {
+        app.use((err, req, res, next) => {
             res.status(err.status || 500);
             console.error(err.message);
             console.error(err.stack);
