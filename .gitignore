@@ -86,3 +86,4 @@ src/tmp
 /docker-volumes/
 yarn.lock
 .yarn-integrity
+package-lock.json

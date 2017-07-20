@@ -33,6 +33,10 @@
     "connectOptions": {
     }
   },
+  "sentry": {
+    "enabled": "true",
+    "dsn": ""
+  },
   "upload": {
     "tmpPath":"tmp/uploads"
   },

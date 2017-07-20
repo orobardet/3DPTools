@@ -5,9 +5,11 @@ module.exports = bootstrapOptions => {
     const fs = require('fs');
     const fmt = require('util').format;
     const packageInfo = require('./package.json');
+    const Raven = require('raven');
 
     bootstrapOptions = merge({
         loadConfig: true,
+        initSentry: true,
         initSession: true,
         initDb: true,
         initI18n: true,
@@ -71,6 +73,51 @@ module.exports = bootstrapOptions => {
         if (fs.existsSync(config.get('sourceCode:changelog:filePath'))) {
             app.locals.changelogAvailable = true;
         }
+
+        if (!config.get('sentry:enabled') || !config.get('sentry:dsn') || config.get('sentry:dsn') === "") {
+            bootstrapOptions.initSentry = false;
+        }
+    }
+
+    // Init sentry
+    if (bootstrapOptions.initSentry) {
+        let sentryExtraConfig = null;
+        if (config) {
+            sentryExtraConfig = config.get();
+        }
+        Raven.config(config.get('sentry:dsn'), {
+            release: config.get('version'),
+            environment: process.env.NODE_ENV || 'development',
+            autoBreadcrumbs: {
+                'console': false,
+                'http': true
+            },
+            extra: {
+                bootstrapOptions: bootstrapOptions,
+                config: sentryExtraConfig
+            },
+            parseUser: req => {
+                if (req.user) {
+                    return {
+                        id: req.user._id,
+                        username: req.user.firstname + ' ' + req.user.lastname,
+                        email: req.user.email
+                    };
+                }
+
+                return {username: 'none'};
+            },
+            dataCallback: data =>{
+                data.tags.route = data.req.route.path;
+                data.extra.req = data.req;
+                delete data.req;
+
+                return data;
+            }
+        }).install();
+
+        app.use(Raven.requestHandler());
+        app.set('raven', Raven);
     }
 
     // Init sessions
@@ -199,10 +246,17 @@ module.exports = bootstrapOptions => {
     }
 
     if (bootstrapOptions.setupHttpRouting) {
+        if (bootstrapOptions.initSentry) {
+            app.use(Raven.errorHandler());
+        }
+
         // catch 404 and forward to error.ejs handler
         app.use((req, res, next) => {
             let err = new Error('Not Found');
             err.status = 404;
+            if (res.sentry) {
+                console.error('Sentry ID: ' + res.sentry);
+            }
             next(err);
         });
 
@@ -214,11 +268,15 @@ module.exports = bootstrapOptions => {
                 res.status(err.status || 500);
                 console.error(err.message);
                 console.error(err.stack);
+                if (res.sentry) {
+                    console.error('Sentry ID: ' + res.sentry);
+                }
                 res.render('error', {
                     pageTitle: 'An error occured',
                     message: err.message,
                     error: err,
-                    navModule: "error"
+                    navModule: "error",
+                    sentryId: res.sentry
                 });
             });
         }
@@ -229,11 +287,15 @@ module.exports = bootstrapOptions => {
             res.status(err.status || 500);
             console.error(err.message);
             console.error(err.stack);
+            if (res.sentry) {
+                console.error('Sentry ID: ' + res.sentry);
+            }
             res.render('error', {
                 pageTitle: 'An error occured',
                 message: err.message,
                 error: {},
-                navModule: "error"
+                navModule: "error",
+                sentryId: res.sentry
             });
         });
     }

@@ -1,3 +1,6 @@
+<% if (sentryId) { %>
+<pre id="error-report-id">Report ID: <%- sentryId %></pre>
+<% } %>
 <h1><%- message %></h1>
 <% if (error) { %>
 <% if (error.status) { %>
