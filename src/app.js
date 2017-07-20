@@ -97,20 +97,39 @@ module.exports = bootstrapOptions => {
                 config: sentryExtraConfig
             },
             parseUser: req => {
-                if (req.user) {
-                    return {
-                        id: req.user._id,
-                        username: req.user.firstname + ' ' + req.user.lastname,
-                        email: req.user.email
-                    };
+                if (req.user && (req.user.id || req.user.email || req.user.firstname || req.user.lastname)) {
+                    let userData = {};
+
+                    if (req.user._id) {
+                        userData.id = req.user._id;
+                    }
+                    if (req.user.email) {
+                        userData.email = req.user.email;
+                    }
+                    let userName = [];
+                    if (req.user.firstname) {
+                        userName.push(req.user.firstname);
+                    }
+                    if (req.user.lastname) {
+                        userName.push(req.user.lastname);
+                    }
+                    if (userName.length) {
+                        userData.username = userName.join(' ');
+                    }
+
+                    return userData;
                 }
 
                 return {username: 'none'};
             },
             dataCallback: data =>{
-                data.tags.route = data.req.route.path;
-                data.extra.req = data.req;
-                delete data.req;
+                if (data.req) {
+                    if (data.req.route && data.req.route.path) {
+                        data.tags.route = data.req.route.path;
+                    }
+                    data.extra.req = data.req;
+                    delete data.req;
+                }
 
                 return data;
             }
