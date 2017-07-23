@@ -1,7 +1,9 @@
-module.exports = function (app) {
-    var sprintf = require('sprintf-js').sprintf;
+'use strict';
 
-    app.use(function (req, res, next) {
+module.exports = function (app) {
+    const sprintf = require('sprintf-js').sprintf;
+
+    app.use((req, res, next) => {
         res.locals.sprintf = sprintf;
         next();
     });

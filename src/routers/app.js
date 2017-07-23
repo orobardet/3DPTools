@@ -1,11 +1,13 @@
-module.exports = function (app) {
-    var express = require('express');
-    var router = express.Router();
-    var passport = require('passport');
-    var LocalStrategy = require('passport-local').Strategy;
+'use strict';
 
-    var Controller = app.controllers.app;
-    var User = app.models.user;
+module.exports = function (app) {
+    const express = require('express');
+    const router = express.Router();
+    const passport = require('passport');
+    const LocalStrategy = require('passport-local').Strategy;
+
+    const Controller = app.controllers.app;
+    const User = app.models.user;
 
     app.use(passport.initialize());
     app.use(passport.session());
@@ -15,8 +17,8 @@ module.exports = function (app) {
         passwordField: 'password',
         failureFlash: true,
         passReqToCallback: true
-    }, function (req, username, password, done) {
-        User.findOne({email: username}, function (err, user) {
+    }, (req, username, password, done) => {
+        User.findOne({email: username}, (err, user) => {
             if (err) {
                 return done(err);
             }
@@ -30,16 +32,16 @@ module.exports = function (app) {
         });
     }));
 
-    passport.serializeUser(function (user, done) {
+    passport.serializeUser((user, done) => {
         done(null, user.id);
     });
-    passport.deserializeUser(function (id, done) {
-        User.findById(id, function (err, user) {
+    passport.deserializeUser((id, done) => {
+        User.findById(id, (err, user) => {
             done(err, user);
         });
     });
 
-    router.use(function (req, res, next) {
+    router.use((req, res, next) => {
         app.locals.moment.locale(req.getLocale());
 
         res.locals.isUserLogged = req.isAuthenticated();
@@ -61,7 +63,7 @@ module.exports = function (app) {
     router.post('/login', passport.authenticate('local', {
         failureRedirect: '/login',
         failureFlash: true
-    }), function (req, res) {
+    }), (req, res) => {
         res.redirect('/');
     });
     router.get('/logout', Controller.logout);

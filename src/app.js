@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = bootstrapOptions => {
+module.exports = function(bootstrapOptions) {
     const merge = require('merge');
     const fs = require('fs');
     const fmt = require('util').format;

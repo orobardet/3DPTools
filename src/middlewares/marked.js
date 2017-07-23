@@ -1,7 +1,9 @@
-module.exports = function (app) {
-    var marked = require('marked');
+'use strict';
 
-    app.use(function (req, res, next) {
+module.exports = function (app) {
+    const marked = require('marked');
+
+    app.use((req, res, next) => {
         res.locals.marked = marked;
         next();
     });

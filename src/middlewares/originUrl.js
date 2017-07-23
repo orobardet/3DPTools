@@ -1,17 +1,19 @@
+'use strict';
+
 module.exports = function (app) {
-    var api = {
+    const api = {
         'setOriginUrl': 'setOriginUrl',
         'getOriginUrl': 'getOriginUrl'
     };
 
-    var applyAPItoObject = function(object) {
+    const applyAPItoObject = function(object) {
         if (!object) {
             return;
         }
         // attach to itself if not provided
-        for (var method in api) {
+        for (const method in api) {
             if (api.hasOwnProperty(method)) {
-                var alias = api[method];
+                const alias = api[method];
 
                 // be kind rewind, or better not touch anything already existing
                 if (!object[alias]) {
@@ -21,7 +23,7 @@ module.exports = function (app) {
         }
     };
 
-    var originUrl = {};
+    let originUrl = {};
 
     originUrl.setOriginUrl = function(name, url) {
         if (!this.session) {
@@ -33,9 +35,8 @@ module.exports = function (app) {
         }
 
         if (Array.isArray(name)) {
-            var that = this;
-            name.forEach(function(aName) {
-                that.setOriginUrl(aName, url);
+            name.forEach(aName => {
+                this.setOriginUrl(aName, url);
             });
         } else {
             this.session.originUrl[name] = url;
@@ -62,7 +63,7 @@ module.exports = function (app) {
 
     applyAPItoObject(app.locals);
 
-    app.use(function (req, res, next) {
+    app.use((req, res, next) => {
         applyAPItoObject(req);
         next();
     });

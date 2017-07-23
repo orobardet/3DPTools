@@ -1,19 +1,21 @@
-module.exports = function (app) {
-    var marked = require('marked');
+'use strict';
 
-    app.use(function (req, res, next) {
-        res.locals.changelogFormatter = function(text) {
+module.exports = function (app) {
+    const marked = require('marked');
+
+    app.use((req, res, next) => {
+        res.locals.changelogFormatter = text => {
 
             text = text.replace(/^#/umg, '##');
-            text = text.replace(/^(\s*-\s*)\[(New|Imp|Fix|Tec)\]/umg, function(match, p1, p2) {
+            text = text.replace(/^(\s*-\s*)\[(New|Imp|Fix|Tec)\]/umg, (match, p1, p2) => {
                 return p1+'<span class="changelog-type"><span class="changelog-type-'+p2.toLowerCase()+'">'+p2.toUpperCase()+'</span></span>';
             });
 
             text = text.replace(/#(\d+)/ug, "[#$1]($1)");
 
-            var issueRootURL = app.config.get('sourceCode:changelog:issueRootURL');
-            var renderer = new marked.Renderer();
-            renderer.link = function(href, title, text) {
+            const issueRootURL = app.config.get('sourceCode:changelog:issueRootURL');
+            const renderer = new marked.Renderer();
+            renderer.link = (href, title, text) => {
                 return '<a href="'+issueRootURL+href+'" target="_blank">'+text+'</a>';
             };
 
