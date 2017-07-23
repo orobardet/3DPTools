@@ -1,5 +1,7 @@
+'use strict';
+
 module.exports = function(filament, currentVersion) {
-    var localVersion = 6;
+    const localVersion = 6;
 
     this.needMigration = function() {
         if (!filament._version || filament._version < localVersion) {

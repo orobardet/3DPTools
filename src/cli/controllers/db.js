@@ -1,26 +1,24 @@
 'use strict';
 
-module.exports = app => {
+module.exports = function(app) {
     const colors = require('colors');
     const mongoose = require('mongoose');
     const when = require('when');
     const sprintf = require('sprintf-js').sprintf;
 
-    const that = this;
-
     /**
      * @constructor
      * @returns {exports}
      */
-    this.constructor = () => {
+    this.constructor = function () {
         app.program
             .command('database')
             .alias('db')
             .arguments('<action> <collection>')
             .description('Run maintenance operations on collection of the database')
             .action((action, collection, program) => {
-                if (that[action] && (typeof that[action] === 'function')) {
-                    that[action](collection, program);
+                if (this[action] && (typeof this[action] === 'function')) {
+                    this[action](collection, program);
                 } else {
                     app.program.outputHelp(text => {
                         return colors.red('*** Unknown action "' + action + '"\n') + text;
@@ -46,7 +44,7 @@ module.exports = app => {
      *
      * @returns {Promise}
      */
-    this.resave = (collectionName, program) => {
+    this.resave = function (collectionName, program) {
         let itemName = this.modelNameFromCollectionParameter(collectionName);
         if (app.models[itemName] && (typeof app.models[itemName] === "function") && app.models[itemName].base.Mongoose) {
             let model = app.models[itemName];
@@ -89,7 +87,7 @@ module.exports = app => {
      *
      * @returns {Promise}
      */
-    this.migrate = (collectionName, program) => {
+    this.migrate = function (collectionName, program) {
         let itemName = this.modelNameFromCollectionParameter(collectionName);
         if (app.models[itemName] && (typeof app.models[itemName] === "function") && app.models[itemName].base.Mongoose) {
             let model = app.models[itemName];
@@ -154,7 +152,7 @@ module.exports = app => {
     /**
      * Convert a collection name, received on the command line, to the model name
      *
-     * Assume that the model name is a lowercase version of the collection name,
+     * Assume the model name is a lowercase version of the collection name,
      * and truncated from the last 's' character if any.
      *
      * There is no validation of the computed model name.
@@ -163,7 +161,7 @@ module.exports = app => {
      *
      * @returns {string} The name of the model
      */
-    this.modelNameFromCollectionParameter = collectionName => {
+    this.modelNameFromCollectionParameter = function (collectionName) {
         return String(collectionName).toLowerCase().replace(/s$/, '');
     };
 
