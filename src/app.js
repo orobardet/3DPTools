@@ -9,6 +9,7 @@ module.exports = bootstrapOptions => {
 
     bootstrapOptions = merge({
         loadConfig: true,
+        initCliOptions: true,
         initSentry: true,
         initSession: true,
         initDb: true,
@@ -56,10 +57,11 @@ module.exports = bootstrapOptions => {
             config.file('user', config.get('config-file'));
         }
         config.file('default', 'config/default.json');
-
-        if (config.get('help')) {
-            config.stores.argv.showHelp('log');
-            process.exit(0);
+        if (bootstrapOptions.initCliOptions) {
+            if (config.get('help')) {
+                config.stores.argv.showHelp('log');
+                process.exit(0);
+            }
         }
 
         if (packageInfo && packageInfo.version) {

@@ -2,6 +2,7 @@
 
 var app = require('../app')({
     loadConfig:true,
+    initCliOptions: false,
     initSession: false,
     initDb: true,
     initI18n: true,
