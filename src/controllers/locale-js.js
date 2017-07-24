@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (app) {
     this.localeJs = function (req, res) {
         res.set('Content-Type', 'text/javascript; charset=utf-8');
