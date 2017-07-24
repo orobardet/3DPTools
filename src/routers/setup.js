@@ -1,29 +1,30 @@
+'use strict';
+
 module.exports = function (app) {
-    var express = require('express');
-    var router = express.Router();
-    var Controller = app.controllers.setup;
-    var User = app.models.user;
-    var UserForm = app.forms.user;
+    const express = require('express');
+    const router = express.Router();
+    const Controller = app.controllers.setup;
+    const User = app.models.user;
+    const UserForm = app.forms.user;
 
     /* setup finished */
     router.get('/done', Controller.done);
 
-    router.use(function (req, res, next) {
+    router.use(async (req, res, next) => {
         if (req.isAuthenticated()) {
             return res.redirect('/');
         }
 
-        User.getActiveUserCount().then(function (count) {
-            if (count) {
+        try {
+            if (await User.getActiveUserCount()) {
                 return res.redirect('/');
             }
-            res.locals.navModule = 'setup';
+        } catch(err) {
             next();
-        }).catch(function (err) {
-            console.error(err);
-            next();
-        });
+        }
 
+        res.locals.navModule = 'setup';
+        next();
     });
 
     /* add user */
@@ -33,5 +34,6 @@ module.exports = function (app) {
     router.get('/', Controller.index);
 
     app.use('/setup', router);
+
     return this;
 };

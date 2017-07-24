@@ -19,7 +19,6 @@ module.exports = function (app) {
         const lastUsedCount = config.get("filament:index:lastUsedCount") || 5;
         const almostFinishedThreshold = config.get("filament:index:almostFinishedPercentThreshold") || 25;
 
-        //
         let shopCount,                      // Number of shops in the database
             brandCount,                     // Number of brands in the database
             materialCount,                  // Number of materials in the database

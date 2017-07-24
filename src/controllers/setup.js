@@ -1,5 +1,7 @@
+'use strict';
+
 module.exports = function (app) {
-    var User = app.models.user;
+    const User = app.models.user;
 
     this.index = function (req, res) {
         res.render('setup/index', {
@@ -11,7 +13,7 @@ module.exports = function (app) {
         });
     };
 
-    this.createUser = function (req, res, next) {
+    this.createUser = async function (req, res, next) {
         if (!req.form.isValid) {
             return res.render('setup/index', {
                 layout: 'setup/layout',
@@ -19,20 +21,21 @@ module.exports = function (app) {
             });
         }
 
-        var user = new User({
+        let user = new User({
             email: req.form.email,
             firstname: req.form.firstname,
             lastname: req.form.lastname,
             passwordHash: User.generateHash(req.form.password),
             isAdmin: true
         });
-        user.save(function (err) {
-            if (err) {
-                next(err);
-            } else {
+
+        try {
+            if (await user.save()) {
                 res.redirect("/setup/done");
             }
-        });
+        } catch (err) {
+            next(err);
+        }
     };
 
     this.done = function (req, res) {
