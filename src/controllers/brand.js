@@ -1,194 +1,238 @@
+'use strict';
+
 module.exports = function (app) {
-    var when = require('when');
-    var Brand = app.models.brand;
-    var fs = require('fs');
+    const Brand = app.models.brand;
+    const fs = require('fs');
 
-    this.index = function (req, res, next) {
-        when(Brand.find().sort('name').exec())
-            .then(function (brands) {
-                return res.render('brand/index', {
-                    brands: brands,
-                    pageTitle: 'Brands',
-                    errors: []
-                });
-            })
-            .catch(function (err) {
-                return next(err);
-            });
-    };
+    /**
+     * List of all brands
+     */
+    this.index = async function (req, res, next) {
+        let brands;
 
-    this.add = function (req, res, next) {
-        if (!req.form.isValid) {
-            return res.render('brand/add', {
-                errors: req.form.getErrors()
-            });
+        try {
+            brands = await Brand.find().sort('name').exec();
+        } catch (err) {
+            return next(err);
         }
-        var brand = new Brand({
-            name: req.form.name,
-            url: req.form.url,
-        });
-        brand.save(function (err) {
-            if (err) {
-                return next(err);
-            }
-            return res.redirect("/brand/set-logo/" + brand.id);
+
+        return res.render('brand/index', {
+            brands: brands,
+            pageTitle: 'Brands',
+            errors: []
         });
     };
 
+    /**
+     * Show the add new brand form
+     */
     this.addForm = function (req, res) {
         return res.render('brand/add', {
             errors: []
         });
     };
 
-    this.edit = function (req, res, next) {
-        var brandId = req.params.brand_id;
-
-        when(Brand.findById(brandId).exec())
-            .then(function (brand) {
-                if (!req.form.isValid) {
-                    return res.render('brand/edit', {
-                        brand: brand,
-                        errors: req.form.getErrors()
-                    });
-                }
-
-                brand.name = req.form.name;
-                brand.url = req.form.url;
-
-                brand.save(function (err) {
-                    if (err) {
-                        return next(err);
-                    }
-                    return res.redirect("/brand");
-                });
+    /**
+     * Add a new brand (process the form shown by `this.addForm`)
+     */
+    this.add = async function (req, res, next) {
+        if (!req.form.isValid) {
+            return res.render('brand/add', {
+                errors: req.form.getErrors()
             });
+        }
+        let brand = new Brand({
+            name: req.form.name,
+            url: req.form.url,
+        });
+
+        try {
+            await brand.save();
+        } catch (err) {
+            return next(err);
+        }
+
+        return res.redirect("/brand/set-logo/" + brand.id);
     };
 
-    this.editForm = function (req, res) {
-        var brandId = req.params.brand_id;
+    /**
+     * Show the edit brand form
+     */
+    this.editForm = async function (req, res) {
+        let brandId = req.params.brand_id;
+        let brand;
 
-        when(Brand.findById(brandId).exec())
-            .then(function (brand) {
-                return res.render('brand/edit', {
-                    brand: brand,
-                    errors: []
-                });
-            })
-            .catch(function (err) {
-                res.status(404);
-                return res.json({
-                    message: res.__('Brand %s not found.', brandId)
-                });
+        try {
+            brand = await Brand.findById(brandId).exec();
+        } catch (err) {
+            res.status(404);
+            return res.json({
+                message: res.__('Brand %s not found.', brandId)
             });
+        }
+
+        return res.render('brand/edit', {
+            brand: brand,
+            errors: []
+        });
     };
 
-    this.setLogo = function (req, res, next) {
-        var brandId = req.params.brand_id;
-        var logo = req.file;
+    /**
+     * Save and edited brand (process the form shown by `this.editForm`)
+     */
+    this.edit = async function (req, res, next) {
+        let brandId = req.params.brand_id;
 
-        when(Brand.findById(brandId).exec())
-            .then(function (brand) {
-                brand.logo.name = logo.originalname;
-                brand.logo.size = logo.size;
-                brand.logo.mimeType = logo.mimetype;
-                brand.logo.data = fs.readFileSync(logo.path);
-
-                fs.unlinkSync(logo.path);
-
-                brand.save(function (err) {
-                    if (err) {
-                        return next(err);
-                    }
-                    return res.redirect("/brand");
-                });
+        if (!req.form.isValid) {
+            return res.render('brand/edit', {
+                brand: brand,
+                errors: req.form.getErrors()
             });
+        }
+
+        let brand = await Brand.findById(brandId).exec();
+
+        brand.name = req.form.name;
+        brand.url = req.form.url;
+
+        try {
+            await brand.save();
+        } catch (err) {
+            return next(err);
+        }
+
+        return res.redirect("/brand");
     };
 
-    this.deleteLogo = function (req, res, next) {
-        var brandId = req.params.brand_id;
+    /**
+     * Show the change brand logo form
+     */
+    this.logoForm = async function (req, res, next) {
+        let brandId = req.params.brand_id;
+        let brand;
 
-        when(Brand.findById(brandId).exec())
-            .then(function (brand) {
-                brand.logo = undefined;
+        try {
+            brand = await Brand.findById(brandId).exec();
+        } catch (err) {
+            return next(err);
+        }
 
-                brand.save(function (err) {
-                    if (err) {
-                        return next(err);
-                    }
-                    return res.redirect("/brand");
-                });
-            });
+        return res.render('brand/logo', {
+            brandId: brandId,
+            brand: brand,
+            errors: []
+        });
     };
 
-    this.logoForm = function (req, res, next) {
-        var brandId = req.params.brand_id;
+    /**
+     * Set the logo for a brand (process the form shown by `this.logoForm`)
+     */
+    this.setLogo = async function (req, res, next) {
+        let brandId = req.params.brand_id;
+        let logo = req.file;
 
-        when(Brand.findById(brandId).exec())
-            .then(function (brand) {
-                return res.render('brand/logo', {
-                    brandId: brandId,
-                    brand: brand,
-                    errors: []
-                });
-            })
-            .catch(function (err) {
-                return next(err);
-            });
+        let brand = await Brand.findById(brandId).exec();
+        brand.logo.name = logo.originalname;
+        brand.logo.size = logo.size;
+        brand.logo.mimeType = logo.mimetype;
+        brand.logo.data = fs.readFileSync(logo.path);
+        fs.unlinkSync(logo.path);
+
+        try {
+            await brand.save();
+        } catch (err) {
+            return next(err);
+        }
+
+        return res.redirect("/brand");
     };
 
-    this.get = function (req, res) {
-        var brandId = req.params.brand_id;
+    /**
+     * Delete the logo of a brand
+     */
+    this.deleteLogo = async function (req, res, next) {
+        let brandId = req.params.brand_id;
 
-        when(Brand.findById(brandId).exec())
-            .then(function (brand) {
-                var brandData = brand.toObject({getters: false, virtuals: true, versionKey: false});
-                return res.json({
-                    brand: brandData
-                });
-            })
-            .catch(function (err) {
-                res.status(404);
-                return res.json({
-                    message: res.__('Brand %s not found.', brandId)
-                });
-            });
+        let brand = await Brand.findById(brandId).exec();
+        brand.logo = undefined;
+
+        try {
+            await brand.save();
+        } catch (err) {
+            return next(err);
+        }
+
+        return res.redirect("/brand");
     };
 
-    this.getLogo = function (req, res) {
-        var brandId = req.params.brand_id;
+    /**
+     * Get brand data
+     */
+    this.get = async function (req, res) {
+        let brandId = req.params.brand_id;
+        let brand;
 
-        when(Brand.findById(brandId).exec())
-            .then(function (brand) {
-                if (brand.logo) {
-                    res.set('Content-Type', brand.logo.mimeType);
-                    res.set('Content-Length', brand.logo.size);
-                    return res.send(brand.logo.data);
-                }
-            })
-            .catch(function (err) {
-                res.status(404);
-                return res.json({
-                    message: res.__('Brand %s not found.', brandId)
-                });
+        try {
+            brand = await Brand.findById(brandId).exec();
+        } catch (err) {
+            res.status(404);
+            return res.json({
+                message: res.__('Brand %s not found.', brandId)
             });
+        }
+
+        let brandData = brand.toObject({getters: false, virtuals: true, versionKey: false});
+        return res.json({
+            brand: brandData
+        });
     };
 
-    this.delete = function (req, res) {
-        var brandId = req.params.brand_id;
+    /**
+     * Get the logo of a brand
+     */
+    this.getLogo = async function (req, res) {
+        let brandId = req.params.brand_id;
+        let brand;
 
-        when(Brand.findById(brandId).remove().exec())
-            .then(function () {
-                return res.json({
-                    message: res.__('Brand %s successfully deleted.', brandId)
-                });
-            })
-            .catch(function (err) {
-                res.status(500);
-                return res.json({
-                    message: res.__(err.message)
-                });
+        try {
+            brand = await Brand.findById(brandId).exec();
+        } catch (err) {
+            res.status(404);
+            return res.json({
+                message: res.__('Brand %s not found.', brandId)
             });
+        }
+
+        if (brand.logo) {
+            res.set('Content-Type', brand.logo.mimeType);
+            res.set('Content-Length', brand.logo.size);
+            return res.send(brand.logo.data);
+        } else {
+            res.status(404);
+            return res.json();
+        }
+    };
+
+    /**
+     * Delete a brand
+     */
+    this.delete = async function (req, res) {
+        let brandId = req.params.brand_id;
+
+        try {
+            if (!await Brand.findById(brandId).remove().exec()) {
+                throw new Error(res.__('Error while deleteing brand %s', brandId));
+            }
+        } catch (err) {
+            res.status(500);
+            return res.json({
+                message: res.__(err.message)
+            });
+        }
+
+        return res.json({
+            message: res.__('Brand %s successfully deleted.', brandId)
+        });
     };
 
     return this;

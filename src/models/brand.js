@@ -1,9 +1,10 @@
-module.exports = function (app) {
-    var when = require('when');
-    var mongoose = require('mongoose');
-    var Schema = mongoose.Schema;
+'use strict';
 
-    var brandSchema = new Schema({
+module.exports = function (app) {
+    const mongoose = require('mongoose');
+    const Schema = mongoose.Schema;
+
+    let brandSchema = new Schema({
         name: String,
         url: String,
         logo: {
@@ -15,20 +16,17 @@ module.exports = function (app) {
         creationDate: {type: Date, default: Date.now}
     });
 
-    brandSchema.statics.findById = function (id, cb) {
-        return this.findOne({_id: id}, cb);
+    brandSchema.statics.findById = function (id) {
+        return this.findOne({_id: id});
     };
 
-    brandSchema.statics.findOneRandom = function (callback) {
-        return when(this.count().exec())
-            .with(this)
-            .then(function (count) {
-                var rand = Math.floor(Math.random() * count);
-                return this.findOne({}, {}, {skip: rand}, callback);
-            });
+    brandSchema.statics.findOneRandom = async function () {
+        let count = await this.count().exec();
+        let rand = Math.floor(Math.random() * count);
+        return this.findOne({}, {}, {skip: rand});
     };
 
-    var Brand = mongoose.model('Brand', brandSchema);
+    const Brand = mongoose.model('Brand', brandSchema);
 
     return Brand;
 };
