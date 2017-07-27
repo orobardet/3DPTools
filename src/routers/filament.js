@@ -1,49 +1,51 @@
+'use strict';
+
 module.exports = function (app) {
-    var express = require('express');
-    var router = express.Router();
-    var Controller = app.controllers.filament;
-    var FilamentForm = app.forms.filament;
-    var multer = require('multer');
-    var fileUpload = multer({
+    const router = require('express').Router();
+    const Controller = app.controllers.filament;
+    const Form = app.forms.filament;
+    const multer = require('multer');
+    const fileUpload = multer({
         dest: app.get('config').get('upload:tmpPath'),
         limits: {fileSize: 10000000, files: 1}
     });
 
-    router.use(function (req, res, next) {
+    router.use((req, res, next) => {
         res.locals.navModule = 'filament';
         next();
     });
 
-    router.get('/', FilamentForm.search, Controller.index);
+    router.get('/', Form.search, Controller.index);
     router.get('/stats', Controller.stats);
 
     router.get('/get/:filament_id', Controller.get);
     router.get('/show/:filament_id', Controller.show);
 
-    router.post('/add', FilamentForm.filament, Controller.add);
+    router.post('/add', Form.filament, Controller.add);
     router.get('/add', Controller.addForm);
 
-    router.post('/edit/:filament_id', FilamentForm.filament, Controller.edit);
+    router.post('/edit/:filament_id', Form.filament, Controller.edit);
     router.get('/edit/:filament_id', Controller.editForm);
 
-    router.post('/left-material/:filament_id', FilamentForm.leftMaterial, Controller.leftMaterial);
+    router.post('/left-material/:filament_id', Form.leftMaterial, Controller.leftMaterial);
     router.get('/left-material/:filament_id', Controller.leftMaterialForm);
-    router.post('/compute-left-material/:filament_id', FilamentForm.leftMaterial, Controller.computeLeftMaterial);
+    router.post('/compute-left-material/:filament_id', Form.leftMaterial, Controller.computeLeftMaterial);
 
     router.post('/add-picture/:filament_id', fileUpload.single('picture'), Controller.addPicture);
     router.get('/add-picture/:filament_id', Controller.pictureForm);
     router.delete('/delete-picture/:filament_id/:picture_id', Controller.deletePicture);
     router.get('/delete-picture/:filament_id/:picture_id', Controller.deletePicture);
-    router.get('/get-picture/:filament_id/:picture_id', Controller.getPicture);
+    router.get('/get-picture/:filament_id/:picture_id', Controller.showPicture);
     router.get('/download-picture/:filament_id/:picture_id', Controller.downloadPicture);
 
     router.get('/cost-calculator', Controller.costCalculatorForm);
-    router.post('/cost-calculator/:filament_id', FilamentForm.costCalculator, Controller.costCalculator);
+    router.post('/cost-calculator/:filament_id', Form.costCalculator, Controller.costCalculator);
 
     router.delete('/delete/:filament_id', Controller.delete);
 
     router.get('/finished/:filament_id/:status', Controller.finished);
 
     app.use('/filament', router);
+
     return this;
 };

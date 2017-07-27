@@ -1,15 +1,16 @@
-module.exports = function (app) {
-    var when = require('when');
-    var Filament = app.models.filament;
-    var Shop = app.models.shop;
-    var Brand = app.models.brand;
-    var Material = app.models.material;
-    var thisController = this;
-    var fs = require('fs');
-    var gm = require('gm').subClass({imageMagick: true});
-    var thatController = this;
+'use strict';
 
-    var filamentSortDefinition = {
+module.exports = function (app) {
+    const Filament = app.models.filament;
+    const Shop = app.models.shop;
+    const Brand = app.models.brand;
+    const Material = app.models.material;
+    const fs = require('fs-promise');
+    const gm = require('gm').subClass({imageMagick: true});
+
+    // Sorting modes definition
+    // Each mode correspond to a list of field to order, with order way for each field (1 or -1)
+    const filamentSortDefinition = {
         'default': {
             label: 'Default sort',
             sort: {
@@ -55,12 +56,11 @@ module.exports = function (app) {
             }
         }
     };
-    var sortList = [];
-    Object.keys(filamentSortDefinition).forEach(function(sortId) {
-        sortList.push({value: sortId, label: filamentSortDefinition[sortId].label});
-    });
 
-    this.index = function (req, res, next) {
+    /**
+     * List and search of filament
+     */
+    this.index = async (req, res) => {
         req.setOriginUrl([
             'filament/view',
             'filament/add',
@@ -71,9 +71,14 @@ module.exports = function (app) {
             'filament/cost-calculator'
         ], req.originalUrl);
 
-        var search = req.form;
-        var filamentFilter = {};
+        // Prepare a simplified sort list that will be used in the GUI for displaying sort options
+        const sortList = Object.entries(filamentSortDefinition).map(([sortId, sortData]) => {
+            return {value: sortId, label: sortData.label}
+        });
 
+        // Analyse received parameters and extract potential filter (search) values
+        const search = req.form;
+        let filamentFilter = {};
         if (search.material && search.material !== '') {
             filamentFilter.material = search.material;
         }
@@ -88,19 +93,23 @@ module.exports = function (app) {
         }
         filamentFilter.finished = false;
         if (search.finished) {
-            if (search.finished == 'finished') {
+            if (search.finished === 'finished') {
                 filamentFilter.finished = true;
-            } else if (search.finished == 'all') {
+            } else if (search.finished === 'all') {
                 delete filamentFilter.finished;
             }
         }
 
-        var selectedSort = 'default';
+        // Check if the potential sort field received in parameters is valid (i.e. it is known)
+        let selectedSort = 'default';
         if (search.sort && Object.keys(filamentSortDefinition).indexOf(search.sort) > -1) {
             selectedSort = search.sort;
         }
 
-        when.all([
+        // Retrieve the filament list, possibly with filter and sort options
+        // Also retrieve the lists of all materials, brands, shops and colors,
+        // that will be used to construct filter form
+        let [filaments, materials, brands, shops, colors] = await Promise.all([
             Filament.list({
                 filter: filamentFilter,
                 sort: filamentSortDefinition[selectedSort].sort
@@ -109,78 +118,82 @@ module.exports = function (app) {
             Brand.find().sort('name').exec(),
             Shop.find().sort('name').exec(),
             Filament.getColors()
-        ]).spread(function (filaments, materials, brands, shops, colors) {
-                materials.unshift({name:'&nbsp;', id:null});
-                shops.unshift({name:'&nbsp;', id:null});
-                brands.unshift({name:'&nbsp;', id:null});
-                colors.unshift({name:'&nbsp;', code: null});
+        ]);
+        // Add an empty entry at the beginning of each filter list (which means 'no filtering on this field')
+        materials.unshift({name:'&nbsp;', id:null});
+        shops.unshift({name:'&nbsp;', id:null});
+        brands.unshift({name:'&nbsp;', id:null});
+        colors.unshift({name:'&nbsp;', code: null});
 
-                var formSearchData = filamentFilter;
-                if (search.finished) {
-                    filamentFilter.finished = search.finished;
-                }
-                if (typeof formSearchData.finished != 'undefined' && formSearchData.finished == false) {
-                    delete formSearchData.finished;
-                }
+        let formSearchData = filamentFilter;
+        if (search.finished) {
+            filamentFilter.finished = search.finished;
+        }
+        if (typeof formSearchData.finished !== 'undefined' && formSearchData.finished === false) {
+            delete formSearchData.finished;
+        }
 
-                return res.render('filament/index', {
-                    search: Object.keys(formSearchData).length?search:null,
-                    materials: materials,
-                    brands: brands,
-                    shops: shops,
-                    colors: colors,
-                    filaments: filaments,
-                    sortList: sortList,
-                    selectedSort: selectedSort,
-                    pageTitle: 'Filaments',
-                    errors: []
-                });
-            })
-            .catch(function (err) {
-                return next(err);
-            });
+        return res.render('filament/index', {
+            search: Object.keys(formSearchData).length?search:null,
+            materials: materials,
+            brands: brands,
+            shops: shops,
+            colors: colors,
+            filaments: filaments,
+            sortList: sortList,
+            selectedSort: selectedSort,
+            pageTitle: 'Filaments',
+            errors: []
+        });
     };
 
-    this.stats = function (req, res, next) {
-        when.all([
-            Filament.count({}).exec(),
-            Filament.getTotalCost(),
-            Filament.getTotalWeight(),
-            Filament.getTotalLength(),
-            Filament.getStatsPerUsage(),
-            Filament.getCountPerBrands(),
-            Filament.getCountPerShops(),
-            Filament.getCountPerMaterials(),
-            Filament.getCountPerColors(),
-            Filament.getCostPerBrands(),
-            Filament.getCostPerShops(),
-            Filament.getCostPerMaterials(),
-            Filament.getCostPerColors(),
-            Filament.getBoughtTimeline(),
-            Filament.getUsagePerColors(),
-            Filament.getUsagePerMaterials(),
-            Filament.getUsagePerBrands(),
-            Filament.getStatsCostPerKg()
-        ]).spread(function (
-            filamentTotalCount,
-            filamentTotalCost,
-            filamentTotalWeight,
-            filamentTotalLength,
-            statsPerUsage,
-            countPerBrands,
-            countPerShops,
-            countPerMaterials,
-            countPerColors,
-            costPerBrands,
-            costPerShops,
-            costPerMaterials,
-            costPerColors,
-            boughtTimeline,
-            usagePerColors,
-            usagePerMaterials,
-            usagePerBrands,
-            pricePerKg
-        ) {
+    /**
+     * Compute filament statistics, for the stat page.
+     *
+     * Heavily depends on Filament model, which is the one doing real stats computation.
+     */
+    this.stats = async (req, res, next) => {
+        try {
+            let [
+                filamentTotalCount,
+                filamentTotalCost,
+                filamentTotalWeight,
+                filamentTotalLength,
+                statsPerUsage,
+                countPerBrands,
+                countPerShops,
+                countPerMaterials,
+                countPerColors,
+                costPerBrands,
+                costPerShops,
+                costPerMaterials,
+                costPerColors,
+                boughtTimeline,
+                usagePerColors,
+                usagePerMaterials,
+                usagePerBrands,
+                pricePerKg
+            ] = await Promise.all([
+                Filament.count({}).exec(),
+                Filament.getTotalCost(),
+                Filament.getTotalWeight(),
+                Filament.getTotalLength(),
+                Filament.getStatsPerUsage(),
+                Filament.getCountPerBrands(),
+                Filament.getCountPerShops(),
+                Filament.getCountPerMaterials(),
+                Filament.getCountPerColors(),
+                Filament.getCostPerBrands(),
+                Filament.getCostPerShops(),
+                Filament.getCostPerMaterials(),
+                Filament.getCostPerColors(),
+                Filament.getBoughtTimeline(),
+                Filament.getUsagePerColors(),
+                Filament.getUsagePerMaterials(),
+                Filament.getUsagePerBrands(),
+                Filament.getStatsCostPerKg()
+            ]);
+
             return res.render('filament/stats', {
                 navSubModule: 'stats',
                 pageTitle: 'Filaments statistics',
@@ -232,97 +245,31 @@ module.exports = function (app) {
                 },
                 errors: []
             });
-        }).otherwise(function (err) {
-            next(err);
-        });
+        } catch (err) {
+            return next(err);
+        }
     };
 
-    this.add = function (req, res, next) {
-        if (!req.form.isValid) {
-            return thisController.addForm(req, res, next);
-        }
+    /**
+     * Show the add new filament form
+     */
+    this.addForm = async (req, res, next) => {
+        try {
+            // Get the data to populate form choices:
+            // - shops, brands, materials lists
+            // - List of all colors used in existing filaments
+            let [shops, brands, materials, usedColors] = await Promise.all([
+                Shop.find().sort('name').exec(),
+                Brand.find().sort('name').exec(),
+                Material.find().sort('name').exec(),
+                Filament.find().distinct('color').exec()
+            ]);
 
-        var filament = new Filament({
-            name: req.form.name,
-            description: req.form.description,
-            brand: req.form.brand,
-            material: req.form.material,
-            diameter: req.form.diameter,
-            color: {
-                name: req.form.colorName,
-                code: req.form.colorCode
-            },
-            shop: req.form.shop,
-            buyDate: new Date(req.form.buyDate * 1000),
-            price: req.form.price,
-            density: req.form.density,
-            initialMaterialWeight: req.form.initialMaterialWeight,
-            initialTotalWeight: req.form.initialTotalWeight,
-            materialLeftPercentage: 100,
-            flowPercentage: 100
-        });
-        if (req.form.headTempMin) {
-            filament.headTemp.min = req.form.headTempMin;
-        }
-        if (req.form.headTempMax) {
-            filament.headTemp.max = req.form.headTempMax;
-        }
-        if (req.form.headTempExperienced) {
-            filament.headTemp.experienced = req.form.headTempExperienced;
-        }
-        if (req.form.bedTempMin) {
-            filament.bedTemp.min = req.form.bedTempMin;
-        }
-        if (req.form.bedTempMax) {
-            filament.bedTemp.max = req.form.bedTempMax;
-        }
-        if (req.form.bedTempExperienced) {
-            filament.bedTemp.experienced = req.form.bedTempExperienced;
-        }
-        if (req.form.flowPercentage && req.form.flowPercentage !== '') {
-            filament.flowPercentage = req.form.flowPercentage;
-        }
-        if (req.form.printingSpeedMin) {
-            filament.printingSpeed.min = req.form.printingSpeedMin;
-        }
-        if (req.form.printingSpeedMax) {
-            filament.printingSpeed.max = req.form.printingSpeedMax;
-        }
-        filament.save(function (err) {
-            if (err) {
-                return next(err);
-            }
-            return res.redirect(req.getOriginUrl("filament/add", "/filament"));
-        });
-    };
+            // Get the list of all predefined colors (from config), and removed them
+            // from colors already used in filament (to avoid duplicates)
+            const predefinedColors = res.app.get('config').get('filament:colors');
+            usedColors = this.filterPredefinedColors(usedColors, predefinedColors);
 
-    this.filterPredefinedColors = function (used, predefined) {
-        var filtered = {};
-        var predefinedValues = [];
-
-        for (var idx in predefined) {
-            predefinedValues.push(predefined[idx]);
-        }
-
-        for (var idx in used) {
-            var color = used[idx];
-            if (predefinedValues.indexOf(color.code) == -1) {
-                filtered[color.name] = color.code;
-            }
-        }
-
-        return filtered;
-    };
-
-    this.addForm = function (req, res) {
-        when.all([
-            Shop.find().sort('name').exec(),
-            Brand.find().sort('name').exec(),
-            Material.find().sort('name').exec(),
-            Filament.find().distinct('color').exec()
-        ]).spread(function (shops, brands, materials, usedColors) {
-            var predefinedColors = res.app.get('config').get('filament:colors');
-            usedColors = thatController.filterPredefinedColors(usedColors, predefinedColors);
             return res.render('filament/add', {
                 cancelUrl: req.getOriginUrl("filament/add", "/filament"),
                 shops: shops,
@@ -332,439 +279,653 @@ module.exports = function (app) {
                 predefinedColors: predefinedColors,
                 errors: (req.form) ? req.form.getErrors() : []
             });
-        });
+        } catch (err) {
+            return next(err);
+        }
+
     };
 
-    this.edit = function (req, res, next) {
-        var filamentId = req.params.filament_id;
+    /**
+     * Add a new filament (process the form shown by `this.addForm`)
+     */
+    this.add = async (req, res, next) => {
+        try {
+            if (!req.form.isValid) {
+                return this.addForm(req, res, next);
+            }
 
-        when(Filament.findById(filamentId).exec())
-            .then(function (filament) {
-                if (!req.form.isValid) {
-                    return thisController.editForm(req, res, next);
-                }
-
-                filament.name = req.form.name;
-                filament.description = req.form.description;
-                filament.brand = req.form.brand;
-                filament.material = req.form.material;
-                filament.diameter = req.form.diameter;
-                filament.color.name = req.form.colorName;
-                filament.color.code = req.form.colorCode;
-                filament.shop = req.form.shop;
-                filament.buyDate = new Date(req.form.buyDate * 1000);
-                filament.price = req.form.price;
-                filament.density = req.form.density;
-                filament.initialMaterialWeight = req.form.initialMaterialWeight;
-                filament.initialTotalWeight = req.form.initialTotalWeight;
-                filament.headTemp.min = req.form.headTempMin;
-                filament.headTemp.max = req.form.headTempMax;
-                filament.headTemp.experienced = req.form.headTempExperienced;
-                filament.bedTemp.min = req.form.bedTempMin;
-                filament.bedTemp.max = req.form.bedTempMax;
-                filament.bedTemp.experienced = req.form.bedTempExperienced;
-                filament.flowPercentage = (req.form.flowPercentage !== '') ? req.form.flowPercentage : 100;
-                filament.printingSpeed.min = req.form.printingSpeedMin;
-                filament.printingSpeed.max = req.form.printingSpeedMax;
-                filament.name = req.form.name;
-
-                filament.save(function (err) {
-                    if (err) {
-                        return next(err);
-                    }
-                    return res.redirect(req.getOriginUrl("filament/edit", "/filament"));
-                });
+            let filament = new Filament({
+                name: req.form.name,
+                description: req.form.description,
+                brand: req.form.brand,
+                material: req.form.material,
+                diameter: req.form.diameter,
+                color: {
+                    name: req.form.colorName,
+                    code: req.form.colorCode
+                },
+                shop: req.form.shop,
+                buyDate: new Date(req.form.buyDate * 1000),
+                price: req.form.price,
+                density: req.form.density,
+                initialMaterialWeight: req.form.initialMaterialWeight,
+                initialTotalWeight: req.form.initialTotalWeight,
+                materialLeftPercentage: 100,
+                flowPercentage: 100
             });
+            if (req.form.headTempMin) {
+                filament.headTemp.min = req.form.headTempMin;
+            }
+            if (req.form.headTempMax) {
+                filament.headTemp.max = req.form.headTempMax;
+            }
+            if (req.form.headTempExperienced) {
+                filament.headTemp.experienced = req.form.headTempExperienced;
+            }
+            if (req.form.bedTempMin) {
+                filament.bedTemp.min = req.form.bedTempMin;
+            }
+            if (req.form.bedTempMax) {
+                filament.bedTemp.max = req.form.bedTempMax;
+            }
+            if (req.form.bedTempExperienced) {
+                filament.bedTemp.experienced = req.form.bedTempExperienced;
+            }
+            if (req.form.flowPercentage && req.form.flowPercentage !== '') {
+                filament.flowPercentage = req.form.flowPercentage;
+            }
+            if (req.form.printingSpeedMin) {
+                filament.printingSpeed.min = req.form.printingSpeedMin;
+            }
+            if (req.form.printingSpeedMax) {
+                filament.printingSpeed.max = req.form.printingSpeedMax;
+            }
+
+            await filament.save();
+
+            return res.redirect(req.getOriginUrl("filament/add", "/filament"));
+        } catch(err) {
+            return next(err);
+        }
     };
 
-    this.editForm = function (req, res) {
-        var filamentId = req.params.filament_id;
+    /**
+     * Remove from a used colors list the colors in a predefined list,
+     * so that the result used list does not contains any predefined colors (avoiding duplicates)
+     */
+    this.filterPredefinedColors = (used, predefined) => {
+        let filtered = {};
+        let predefinedValues = Object.values(predefined);
 
-        when(Filament.findById(filamentId).populate('material brand shop').exec())
-            .then(function (filament) {
-                when.all([
-                    Shop.find().sort('name').exec(),
-                    Brand.find().sort('name').exec(),
-                    Material.find().sort('name').exec(),
-                    Filament.find().distinct('color').exec()
-                ]).spread(function (shops, brands, materials, usedColors) {
-                    var predefinedColors = res.app.get('config').get('filament:colors');
-                    usedColors = thatController.filterPredefinedColors(usedColors, predefinedColors);
-                    return res.render('filament/edit', {
-                        cancelUrl: req.getOriginUrl("filament/edit", "/filament"),
-                        filament: filament,
-                        shops: shops,
-                        brands: brands,
-                        materials: materials,
-                        usedColors: usedColors,
-                        predefinedColors: predefinedColors,
-                        errors: (req.form) ? req.form.getErrors() : []
-                    });
-                });
-            })
-            .catch(function (err) {
+        for (let color of used) {
+            if (predefinedValues.indexOf(color.code) === -1) {
+                filtered[color.name] = color.code;
+            }
+        }
+
+        return filtered;
+    };
+
+    /**
+     * Show the edit filament form
+     */
+    this.editForm = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
+
+            let filament;
+            // Get the filament to edit
+            try {
+                filament = await Filament.findById(filamentId).populate('material brand shop').exec();
+            } catch (err) {
                 res.status(404);
                 return res.json({
                     message: res.__('filament %s not found.', filamentId)
                 });
+            }
+
+            // Get the data to populate form choices:
+            // - shops, brands, materials lists
+            // - List of all colors used in existing filaments
+            let [shops, brands, materials, usedColors] = await Promise.all([
+                Shop.find().sort('name').exec(),
+                Brand.find().sort('name').exec(),
+                Material.find().sort('name').exec(),
+                Filament.find().distinct('color').exec()
+            ]);
+
+            const predefinedColors = res.app.get('config').get('filament:colors');
+            usedColors = this.filterPredefinedColors(usedColors, predefinedColors);
+
+            // Get the list of all predefined colors (from config), and removed them
+            // from colors already used in filament (to avoid duplicates)
+            return res.render('filament/edit', {
+                cancelUrl: req.getOriginUrl("filament/edit", "/filament"),
+                filament: filament,
+                shops: shops,
+                brands: brands,
+                materials: materials,
+                usedColors: usedColors,
+                predefinedColors: predefinedColors,
+                errors: (req.form) ? req.form.getErrors() : []
             });
+        } catch (err) {
+            return next(err);
+        }
     };
 
-    this.get = function (req, res) {
-        var filamentId = req.params.filament_id;
+    /**
+     * Save an edited filament (process the form shown by `this.editForm`)
+     */
+    this.edit = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
 
-        // Pas de populate des magasins/marque/matière, pour éviter que le document ne soit trop gros.
-        when(Filament.findById(filamentId).exec())
-            .then(function (filament) {
-                var filamentData = filament.toObject({getters: false, virtuals: true, versionKey: false});
-                delete filamentData.pictures; // Pour éviter de renvoyer un document avec toutes les images qui ne soit trop gros.
+            let filament = await Filament.findById(filamentId).exec();
 
-                return res.json({
-                    filament: filamentData
-                });
-            })
-            .catch(function (err) {
+            if (!req.form.isValid) {
+                return this.editForm(req, res, next);
+            }
+
+            filament.name = req.form.name;
+            filament.description = req.form.description;
+            filament.brand = req.form.brand;
+            filament.material = req.form.material;
+            filament.diameter = req.form.diameter;
+            filament.color.name = req.form.colorName;
+            filament.color.code = req.form.colorCode;
+            filament.shop = req.form.shop;
+            filament.buyDate = new Date(req.form.buyDate * 1000);
+            filament.price = req.form.price;
+            filament.density = req.form.density;
+            filament.initialMaterialWeight = req.form.initialMaterialWeight;
+            filament.initialTotalWeight = req.form.initialTotalWeight;
+            filament.headTemp.min = req.form.headTempMin;
+            filament.headTemp.max = req.form.headTempMax;
+            filament.headTemp.experienced = req.form.headTempExperienced;
+            filament.bedTemp.min = req.form.bedTempMin;
+            filament.bedTemp.max = req.form.bedTempMax;
+            filament.bedTemp.experienced = req.form.bedTempExperienced;
+            filament.flowPercentage = (req.form.flowPercentage !== '') ? req.form.flowPercentage : 100;
+            filament.printingSpeed.min = req.form.printingSpeedMin;
+            filament.printingSpeed.max = req.form.printingSpeedMax;
+            filament.name = req.form.name;
+
+            await filament.save();
+
+            return res.redirect(req.getOriginUrl("filament/edit", "/filament"));
+
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    /**
+     * Get filament data
+     */
+    this.get = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
+            let filament;
+
+            try {
+                // Pas de populate des magasin/marque/matière, pour éviter que le document ne soit trop gros.
+                filament = await Filament.findById(filamentId).exec();
+            } catch(err) {
                 res.status(404);
                 return res.json({
                     message: res.__('Filament %s not found.', filamentId)
                 });
+            }
+
+            let filamentData = filament.toObject({getters: false, virtuals: true, versionKey: false});
+            delete filamentData.pictures; // Pour éviter de renvoyer un document avec toutes les images qui ne soit trop gros.
+
+            return res.json({
+                filament: filamentData
             });
+
+        } catch(err) {
+            return next(err);
+        }
     };
 
-    this.show = function (req, res) {
-        var filamentId = req.params.filament_id;
+    /**
+     * Show the filament details
+     */
+    this.show = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
 
-        req.setOriginUrl([
-            'filament/view',
-            'filament/add',
-            'filament/edit',
-            'filament/left-material',
-            'filament/finished',
-            'filament/add-picture'
-        ], req.originalUrl);
+            req.setOriginUrl([
+                'filament/view',
+                'filament/add',
+                'filament/edit',
+                'filament/left-material',
+                'filament/finished',
+                'filament/add-picture'
+            ], req.originalUrl);
 
-        when(Filament.findById(filamentId).populate('material brand shop').exec())
-            .then(function (filament) {
-                return res.render('filament/show', {
-                    filament: filament
-                });
-            })
-            .catch(function (err) {
+            // Retrieve filament from database
+            let filament;
+            try {
+                filament = await Filament.findById(filamentId).populate('material brand shop').exec();
+            } catch(err) {
                 res.status(404);
                 return res.json({
                     message: res.__('Filament %s not found.', filamentId)
                 });
+            }
+
+            return res.render('filament/show', {
+                filament: filament
             });
+
+        } catch(err) {
+            return next(err);
+        }
     };
 
-    this.delete = function (req, res) {
-        var filamentId = req.params.filament_id;
+    /**
+     * Delete a filament
+     */
+    this.delete = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
+            let filament;
 
-        when(Filament.findById(filamentId).remove().exec())
-            .then(function () {
-                return res.json({
-                    message: res.__('Filament %s successfully deleted.', filamentId)
-                });
-            })
-            .catch(function (err) {
+            try {
+                filament = await Filament.findById(filamentId).remove().exec();
+            } catch (err) {
                 res.status(500);
                 return res.json({
                     message: res.__(err.message)
                 });
+
+            }
+
+            return res.json({
+                message: res.__('Filament %s successfully deleted.', filamentId)
             });
+
+        } catch(err) {
+            return next(err);
+        }
     };
 
-    this.leftMaterialForm = function (req, res) {
-        var filamentId = req.params.filament_id;
+    /**
+     * Show the form to set material left of filament
+     */
+    this.leftMaterialForm = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
+            let filament;
 
-        when(Filament.findById(filamentId).populate('material brand shop').exec())
-            .then(function (filament) {
-                return res.render('filament/left-material', {
-                    cancelUrl: req.getOriginUrl("filament/left-material", "/filament"),
-                    filament: filament,
-                    errors: (req.form) ? req.form.getErrors() : []
-                });
-            })
-            .catch(function (err) {
+            try {
+                filament = await Filament.findById(filamentId).populate('material brand shop').exec();
+            } catch (err) {
                 res.status(404);
                 return res.json({
                     message: res.__('filament %s not found.', filamentId)
                 });
+            }
+
+            return res.render('filament/left-material', {
+                cancelUrl: req.getOriginUrl("filament/left-material", "/filament"),
+                filament: filament,
+                errors: (req.form) ? req.form.getErrors() : []
             });
+
+        } catch (err) {
+            return next(err);
+        }
     };
 
-    this.leftMaterial = function (req, res, next) {
-        var filamentId = req.params.filament_id;
+    /**
+     * Change the material left of a filament (process the form shown by `this.leftMaterialForm`)
+     */
+    this.leftMaterial = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
+            let filament;
 
-        when(Filament.findById(filamentId).exec())
-            .then(function (filament) {
-                if (!req.form.isValid) {
-                    return thisController.leftMaterialForm(req, res, next);
-                }
-
-                if (req.form.leftLength) {
-                    filament.setLeftLength(req.form.leftLength);
-                    filament.setLastUsed();
-
-                    filament.save(function (err) {
-                        if (err) {
-                            return next(err);
-                        }
-                        return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
-                    });
-                } else if (req.form.leftTotalWeight) {
-                    var weight = req.form.leftTotalWeight;
-                    if (req.form.weighUnit === "g") {
-                        weight /= 1000;
-                    }
-                    filament.setLeftTotalWeight(weight);
-                    filament.setLastUsed();
-
-                    filament.save(function (err) {
-                        if (err) {
-                            return next(err);
-                        }
-                        return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
-                    });
-                } else {
-                    return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
-                }
-            });
-    };
-
-    this.computeLeftMaterial = function (req, res, next) {
-        var filamentId = req.params.filament_id;
-
-        when(Filament.findById(filamentId).exec())
-            .then(function (filament) {
-                if (!req.form.isValid) {
-                    return thisController.leftMaterialForm(req, res, next);
-                }
-
-                var responseData = {};
-                if (req.form.leftLength) {
-                    filament.setLeftLength(req.form.leftLength);
-                    responseData.weight = filament.leftMaterialWeight();
-                }
-                if (req.form.leftTotalWeight) {
-                    var weight = req.form.leftTotalWeight;
-                    if (req.form.weighUnit === "g") {
-                        weight /= 1000;
-                    }
-                    filament.setLeftTotalWeight(weight);
-                    responseData.length = filament.getLeftLength();
-                }
-                responseData.percentageLeft = filament.materialLeftPercentage;
-                return res.json(responseData);
-            });
-    };
-
-    this.addPicture = function (req, res, next) {
-        var filamentId = req.params.filament_id;
-        var uploadedPicture = req.file;
-
-        when(Filament.findById(filamentId).exec())
-            .then(function (filament) {
-                gm(uploadedPicture.path).autoOrient().write(uploadedPicture.path, function (err) {
-                    if (err) {
-                        return next(err);
-                    }
-
-                    var picture = {
-                        name: uploadedPicture.originalname,
-                        size: uploadedPicture.size,
-                        mimeType: uploadedPicture.mimetype,
-                        data: fs.readFileSync(uploadedPicture.path)
-                    }
-                    filament.addPicture(picture);
-
-                    fs.unlinkSync(uploadedPicture.path);
-
-                    filament.save(function (err) {
-                        if (err) {
-                            return next(err);
-                        }
-                        return res.redirect(req.getOriginUrl("filament/add-picture", "/filament"));
-                    });
-                });
-            });
-    };
-
-    this.deletePicture = function (req, res, next) {
-        var filamentId = req.params.filament_id;
-        var pictureId = req.params.picture_id;
-
-        when(Filament.findById(filamentId).exec())
-            .then(function (filament) {
-                if (filament.deletePicture(pictureId)) {
-                    filament.save(function (err) {
-                        if (err) {
-                            return next(err);
-                        }
-                        if (req.method === 'DELETE') {
-                            return res.json({});
-                        }
-
-                        return res.redirect("/filament/show/" + filament.id);
-                    });
-                } else {
-                    res.status(404);
-                    if (req.method === 'DELETE') {
-                        return res.json({
-                            message: res.__("Filament's picture %s not found.", pictureId)
-                        });
-                    }
-
-                    return next(new Error(res.__("Filament's picture %s not found.", pictureId)));
-                }
-            });
-    };
-
-    this.getPicture = function (req, res) {
-        var filamentId = req.params.filament_id;
-        var pictureId = req.params.picture_id;
-
-        when(Filament.findById(filamentId).exec())
-            .then(function (filament) {
-                var picture = filament.getPicture(pictureId);
-                if (picture) {
-                    res.set('Content-Type', picture.mimeType);
-                    res.set('Content-Length', picture.size);
-                    return res.send(picture.data);
-                }
+            try {
+                filament = await Filament.findById(filamentId).exec();
+            } catch (err) {
                 res.status(404);
                 return res.json({
-                    message: res.__('Picture %s not found.', pictureId)
+                    message: res.__('filament %s not found.', filamentId)
                 });
-            })
-            .catch(function (err) {
+            }
+
+            if (!req.form.isValid) {
+                return this.leftMaterialForm(req, res, next);
+            }
+
+            if (req.form.leftLength) {
+                filament.setLeftLength(req.form.leftLength);
+                filament.setLastUsed();
+
+                await filament.save();
+
+                return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
+            } else if (req.form.leftTotalWeight) {
+                let weight = req.form.leftTotalWeight;
+                if (req.form.weighUnit === "g") {
+                    weight /= 1000;
+                }
+                filament.setLeftTotalWeight(weight);
+                filament.setLastUsed();
+
+                await filament.save();
+                return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
+            } else {
+                return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
+            }
+
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    /**
+     * Manage live preview of left material form, by computing filament left from input data
+     */
+    this.computeLeftMaterial = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
+
+            let filament = await Filament.findById(filamentId).exec();
+
+            if (!req.form.isValid) {
+                return this.leftMaterialForm(req, res, next);
+            }
+
+            let responseData = {};
+            if (req.form.leftLength) {
+                filament.setLeftLength(req.form.leftLength);
+                responseData.weight = filament.leftMaterialWeight();
+            }
+            if (req.form.leftTotalWeight) {
+                let weight = req.form.leftTotalWeight;
+                if (req.form.weighUnit === "g") {
+                    weight /= 1000;
+                }
+                filament.setLeftTotalWeight(weight);
+                responseData.length = filament.getLeftLength();
+            }
+            responseData.percentageLeft = filament.materialLeftPercentage;
+
+            return res.json(responseData);
+
+        } catch(err) {
+            return next(err);
+        }
+    };
+
+    /**
+     * Show the form to add a picture to a filament
+     */
+    this.pictureForm = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
+
+            let filament = await Filament.findById(filamentId).exec();
+
+            return res.render('filament/picture', {
+                cancelUrl: req.getOriginUrl("filament/add-picture", "/filament"),
+                filamentId: filamentId,
+                filament: filament,
+                errors: []
+            });
+
+        } catch(err) {
+            return next(err);
+        }
+    };
+
+    /**
+     * Add a picture to a filament (process the form shown by `this.pictureForm`)
+     */
+    this.addPicture = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
+            const uploadedPicture = req.file;
+
+            let filament = await Filament.findById(filamentId).exec();
+
+            gm(uploadedPicture.path).autoOrient().write(uploadedPicture.path, async err => {
+                if (err) {
+                    return next(err);
+                }
+
+                let picture = {
+                    name: uploadedPicture.originalname,
+                    size: uploadedPicture.size,
+                    mimeType: uploadedPicture.mimetype,
+                    data: await fs.readFile(uploadedPicture.path)
+                };
+
+                filament.addPicture(picture);
+
+                await fs.unlink(uploadedPicture.path);
+
+                await filament.save();
+
+                return res.redirect(req.getOriginUrl("filament/add-picture", "/filament"));
+            });
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    /**
+     * Delete a picture from a filament
+     */
+    this.deletePicture = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
+            const pictureId = req.params.picture_id;
+
+            let filament;
+
+            try {
+                filament = await Filament.findById(filamentId).exec();
+            } catch (err) {
+                return res.json({
+                    message: res.__("filament %s not found..", filamentId)
+                });
+            }
+
+
+            if (filament.deletePicture(pictureId)) {
+                await filament.save();
+
+                if (req.method === 'DELETE') {
+                    return res.json({});
+                }
+
+                return res.redirect("/filament/show/" + filament.id);
+            } else {
+                res.status(404);
+                if (req.method === 'DELETE') {
+                    return res.json({
+                        message: res.__("Filament's picture %s not found.", pictureId)
+                    });
+                }
+
+                return next(new Error(res.__("Filament's picture %s not found.", pictureId)));
+            }
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    /**
+     * Get a picture of a filament
+     */
+    this._getPicture = async (downloadPicture, req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
+            const pictureId = req.params.picture_id;
+            let filament;
+
+            try {
+                filament = await Filament.findById(filamentId).exec();
+            } catch (err) {
                 res.status(404);
                 return res.json({
                     message: res.__('Filament %s not found.', filamentId)
                 });
-            });
-    };
+            }
 
-    this.pictureForm = function (req, res, next) {
-        var filamentId = req.params.filament_id;
-
-        when(Filament.findById(filamentId).exec())
-            .then(function (filament) {
-                return res.render('filament/picture', {
-                    cancelUrl: req.getOriginUrl("filament/add-picture", "/filament"),
-                    filamentId: filamentId,
-                    filament: filament,
-                    errors: []
-                });
-            })
-            .catch(function (err) {
-                return next(err);
-            });
-    };
-
-    this.downloadPicture = function (req, res) {
-        var filamentId = req.params.filament_id;
-        var pictureId = req.params.picture_id;
-
-        when(Filament.findById(filamentId).exec())
-            .then(function (filament) {
-                var picture = filament.getPicture(pictureId);
-                if (picture) {
-                    res.set('Content-Type', picture.mimeType);
-                    res.set('Content-Length', picture.size);
+            const picture = filament.getPicture(pictureId);
+            if (picture) {
+                res.set('Content-Type', picture.mimeType);
+                res.set('Content-Length', picture.size);
+                if (downloadPicture) {
                     res.set('Content-Disposition', 'attachment; filename="' + picture.name + '"');
-                    return res.send(picture.data);
                 }
-                res.status(404);
-                return res.send(res.__('Picture %s not found.', pictureId));
-            })
-            .catch(function (err) {
-                res.status(404);
-                return res.json(res.__('Filament %s not found.', filamentId));
+
+                return res.send(picture.data);
+            }
+
+            res.status(404);
+            return res.json({
+                message: res.__('Picture %s not found.', pictureId)
             });
+
+        } catch (err) {
+            return next(err);
+        }
     };
 
-    this.costCalculatorForm = function (req, res, next) {
-        when(Filament.find().populate('material brand shop').sort({
-            'material.name': 1,
-            'color.code': 1,
-            'brand.name': 1
-        })).then(function (filaments) {
+    /**
+     * Get a picture of a filament to display it
+     */
+    this.showPicture = async (req, res, next) => {
+        try {
+            return this._getPicture(false, req, res, next);
+
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    /**
+     * Get a picture of a filament to download it
+     */
+    this.downloadPicture = async (req, res, next) => {
+        try {
+            return this._getPicture(true, req, res, next);
+
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    /**
+     * Show the cost calculator form
+     */
+    this.costCalculatorForm = async (req, res, next) => {
+        try {
+            let filaments = await Filament.find().populate('material brand shop').sort({
+                'material.name': 1,
+                'color.code': 1,
+                'brand.name': 1
+            });
+
             return res.render('filament/cost-calculator', {
                 cancelUrl: req.getOriginUrl("filament/cost-calculator", "/filament"),
                 filaments: filaments,
                 errors: (req.form) ? req.form.getErrors() : []
             });
-        });
-    };
 
-    this.costCalculator = function (req, res, next) {
-        var filamentId = req.params.filament_id;
-
-        when(Filament.findById(filamentId).exec())
-            .then(function (filament) {
-                if (!req.form.isValid) {
-                    return res.json({ errors: req.form.errors });
-                }
-
-                var responseData = {
-                    cost: null,
-                    weight: null,
-                    length: null
-                };
-
-                if (req.form.length) {
-                    filament.setLeftLength(req.form.length);
-                    responseData.weight = filament.leftMaterialWeight();
-                    responseData.length = req.form.length;
-                }
-
-                if (req.form.weight) {
-                    responseData.weight = req.form.weight;
-                    if (req.form.weighUnit === "g") {
-                        responseData.weight /= 1000;
-                    }
-                    filament.setLeftTotalWeight(responseData.weight);
-                    responseData.length = filament.getLeftLength();
-                }
-
-                if (responseData.weight) {
-                    responseData.cost = responseData.weight * filament.price / filament.initialMaterialWeight;
-                }
-
-                return res.json(responseData);
-            });
-    };
-
-    this.finished = function (req, res, next) {
-        var filamentId = req.params.filament_id;
-
-        if ((req.params.status != "1") && (req.params.status != "0")) {
-            return res.redirect(req.getOriginUrl("filament/finished", "/filament"));
+        } catch (err) {
+            return next(err);
         }
+    };
 
-        when(Filament.findById(filamentId).exec())
-            .then(function (filament) {
-                var status = (req.params.status == "1")?true:false;
+    /**
+     * Compute and return filament cost (process the form shown by `costCalculatorForm`)
+     *
+     * To be called in Ajax mode, meaning to return JSON, not HTML
+     */
+    this.costCalculator = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
 
-                if (filament.finished === status) {
-                    return res.redirect(req.getOriginUrl("filament/finished", "/filament"));
+            let filament = await Filament.findById(filamentId).exec();
+
+            if (!req.form.isValid) {
+                return res.json({errors: req.form.errors});
+            }
+
+            let responseData = {
+                cost: null,
+                weight: null,
+                length: null
+            };
+
+            if (req.form.length) {
+                filament.setLeftLength(req.form.length);
+                responseData.weight = filament.leftMaterialWeight();
+                responseData.length = req.form.length;
+            }
+
+            if (req.form.weight) {
+                responseData.weight = req.form.weight;
+                if (req.form.weighUnit === "g") {
+                    responseData.weight /= 1000;
                 }
+                filament.setLeftWeight(responseData.weight);
+                responseData.length = filament.getLeftLength();
+            }
 
-                filament.finished = status;
-                if (status) {
-                    filament.finishedDate = Date.now();
-                } else {
-                    filament.finishedDate = null;
-                }
+            if (responseData.weight) {
+                responseData.cost = responseData.weight * filament.price / filament.initialMaterialWeight;
+            }
 
-                filament.save(function (err) {
-                    if (err) {
-                        return next(err);
-                    }
-                    return res.redirect(req.getOriginUrl("filament/finished", "/filament"));
-                });
-            });
+            return res.json(responseData);
+
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    /**
+     * Set the filament as finished or not
+     */
+    this.finished = async (req, res, next) => {
+        try {
+            const filamentId = req.params.filament_id;
+            const filamentStatusParam = req.params.status;
+
+            if ((filamentStatusParam !== "1") && (filamentStatusParam !== "0")) {
+                return res.redirect(req.getOriginUrl("filament/finished", "/filament"));
+            }
+
+            let filament = await Filament.findById(filamentId).exec();
+            const filamentFinished = (filamentStatusParam === "1");
+
+            if (filament.finished === filamentFinished) {
+                return res.redirect(req.getOriginUrl("filament/finished", "/filament"));
+            }
+
+            filament.finished = filamentFinished;
+            if (filamentFinished) {
+                filament.finishedDate = Date.now();
+            } else {
+                filament.finishedDate = null;
+            }
+
+            await filament.save();
+
+            return res.redirect(req.getOriginUrl("filament/finished", "/filament"));
+
+        } catch (err) {
+            return next(err);
+        }
     };
 
     return this;

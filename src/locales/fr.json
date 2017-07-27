@@ -1,5 +1,4 @@
 {
-  "401": "401",
   "3DPTools": "3DPTools",
   "Home": "Accueil",
   "lang_fr_label": "Français",
@@ -360,5 +359,6 @@
   "Cost/filament": "Coût/filament",
   "Cost/Kg": "Coût/Kg",
   "Rouge transparent": "Rouge transparent",
-  "File %s not found.": "File %s not found."
+  "File %s not found.": "Le fichier %s est introuvable.",
+  "Filament %s not found.": "Le filament %s est introuvable."
 }

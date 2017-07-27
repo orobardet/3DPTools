@@ -1,6 +1,8 @@
+'use strict';
+
 module.exports = function (app) {
-    var form = require('express-form');
-    var field = form.field;
+    const form = require('express-form');
+    const field = form.field;
 
     this.filament = form(
         field("name", "Name")
@@ -35,7 +37,7 @@ module.exports = function (app) {
         field("headTempMin", "Minimal extrusion temperature")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -43,7 +45,7 @@ module.exports = function (app) {
         field("headTempMax", "Maximal extrusion temperature")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -51,7 +53,7 @@ module.exports = function (app) {
         field("headTempExperienced", "Experienced extrusion temperature")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -59,7 +61,7 @@ module.exports = function (app) {
         field("bedTempMin", "Minimal bed temperature")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -67,7 +69,7 @@ module.exports = function (app) {
         field("bedTempMax", "Maximal bed temperature")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -75,7 +77,7 @@ module.exports = function (app) {
         field("bedTempExperienced", "Experienced bed temperature")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -84,7 +86,7 @@ module.exports = function (app) {
             .trim()
             .required()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value <= 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -92,7 +94,7 @@ module.exports = function (app) {
         field("flowPercentage", "Flow")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value <= 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -100,7 +102,7 @@ module.exports = function (app) {
         field("printingSpeedMin", "Minimal printing speed")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -108,7 +110,7 @@ module.exports = function (app) {
         field("printingSpeedMax", "Maximal printing speed")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -117,7 +119,7 @@ module.exports = function (app) {
             .trim()
             .required()
             .isNumeric()
-            .custom(function (value) {
+            .custom(value => {
                 if (value <= 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -126,7 +128,7 @@ module.exports = function (app) {
             .trim()
             .required()
             .isNumeric()
-            .custom(function (value) {
+            .custom(value => {
                 if (value <= 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -137,7 +139,7 @@ module.exports = function (app) {
         field("leftTotalWeight", "Left total weight")
             .trim()
             .isNumeric()
-            .custom(function (value) {
+            .custom(value => {
                 if (value <= 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -145,7 +147,7 @@ module.exports = function (app) {
         field("leftLength", "Left length")
             .trim()
             .isNumeric()
-            .custom(function (value) {
+            .custom(value => {
                 if (value <= 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -155,7 +157,7 @@ module.exports = function (app) {
             .ifNull('g')
             .toLower()
             .required()
-            .custom(function (value) {
+            .custom(value => {
                 if ((value !== "g") && (value !== "kg")) {
                     throw new Error('%s must be "g" or "kg".');
                 }
@@ -168,7 +170,7 @@ module.exports = function (app) {
         field("weight", "Weight")
             .trim()
             .isNumeric()
-            .custom(function (value) {
+            .custom(value => {
                 if (value <= 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -176,7 +178,7 @@ module.exports = function (app) {
         field("length", "Length")
             .trim()
             .isNumeric()
-            .custom(function (value) {
+            .custom(value => {
                 if (value <= 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -186,7 +188,7 @@ module.exports = function (app) {
             .ifNull('g')
             .toLower()
             .required()
-            .custom(function (value) {
+            .custom(value => {
                 if ((value !== "g") && (value !== "kg")) {
                     throw new Error('%s must be "g" or "kg".');
                 }

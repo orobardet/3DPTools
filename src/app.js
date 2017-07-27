@@ -6,6 +6,7 @@ module.exports = function(bootstrapOptions) {
     const fmt = require('util').format;
     const packageInfo = require('./package.json');
     const Raven = require('raven');
+    const debug = require('debug')('3DPTools');
 
     bootstrapOptions = merge({
         loadConfig: true,
@@ -31,6 +32,7 @@ module.exports = function(bootstrapOptions) {
         navModule: 'unknown',
         showNavbar: true
     };
+    app.debug = debug;
 
     // Load configuration
     if (bootstrapOptions.loadConfig) {

@@ -1,10 +1,11 @@
-module.exports = function (app) {
-    var when = require('when');
-    var mongoose = require('mongoose');
-    var Schema = mongoose.Schema;
-    var merge = require('merge');
+'use strict';
 
-    var filamentSchema = new Schema({
+module.exports = function (app) {
+    const mongoose = require('mongoose');
+    const Schema = mongoose.Schema;
+    const merge = require('merge');
+
+    let filamentSchema = new Schema({
         name: String,
         description: String,
         creationDate: { type: Date, default: null },
@@ -69,10 +70,10 @@ module.exports = function (app) {
     filamentSchema.statics.currentVersion = 6;
 
     filamentSchema.methods.getData = function(noPictures) {
-        var data = this.toObject({getters: false, virtuals: true, versionKey: false});
+        let data = this.toObject({getters: false, virtuals: true, versionKey: false});
 
         if (noPictures) {
-            data.pictures = data.pictures.map(function(picture) {
+            data.pictures = data.pictures.map(picture => {
                 picture.data = null;
                 return picture;
             });
@@ -85,19 +86,19 @@ module.exports = function (app) {
         }
 
         return data;
-    }
+    };
 
     filamentSchema.methods.setInMigration = function() {
         this.inMigration = true;
-    }
+    };
 
     filamentSchema.methods.isInMigration = function() {
         return this.inMigration;
-    }
+    };
 
     filamentSchema.methods.resetInMigration = function() {
         delete this.inMigration;
-    }
+    };
 
     filamentSchema.pre('save', function(next) {
         // No pre save during migration, to avoid updating unwanted data
@@ -117,7 +118,7 @@ module.exports = function (app) {
 
         // Compute price per Kg
         if (this.initialMaterialWeight) {
-            var pricePerKg = this.price / this.initialMaterialWeight;
+            let pricePerKg = this.price / this.initialMaterialWeight;
             if (this.pricePerKg !== pricePerKg) {
                 this.pricePerKg = pricePerKg;
             }
@@ -128,21 +129,19 @@ module.exports = function (app) {
         next();
     });
 
-    filamentSchema.methods.migrate = function() {
-        var that = this;
-
-        var migrated = false;
+    filamentSchema.methods.migrate = async function() {
+        let migrated = false;
         if (app.models.migrate && app.models.migrate.filament) {
-            Object.keys(app.models.migrate.filament).forEach(function (element, index) {
-                var migrator = new app.models.migrate.filament[element](that, filamentSchema.statics.currentVersion);
+            for (version of Object.keys(app.models.migrate.filament)) {
+                let migrator = new app.models.migrate.filament[version](this, filamentSchema.statics.currentVersion);
 
                 if (migrator.needMigration && typeof migrator.needMigration === 'function' && migrator.needMigration()) {
                     migrated = true;
                     if (migrator.migrate && typeof migrator.migrate === 'function') {
-                        migrator.migrate();
+                        await migrator.migrate();
                     }
                 }
-            });
+            }
         }
 
         this._version = filamentSchema.statics.currentVersion;
@@ -154,16 +153,13 @@ module.exports = function (app) {
         return this.findOne({_id: id}, cb);
     };
 
-    filamentSchema.statics.findOneRandom = function (callback) {
-        return when(this.count().exec())
-            .with(this)
-            .then(function (count) {
-                var rand = Math.floor(Math.random() * count);
-                return this.findOne({}, {}, {skip: rand}, callback);
-            });
+    filamentSchema.statics.findOneRandom = async function (callback) {
+        let count = await this.count().exec();
+        let rand = Math.floor(Math.random() * count);
+        return this.findOne({}, {}, {skip: rand}, callback);
     };
 
-    filamentSchema.statics.list = function (options, callback) {
+    filamentSchema.statics.list = function (options) {
         options = merge({
             filter: {},
             sort: {
@@ -173,11 +169,11 @@ module.exports = function (app) {
             }
         }, options);
 
-        return when(this.find(options.filter).populate('material brand shop').sort(options.sort).exec());
+        return this.find(options.filter).populate('material brand shop').sort(options.sort).exec();
     };
 
-    filamentSchema.statics.getColors = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getColors = function () {
+        return this.aggregate([
             { $group: {
                 _id: '$color',
             }
@@ -189,11 +185,11 @@ module.exports = function (app) {
                 code: '$_id.code'
             }
             },
-        ]).exec());
+        ]);
     };
 
-    filamentSchema.statics.getTotalCost = function (callback) {
-        return when(this.aggregate({
+    filamentSchema.statics.getTotalCost = async function () {
+        let result = await this.aggregate({
             $group: {
                 _id: '',
                 total: { $sum: '$price' }
@@ -203,19 +199,17 @@ module.exports = function (app) {
                 _id: 0,
                 total: '$total'
             }
-        }).exec())
-            .with(this)
-            .then(function (result) {
-                if (result.length) {
-                    return result[0].total;
-                } else {
-                    return null;
-                }
-            });
+        }).exec();
+
+        if (result.length) {
+            return result[0].total;
+        } else {
+            return null;
+        }
     };
 
-    filamentSchema.statics.getTotalWeight = function (callback) {
-        return when(this.aggregate({
+    filamentSchema.statics.getTotalWeight = async function () {
+        let result = await this.aggregate({
             $group: {
                 _id: '',
                 total: { $sum: '$initialMaterialWeight' }
@@ -225,186 +219,146 @@ module.exports = function (app) {
                 _id: 0,
                 total: '$total'
             }
-        }).exec())
-            .with(this)
-            .then(function (result) {
-                if (result.length) {
-                    return result[0].total;
-                } else {
-                    return null;
-                }
-            });
+        }).exec();
+
+        if (result.length) {
+            return result[0].total;
+        } else {
+            return null;
+        }
     };
 
-    filamentSchema.statics.getTotalLength = function (callback) {
-        return when(this.aggregate({
+    filamentSchema.statics.getTotalLength = async function () {
+        let results = await this.aggregate({
             $group: {
                 _id: {diameter: '$diameter',
                     density: '$density'
                 },
                 weight: { $sum: '$initialMaterialWeight' }
             }
-        }).exec())
-            .with(this)
-            .then(function (results) {
-                var totalLength = 0;
+        }).exec();
 
-                var that = this;
-                results = results.forEach(function(doc) {
-                    totalLength += that.getLength(doc.weight, doc._id.density, doc._id.diameter);
-                });
+        let totalLength = 0;
+        for (let doc of results) {
+            totalLength += this.getLength(doc.weight, doc._id.density, doc._id.diameter);
+        }
 
-                return totalLength;
-            });
+        return totalLength;
     };
 
-    filamentSchema.statics.getCostPerBrands = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getCostPerBrands = async function () {
+        let aggregation = await this.aggregate([
             { $group: {
                     _id: '$brand',
                     cost: { $sum: '$price' }
                 }
             },
             { $sort: { 'cost': -1 } }
-        ]).exec())
-            .with(this)
-            .then(function (result) {
-                return app.models.brand.populate(result, { "path" : "_id"}, function(err, results) {
-                    if (err) { throw err; }
+        ]).exec();
 
-                    result = result.map(function(doc) {
-                        doc.label = doc._id.name;
-                        doc._id = doc._id._id;
-                        return doc;
-                    });
+        let results = await app.models.brand.populate(aggregation, { "path" : "_id"});
 
-                    return result;
-                });
-            });
+        return results.map(doc => {
+            doc.label = doc._id.name;
+            doc._id = doc._id._id;
+            return doc;
+        });
     };
 
-    filamentSchema.statics.getCostPerShops = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getCostPerShops = async function () {
+        let aggregation = this.aggregate([
             { $group: {
                 _id: '$shop',
                 cost: { $sum: '$price' }
             }
             },
             { $sort: { 'cost': -1 } }
-        ]).exec())
-            .with(this)
-            .then(function (result) {
-                return app.models.shop.populate(result, { "path" : "_id"}, function(err, results) {
-                    if (err) { throw err; }
+        ]).exec();
 
-                    result = result.map(function(doc) {
-                        doc.label = doc._id.name;
-                        doc._id = doc._id._id;
-                        return doc;
-                    });
+        let results = await app.models.shop.populate(aggregation, { "path" : "_id"});
 
-                    return result;
-                });
+        return results.map(doc => {
+                doc.label = doc._id.name;
+                doc._id = doc._id._id;
+                return doc;
             });
     };
 
-    filamentSchema.statics.getCostPerMaterials = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getCostPerMaterials = async function () {
+        let aggregation = await this.aggregate([
             { $group: {
                 _id: '$material',
                 cost: { $sum: '$price' }
             }
             },
             { $sort: { 'cost': -1 } }
-        ]).exec())
-            .with(this)
-            .then(function (result) {
-                return app.models.material.populate(result, { "path" : "_id"}, function(err, results) {
-                    if (err) { throw err; }
+        ]).exec();
 
-                    result = result.map(function(doc) {
-                        doc.label = doc._id.name;
-                        doc._id = doc._id._id;
-                        return doc;
-                    });
+        let results = await app.models.material.populate(aggregation, { "path" : "_id"});
 
-                    return result;
-                });
-            });
+        return results.map(doc => {
+            doc.label = doc._id.name;
+            doc._id = doc._id._id;
+            return doc;
+        });
     };
 
-    filamentSchema.statics.getCostPerColors = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getCostPerColors = async function () {
+        let results = await this.aggregate([
             { $group: {
                 _id: '$color',
                 cost: { $sum: '$price' }
             }
             },
             { $sort: { '_id.code': 1 } }
-        ]).exec())
-            .with(this)
-            .then(function (result) {
-                result = result.map(function(doc) {
-                    doc.label = doc._id.name;
-                    return doc;
-                });
+        ]).exec();
 
-                return result;
-            });
+        return results.map(doc => {
+            doc.label = doc._id.name;
+            return doc;
+        });
     };
 
-    filamentSchema.statics.getCountPerBrands = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getCountPerBrands = async function () {
+        let aggregation = await this.aggregate([
             { $group: {
                 _id: '$brand',
                 count: { $sum: 1 }
             }
             },
             { $sort: { 'count': -1 } }
-        ]).exec())
-            .with(this)
-            .then(function (result) {
-                return app.models.brand.populate(result, { "path" : "_id"}, function(err, results) {
-                    if (err) { throw err; }
+        ]).exec();
 
-                    result = result.map(function(doc) {
-                        doc.label = doc._id.name;
-                        doc._id = doc._id._id;
-                        return doc;
-                    });
+        let results = await app.models.brand.populate(aggregation, { "path" : "_id"});
 
-                    return result;
-                });
-            });
+        return results.map(doc => {
+            doc.label = doc._id.name;
+            doc._id = doc._id._id;
+            return doc;
+        });
     };
 
-    filamentSchema.statics.getCountPerShops = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getCountPerShops = async function () {
+        let aggregation = await this.aggregate([
             { $group: {
                 _id: '$shop',
                 count: { $sum: 1 }
             }
             },
             { $sort: { 'count': -1 } }
-        ]).exec())
-            .with(this)
-            .then(function (result) {
-                return app.models.shop.populate(result, { "path" : "_id"}, function(err, results) {
-                    if (err) { throw err; }
+        ]).exec();
 
-                    result = result.map(function(doc) {
-                        doc.label = doc._id.name;
-                        doc._id = doc._id._id;
-                        return doc;
-                    });
+        let results = await app.models.shop.populate(aggregation, { "path" : "_id"});
 
-                    return result;
-                });
-            });
+        return results.map(doc => {
+            doc.label = doc._id.name;
+            doc._id = doc._id._id;
+            return doc;
+        });
     };
 
-    filamentSchema.statics.getCountPerMaterials = function (remove_finished, callback) {
-        var aggregation = [
+    filamentSchema.statics.getCountPerMaterials = async function (remove_finished) {
+        let aggregationConfig = [
             { $group: {
                 _id: '$material',
                 count: { $sum: 1 }
@@ -414,50 +368,39 @@ module.exports = function (app) {
         ];
 
         if (remove_finished === true) {
-            aggregation.unshift({
+            aggregationConfig.unshift({
                 $match: { finished: false }
             });
         }
 
-        return when(this.aggregate(aggregation).exec())
-            .with(this)
-            .then(function (result) {
-                return app.models.material.populate(result, { "path" : "_id"}, function(err, results) {
-                    if (err) { throw err; }
+        let aggregation = await this.aggregate(aggregationConfig).exec();
+        let results = await app.models.material.populate(aggregation, { "path" : "_id"});
 
-                    result = result.map(function(doc) {
-                        doc.label = doc._id.name;
-                        doc._id = doc._id._id;
-                        return doc;
-                    });
-
-                    return result;
-                });
-            });
+        return results.map(doc => {
+            doc.label = doc._id.name;
+            doc._id = doc._id._id;
+            return doc;
+        });
     };
 
-    filamentSchema.statics.getCountPerColors = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getCountPerColors = async function () {
+        let results = await this.aggregate([
             { $group: {
                     _id: '$color',
                     count: { $sum: 1 }
                 }
             },
             { $sort: { '_id.code': 1 } }
-        ]).exec())
-            .with(this)
-            .then(function (result) {
-                result = result.map(function(doc) {
-                    doc.label = doc._id.name;
-                    return doc;
-                });
+        ]).exec();
 
-                return result;
-            });
+        return results.map(doc => {
+            doc.label = doc._id.name;
+            return doc;
+        });
     };
 
-    filamentSchema.statics.getUsagePerColors = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getUsagePerColors = async function () {
+        return await this.aggregate([
             { $project: {
                     color: '$color',
                     initialWeight: '$initialMaterialWeight',
@@ -483,11 +426,11 @@ module.exports = function (app) {
             },
             { $match: { totalUsedWeight: { $gt: 0 } } },
             { $sort: { 'totalUsedWeight': -1 } }
-        ]).exec());
+        ]).exec();
     };
 
-    filamentSchema.statics.getUsagePerMaterials = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getUsagePerMaterials = async function () {
+        let aggregation = await this.aggregate([
             { $project: {
                 material: '$material',
                 initialWeight: '$initialMaterialWeight',
@@ -513,25 +456,19 @@ module.exports = function (app) {
             },
             { $match: { totalUsedWeight: { $gt: 0 } } },
             { $sort: { 'totalUsedWeight': -1 } }
-        ]).exec())
-            .with(this)
-            .then(function (result) {
-                return app.models.material.populate(result, { "path" : "_id"}, function(err, results) {
-                    if (err) { throw err; }
+        ]).exec();
 
-                    result = result.map(function(doc) {
-                        doc.label = doc._id.name;
-                        doc._id = doc._id._id;
-                        return doc;
-                    });
+        let results = await app.models.material.populate(aggregation, { "path" : "_id"});
 
-                    return result;
-                });
-            });
+        return results.map(doc => {
+            doc.label = doc._id.name;
+            doc._id = doc._id._id;
+            return doc;
+        });
     };
 
-    filamentSchema.statics.getUsagePerBrands = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getUsagePerBrands = async function () {
+        let aggregation = await this.aggregate([
             { $project: {
                 brand: '$brand',
                 initialWeight: '$initialMaterialWeight',
@@ -557,25 +494,19 @@ module.exports = function (app) {
             },
             { $match: { totalUsedWeight: { $gt: 0 } } },
             { $sort: { 'totalUsedWeight': -1 } }
-        ]).exec())
-            .with(this)
-            .then(function (result) {
-                return app.models.brand.populate(result, { "path" : "_id"}, function(err, results) {
-                    if (err) { throw err; }
+        ]).exec();
 
-                    result = result.map(function(doc) {
-                        doc.label = doc._id.name;
-                        doc._id = doc._id._id;
-                        return doc;
-                    });
+        let results = await app.models.brand.populate(aggregation, { "path" : "_id"});
 
-                    return result;
-                });
-            });
+        return results.map(doc => {
+            doc.label = doc._id.name;
+            doc._id = doc._id._id;
+            return doc;
+        });
     };
 
-    filamentSchema.statics.getStatsPerUsage = function (callback) {
-        return when.all([this.aggregate([
+    filamentSchema.statics.getStatsPerUsage = async function () {
+        let [weightAndCostUsage, lengthUsage] = await Promise.all([this.aggregate([
                 { $project: {
                         initialWeight: '$initialMaterialWeight',
                         price: '$price',
@@ -610,31 +541,29 @@ module.exports = function (app) {
                         leftWeight: { $sum: '$leftWeight' }
                     }
                 }]).exec()
-        ]).with(this)
-        .spread(function (weightAndCostUsage, lengthUsage) {
-            var results = {}
-            if (weightAndCostUsage.length) {
-                results = weightAndCostUsage[0];
-            }
+        ]);
 
-            var totalLength = 0;
-            var totalLeftLength = 0;
+        let results = {};
+        if (weightAndCostUsage.length) {
+            results = weightAndCostUsage[0];
+        }
 
-            var that = this;
-            lengthUsage.forEach(function(doc) {
-                totalLength += that.getLength(doc.weight, doc._id.density, doc._id.diameter);
-                totalLeftLength += that.getLength(doc.leftWeight, doc._id.density, doc._id.diameter);
-            });
+        let totalLength = 0;
+        let totalLeftLength = 0;
 
-            results.totalLength = totalLength;
-            results.totalLeftLength = totalLeftLength;
+        for (let doc of lengthUsage) {
+            totalLength += this.getLength(doc.weight, doc._id.density, doc._id.diameter);
+            totalLeftLength += this.getLength(doc.leftWeight, doc._id.density, doc._id.diameter);
+        }
 
-            return results;
-        });
+        results.totalLength = totalLength;
+        results.totalLeftLength = totalLeftLength;
+
+        return results;
     };
 
-    filamentSchema.statics.getBoughtTimeline = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getBoughtTimeline = async function () {
+        let results = await this.aggregate([
             { $project: {
                     yearMonthDay: { $dateToString: { format: "%Y-%m-%d", date: "$buyDate" } },
                     buyDate: '$buyDate',
@@ -687,21 +616,16 @@ module.exports = function (app) {
                 }
             },
             { $sort: { '_id.buyDay': 1 } }
-        ]).exec())
-            .with(this)
-            .then(function (result) {
-                result = result.map(function(doc) {
-                    doc.buyTimestamp = doc._id.buyDate.getTime();
-                    return doc;
-                });
+        ]).exec();
 
-                return result;
-            });
+        return results.map(doc => {
+            doc.buyTimestamp = doc._id.buyDate.getTime();
+            return doc;
+        });
     };
 
-
-    filamentSchema.statics.getStatsCostPerKg = function (callback) {
-        return when(this.aggregate([
+    filamentSchema.statics.getStatsCostPerKg = async function () {
+        return await this.aggregate([
             { $project: {
                 materialId: '$material',
                 materialWeight: '$initialMaterialWeight',
@@ -728,11 +652,11 @@ module.exports = function (app) {
                 $unwind: '$material'
             },
             { $sort: { 'pricePerKg': 1 } }
-        ]).exec());
+        ]).exec();
     };
 
     filamentSchema.statics.getLength = function (weight, density, diameter) {
-        var volume = weight / density;
+        let volume = weight / density;
         return volume / (Math.PI * Math.pow(diameter / 2 / 1000, 2));
     };
 
@@ -740,12 +664,20 @@ module.exports = function (app) {
         return this.initialMaterialWeight * this.materialLeftPercentage / 100;
     };
 
+    filamentSchema.methods.setLeftWeight = function (leftWeight) {
+        if (leftWeight > this.initialMaterialWeight) {
+            return false;
+        }
+
+        return this.setLeftTotalWeight(leftWeight + (this.initialTotalWeight - this.initialMaterialWeight));
+    };
+
     filamentSchema.methods.setLeftTotalWeight = function (leftTotalWeight) {
         if (leftTotalWeight > this.initialTotalWeight) {
             return false;
         }
 
-        var netLeftWeight = Math.max(0, leftTotalWeight - (this.initialTotalWeight - this.initialMaterialWeight));
+        let netLeftWeight = Math.max(0, leftTotalWeight - (this.initialTotalWeight - this.initialMaterialWeight));
         this.materialLeftPercentage = 100 * netLeftWeight / this.initialMaterialWeight;
 
         return true;
@@ -757,11 +689,11 @@ module.exports = function (app) {
         }
 
         this.lastUsedDate = lastDate;
-    }
+    };
 
     filamentSchema.methods.setLeftLength = function (leftLength) {
-        var volume = Math.PI * Math.pow(this.diameter / 2 / 1000, 2) * leftLength;
-        var netLeftWeight = volume * this.density;
+        let volume = Math.PI * Math.pow(this.diameter / 2 / 1000, 2) * leftLength;
+        let netLeftWeight = volume * this.density;
 
         this.materialLeftPercentage = 100 * netLeftWeight / this.initialMaterialWeight;
 
@@ -786,9 +718,9 @@ module.exports = function (app) {
 
     filamentSchema.methods.getPicture = function (id) {
         if (this.pictures && this.pictures.length) {
-            for (var i = 0; i < this.pictures.length; i++) {
-                if (this.pictures[i]._id == id) {
-                    return this.pictures[i];
+            for (let picture of this.pictures) {
+                if (picture._id.toString() === id) {
+                    return picture;
                 }
             }
         }
@@ -798,9 +730,9 @@ module.exports = function (app) {
 
     filamentSchema.methods.deletePicture = function (id) {
         if (this.pictures && this.pictures.length) {
-            var deleteIndex = -1;
-            for (var i = 0; i < this.pictures.length; i++) {
-                if (this.pictures[i]._id == id) {
+            let deleteIndex = -1;
+            for (let i in this.pictures) {
+                if (this.pictures[i]._id.toString() === id) {
                     deleteIndex = i;
                     break;
                 }
@@ -816,7 +748,5 @@ module.exports = function (app) {
     };
 
 
-    var Filament = mongoose.model('Filament', filamentSchema);
-
-    return Filament;
+    return mongoose.model('Filament', filamentSchema);
 };

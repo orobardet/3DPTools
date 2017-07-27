@@ -11,6 +11,7 @@
 - [Tec] Upgrade to NodeJS 8.1 (#64)
 - [Tec] Use `version` from package.json (#71)
 - [Tec] Add -h|--help to `cli` script (#72)
+- [Tec] Code refactoring to use ES6/7/8 enhancement (#65)
 
 # v1.2.1
 
