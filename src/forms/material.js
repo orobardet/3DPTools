@@ -1,6 +1,8 @@
+'use strict';
+
 module.exports = function (app) {
-    var form = require('express-form');
-    var field = form.field;
+    const form = require('express-form');
+    const field = form.field;
 
     this.material = form(
         field("name", "Name")
@@ -12,7 +14,7 @@ module.exports = function (app) {
             .trim()
             .required()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value <= 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -20,7 +22,7 @@ module.exports = function (app) {
         field("headTempMin", "Minimal extrusion temperature")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -28,7 +30,7 @@ module.exports = function (app) {
         field("headTempMax", "Maximal extrusion temperature")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -36,7 +38,7 @@ module.exports = function (app) {
         field("bedTempMin", "Minimal bed temperature")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -44,7 +46,7 @@ module.exports = function (app) {
         field("bedTempMax", "Maximal bed temperature")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -52,7 +54,7 @@ module.exports = function (app) {
         field("printingSpeedMin", "Minimal printing speed")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
@@ -60,7 +62,7 @@ module.exports = function (app) {
         field("printingSpeedMax", "Maximal printing speed")
             .trim()
             .isInt()
-            .custom(function (value) {
+            .custom(value => {
                 if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }

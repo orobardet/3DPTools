@@ -221,7 +221,7 @@ module.exports = function (app) {
 
         try {
             if (!await Brand.findById(brandId).remove().exec()) {
-                throw new Error(res.__('Error while deleteing brand %s', brandId));
+                throw new Error(res.__('Error while deleting brand %s', brandId));
             }
         } catch (err) {
             res.status(500);

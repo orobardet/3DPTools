@@ -1,9 +1,10 @@
-module.exports = function (app) {
-    var when = require('when');
-    var mongoose = require('mongoose');
-    var Schema = mongoose.Schema;
+'use strict';
 
-    var materialSchema = new Schema({
+module.exports = function (app) {
+    const mongoose = require('mongoose');
+    const Schema = mongoose.Schema;
+
+    let materialSchema = new Schema({
         name: String,
         description: String,
         density: Number,
@@ -66,12 +67,10 @@ module.exports = function (app) {
     });
 
     materialSchema.methods.migrate = function() {
-        var that = this;
-
-        var migrated = false;
-        if (app.models.migrate && app.models.migrate.filament) {
-            Object.keys(app.models.migrate.filament).forEach(function (element, index) {
-                var migrator = new app.models.migrate.filament[element](that, materialSchema.statics.currentVersion);
+        let migrated = false;
+        if (app.models.migrate && app.models.migrate.material) {
+            for (version of Object.keys(app.models.migrate.material)) {
+                let migrator = new app.models.migrate.material[version](this, materialSchema.statics.currentVersion);
 
                 if (migrator.needMigration && typeof migrator.needMigration === 'function' && migrator.needMigration()) {
                     migrated = true;
@@ -79,7 +78,7 @@ module.exports = function (app) {
                         migrator.migrate();
                     }
                 }
-            });
+            }
         }
 
         this._version = materialSchema.statics.currentVersion;
@@ -93,8 +92,8 @@ module.exports = function (app) {
 
     materialSchema.methods.getFile = function (id) {
         if (this.files && this.files.length) {
-            for (var i = 0; i < this.files.length; i++) {
-                if (this.files[i]._id == id) {
+            for (let i = 0; i < this.files.length; i++) {
+                if (this.files[i]._id.toString() === id) {
                     return this.files[i];
                 }
             }
@@ -105,9 +104,9 @@ module.exports = function (app) {
 
     materialSchema.methods.deleteFile = function (id) {
         if (this.files && this.files.length) {
-            var deleteIndex = -1;
-            for (var i = 0; i < this.files.length; i++) {
-                if (this.files[i]._id == id) {
+            let deleteIndex = -1;
+            for (let i = 0; i < this.files.length; i++) {
+                if (this.files[i]._id.toString() === id) {
                     deleteIndex = i;
                     break;
                 }
@@ -126,16 +125,11 @@ module.exports = function (app) {
         return this.findOne({_id: id}, cb);
     };
 
-    materialSchema.statics.findOneRandom = function (callback) {
-        return when(this.count().exec())
-            .with(this)
-            .then(function (count) {
-                var rand = Math.floor(Math.random() * count);
-                return this.findOne({}, {}, {skip: rand}, callback);
-            });
+    materialSchema.statics.findOneRandom = async function (callback) {
+        let count = this.count().exec();
+        let rand = Math.floor(Math.random() * count);
+        return this.findOne({}, {}, {skip: rand}, callback);
     };
 
-    var Material = mongoose.model('Material', materialSchema);
-
-    return Material;
+    return mongoose.model('Material', materialSchema);
 };
