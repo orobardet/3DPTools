@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(app) {
     const mongoose = require('mongoose');
     const Schema = mongoose.Schema;
@@ -37,7 +39,5 @@ module.exports = function(app) {
         return this.findOne({_id: id}, cb);
     };
 
-    const User = mongoose.model('User', userSchema);
-
-    return User;
+    return mongoose.model('User', userSchema);
 };
