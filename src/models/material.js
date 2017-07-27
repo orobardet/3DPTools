@@ -126,7 +126,7 @@ module.exports = function (app) {
     };
 
     materialSchema.statics.findOneRandom = async function (callback) {
-        let count = this.count().exec();
+        let count = await this.count().exec();
         let rand = Math.floor(Math.random() * count);
         return this.findOne({}, {}, {skip: rand}, callback);
     };
