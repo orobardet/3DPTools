@@ -1,33 +1,15 @@
 'use strict';
 
-let mongoose = require('mongoose');
-process.env.NODE_ENV = 'test';
+const helper = require('./helper.js');
 
-beforeEach(done => {
-    function clearDB() {
-        for (let i in mongoose.connection.collections) {
-           // mongoose.connection.collections[i].remove(function() {});
-        }
-        return done();
-    }
-
-    mongoose.Promise = global.Promise;
-    if (mongoose.connection.readyState === 0) {
-        return mongoose.connect(process.env.MONGO_URL, {
-            useMongoClient: true,
-            promiseLibrary: global.Promise
-        }).catch(err => {
-            if (err) {
-                throw err;
-            }
-            return clearDB();
-        }).then(clearDB());
-    } else {
-        return clearDB();
-    }
+before(done => {
+    helper.connectDB();
+    helper.clearDB();
+    done();
 });
 
-afterEach(done => {
-    mongoose.disconnect();
-    return done();
+after(done => {
+    helper.clearDB();
+    helper.disconnectDB();
+    done();
 });

@@ -22,7 +22,7 @@ Unit tests:
   script:
     - cd src
     - npm install && node_modules/.bin/bower --allow-root install
-    - npm t
+    - npm test
   only:
     - branches
   except:
