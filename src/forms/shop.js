@@ -1,6 +1,8 @@
+'use strict';
+
 module.exports = function (app) {
-    var form = require('express-form');
-    var field = form.field;
+    const form = require('express-form');
+    const field = form.field;
 
     this.shop = form(
         field("name", "Name")
