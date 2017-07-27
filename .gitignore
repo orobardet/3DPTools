@@ -82,7 +82,7 @@ src/node_modules
 src/public/vendor
 
 src/tmp
-/src/.nyc_output/
+.nyc_output/
 /docker-volumes/
 yarn.lock
 .yarn-integrity
