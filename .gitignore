@@ -88,4 +88,3 @@ yarn.lock
 .yarn-integrity
 package-lock.json
 /node_modules/
-/.nyc_output/
