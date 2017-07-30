@@ -829,7 +829,7 @@ module.exports = function (app) {
      */
     this.costCalculatorForm = async (req, res, next) => {
         try {
-            let filaments = await Filament.find().populate('material brand shop').sort({
+            let filaments = await Filament.find({finished:false}).populate('material brand shop').sort({
                 'material.name': 1,
                 'color.code': 1,
                 'brand.name': 1
