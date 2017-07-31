@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "cli": "node ./bin/cli",
     "test": "mocha -c --recursive",
-    "coverage": "istanbul --hook-run-in-context cover node_modules/mocha/bin/_mocha -- --recursive -R spec -c"
+    "coverage": "istanbul --hook-run-in-context cover node_modules/mocha/bin/_mocha -- --recursive -R spec -c",
+    "coverage-colorless": "istanbul --no-color --hook-run-in-context cover node_modules/mocha/bin/_mocha -- --recursive -R spec -c"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
