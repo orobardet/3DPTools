@@ -1,5 +1,8 @@
 # 3DPTools
 
+[![build status](https://gitlab.com/orobardet/3DPTools/badges/master/build.svg)](https://gitlab.com/orobardet/3DPTools/commits/master) 
+[![coverage report](https://gitlab.com/orobardet/3DPTools/badges/master/coverage.svg)](https://gitlab.com/orobardet/3DPTools/commits/master)
+
 Web-based 3DPrinting tools
 
 # Requirements
