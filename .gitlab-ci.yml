@@ -23,7 +23,7 @@ Unit tests:
     cd src
     npm install && node_modules/.bin/bower --allow-root install
     npm run coverage-colorless
-  coverage: /^\s*Lines\s*:\s*(\d+.\d+)\%/i
+  coverage: /^\s*Lines\s*:\s*(\d+.\d+)\%/
   only:
     - branches
   except:
