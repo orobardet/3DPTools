@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/css/bootstrap-select.min.css">
+<script src="/js/bootstrap-select.min.js"></script>
 <script src="/vendor/moment/moment.js"></script>
 <script src="/vendor/moment/locale/fr.js"></script>
 
@@ -7,11 +9,60 @@
 <div class="row">
     <div class="col-md-6">
         <div class="panel panel-default filaments-list-container">
-            <div class="panel-heading">
+            <div class="panel-heading with-button">
                 <h3 class="panel-title"><%- __n("%s filament", "%s filaments", filaments.length || 0); %></h3>
             </div>
 
-            <table id="filament-list" class="table filament-list">
+            <form id="filament-search" method="GET" class="panel-body form-inline" style="padding: 8px;">
+                <button id="clear-search" class="btn btn-danger pull-right"><i class="fa fa-eraser"></i>&nbsp;<%- __('Clear search') %></button>
+                <select class="form-control selectpicker" id="color" name="color" data-width="60px" title="<%- __('Color'); %>">
+                    <% if (locals.colors && colors.length) { selected = (locals.search && search.color) ? search.color : ''; %>
+                    <% colors.forEach(function (color) { %>
+                    <option value="<%- color.code %>"
+                            <% if (color.code) { %>
+                            data-content="<div class='color-preview-container'><i class='color-preview' style='background-color: <%- color.code %>;'></i></div> <span class='name'><%- color.name %></span>"
+                            <% } else { %>
+                            data-content="<span class='name'><%- color.name %></span>"
+                            <% } %>
+                            <% if (color.code == selected) { %>
+                            selected
+                            <% } %>
+                    ><%- color.name %></option>
+                    <% }); %>
+                    <% } %>
+                </select>
+
+                <select class="form-control selectpicker" id="material" name="material" data-width="auto"  title="<%- __('Material'); %>">
+                    <% if (locals.materials && materials.length) { selected = (locals.search && locals.search.material) ? search.material : ''; %>
+                    <% materials.forEach(function (material) { %>
+                    <option value="<%- material.id %>"
+                            <% if (material.id == selected) { %>
+                            selected
+                            <% } %>
+                    ><%- material.name %></option>
+                    <% }); %>
+                    <% } %>
+                </select>
+
+                <select class="form-control selectpicker" id="brand" name="brand" data-width="120px" title="<%- __('Brand'); %>">
+                    <% if (locals.brands && brands.length) { selected = (locals.search && locals.search.brand) ? search.brand : ''; %>
+                    <% brands.forEach(function (brand) { %>
+                    <option value="<%- brand.id %>"
+                            <% if (brand.logo) { %>
+                            data-content="<img class='brand-logo' src='/brand/get-logo/<%- brand.id %>' title='<%- brand.name %>'></img> <span class='name logo-name'><%- brand.name %></span>"
+                            <% } else { %>
+                            data-content="<%- brand.name %> "
+                            <% } %>
+                            <% if (brand.id == selected) { %>
+                            selected
+                            <% } %>
+                    ><%- brand.name %></option>
+                    <% }); %>
+                    <% } %>
+                </select>
+            </form>
+
+            <table id="filament-list" class="table filament-list cost-calculator">
                 <% filaments.forEach(function (filament) { %>
                 <tr class="filament-item" id="filament-<%- filament._id %>" data-id="<%- filament._id %>" data-filament="<%= JSON.stringify(filament.getData(true)); %>" data-left-weight="<%= filament.leftMaterialWeight() %>" data-left-length="<%= filament.getLeftLength() %>">
                     <td>
@@ -203,7 +254,93 @@ function filamentComputeCostOnChange() {
     });
 }
 
+function updateCancelSearchButtonVisibility() {
+    let allFieldEmpty = true;
+    $(':input', 'form#filament-search').each(function() {
+        if ($(this).val() !== '') {
+            allFieldEmpty = false;
+        }
+    });
+
+    if (allFieldEmpty) {
+        $('#clear-search').hide();
+    } else {
+        $('#clear-search').show();
+    }
+}
+
 $(function() {
+    $('.selectpicker').selectpicker();
+
+    updateCancelSearchButtonVisibility();
+
+    $('form#filament-search').on('change', 'input, select', function() {
+        // If selectpicker and empty, set selectpicker to none selected mode
+        let $this = $(this);
+        if ($this.hasClass('selectpicker')) {
+            if ($this.val() === '') {
+                $this.val('');
+                $this.selectpicker('render');
+            }
+        }
+
+        $('form#filament-search').submit();
+    }).on('submit', function() {
+        let filterForm = $(this);
+
+        // Disable/read only all field of the form
+        $('.form-control:input', filterForm).each(function() {
+            let $input = $(this);
+
+            let value = $input.val();
+            if (!value || value === '') {
+                $input.prop('disabled', true);
+            }
+
+        });
+        $(':input', filterForm).prop('readonly', true);
+        $('button', filterForm).prop('disabled', true);
+        $('#clear-search').prop('disabled', true);
+
+        $.ajax({
+            method: 'GET',
+            url: '/filament/cost-calculator/search?'+$(this).serialize(),
+            success: function(data) {
+                $('table#filament-list>tbody').empty();
+
+                // Enable all fields of the form
+                $('.form-control:input', filterForm).each(function() {
+                    let $input = $(this);
+
+                    let value = $input.val();
+                    if (!value || value === '') {
+                        $input.prop('disabled', false);
+                    }
+
+                });
+                $(':input', filterForm).prop('readonly', false);
+                $('button', filterForm).prop('disabled', false);
+                $('#clear-search').prop('disabled', false);
+
+                // Update 'cancel search' button visibility
+                updateCancelSearchButtonVisibility();
+            }
+        });
+
+        return false;
+    });
+
+    $('#clear-search').click(function(e) {
+        e.preventDefault();
+        $(':input', 'form#filament-search')
+            .not(':button, :submit, :reset, :hidden')
+            .val('')
+            .removeAttr('checked')
+            .removeAttr('selected');
+        $('.selectpicker', 'form#filament-search').selectpicker('render');
+        $('form#filament-search').submit();
+    });
+
     $('form.form-filament').submit(function(e) {
         e.preventDefault();
         filamentComputeCostOnChange();
@@ -312,7 +449,7 @@ $(function() {
     if (window.location.hash) {
         var $item = $('.filament-item#filament-'+window.location.hash.replace(/^#/, ''));
         $item.trigger('click');
-        $('#filament-list').scrollTop($item.position().top - $item.height());
+        $('#filament-list').scrollTop($item.position().top - $item.height() - $('#filament-search').height());
     }
 
 });

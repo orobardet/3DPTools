@@ -39,6 +39,7 @@ module.exports = function (app) {
     router.get('/download-picture/:filament_id/:picture_id', Controller.downloadPicture);
 
     router.get('/cost-calculator', Controller.costCalculatorForm);
+    router.get('/cost-calculator/search', Form.search, Controller.costCalculatorSearch);
     router.post('/cost-calculator/:filament_id', Form.costCalculator, Controller.costCalculator);
 
     router.delete('/delete/:filament_id', Controller.delete);

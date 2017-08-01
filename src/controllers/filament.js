@@ -829,14 +829,27 @@ module.exports = function (app) {
      */
     this.costCalculatorForm = async (req, res, next) => {
         try {
-            let filaments = await Filament.find({finished:false}).populate('material brand shop').sort({
-                'material.name': 1,
-                'color.code': 1,
-                'brand.name': 1
-            });
+            let [filaments, materials, brands, colors] = await Promise.all([
+                Filament.find({finished:false}).populate('material brand shop').sort({
+                    'material.name': 1,
+                    'color.code': 1,
+                    'brand.name': 1
+                }),
+                Material.find().sort('name').exec(),
+                Brand.find().sort('name').exec(),
+                Filament.getColors()
+            ]);
+
+            // Add an empty entry at the beginning of each filter list (which means 'no filtering on this field')
+            materials.unshift({name:'&nbsp;', id:null});
+            brands.unshift({name:'&nbsp;', id:null});
+            colors.unshift({name:'&nbsp;', code: null});
 
             return res.render('filament/cost-calculator', {
                 cancelUrl: req.getOriginUrl("filament/cost-calculator", "/filament"),
+                materials: materials,
+                brands: brands,
+                colors: colors,
                 filaments: filaments,
                 errors: (req.form) ? req.form.getErrors() : []
             });
@@ -888,6 +901,52 @@ module.exports = function (app) {
 
             return res.json(responseData);
 
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    /**
+     * Search filament to filter cost calculator list
+     */
+    this.costCalculatorSearch = async (req, res, next) => {
+        try {
+            // Analyse received parameters and extract potential filter (search) values
+            const search = req.form;
+            let filamentFilter = {};
+            if (search.material && search.material !== '') {
+                filamentFilter.material = search.material;
+            }
+            if (search.brand && search.brand !== '') {
+                filamentFilter.brand = search.brand;
+            }
+            if (search.color && search.color !== '') {
+                filamentFilter['color.code'] = search.color;
+            }
+
+            // Check if the potential sort field received in parameters is valid (i.e. it is known)
+            let selectedSort = 'default';
+            if (search.sort && Object.keys(filamentSortDefinition).indexOf(search.sort) > -1) {
+                selectedSort = search.sort;
+            }
+
+            // Retrieve the filament list, possibly with filter and sort options
+            // Also retrieve the lists of all materials, brands, shops and colors,
+            // that will be used to construct filter form
+            let filaments = await Filament.list({ filter: filamentFilter });
+
+            filaments = filaments.map( filament => {
+                let filamentData = filament.toObject({getters: false, virtuals: true, versionKey: false});
+                delete filamentData.pictures; // Pour éviter de renvoyer un document avec toutes les images qui ne soit trop gros.
+                return filamentData;
+            });
+
+            let formSearchData = filamentFilter;
+
+            return res.json({
+                search: Object.keys(formSearchData).length?search:null,
+                filaments: filaments
+            });
         } catch (err) {
             return next(err);
         }
