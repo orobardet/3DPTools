@@ -528,7 +528,7 @@ ul.material-files {
   .filaments-list-container {
     margin-bottom: 10px;
 
-    .filament-list {
+    .filament-list-static-container {
       display: block;
       height: 100%;
       overflow: auto;
@@ -814,6 +814,10 @@ ul.material-files {
       }
     }
   }
+}
+
+#cost-calculator-message-container > .alert {
+  margin: 0;
 }
 
 table td.not-found {

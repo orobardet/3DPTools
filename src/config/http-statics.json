@@ -1,4 +1,5 @@
 {
+  "views/public": "/templates",
   "public": null,
   "public/vendor/jquery/dist": "/vendor/javascripts",
   "public/vendor/jquery-ui": "/vendor/javascripts",

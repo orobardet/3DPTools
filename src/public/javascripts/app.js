@@ -1,14 +1,14 @@
 var App3DPTools = {
 
-    errorFlash: function (container, message) {
-        return this.messageFlash(container, message, 'danger');
+    errorFlash: function (container, message, timeout) {
+        return this.messageFlash(container, message, 'danger', timeout);
     },
 
-    successFlash: function (container, message) {
-        return this.messageFlash(container, message, 'success');
+    successFlash: function (container, message, timeout) {
+        return this.messageFlash(container, message, 'success', timeout);
     },
 
-    messageFlash: function (container, message, level) {
+    messageFlash: function (container, message, level, timeout) {
         var $container = $(container);
 
         if (!$container.length) {
@@ -21,9 +21,15 @@ var App3DPTools = {
 
         $container.append($alertNode);
 
-        setTimeout(function () {
-            $alertNode.remove();
-        }, 2000);
+        if (typeof timeout === 'undefined') {
+            timeout = 2000;
+        }
+
+        if (timeout > 0) {
+            setTimeout(function () {
+                $alertNode.remove();
+            }, timeout);
+        }
     },
 
     confirmModal: function (message, cb) {

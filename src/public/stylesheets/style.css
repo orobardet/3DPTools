@@ -8586,17 +8586,17 @@ ul.material-files {
     font-size: larger; }
 .filament-section .filaments-list-container {
   margin-bottom: 10px; }
-  .filament-section .filaments-list-container .filament-list {
+  .filament-section .filaments-list-container .filament-list-static-container {
     display: block;
     height: 100%;
     overflow: auto; }
-    .filament-section .filaments-list-container .filament-list .filament-item {
+    .filament-section .filaments-list-container .filament-list-static-container .filament-item {
       border-top: 1px #ddd solid; }
-      .filament-section .filaments-list-container .filament-list .filament-item:first-child {
+      .filament-section .filaments-list-container .filament-list-static-container .filament-item:first-child {
         border-top: 0; }
-      .filament-section .filaments-list-container .filament-list .filament-item.selected {
+      .filament-section .filaments-list-container .filament-list-static-container .filament-item.selected {
         background-color: #5bc0de; }
-      .filament-section .filaments-list-container .filament-list .filament-item .title {
+      .filament-section .filaments-list-container .filament-list-static-container .filament-item .title {
         font-weight: bold; }
 .filament-section #computed-filament-results {
   text-align: center;
@@ -8749,6 +8749,9 @@ ul.material-files {
   .filament-stats-vertical-stack .panel-body > .filament-stats-graph:first-of-type {
     border-top: 0px;
     padding-top: 0px; }
+
+#cost-calculator-message-container > .alert {
+  margin: 0; }
 
 table td.not-found {
   text-align: center; }

@@ -1,0 +1,64 @@
+<% if (filaments && filaments.length) { %>
+<% filaments.forEach(function (filament) { %>
+<tr class="filament-item" id="filament-<%- filament._id %>" data-id="<%- filament._id %>" data-filament="<%= JSON.stringify(filament.getData(true)); %>" data-left-weight="<%= filament.leftMaterialWeight() %>" data-left-length="<%= filament.getLeftLength() %>">
+    <td>
+        <div class="color-preview-container">
+            <div title="<%- filament.color.name %>" class="color-preview"
+                 style="background-color: <%- filament.color.code %>;">
+                <div class="color-name"><%- filament.color.name %></div>
+            </div>
+        </div>
+    </td>
+    <td>
+        <%- filament.material.name %>
+        <br/>
+        <i class="p3di p3di-weight"></i>
+        <%- __('%s kg', filament.initialMaterialWeight) %>
+    </td>
+    <td>
+        <b>∅</b> <%- filament.diameter %>
+        <br/>
+        <%- __('%s kg/m³', filament.density) %>
+    </td>
+    <td>
+        <% if (filament.brand.logo && filament.brand.logo.size) { %>
+        <img alt="<%- filament.brand.name %>" title="<%- filament.brand.name %>" class="brand-logo"
+             src="/brand/get-logo/<%- filament.brand.id %>">
+        <% } else { %>
+        <%- filament.brand.name %>
+        <% } %>
+    </td>
+    <td>
+        <div class="progress">
+            <%
+                var leftPercentage = filament.materialLeftPercentage;
+                var progressbarClass = 'progress-bar-success';
+                if (leftPercentage <= config.get('filament:leftThresholds:warning')) {
+                    progressbarClass = 'progress-bar-warning'
+                }
+                if (leftPercentage <= config.get('filament:leftThresholds:danger')) {
+                    progressbarClass = 'progress-bar-danger'
+                }
+            %>
+            <div title="<%- leftPercentage %>%" class="progress-bar <%- progressbarClass %>"
+                 role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                 style="width: <%- leftPercentage %>%;">
+                <% if (filament.materialLeftPercentage > 50) { %>
+                <%- sprintf('%.2f', leftPercentage) %>%
+                <% } %>
+            </div>
+            <% if (filament.materialLeftPercentage <= 50) { %>
+            <div class="progress-text" style="padding-left:<%- leftPercentage%>%"><%- sprintf('%.2f', leftPercentage) %>%</div>
+            <% } %>
+        </div>
+        <div class="filament-left-data">
+            <%- __('~ %.2f Kg / ~ %.2f m', filament.leftMaterialWeight(), filament.getLeftLength()) %>
+        </div>
+    </td>
+</tr>
+<% }); %>
+<% } else { %>
+<tr>
+    <td class="not-found"><%- __('No filament found.') %></td>
+</tr>
+<% } %>

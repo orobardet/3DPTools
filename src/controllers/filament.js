@@ -935,17 +935,32 @@ module.exports = function (app) {
             // that will be used to construct filter form
             let filaments = await Filament.list({ filter: filamentFilter });
 
-            filaments = filaments.map( filament => {
+            let filamentsLite = filaments.map( filament => {
                 let filamentData = filament.toObject({getters: false, virtuals: true, versionKey: false});
                 delete filamentData.pictures; // Pour éviter de renvoyer un document avec toutes les images qui ne soit trop gros.
                 return filamentData;
             });
 
             let formSearchData = filamentFilter;
+            let html = await new Promise((resolve, reject) => {
+                res.render('filament/partial/cost-calculator-filament-list.ejs',
+                    {
+                        layout: 'no-layout',
+                        filaments: filaments
+
+                    },
+                    (err, str) => {
+                        if (err) {
+                            reject(err);
+                        }
+                        resolve(str);
+                });
+            });
 
             return res.json({
                 search: Object.keys(formSearchData).length?search:null,
-                filaments: filaments
+                filaments: filamentsLite,
+                html: html
             });
         } catch (err) {
             return next(err);
