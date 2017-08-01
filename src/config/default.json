@@ -40,20 +40,6 @@
   "upload": {
     "tmpPath":"tmp/uploads"
   },
-  "httpStatics": [
-    "public",
-    "public/vendor/jquery/dist",
-    "public/vendor/jquery-ui",
-    "public/vendor/bootstrap-sass/assets",
-    "public/vendor/font-awesome",
-    "public/vendor/flag-icon-css",
-    "public/vendor/sprintf/dist",
-    "public/vendor/marked",
-    "public/vendor/bootstrap-colorpicker/dist",
-    "public/vendor/bootstrap-datepicker/dist",
-    "public/vendor/bootstrap-select/dist",
-    "public/vendor/moment/min"
-  ],
   "filament": {
     "colors": {
       "Black": "#000000",

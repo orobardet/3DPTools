@@ -1,7 +1,8 @@
-<link rel="stylesheet" href="/css/bootstrap-select.min.css">
-<script src="/js/bootstrap-select.min.js"></script>
-<script src="/vendor/moment/moment.js"></script>
-<script src="/vendor/moment/locale/fr.js"></script>
+<link rel="stylesheet" href="/vendor/css/bootstrap-select.min.css">
+<script src="/vendor/js/bootstrap-select.min.js"></script>
+<script src="/vendor/javascripts/moment.min.js"></script>
+<script src="/vendor/locales/fr.js"></script>
+<script src="/vendor/javascripts/ejs.min.js"></script>
 
 <h1><i class="fa fa-calculator"></i> <%- __('Cost calculator') %></h1>
 
@@ -306,8 +307,13 @@ $(function() {
             method: 'GET',
             url: '/filament/cost-calculator/search?'+$(this).serialize(),
             success: function(data) {
-                $('table#filament-list>tbody').empty();
-
+                //$('table#filament-list>tbody').empty();
+                // TODO
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // TODO
+            },
+            complete: function() {
                 // Enable all fields of the form
                 $('.form-control:input', filterForm).each(function() {
                     let $input = $(this);

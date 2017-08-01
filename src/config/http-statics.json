@@ -1,0 +1,17 @@
+{
+  "public": null,
+  "public/vendor/jquery/dist": "/vendor/javascripts",
+  "public/vendor/jquery-ui": "/vendor/javascripts",
+  "public/vendor/bootstrap-sass/assets": "/vendor",
+  "public/vendor/font-awesome": "/vendor",
+  "public/vendor/font-awesome/fonts": "/fonts",
+  "public/vendor/flag-icon-css": "/vendor",
+  "public/vendor/sprintf/dist": "/vendor/javascripts",
+  "public/vendor/marked": "/vendor/javascripts",
+  "public/vendor/bootstrap-colorpicker/dist": "/vendor",
+  "public/vendor/bootstrap-datepicker/dist": "/vendor",
+  "public/vendor/bootstrap-select/dist": "/vendor",
+  "public/vendor/moment/min": "/vendor/javascripts",
+  "public/vendor/moment/locale": "/vendor/locales",
+  "public/vendor/ejs": "/vendor/javascripts"
+}

@@ -228,9 +228,14 @@ module.exports = function(bootstrapOptions) {
         app.use(bodyParser.urlencoded({extended: false}));
 
         app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
-        config.get('httpStatics').forEach(staticPath => {
-            app.use(express.static(path.join(__dirname, staticPath)));
-        });
+        const httpStatics = require('./config/http-statics.json');
+        for (let [staticPath, alias] of Object.entries(httpStatics)) {
+            if ((typeof alias === 'string') && (alias !== "")) {
+                app.use(alias, express.static(path.join(__dirname, staticPath)));
+            } else {
+                app.use(express.static(path.join(__dirname, staticPath)));
+            }
+        }
 
         app.use(cookieParser());
     }
