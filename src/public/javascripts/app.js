@@ -32,6 +32,49 @@ var App3DPTools = {
         }
     },
 
+    loaderOverlay: function(element, action) {
+        action = action.toString().toLocaleLowerCase();
+
+        if (action === 'on') {
+            return this.showLoaderOverlay(element);
+        }
+
+        if (action === 'off') {
+            return this.hideLoaderOverlay(element);
+        }
+    },
+
+    showLoaderOverlay: function(element) {
+        let $element = $(element);
+        if (!$element.length) return;
+
+        let $overlay = $('<div>').uniqueId().addClass('overlay-container');
+        $overlay.css({
+            top: $element.offset().top,
+            left: $element.offset().left,
+            height: $element.height(),
+            width: $element.width()
+        });
+        $overlay.append($('<div>').addClass('overlay'));
+        $overlay.append($('<div>').addClass('loader-spinner'));
+
+        $element.data('overlay-id', $overlay.attr('id'));
+
+        $('body').append($overlay);
+    },
+
+    hideLoaderOverlay: function(element) {
+        let $element = $(element);
+        if (!$element.length) return;
+
+        let overlayId = $element.data('overlay-id');
+
+        if (overlayId) {
+            $('#'+overlayId).remove();
+            $element.removeData('overlay-id');
+        }
+    },
+
     confirmModal: function (message, cb) {
         var $modal = $('#3dptoolConfirmModal');
         if (!$modal.length) {
