@@ -609,19 +609,37 @@ module.exports = function (app) {
                 return this.leftMaterialForm(req, res, next);
             }
 
-            if (req.form.leftLength) {
+            const leftLength = req.form.leftLength;
+            const leftTotalWeight = req.form.leftTotalWeight;
+            const relativeLength = req.form.relativeLength;
+
+            if (leftLength) {
                 filament.setLeftLength(req.form.leftLength);
                 filament.setLastUsed();
 
                 await filament.save();
 
                 return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
-            } else if (req.form.leftTotalWeight) {
+            } else if (leftTotalWeight) {
                 let weight = req.form.leftTotalWeight;
                 if (req.form.weighUnit === "g") {
                     weight /= 1000;
                 }
                 filament.setLeftTotalWeight(weight);
+                filament.setLastUsed();
+
+                await filament.save();
+                return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
+            } else if (relativeLength) {
+                const sign = req.form.relativeLengthSign;
+                let leftLength = filament.getLeftLength();
+
+                if (sign === '+') {
+                    leftLength += parseFloat(relativeLength);
+                } else {
+                    leftLength -= parseFloat(relativeLength);
+                }
+                filament.setLeftLength(leftLength);
                 filament.setLastUsed();
 
                 await filament.save();
@@ -648,12 +666,16 @@ module.exports = function (app) {
                 return this.leftMaterialForm(req, res, next);
             }
 
+            const leftLength = req.form.leftLength;
+            const leftTotalWeight = req.form.leftTotalWeight;
+            const relativeLength = req.form.relativeLength;
+
             let responseData = {};
-            if (req.form.leftLength) {
+            if (leftLength) {
                 filament.setLeftLength(req.form.leftLength);
                 responseData.weight = filament.leftMaterialWeight();
             }
-            if (req.form.leftTotalWeight) {
+            if (leftTotalWeight) {
                 let weight = req.form.leftTotalWeight;
                 if (req.form.weighUnit === "g") {
                     weight /= 1000;
@@ -661,7 +683,24 @@ module.exports = function (app) {
                 filament.setLeftTotalWeight(weight);
                 responseData.length = filament.getLeftLength();
             }
-            responseData.percentageLeft = filament.materialLeftPercentage;
+            if (relativeLength) {
+                const sign = req.form.relativeLengthSign;
+                let leftLength = filament.getLeftLength();
+
+                if (sign === '+') {
+                    leftLength += parseFloat(relativeLength);
+                } else {
+                    leftLength -= parseFloat(relativeLength);
+                }
+
+                filament.setLeftLength(leftLength);
+                responseData.weight = filament.leftMaterialWeight();
+                responseData.length = filament.getLeftLength();
+            }
+
+            if (leftLength || leftTotalWeight || relativeLength) {
+                responseData.percentageLeft = filament.materialLeftPercentage;
+            }
 
             return res.json(responseData);
 

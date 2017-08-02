@@ -82,7 +82,7 @@
 <form class="form-filament" method="POST">
     <fieldset>
         <div class="row ">
-            <div class="col-md-5">
+            <div class="col-md-3">
                 <div class="form-group<%= (errors.leftTotalWeight || errors.weighUnit) ? " has-error" : "" %>">
                     <label for="leftTotalWeight"
                            class="control-label"><i class="p3di p3di-weight"></i> <%- __('Left total weight:'); %></label>
@@ -99,24 +99,24 @@
                     <% if (errors.leftTotalWeight || errors.weighUnit) { %>
                     <ul class="help-block with-errors">
                         <% if (errors.leftTotalWeight) { %>
-                        <% errors.leftTotalWeight.forEach(function(msg) { %>
+                        <% for (let msg of errors.leftTotalWeight) { %>
                         <li><%= __(msg) %></li>
-                        <% }); %>
+                        <% } %>
                         <% } %>
                         <% if (errors.weighUnit) { %>
-                        <% errors.weighUnit.forEach(function(msg) { %>
+                        <% for (let msg of errors.weighUnit) { %>
                         <li><%= __(msg) %></li>
-                        <% }); %>
+                        <% } %>
                         <% } %>
                     </ul>
                     <% } %>
                 </div>
                 <div id="estimated-left-length" class="filament-left-data"></div>
             </div>
-            <div class="col-md-2 form-horizontal-alternative-or">
+            <div class="col-md-1 form-horizontal-alternative-or">
                 <div style="margin-top: 30px;"><%- __('or') %></div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-3">
                 <div class="form-group<%= (errors.leftLength) ? " has-error" : "" %>">
                     <label for="leftLength"
                            class="control-label"><%- __('Left length:'); %></label>
@@ -128,9 +128,44 @@
                     </div>
                     <% if (errors.leftLength) { %>
                     <ul class="help-block with-errors">
-                        <% errors.leftLength.forEach(function(msg) { %>
+                        <% for (let msg of errors.leftLength) { %>
                         <li><%= __(msg) %></li>
-                        <% }); %>
+                        <% } %>
+                    </ul>
+                    <% } %>
+                </div>
+                <div id="estimated-left-weight" class="filament-left-data"></div>
+            </div>
+            <div class="col-md-1 form-horizontal-alternative-or">
+                <div style="margin-top: 30px;"><%- __('or') %></div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group<%= (errors.relativeLength) ? " has-error" : "" %>">
+                    <label for="relativeLength"
+                           class="control-label"><%- __('Add/substract length:'); %></label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <label for="relative-length-sign-substract"><input type="radio" name="relativeLengthSign" value="-" id="relative-length-sign-substract" <%- (locals.relativeLengthSign) ? (relativeLengthSign=='-'?'checked':'') : 'checked' %>> <%- __('Substract'); %></label>
+                            /
+                            <label for="relative-length-sign-add"><input type="radio" name="relativeLengthSign" value="+" id="relative-length-sign-add" <%- (locals.relativeLengthSign) ? (relativeLengthSign=='+'?'checked':'') : '' %>> <%- __('Add'); %></label>
+                        </div>
+                        <input type="text" class="form-control" id="relativeLength"
+                               name="relativeLength"
+                               value="<%- (locals.relativeLength) ? relativeLength : '' %>">
+                        <div class="input-group-addon"><%- __('m'); %></div>
+                    </div>
+                    <% if (errors.relativeLength || errors.relativeLengthSign) { %>
+                    <ul class="help-block with-errors">
+                        <% if (errors.relativeLength) { %>
+                        <% for (let msg of errors.relativeLength) { %>
+                        <li><%= __(msg) %></li>
+                        <% } %>
+                        <% } %>
+                        <% if (errors.relativeLengthSign) { %>
+                        <% for (let msg of errors.relativeLengthSign) { %>
+                        <li><%= __(msg) %></li>
+                        <% } %>
+                        <% } %>
                     </ul>
                     <% } %>
                 </div>
@@ -175,14 +210,14 @@
             success: function(data) {
                 $('#estimated-left-length, #estimated-left-weight').text('');
 
-                if (data.weight) {
+                if (typeof data.weight !== 'undefined') {
                     $('#estimated-left-weight').text(Locale3DPTools.__('~ %.2f Kg', data.weight));
                 }
-                if (data.length) {
+                if (typeof data.length !== 'undefined') {
                     $('#estimated-left-length').text(Locale3DPTools.__('~ %.2f m', data.length));
                 }
                 var progress = $('#filament-live-left-progress');
-                if (data.percentageLeft && progress) {
+                if (typeof data.percentageLeft !== 'undefined' && progress.length) {
                     var progressbarClass = 'progress-bar-success';
                     if (data.percentageLeft <= <%- config.get('filament:leftThresholds:warning') %>) {
                         progressbarClass = 'progress-bar-warning'
@@ -212,7 +247,7 @@
         });
     }
     $(function () {
-        $('#leftTotalWeight,#leftLength').keyup(filamentLeftMaterialOnChange);
-        $('input[name=weighUnit]').change(filamentLeftMaterialOnChange);
+        $('#leftTotalWeight,#leftLength,#relativeLength').keyup(filamentLeftMaterialOnChange);
+        $('input[name=weighUnit],input[name=relativeLengthSign]').change(filamentLeftMaterialOnChange);
     });
 </script>

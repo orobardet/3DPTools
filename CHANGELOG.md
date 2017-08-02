@@ -8,6 +8,7 @@
   - Cost per Kg
 - [New] Filament stats, buy history: add average buy interval and elapsed time from last purchase (#73)
 - [New] Creating new filament by copy (#66)
+- [New] Filament left: allow input of a length to substract or add (#63)
 - [New] Filter filaments in cost calculator list (#61)
 - [Imp] Don't show finished filaments in cost calculator list (#62)
 - [Imp] Filament stats, buy history: add points on splines (#67)

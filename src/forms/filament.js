@@ -161,8 +161,25 @@ module.exports = function (app) {
                 if ((value !== "g") && (value !== "kg")) {
                     throw new Error('%s must be "g" or "kg".');
                 }
-            })
-
+            }),
+        field("relativeLength", "Add/substract length")
+            .trim()
+            .isNumeric()
+            .custom(value => {
+                if (value <= 0) {
+                    throw new Error('%s must be greater than 0.');
+                }
+            }),
+        field("relativeLengthSign", "Add/substract")
+            .trim()
+            .ifNull('-')
+            .toLower()
+            .required()
+            .custom(value => {
+                if ((value !== "-") && (value !== "+")) {
+                    throw new Error('%s must be "-" or "+".');
+                }
+            }),
     );
 
 

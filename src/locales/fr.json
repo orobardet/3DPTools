@@ -247,7 +247,7 @@
   "Delete picture": "Supprimer l'image",
   "Transparent": "Transparent",
   "Naturel": "Naturel",
-  "Left length:": "Longueur restante:",
+  "Left length:": "Longueur restante :",
   "m": "m",
   "Glamorous Gold": "Glamorous Gold",
   "~ %.2f Kg / ~ %.2f m": "~ %.2f Kg / ~ %.2f m",
@@ -365,5 +365,11 @@
   "(from: %s)": "(à partir de : %s)",
   "%.2f": "%.2f",
   "Average purchase interval: %s": "Délai moyen entre les achats : %s",
-  "Last purchase %s": "Dernier achat %s"
+  "Last purchase %s": "Dernier achat %s",
+  "Add/substract length:": "Ajouter/retirer de la longueur :",
+  "Add/substract length": "Ajouter/retirer de la longueur",
+  "Add/substract": "Ajouter/retirer",
+  "Substract": "Retirer",
+  "Left length is not a number": "La longueur restante n'est pas un nombre",
+  "Add/substract length is not a number": "La longueur à ajouter/supprimer n'est pas un nombre"
 }
