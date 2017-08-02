@@ -255,14 +255,17 @@ module.exports = function (app) {
      */
     this.addForm = async (req, res, next) => {
         try {
+            const filamentId = req.params.filament_id;
+
             // Get the data to populate form choices:
             // - shops, brands, materials lists
             // - List of all colors used in existing filaments
-            let [shops, brands, materials, usedColors] = await Promise.all([
+            let [shops, brands, materials, usedColors, sourceFilament] = await Promise.all([
                 Shop.find().sort('name').exec(),
                 Brand.find().sort('name').exec(),
                 Material.find().sort('name').exec(),
-                Filament.find().distinct('color').exec()
+                Filament.find().distinct('color').exec(),
+                Filament.findById(filamentId).populate('material brand shop').exec()
             ]);
 
             // Get the list of all predefined colors (from config), and removed them
@@ -277,6 +280,7 @@ module.exports = function (app) {
                 materials: materials,
                 usedColors: usedColors,
                 predefinedColors: predefinedColors,
+                sourceFilament: sourceFilament,
                 errors: (req.form) ? req.form.getErrors() : []
             });
         } catch (err) {

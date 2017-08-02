@@ -360,5 +360,8 @@
   "Cost/Kg": "Coût/Kg",
   "Rouge transparent": "Rouge transparent",
   "File %s not found.": "Le fichier %s est introuvable.",
-  "Filament %s not found.": "Le filament %s est introuvable."
+  "Filament %s not found.": "Le filament %s est introuvable.",
+  "copy": "copier",
+  "(from: %s)": "(à partir de : %s)",
+  "%.2f": "%.2f"
 }

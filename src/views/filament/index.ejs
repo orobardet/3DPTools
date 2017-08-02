@@ -201,6 +201,7 @@
                             <%- __("other actions") %>
                         </a>
                         <ul class="dropdown-menu">
+                            <li><a href="/filament/add/<%- filament.id %>"><i class="fa fa-copy"></i>&nbsp;<%- __("copy") %></a></li>
                             <li><a href="/filament/add-picture/<%- filament.id %>"><i class="fa fa-image"></i>&nbsp;<%- __("add picture") %></a></li>
                             <li><a href="/filament/cost-calculator#<%- filament.id %>"><i class="fa fa-calculator"></i>&nbsp;<%- __("cost calculator") %></a></li>
                             <% if (filament.finished) { %>

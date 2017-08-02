@@ -6,6 +6,7 @@
 - [New] Filament stats, buy history, 2 splines added : (#53)
   - Cost per filament count
   - Cost per Kg
+- [New] Creating new filament by copy (#66)
 - [New] Filer filaments in cost calculator list (#61)
 - [Imp] Don't show finished filaments in cost calculator list (#62)
 - [Imp] Filament stats, buy history: add points on splines (#67)

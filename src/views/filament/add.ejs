@@ -5,22 +5,28 @@
 <script src="/vendor/js/bootstrap-colorpicker.min.js"></script>
 <script src="/vendor/js/bootstrap-select.min.js"></script>
 <script src="/vendor/js/bootstrap-datepicker.min.js"></script>
-<script src="/vendor/locales/bootstrap-datepicker.<%- getLocale() %>.min.js"></script>
+<% let locale= getLocale(); -%>
+<script src="/vendor/locales/bootstrap-datepicker.<%- (locale === 'en') ? 'en-GB' : locale %>.min.js"></script>
 
 <h1><span class="fa-overlay">
     <i class="rs rs-filament"></i>
     <i class="fa fa-plus fa-overlay-se" style="color:white"></i>
     <i class="fa fa-plus-circle fa-overlay-se text-success"></i>
-</span> <%- __('Add filament') %></h1>
+    </span> <%- __('Add filament') %>
+    <% if (locals.sourceFilament) { -%>
+    <small><%- __('(from: %s)', '<a href="/filament/show/'+sourceFilament.id+'" target="_blank">'+sourceFilament.name+'</a>') %></small>
+    <% } -%>
+</h1>
 
-<form class="form-filament" method="POST">
+
+<form class="form-filament" method="POST" action="/filament/add">
     <fieldset>
         <div class="row">
             <div class="col-md-9">
                 <div class="form-group<%= (errors.name)?" has-error":"" %>">
                     <label for="name" class="control-label required"><%- __('Name:'); %></label>
                     <input type="text" class="form-control" id="name" name="name"
-                           placeholder="<%- __('Name'); %>" value="<%- (locals.name) ? name : '' %>"
+                           placeholder="<%- __('Name'); %>" value="<%- (locals.name) ? name : (locals.sourceFilament) ? sourceFilament.name : '' %>"
                            required autofocus>
                     <% if (errors.name) { %>
                     <ul class="help-block with-errors">
@@ -36,7 +42,7 @@
                 <div class="form-group<%= (errors.brand) ? " has-error" : "" %>">
                     <label for="brand" class="control-label required"><%- __('Brand:'); %></label>
                     <select class="form-control selectpicker" id="brand" name="brand" required>
-                        <% if (locals.brands && brands.length) { selected = (locals.brand) ? brand : ''; %>
+                        <% if (locals.brands && brands.length) { selected = (locals.brand) ? brand : (locals.sourceFilament) ? sourceFilament.brand.id : ''; %>
                         <% brands.forEach(function (brand) { %>
                         <option value="<%- brand.id %>"
                                 data-content="<img class='brand-logo' src='/brand/get-logo/<%- brand.id %>'></img> <%- brand.name %> "
@@ -63,7 +69,7 @@
                 <div class="form-group<%= (errors.material) ? " has-error" : "" %>">
                     <label for="material" class="control-label required"><%- __('Material:'); %></label>
                     <select class="form-control" id="material" name="material" required>
-                        <% if (locals.materials && materials.length) { selected = (locals.material) ? material : ''; %>
+                        <% if (locals.materials && materials.length) { selected = (locals.material) ? material : (locals.sourceFilament) ? sourceFilament.material.id : ''; %>
                         <% materials.forEach(function (material) { %>
                         <option value="<%- material.id %>"
                                 <% if (material.id == selected) { %>
@@ -88,7 +94,7 @@
                     <label for="diameter" class="control-label required"><%- __('Diameter:'); %></label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="diameter" name="diameter"
-                               placeholder="<%- __('Diameter'); %>" value="<%- (locals.diameter) ? diameter : '' %>"
+                               placeholder="<%- __('Diameter'); %>" value="<%- (locals.diameter) ? diameter : (locals.sourceFilament) ? sourceFilament.diameter : '' %>"
                                required>
                         <div class="input-group-addon"><%- __('mm'); %></div>
                     </div>
@@ -147,7 +153,7 @@
                     <div class="col-md-5">
                         <div class="form-group<%= (errors.colorName) ? " has-error" : "" %>">
                             <input type="text" class="form-control" id="colorName" name="colorName"
-                                   placeholder="<%- __('Name'); %>" value="<%- (locals.colorName) ? colorName : '' %>"
+                                   placeholder="<%- __('Name'); %>" value="<%- (locals.colorName) ? colorName : (locals.sourceFilament) ? sourceFilament.color.name : '' %>"
                                    required>
                             <% if (errors.colorName) { %>
                             <ul class="help-block with-errors">
@@ -163,7 +169,7 @@
                             <div class="input-group color-picker">
                                 <input type="text" class="form-control" id="colorCode" name="colorCode"
                                        placeholder="<%- __('Code'); %>"
-                                       value="<%- (locals.colorCode) ? colorCode : '' %>"
+                                       value="<%- (locals.colorCode) ? colorCode : (locals.sourceFilament) ? sourceFilament.color.code : '' %>"
                                        required>
                                 <span class="input-group-addon"><div class="color-preview-container"><i class="color-preview"></i></div></span>
                             </div>
@@ -186,7 +192,7 @@
                 <div class="form-group<%= (errors.description) ? " has-error" : "" %>">
                     <label for="description" class="control-label"><%- __('Description:'); %></label>
                     <textarea rows="5" class="form-control" id="description" name="description"
-                              placeholder="<%- __('Description'); %>"><%- (locals.description) ? description : '' %></textarea>
+                              placeholder="<%- __('Description'); %>"><%- (locals.description) ? description : (locals.sourceFilament) ? sourceFilament.description : '' %></textarea>
                     <% if (errors.description) { %>
                     <ul class="help-block with-errors">
                         <% errors.description.forEach(function(msg) { %>
@@ -208,7 +214,7 @@
                     <label for="buyDateText" class="control-label required"><%- __('Purchase date:'); %></label>
                     <div class="input-group date">
                         <input type="text" class="form-control datepicker" id="buyDateText" name="buyDateText"
-                               value=""
+                               value="" placeholder="<%= (locals.sourceFilament) ? moment(sourceFilament.buyDate).format('L') : '' %>"
                                required>
                         <input type="hidden" name="buyDate" id="buyDate" value="<%- (locals.buyDate) ? buyDate : '' %>">
                         <div class="input-group-addon">
@@ -230,9 +236,11 @@
                     <label for="shop" class="control-label required"><%- __('Shop:'); %></label>
                     <select class="form-control selectpicker" id="shop" name="shop" required>
                         <% if (locals.shops && shops.length) { selected = (locals.shop) ? shop : ''; %>
+                        <% sourceShop = (locals.sourceFilament) ? sourceFilament.shop.id : ''; %>
                         <% shops.forEach(function (shop) { %>
+                        <% sourceShopIcon = (shop.id === sourceShop) ? "<i class='fa fa-copy'></i> " : ''; %>
                         <option value="<%- shop.id %>"
-                                data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>'></img> <%- shop.name %> "
+                                data-content="<img class='shop-logo' src='/shop/get-logo/<%- shop.id %>'></img> <%- sourceShopIcon %><%- shop.name %>"
                                 <% if (shop.id == selected) { %>
                                 selected
                                 <% } %>
@@ -254,7 +262,7 @@
                 <div class="form-group<%= (errors.price) ? " has-error" : "" %>">
                     <label for="price" class="control-label required"><%- __('Price:'); %></label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="price"
+                        <input type="text" class="form-control" id="price" placeholder="<%- (locals.sourceFilament) ? __('%.2f', sourceFilament.price) : '' %>"
                                name="price" value="<%- (locals.price) ? price : '' %>" required>
                         <div class="input-group-addon"><%- __('€ VAT'); %></div>
                     </div>
@@ -285,7 +293,7 @@
                             </span>
                             <input type="number" class="form-control input-temperature" id="headTempMin"
                                    name="headTempMin"
-                                   value="<%- (locals.headTempMin) ? headTempMin : '' %>" min="0">
+                                   value="<%- (locals.headTempMin) ? headTempMin : (locals.sourceFilament) ? sourceFilament.headTemp.min : '' %>" min="0">
                             <div class="input-group-addon"><%- __('°C'); %></div>
                         </div>
                         <% if (errors.headTempMin) { %>
@@ -307,7 +315,7 @@
                             </span>
                             <input type="number" class="form-control input-temperature" id="headTempMax"
                                    name="headTempMax"
-                                   value="<%- (locals.headTempMax) ? headTempMax : '' %>" min="0">
+                                   value="<%- (locals.headTempMax) ? headTempMax : (locals.sourceFilament) ? sourceFilament.headTemp.max : '' %>" min="0">
                             <div class="input-group-addon"><%- __('°C'); %></div>
                         </div>
                         <% if (errors.headTempMax) { %>
@@ -323,7 +331,7 @@
                         <div class="input-group">
                             <input type="number" class="form-control input-temperature" id="headTempExperienced"
                                    name="headTempExperienced"
-                                   value="<%- (locals.headTempExperienced) ? headTempExperienced : '' %>" min="0">
+                                   value="<%- (locals.headTempExperienced) ? headTempExperienced : (locals.sourceFilament) ? sourceFilament.headTemp.experienced : '' %>" min="0">
                             <div class="input-group-addon"><%- __('°C'); %></div>
                         </div>
                         <% if (errors.headTempExperienced) { %>
@@ -352,7 +360,7 @@
                             </span>
                             <input type="number" class="form-control input-temperature" id="bedTempMin"
                                    name="bedTempMin"
-                                   value="<%- (locals.bedTempMin) ? bedTempMin : '' %>" min="0">
+                                   value="<%- (locals.bedTempMin) ? bedTempMin : (locals.sourceFilament) ? sourceFilament.bedTemp.min : '' %>" min="0">
                             <div class="input-group-addon"><%- __('°C'); %></div>
                         </div>
                         <% if (errors.bedTempMin) { %>
@@ -374,7 +382,7 @@
                             </span>
                             <input type="number" class="form-control input-temperature" id="bedTempMax"
                                    name="bedTempMax"
-                                   value="<%- (locals.bedTempMax) ? bedTempMax : '' %>" min="0">
+                                   value="<%- (locals.bedTempMax) ? bedTempMax : (locals.sourceFilament) ? sourceFilament.bedTemp.max : '' %>" min="0">
                             <div class="input-group-addon"><%- __('°C'); %></div>
                         </div>
                         <% if (errors.bedTempMax) { %>
@@ -390,7 +398,7 @@
                         <div class="input-group">
                             <input type="number" class="form-control input-temperature" id="bedTempExperienced"
                                    name="bedTempExperienced"
-                                   value="<%- (locals.bedTempExperienced) ? bedTempExperienced : '' %>" min="0">
+                                   value="<%- (locals.bedTempExperienced) ? bedTempExperienced : (locals.sourceFilament) ? sourceFilament.bedTemp.experienced : '' %>" min="0">
                             <div class="input-group-addon"><%- __('°C'); %></div>
                         </div>
                         <% if (errors.bedTempExperienced) { %>
@@ -422,7 +430,7 @@
                             </span>
                             <input type="number" class="form-control input-speed" id="printingSpeedMin"
                                    name="printingSpeedMin"
-                                   value="<%- (locals.printingSpeedMin) ? printingSpeedMin : '' %>" min="0">
+                                   value="<%- (locals.printingSpeedMin) ? printingSpeedMin : (locals.sourceFilament) ? sourceFilament.printingSpeed.min : '' %>" min="0">
                             <div class="input-group-addon"><%- __('mm/s'); %></div>
                         </div>
                         <% if (errors.printingSpeedMin) { %>
@@ -444,7 +452,7 @@
                             </span>
                             <input type="number" class="form-control input-speed" id="printingSpeedMax"
                                    name="printingSpeedMax"
-                                   value="<%- (locals.printingSpeedMax) ? printingSpeedMax : '' %>" min="0">
+                                   value="<%- (locals.printingSpeedMax) ? printingSpeedMax : (locals.sourceFilament) ? sourceFilament.printingSpeed.max : '' %>" min="0">
                             <div class="input-group-addon"><%- __('mm/s'); %></div>
                         </div>
                         <% if (errors.printingSpeedMax) { %>
@@ -470,7 +478,7 @@
                             </span>
                         <input type="number" class="form-control" id="density"
                                name="density"
-                               value="<%- (locals.density) ? density : '' %>" required min="0" step="1">
+                               value="<%- (locals.density) ? density : (locals.sourceFilament) ? sourceFilament.density : '' %>" required min="0" step="1">
                         <div class="input-group-addon"><%- __('kg/m³'); %></div>
                     </div>
                     <% if (errors.density) { %>
@@ -490,7 +498,7 @@
                     <div class="input-group">
                         <input type="number" class="form-control" id="flowPercentage"
                                name="flowPercentage"
-                               value="<%- (locals.flowPercentage) ? flowPercentage : '' %>" min="0">
+                               value="<%- (locals.flowPercentage) ? flowPercentage : (locals.sourceFilament) ? sourceFilament.flowPercentage : '' %>" min="0">
                         <div class="input-group-addon"><%- __('%'); %></div>
                     </div>
                     <% if (errors.flowPercentage) { %>
@@ -512,7 +520,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control" id="initialMaterialWeight"
                                name="initialMaterialWeight"
-                               value="<%- (locals.initialMaterialWeight) ? initialMaterialWeight : '' %>" required>
+                               value="<%- (locals.initialMaterialWeight) ? initialMaterialWeight : (locals.sourceFilament) ? sourceFilament.initialMaterialWeight : '' %>" required>
                         <div class="input-group-addon"><%- __('kg'); %></div>
                     </div>
                     <% if (errors.initialMaterialWeight) { %>
@@ -532,7 +540,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control" id="initialTotalWeight"
                                name="initialTotalWeight"
-                               value="<%- (locals.initialTotalWeight) ? initialTotalWeight : '' %>" required>
+                               value="<%- (locals.initialTotalWeight) ? initialTotalWeight : (locals.sourceFilament) ? sourceFilament.initialTotalWeight : '' %>" required>
                         <div class="input-group-addon"><%- __('kg'); %></div>
                     </div>
                     <% if (errors.initialTotalWeight) { %>

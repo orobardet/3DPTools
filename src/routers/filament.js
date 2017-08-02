@@ -22,7 +22,7 @@ module.exports = function (app) {
     router.get('/show/:filament_id', Controller.show);
 
     router.post('/add', Form.filament, Controller.add);
-    router.get('/add', Controller.addForm);
+    router.get(['/add', '/add/:filament_id'], Controller.addForm);
 
     router.post('/edit/:filament_id', Form.filament, Controller.edit);
     router.get('/edit/:filament_id', Controller.editForm);
