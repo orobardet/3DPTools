@@ -259,6 +259,7 @@ $(function() {
         $('button', filterForm).prop('disabled', true);
         $('#clear-search').prop('disabled', true);
 
+        App3DPTools.showLoaderOverlay($('#filament-list').parent().first());
         $.ajax({
             method: 'GET',
             url: '/filament/cost-calculator/search?'+$(this).serialize(),
@@ -293,6 +294,8 @@ $(function() {
 
                 // Update 'cancel search' button visibility
                 updateCancelSearchButtonVisibility();
+
+                App3DPTools.hideLoaderOverlay($('#filament-list').parent().first());
             }
         });
 
