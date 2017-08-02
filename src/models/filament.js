@@ -624,6 +624,50 @@ module.exports = function (app) {
         });
     };
 
+    filamentSchema.statics.getPurchaseIntervalStats = async function () {
+        let aggregation = await this.aggregate([
+            { $project: { buyDate: '$buyDate' } },
+            { $group: { _id: "$buyDate" } },
+            { $sort: { _id: 1 } },
+            { $group: {
+                _id: null,
+                purchaseDates: { $push : "$_id" }
+            } },
+            { $project: { purchaseDates: true , _id: false} }
+        ]).exec();
+
+        let purchaseDates = aggregation[0].purchaseDates;
+
+        let intervals = [];
+        let previousDate = null;
+        let intervalSum = 0;
+
+        let averageInterval = null;
+        let lastPurchase = null;
+
+        if (purchaseDates.length) {
+            for (let date of purchaseDates) {
+                if (previousDate) {
+                    let interval = date.getTime() - previousDate.getTime();
+                    intervalSum += interval;
+                    intervals.push(interval);
+                }
+                previousDate = date;
+            }
+            lastPurchase = new Date().getTime() - purchaseDates[purchaseDates.length-1];
+        }
+
+        if (intervals.length) {
+            averageInterval = Math.floor(intervalSum / intervals.length);
+        }
+
+        return {
+            purchaseDates: purchaseDates,
+            averageInterval: averageInterval,
+            lastPurchase: lastPurchase
+        };
+    };
+
     filamentSchema.statics.getStatsCostPerKg = async function () {
         return await this.aggregate([
             { $project: {

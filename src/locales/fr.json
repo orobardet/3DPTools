@@ -363,5 +363,7 @@
   "Filament %s not found.": "Le filament %s est introuvable.",
   "copy": "copier",
   "(from: %s)": "(à partir de : %s)",
-  "%.2f": "%.2f"
+  "%.2f": "%.2f",
+  "Average purchase interval: %s": "Délai moyen entre les achats : %s",
+  "Last purchase %s": "Dernier achat %s"
 }

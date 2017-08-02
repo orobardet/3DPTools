@@ -445,12 +445,13 @@
     <% } %>
 
 
-    <% if (stats && stats.boughtHistory) { %>
+    <% if (stats && (stats.boughtHistory || stats.purchaseInterval)) { %>
     <a name="buy-history" id="buy-history" class="anchor"></a>
     <div class="panel panel-default filament-stats">
         <div class="panel-heading">
             <h2 class="panel-title"><%- __('Bought history'); %></h2>
         </div>
+        <% if (stats.boughtHistory) { %>
         <div class="panel-body ">
             <div id="filament-stats-bought-history"></div>
             <script type="text/javascript">
@@ -595,6 +596,17 @@
                 });
             </script>
         </div>
+        <% } %>
+        <% if (stats.purchaseInterval) { %>
+        <div class="panel-body row">
+            <% if (stats.purchaseInterval.averageInterval) { %>
+            <div class="col-md-6 filament-stats-text"><i class="fa fa-clock-o"></i> <%- __('Average purchase interval: %s', moment(0).from(moment(stats.purchaseInterval.averageInterval), true)) %></div>
+            <% } %>
+            <% if (stats.purchaseInterval.lastPurchase) { %>
+            <div class="col-md-6 filament-stats-text"><i class="fa fa-calendar"></i> <%- __('Last purchase %s', moment(0).from(moment(stats.purchaseInterval.lastPurchase))); %></div>
+            <% } %>
+        </div>
+        <% } %>
     </div>
     <% } %>
 

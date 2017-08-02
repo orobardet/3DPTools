@@ -169,6 +169,7 @@ module.exports = function (app) {
                 costPerMaterials,
                 costPerColors,
                 boughtTimeline,
+                purchaseInterval,
                 usagePerColors,
                 usagePerMaterials,
                 usagePerBrands,
@@ -188,6 +189,7 @@ module.exports = function (app) {
                 Filament.getCostPerMaterials(),
                 Filament.getCostPerColors(),
                 Filament.getBoughtTimeline(),
+                Filament.getPurchaseIntervalStats(),
                 Filament.getUsagePerColors(),
                 Filament.getUsagePerMaterials(),
                 Filament.getUsagePerBrands(),
@@ -236,6 +238,7 @@ module.exports = function (app) {
                         }
                     },
                     boughtHistory: boughtTimeline,
+                    purchaseInterval: purchaseInterval,
                     usagePer: {
                         colors: usagePerColors,
                         materials: usagePerMaterials,

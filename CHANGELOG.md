@@ -6,13 +6,14 @@
 - [New] Filament stats, buy history, 2 splines added : (#53)
   - Cost per filament count
   - Cost per Kg
+- [New] Filament stats, buy history: add average buy interval and elapsed time from last purchase (#73)
 - [New] Creating new filament by copy (#66)
-- [New] Filer filaments in cost calculator list (#61)
+- [New] Filter filaments in cost calculator list (#61)
 - [Imp] Don't show finished filaments in cost calculator list (#62)
 - [Imp] Filament stats, buy history: add points on splines (#67)
 - [Fix] UI language selection (#75)
 - [Tec] Upgrade to latest NPM & Bower dependencies versions (#64)
-- [Tec] Upgrade to NodeJS 8.1 (#64)
+- [Tec] Upgrade to NodeJS 8.2 (#64)
 - [Tec] Use `version` from package.json (#71)
 - [Tec] Add -h|--help to `cli` script (#72)
 - [Tec] Code refactoring to use ES6/7/8 enhancement (#65)
