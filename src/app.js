@@ -7,6 +7,7 @@ module.exports = function(bootstrapOptions) {
     const packageInfo = require('./package.json');
     const Raven = require('raven');
     const debug = require('debug')('3DPTools');
+    const cookieParser = require('cookie-parser');
 
     bootstrapOptions = merge({
         loadConfig: true,
@@ -143,6 +144,9 @@ module.exports = function(bootstrapOptions) {
         app.set('raven', Raven);
     }
 
+    // This middleware need to be declared early, at least _before_ i18n initialisation
+    app.use(cookieParser());
+
     // Init sessions
     if (bootstrapOptions.initSession) {
         if (!config) {
@@ -215,7 +219,6 @@ module.exports = function(bootstrapOptions) {
         const bodyParser = require('body-parser');
         const expressLayouts = require('express-ejs-layouts');
         const favicon = require('serve-favicon');
-        const cookieParser = require('cookie-parser');
 
         app.use(expressLayouts);
         app.set('views', path.join(__dirname, 'views'));
@@ -237,7 +240,6 @@ module.exports = function(bootstrapOptions) {
             }
         }
 
-        app.use(cookieParser());
     }
 
     // Init logger

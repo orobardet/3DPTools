@@ -9,6 +9,7 @@
 - [New] Filer filaments in cost calculator list (#61)
 - [Imp] Don't show finished filaments in cost calculator list (#62)
 - [Imp] Filament stats, buy history: add points on splines (#67)
+- [Fix] UI language selection (#75)
 - [Tec] Upgrade to latest NPM & Bower dependencies versions (#64)
 - [Tec] Upgrade to NodeJS 8.1 (#64)
 - [Tec] Use `version` from package.json (#71)
