@@ -16,12 +16,18 @@ module.exports = function(app) {
         next();
     });
 
+    router.all('/', (req, res, next) => {
+        return res.redirect(301, '/admin/user');
+    });
+
+    router.get('/user', Controller.userIndex);
     router.put('/user/add', UserForm.createUser, Controller.addUser);
     router.get('/user/get/:user_id', Controller.getUser);
     router.post('/user/edit/:user_id', UserForm.editUser, Controller.editUser);
     router.delete('/user/delete/:user_id', Controller.deleteUser);
 
-    router.get('/', Controller.adminIndex);
+    router.get('/system-information', Controller.systemInformation);
+
 
     app.use('/admin', router);
 

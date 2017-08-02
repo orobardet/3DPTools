@@ -7,7 +7,7 @@ module.exports = function(app) {
     /**
      * Index page of the admin section
      */
-    this.adminIndex = async (req, res, next) => {
+    this.userIndex = async (req, res, next) => {
         let users;
 
         // Get all users from database
@@ -17,9 +17,10 @@ module.exports = function(app) {
             return next(err);
         }
 
-        return res.render('admin/index', {
+        return res.render('admin/users', {
+            navModule: 'user',
             users: users,
-            pageTitle: 'Administration',
+            pageTitle: "Users administration",
             errors: []
         });
     };
@@ -159,6 +160,20 @@ module.exports = function(app) {
         return res.json({
             message: res.__('User %s successfully deleted.', userId)
         });
+    };
+
+    /**
+     * Index page of the admin section
+     */
+    this.systemInformation = async (req, res, next) => {
+        try {
+            return res.render('admin/system-information', {
+                navModule: 'system',
+                pageTitle: "System's information"
+            });
+        } catch (err) {
+            return next(err);
+        }
     };
 
     return this;

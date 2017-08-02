@@ -51,10 +51,31 @@
     {
       "name": "admin",
       "label": "Administration",
-      "moduleName": "admin",
-      "url": "/admin",
+      "moduleNames": [
+        "admin",
+        "user",
+        "system"
+      ],
       "iconClasses": "fa fa-cogs",
-      "onlyAdmin": true
+      "onlyAdmin": true,
+      "pages": [
+        {
+          "name": "user",
+          "label": "Users",
+          "moduleName": "user",
+          "url": "/admin/user",
+          "iconClasses": "fa fa-user",
+          "onlyAdmin": true
+        },
+        {
+          "name": "system-information",
+          "label": "System's information",
+          "moduleName": "system",
+          "url": "/admin/system-information",
+          "iconClasses": "fa fa-heartbeat",
+          "onlyAdmin": true
+        }
+      ]
     }
   ]
 }
