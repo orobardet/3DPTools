@@ -31,7 +31,8 @@ module.exports = function(bootstrapOptions) {
     app.locals = {
         siteTitle: '3DPTools',
         navModule: 'unknown',
-        showNavbar: true
+        showNavbar: true,
+        environment: process.env.NODE_ENV
     };
     app.debug = debug;
 

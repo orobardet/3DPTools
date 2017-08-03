@@ -1,1 +1,66 @@
+<script src="/vendor/javascripts/vue<%- (environment === 'production') ? '.min' : '' %>.js"></script>
+
 <h1><%= __(pageTitle) %></h1>
+
+<div id="app-loader" style="text-align: center; font-weight: bold; font-size: larger;margin-top: 50px;">Loading data...</div>
+
+<div id="system-information" class="row" style="display:none;">
+    <div class="col-md-6" v-if="system.app">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b><%= siteTitle %> application</b></div>
+            <div class="panel-body">
+                <span v-if="system.app.version">Version : {{ system.app.version }}</span>
+                <span v-if="system.app.lastUpdate">Last update : {{ system.app.lastUpdate }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" v-if="system.node">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>Node.js</b></div>
+            <div class="panel-body">
+                <span v-if="system.node.version">Version : {{ system.node.version }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    const sysInfoApp = new Vue({
+        el: '#system-information',
+        data: {
+            autoRefresher: null,
+            system: {}
+        },
+        methods: {
+            updateData: function() {
+                $.get('/admin/system-information', function (data) {
+                    sysInfoApp.system = data;
+                }.bind(this));
+            },
+            startAutoRefresh: function(delay) {
+                if (this.autoRefresher) {
+                    clearInterval(this.autoRefresher);
+                }
+                this.autoRefresher = setInterval(function () {
+                    this.updateData();
+                }.bind(this), delay);
+            },
+            stopAutoRefresh: function() {
+                clearInterval(this.autoRefresher);
+            },
+        },
+        mounted: function() {
+            this.updateData();
+
+            $('#app-loader').remove();
+            $(this.$el).show();
+
+            this.startAutoRefresh(2000);
+        },
+        beforeDestroy: function() {
+            this.stopAutoRefresh();
+        }
+    });
+});
+</script>

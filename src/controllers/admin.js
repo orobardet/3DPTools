@@ -167,9 +167,20 @@ module.exports = function(app) {
      */
     this.systemInformation = async (req, res, next) => {
         try {
-            return res.render('admin/system-information', {
-                navModule: 'system',
-                pageTitle: "System's information"
+            if (!req.xhr) {
+                return res.render('admin/system-information', {
+                    navModule: 'system',
+                    pageTitle: "System's information"
+                });
+            }
+
+            return res.json({
+                app: {
+                    version: app.config.get('version')
+                },
+                node: {
+                    version: process.version
+                }
             });
         } catch (err) {
             return next(err);
