@@ -1,10 +1,24 @@
 <script src="/vendor/javascripts/vue<%- (environment === 'production') ? '.min' : '' %>.js"></script>
+<script src="/vendor/javascripts/moment.min.js"></script>
+<script src="/vendor/locales/fr.js"></script>
 
-<h1><%= __(pageTitle) %></h1>
+<div id="system-information">
+    <div>
+    <div class="pull-right" v-if="initialized">
+        <span v-show="lastUpdateDate">{{ lastUpdateDate.format('LTS') }}</span>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" v-on:click="toggleAutoRefresh()" v-bind:class="{ active: autoRefresher.timer, 'btn-success': autoRefresher.timer }"><i class="fa fa-refresh"></i> <%- __("Auto refresh (%s)", "{{autoRefresher.currentDelay.label}}"); %></button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" v-bind:class="{ 'btn-success': autoRefresher.timer }"><span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li v-for="delay of autoRefresher.delayChoices" v-on:click="setAutoRefreshDelay(delay)"><a data-target="#" data-value="delay.ms" key="delay.label">{{delay.label}}</a></li>
+            </ul>
+        </div>
+    </div>
+    <h1><%= __(pageTitle) %></h1>
+    </div>
+<div id="app-loader" style="text-align: center; font-weight: bold; font-size: larger;margin-top: 50px;" v-if="!initialized">Loading data...</div>
 
-<div id="app-loader" style="text-align: center; font-weight: bold; font-size: larger;margin-top: 50px;">Loading data...</div>
-
-<div id="system-information" class="row" style="display:none;">
+<div class="row" style="display:none;" v-show="initialized">
     <div class="col-md-6" v-if="system.app">
         <div class="panel panel-default">
             <div class="panel-heading"><b><%= siteTitle %> application</b></div>
@@ -23,40 +37,104 @@
         </div>
     </div>
 </div>
+</div>
 
 <script type="text/javascript">
+let sysInfoApp;
 $(function () {
-    const sysInfoApp = new Vue({
+    sysInfoApp = new Vue({
         el: '#system-information',
         data: {
-            autoRefresher: null,
+            autoRefresher: {
+                timer: null,
+                delayChoices: [
+                    {
+                        label: "Off",
+                        ms: false
+                    },
+                    {
+                        label: "1s",
+                        ms: 1000
+                    },
+                    {
+                        label: "2s",
+                        ms: 2000
+                    },
+                    {
+                        label: "5s",
+                        ms: 5000
+                    },
+                    {
+                        label: "10s",
+                        ms: 10000
+                    },
+                    {
+                        label: "30s",
+                        ms: 30000
+                    },
+                ],
+                currentDelay: {
+                    label: "2s",
+                    ms: 2000
+                }
+            },
+            initialized: false,
+            lastUpdateTstamp: null,
             system: {}
+        },
+        computed: {
+            lastUpdateDate: function() {
+                if (this.lastUpdateTstamp) {
+                    return moment(this.lastUpdateTstamp);
+                } else {
+                    return moment();
+                }
+            }
         },
         methods: {
             updateData: function() {
                 $.get('/admin/system-information', function (data) {
-                    sysInfoApp.system = data;
+                    if (data.system) {
+                        this.system = data.system;
+                        this.initialized = true;
+                    }
+                    if (data.lastUpdate) {
+                        this.lastUpdateTstamp = data.lastUpdate;
+                    }
                 }.bind(this));
             },
             startAutoRefresh: function(delay) {
-                if (this.autoRefresher) {
-                    clearInterval(this.autoRefresher);
+                if (this.autoRefresher.timer) {
+                    clearInterval(this.autoRefresher.timer);
                 }
-                this.autoRefresher = setInterval(function () {
-                    this.updateData();
-                }.bind(this), delay);
+                if (delay !== false && delay > 0) {
+                    this.autoRefresher.timer = setInterval(function () {
+                        this.updateData();
+                    }.bind(this), delay);
+                }
             },
             stopAutoRefresh: function() {
-                clearInterval(this.autoRefresher);
+                clearInterval(this.autoRefresher.timer);
+                this.autoRefresher.timer = null;
             },
+            toggleAutoRefresh: function() {
+                if (this.autoRefresher.timer) {
+                    this.stopAutoRefresh();
+                } else {
+                    this.startAutoRefresh(this.autoRefresher.currentDelay.ms);
+                }
+            },
+            setAutoRefreshDelay: function(delay) {
+                this.autoRefresher.currentDelay.label = delay.label;
+                this.autoRefresher.currentDelay.ms = delay.ms;
+
+                if (this.autoRefresher.timer) {
+                    this.startAutoRefresh(this.autoRefresher.currentDelay.ms);
+                }
+            }
         },
         mounted: function() {
             this.updateData();
-
-            $('#app-loader').remove();
-            $(this.$el).show();
-
-            this.startAutoRefresh(2000);
         },
         beforeDestroy: function() {
             this.stopAutoRefresh();

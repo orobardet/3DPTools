@@ -174,13 +174,18 @@ module.exports = function(app) {
                 });
             }
 
-            return res.json({
+            let systemData = {
                 app: {
                     version: app.config.get('version')
                 },
                 node: {
                     version: process.version
                 }
+            };
+
+            return res.json({
+                system: systemData,
+                lastUpdate: new Date().getTime()
             });
         } catch (err) {
             return next(err);

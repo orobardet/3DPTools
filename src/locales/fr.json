@@ -373,5 +373,6 @@
   "Left length is not a number": "La longueur restante n'est pas un nombre",
   "Add/substract length is not a number": "La longueur à ajouter/supprimer n'est pas un nombre",
   "Users administration": "Administration des utilisateurs",
-  "System's information": "Informations système"
+  "System's information": "Informations système",
+  "Auto refresh (%s)": "Rafraîchissement auto (%s)"
 }
