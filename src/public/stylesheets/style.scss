@@ -898,3 +898,60 @@ table td.not-found {
     color: gray;
   }
 }
+
+.system-section {
+  #system-information {
+    .last-update {
+      color: gray;
+      margin: 0 10px;
+    }
+
+    .key-value {
+      $border-color: $panel-default-border;
+      $border-radius: $panel-border-radius;
+
+      width: 100%;
+
+      .key, .value {
+        border-bottom: 1px solid $border-color;
+        border-top: 0;
+        padding: 5px;
+      }
+      &:first-child {
+        .key, .value {
+          border-top: 1px solid $border-color;
+        }
+        .key {
+          border-radius: $border-radius 0 0 0;
+        }
+        .value {
+          border-radius: 0 $border-radius 0 0;
+        }
+      }
+      &:last-child {
+        .key {
+          border-radius: 0 0 0 $border-radius;
+        }
+        .value {
+          border-radius: 0 0 $border-radius 0;
+        }
+      }
+
+      .key {
+        float: left;
+        border-left: 1px solid $border-color;
+        border-right: 1px solid $border-color;
+        font-weight: bold;
+        color: #333;
+        display: inline-block;
+        width: 80px;
+        background-color: $panel-default-heading-bg;
+      }
+      .value {
+        border-right: 1px solid $border-color;
+        display: block;
+        overflow: hidden;
+      }
+    }
+  }
+}

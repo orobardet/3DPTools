@@ -374,5 +374,8 @@
   "Add/substract length is not a number": "La longueur à ajouter/supprimer n'est pas un nombre",
   "Users administration": "Administration des utilisateurs",
   "System's information": "Informations système",
-  "Auto refresh (%s)": "Rafraîchissement auto (%s)"
+  "Auto refresh (%s)": "Rafraîchissement auto (%s)",
+  "Y [year(s)] M [month(s)] d [day(s)] h[h] mm[m] ss[s]": "Y [an(s)] M [mois] d [jour(s)] h[h] mm[m] ss[s]",
+  "Version": "Version",
+  "Uptime": "Uptime"
 }

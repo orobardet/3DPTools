@@ -14,6 +14,7 @@
   "public/vendor/bootstrap-select/dist": "/vendor",
   "public/vendor/moment/min": "/vendor/javascripts",
   "public/vendor/moment/locale": "/vendor/locales",
+  "public/vendor/moment-duration-format/lib": "/vendor/javascripts",
   "public/vendor/ejs": "/vendor/javascripts",
   "public/vendor/vue/dist": "/vendor/javascripts"
 }

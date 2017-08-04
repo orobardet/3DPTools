@@ -1,16 +1,21 @@
 <script src="/vendor/javascripts/vue<%- (environment === 'production') ? '.min' : '' %>.js"></script>
 <script src="/vendor/javascripts/moment.min.js"></script>
+<script src="/vendor/javascripts/moment-duration-format.js"></script>
 <script src="/vendor/locales/fr.js"></script>
 
 <div id="system-information">
     <div>
     <div class="pull-right" v-if="initialized">
-        <span v-show="lastUpdateDate">{{ lastUpdateDate.format('LTS') }}</span>
+        <span class="last-update" v-show="lastUpdateDate">{{ lastUpdateDate.format('Do MMMM YYYY LTS') }}</span>
         <div class="btn-group">
-            <button type="button" class="btn btn-default" v-on:click="toggleAutoRefresh()" v-bind:class="{ active: autoRefresher.timer, 'btn-success': autoRefresher.timer }"><i class="fa fa-refresh"></i> <%- __("Auto refresh (%s)", "{{autoRefresher.currentDelay.label}}"); %></button>
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" v-bind:class="{ 'btn-success': autoRefresher.timer }"><span class="caret"></span></button>
+            <button type="button" class="btn btn-default" @click="toggleAutoRefresh()" :class="{ active: autoRefresher.timer, 'btn-success': autoRefresher.timer }">
+                <i class="fa fa-refresh"></i> <%- __("Auto refresh (%s)", "{{autoRefresher.currentDelay.label}}"); %>
+            </button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" :class="{ 'btn-success': autoRefresher.timer }">
+                <span class="caret"></span>
+            </button>
             <ul class="dropdown-menu dropdown-menu-right">
-                <li v-for="delay of autoRefresher.delayChoices" v-on:click="setAutoRefreshDelay(delay)"><a data-target="#" data-value="delay.ms" key="delay.label">{{delay.label}}</a></li>
+                <li v-for="delay of autoRefresher.delayChoices" @click="setAutoRefreshDelay(delay)"><a data-target="#" data-value="delay.ms" key="delay.label">{{delay.label}}</a></li>
             </ul>
         </div>
     </div>
@@ -23,8 +28,8 @@
         <div class="panel panel-default">
             <div class="panel-heading"><b><%= siteTitle %> application</b></div>
             <div class="panel-body">
-                <span v-if="system.app.version">Version : {{ system.app.version }}</span>
-                <span v-if="system.app.lastUpdate">Last update : {{ system.app.lastUpdate }}</span>
+                <key-value v-if="system.app.version" name="<%= __('Version') %>" :value="system.app.version"></key-value>
+                <key-value v-if="system.app.uptime" name="<%= __('Uptime') %>" :value="system.app.uptime | durationSeconds"></key-value>
             </div>
         </div>
     </div>
@@ -32,12 +37,18 @@
         <div class="panel panel-default">
             <div class="panel-heading"><b>Node.js</b></div>
             <div class="panel-body">
-                <span v-if="system.node.version">Version : {{ system.node.version }}</span>
+                <key-value v-if="system.node.version" name="<%= __('Version') %>" :value="system.node.version"></key-value>
             </div>
         </div>
     </div>
 </div>
 </div>
+
+<script type="text/x-template" id="v-tpl-key-value">
+    <div class="key-value">
+        <span class="key">{{ name }}</span><span class="value">{{ value }}</span>
+    </div>
+</script>
 
 <script type="text/javascript">
 let sysInfoApp;
@@ -48,10 +59,6 @@ $(function () {
             autoRefresher: {
                 timer: null,
                 delayChoices: [
-                    {
-                        label: "Off",
-                        ms: false
-                    },
                     {
                         label: "1s",
                         ms: 1000
@@ -74,8 +81,8 @@ $(function () {
                     },
                 ],
                 currentDelay: {
-                    label: "2s",
-                    ms: 2000
+                    label: "5s",
+                    ms: 5000
                 }
             },
             initialized: false,
@@ -89,6 +96,11 @@ $(function () {
                 } else {
                     return moment();
                 }
+            }
+        },
+        filters: {
+            durationSeconds: function(seconds) {
+                return moment.duration(seconds, "seconds").format("<%= __('Y [year(s)] M [month(s)] d [day(s)] h[h] mm[m] ss[s]') %>");
             }
         },
         methods: {
@@ -107,11 +119,13 @@ $(function () {
                 if (this.autoRefresher.timer) {
                     clearInterval(this.autoRefresher.timer);
                 }
-                if (delay !== false && delay > 0) {
-                    this.autoRefresher.timer = setInterval(function () {
-                        this.updateData();
-                    }.bind(this), delay);
+                delay = delay || this.autoRefresher.currentDelay.ms;
+                if (delay === false || delay <= 0) {
+                    delay = this.autoRefresher.currentDelay.ms;
                 }
+                this.autoRefresher.timer = setInterval(function () {
+                    this.updateData();
+                }.bind(this), delay);
             },
             stopAutoRefresh: function() {
                 clearInterval(this.autoRefresher.timer);
@@ -129,12 +143,19 @@ $(function () {
                 this.autoRefresher.currentDelay.ms = delay.ms;
 
                 if (this.autoRefresher.timer) {
-                    this.startAutoRefresh(this.autoRefresher.currentDelay.ms);
+                    this.startAutoRefresh();
                 }
+            }
+        },
+        components: {
+            'key-value': {
+                template: '#v-tpl-key-value',
+                props: ['name', 'value'],
             }
         },
         mounted: function() {
             this.updateData();
+            this.toggleAutoRefresh();
         },
         beforeDestroy: function() {
             this.stopAutoRefresh();

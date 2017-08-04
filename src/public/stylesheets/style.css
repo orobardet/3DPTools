@@ -8809,4 +8809,37 @@ table td.not-found {
 .changelog .changelog-type-tec {
   color: gray; }
 
+.system-section #system-information .last-update {
+  color: gray;
+  margin: 0 10px; }
+.system-section #system-information .key-value {
+  width: 100%; }
+  .system-section #system-information .key-value .key, .system-section #system-information .key-value .value {
+    border-bottom: 1px solid #ddd;
+    border-top: 0;
+    padding: 5px; }
+  .system-section #system-information .key-value:first-child .key, .system-section #system-information .key-value:first-child .value {
+    border-top: 1px solid #ddd; }
+  .system-section #system-information .key-value:first-child .key {
+    border-radius: 4px 0 0 0; }
+  .system-section #system-information .key-value:first-child .value {
+    border-radius: 0 4px 0 0; }
+  .system-section #system-information .key-value:last-child .key {
+    border-radius: 0 0 0 4px; }
+  .system-section #system-information .key-value:last-child .value {
+    border-radius: 0 0 4px 0; }
+  .system-section #system-information .key-value .key {
+    float: left;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    font-weight: bold;
+    color: #333;
+    display: inline-block;
+    width: 80px;
+    background-color: #f5f5f5; }
+  .system-section #system-information .key-value .value {
+    border-right: 1px solid #ddd;
+    display: block;
+    overflow: hidden; }
+
 /*# sourceMappingURL=style.css.map */

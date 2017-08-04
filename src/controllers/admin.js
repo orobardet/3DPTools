@@ -176,7 +176,8 @@ module.exports = function(app) {
 
             let systemData = {
                 app: {
-                    version: app.config.get('version')
+                    version: app.config.get('version'),
+                    uptime: Math.floor(process.uptime())
                 },
                 node: {
                     version: process.version
