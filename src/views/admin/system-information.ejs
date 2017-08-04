@@ -1,6 +1,8 @@
 <script src="/vendor/javascripts/vue<%- (environment === 'production') ? '.min' : '' %>.js"></script>
 <script src="/vendor/javascripts/moment.min.js"></script>
 <script src="/vendor/javascripts/moment-duration-format.js"></script>
+<script src="/vendor/javascripts/numeral/numeral.min.js"></script>
+<script src="/vendor/javascripts/numeral/locales.min.js">numeral.locale('<%= getLocale() %>');</script>
 <script src="/vendor/locales/fr.js"></script>
 
 <div id="system-information">
@@ -23,31 +25,76 @@
     </div>
 <div id="app-loader" style="text-align: center; font-weight: bold; font-size: larger;margin-top: 50px;" v-if="!initialized">Loading data...</div>
 
-<div class="row" style="display:none;" v-show="initialized">
-    <div class="col-md-6" v-if="system.app">
-        <div class="panel panel-default">
-            <div class="panel-heading"><b><%= siteTitle %> application</b></div>
-            <div class="panel-body">
-                <key-value v-if="system.app.version" name="<%= __('Version') %>" :value="system.app.version"></key-value>
-                <key-value v-if="system.app.uptime" name="<%= __('Uptime') %>" :value="system.app.uptime | durationSeconds"></key-value>
+    <div class="row" style="display:none;" v-show="initialized">
+        <div class="col-md-6">
+            <div class="panel panel-default" v-if="metrics.system">
+                <div class="panel-heading"><b><%= __('System') %></b></div>
+                <key-value-store>
+                    <key-value v-if="metrics.system.arch" name="<%= __('Architecture') %>" :value="metrics.system.arch"></key-value>
+                    <key-value v-if="metrics.system.platform" name="<%= __('OS') %>" :value="metrics.system.platform"></key-value>
+                </key-value-store>
+            </div>
+
+            <div class="panel panel-default" v-if="metrics.app">
+                <div class="panel-heading"><b><%= siteTitle %> application</b></div>
+                <key-value-store>
+                    <key-value v-if="metrics.app.version" name="<%= __('Version') %>" :value="metrics.app.version"></key-value>
+                    <key-value v-if="metrics.app.startTstamp" name="<%= __('Started on') %>" :value="metrics.app.startTstamp | dateTime"></key-value>
+                    <key-value v-if="metrics.app.uptime" name="<%= __('Uptime') %>" :value="metrics.app.uptime | durationSeconds"></key-value>
+                    <key-value v-if="metrics.app.pid" name="<%= __('PID') %>" :value="metrics.app.pid"></key-value>
+                    <key-value-header v-if="metrics.app.memoryUsage" name="<%= __('Memory usage') %>"></key-value-header>
+                    <key-value v-if="metrics.app.memoryUsage.rss" name="<%= __('RSS') %>" :value="metrics.app.memoryUsage.rss | autoBytes"></key-value>
+                    <key-value v-if="metrics.app.memoryUsage.heapUsed || metrics.app.memoryUsage.heapTotal" name="<%= __('Heap') %>" value="">
+                        {{ metrics.app.memoryUsage.heapUsed | autoBytes }} / {{ metrics.app.memoryUsage.heapTotal | autoBytes }}
+                        <div class="progress" v-show="heapPercentage" style="margin-bottom:0">
+                            <div class="progress-bar" role="progressbar" :style="{ width: heapPercentage + '%' }" style="min-width: 2em;">
+                                {{ heapPercentage }}%
+                            </div>
+                        </div>
+                    </key-value>
+                </key-value-store>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default" v-if="metrics.node">
+                <div class="panel-heading"><b><%= __('Node.js') %></b></div>
+                <key-value-store>
+                    <key-value v-if="metrics.node.version" name="<%= __('Version') %>" :value="metrics.node.version"></key-value>
+                    <key-value-header v-if="metrics.node.modulesVersions" name="<%= __("Modules' versions") %>"></key-value-header>
+                    <key-value v-if="metrics.node.modulesVersions" v-for="(version, name) of metrics.node.modulesVersions" :name="name" :value="version" key="{{'node-module-' + name}}" ></key-value>
+                </key-value-store>
             </div>
         </div>
     </div>
-    <div class="col-md-6" v-if="system.node">
-        <div class="panel panel-default">
-            <div class="panel-heading"><b>Node.js</b></div>
-            <div class="panel-body">
-                <key-value v-if="system.node.version" name="<%= __('Version') %>" :value="system.node.version"></key-value>
-            </div>
-        </div>
+
+    <div class="panel panel-default" v-if="metrics.env">
+        <div class="panel-heading"><b><%= __('Environment variables') %></b></div>
+        <key-value-store>
+            <key-value v-for="(value, name) of metrics.env" :name="name" :value="value" key="{{'env-' + name}}" ></key-value>
+        </key-value-store>
     </div>
-</div>
+
 </div>
 
+<script type="text/x-template" id="v-tpl-key-value-store">
+    <table class="table table-key-value"><tbody>
+        <slot></slot>
+    </tbody></table>
+</script>
+
 <script type="text/x-template" id="v-tpl-key-value">
-    <div class="key-value">
-        <span class="key">{{ name }}</span><span class="value">{{ value }}</span>
-    </div>
+    <tr class="key-value">
+        <td class="key">{{ name }}</td>
+        <td v-if="value" class="value">{{ value }}</td>
+        <td v-else class="value"><slot></slot></td>
+    </tr>
+</script>
+
+<script type="text/x-template" id="v-tpl-key-value-header">
+    <tr class="key-value">
+        <td colspan="2" class="key header"> {{ name }}</td>
+    </tr>
 </script>
 
 <script type="text/javascript">
@@ -87,7 +134,7 @@ $(function () {
             },
             initialized: false,
             lastUpdateTstamp: null,
-            system: {}
+            metrics: {}
         },
         computed: {
             lastUpdateDate: function() {
@@ -96,18 +143,31 @@ $(function () {
                 } else {
                     return moment();
                 }
+            },
+            heapPercentage: function() {
+                if (this.metrics.app.memoryUsage.heapTotal && this.metrics.app.memoryUsage.heapUsed && this.metrics.app.memoryUsage.heapTotal > 0) {
+                    return Math.round(this.metrics.app.memoryUsage.heapUsed * 100 / this.metrics.app.memoryUsage.heapTotal);
+                }
+
+                return false;
             }
         },
         filters: {
             durationSeconds: function(seconds) {
                 return moment.duration(seconds, "seconds").format("<%= __('Y [year(s)] M [month(s)] d [day(s)] h[h] mm[m] ss[s]') %>");
+            },
+            dateTime: function(tstamp) {
+                return moment(tstamp).format("LLLL:ss");
+            },
+            autoBytes: function(value) {
+                return numeral(value).format('0.0b');
             }
         },
         methods: {
             updateData: function() {
                 $.get('/admin/system-information', function (data) {
-                    if (data.system) {
-                        this.system = data.system;
+                    if (data.metrics) {
+                        this.metrics = data.metrics;
                         this.initialized = true;
                     }
                     if (data.lastUpdate) {
@@ -148,9 +208,16 @@ $(function () {
             }
         },
         components: {
+            'key-value-store': {
+                template: '#v-tpl-key-value-store'
+            },
             'key-value': {
                 template: '#v-tpl-key-value',
                 props: ['name', 'value'],
+            },
+            'key-value-header': {
+                template: '#v-tpl-key-value-header',
+                props: ['name'],
             }
         },
         mounted: function() {

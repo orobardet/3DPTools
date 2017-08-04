@@ -15,6 +15,7 @@
   "public/vendor/moment/min": "/vendor/javascripts",
   "public/vendor/moment/locale": "/vendor/locales",
   "public/vendor/moment-duration-format/lib": "/vendor/javascripts",
+  "public/vendor/numeral/min": "/vendor/javascripts/numeral",
   "public/vendor/ejs": "/vendor/javascripts",
   "public/vendor/vue/dist": "/vendor/javascripts"
 }

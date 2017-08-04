@@ -377,5 +377,16 @@
   "Auto refresh (%s)": "Rafraîchissement auto (%s)",
   "Y [year(s)] M [month(s)] d [day(s)] h[h] mm[m] ss[s]": "Y [an(s)] M [mois] d [jour(s)] h[h] mm[m] ss[s]",
   "Version": "Version",
-  "Uptime": "Uptime"
+  "Uptime": "Uptime",
+  "Modules' versions": "Versions des modules",
+  "Architecture": "Architecture",
+  "OS": "OS",
+  "System": "Système",
+  "Node.js": "Node.js",
+  "PID": "PID",
+  "Started on": "Démarré le",
+  "Memory usage": "Utilisation de la mémoire",
+  "RSS": "RSS",
+  "Heap": "Heap",
+  "Environment variables": "Variables d'environnement"
 }

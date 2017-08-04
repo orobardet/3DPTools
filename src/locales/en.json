@@ -234,5 +234,21 @@
   "%": "%",
   "Initial net material weight:": "Initial net material weight:",
   "Including spool weight, if any": "Including spool weight, if any",
-  "Initial total weight:": "Initial total weight:"
+  "Initial total weight:": "Initial total weight:",
+  "Auto refresh (%s)": "Auto refresh (%s)",
+  "System's information": "System's information",
+  "Version": "Version",
+  "Uptime": "Uptime",
+  "PID": "PID",
+  "Started on": "Started on",
+  "Memory usage": "Memory usage",
+  "RSS": "RSS",
+  "Heap": "Heap",
+  "System": "System",
+  "Architecture": "Architecture",
+  "OS": "OS",
+  "Node.js": "Node.js",
+  "Modules' versions": "Modules' versions",
+  "Y [year(s)] M [month(s)] d [day(s)] h[h] mm[m] ss[s]": "Y [year(s)] M [month(s)] d [day(s)] h[h] mm[m] ss[s]",
+  "Users": "Users"
 }

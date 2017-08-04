@@ -174,18 +174,27 @@ module.exports = function(app) {
                 });
             }
 
-            let systemData = {
+            let metricsData = {
                 app: {
                     version: app.config.get('version'),
-                    uptime: Math.floor(process.uptime())
+                    uptime: Math.floor(process.uptime()),
+                    startTstamp: new Date().getTime() - process.uptime() * 1000,
+                    pid: process.pid,
+                    memoryUsage: process.memoryUsage()
                 },
                 node: {
-                    version: process.version
-                }
+                    version: process.version,
+                    modulesVersions: process.versions
+                },
+                system: {
+                    arch: process.arch,
+                    platform: process.platform
+                },
+                env: process.env
             };
 
             return res.json({
-                system: systemData,
+                metrics: metricsData,
                 lastUpdate: new Date().getTime()
             });
         } catch (err) {
