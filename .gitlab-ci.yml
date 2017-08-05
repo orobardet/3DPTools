@@ -29,6 +29,20 @@ Unit tests:
   except:
     - tags
 
+Test Docker build:
+  image: docker:git
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker pull $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME || true
+    - docker pull $CI_REGISTRY_IMAGE || true
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME --cache-from $CI_REGISTRY_IMAGE --cache-from $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME .
+  when: manual
+  only:
+    - branches
+  except:
+    - tags
+
 Docker build:
   image: docker:git
   stage: build
