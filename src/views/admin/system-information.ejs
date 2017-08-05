@@ -23,9 +23,11 @@
     </div>
     <h1><%= __(pageTitle) %></h1>
     </div>
-<div id="app-loader" style="text-align: center; font-weight: bold; font-size: larger;margin-top: 50px;" v-if="!initialized">Loading data...</div>
 
-    <div class="row" style="display:none;" v-show="initialized">
+    <div id="app-loader" style="text-align: center; font-weight: bold; font-size: larger;margin-top: 50px;" v-if="!initialized">Loading data...</div>
+
+    <div style="display:none;" v-show="initialized">
+    <div class="row" >
         <div class="col-md-6">
             <div class="panel panel-default" v-if="metrics.system">
                 <div class="panel-heading"><b><%= __('System') %></b></div>
@@ -75,11 +77,55 @@
         </div>
     </div>
 
+    <div class="row" v-if="metrics.mongo">
+        <div class="col-md-6" v-if="metrics.mongo.dbStats && metrics.mongo.dbStats.db">
+            <div class="panel panel-default" >
+                <div class="panel-heading"><b><%= __("Database '%s'", "{{metrics.mongo.dbStats.db}}") %></b></div>
+                <key-value-store>
+                    <key-value name="<%= __('Collections') %>" :value="metrics.mongo.dbStats.collections.toString()" v-if="metrics.mongo.dbStats.collections.toString()"></key-value>
+                    <key-value name="<%= __('Views') %>" :value="metrics.mongo.dbStats.views.toString()" v-if="metrics.mongo.dbStats.views.toString()"></key-value>
+                    <key-value name="<%= __('Objects') %>" :value="metrics.mongo.dbStats.objects.toString()" v-if="metrics.mongo.dbStats.objects.toString()"></key-value>
+                    <key-value name="<%= __('Data size') %>" :value="metrics.mongo.dbStats.dataSize | autoBytes" v-if="metrics.mongo.dbStats.dataSize.toString()"></key-value>
+                    <key-value name="<%= __('Storage size') %>" :value="metrics.mongo.dbStats.storageSize | autoBytes" v-if="metrics.mongo.dbStats.storageSize.toString()"></key-value>
+                    <key-value name="<%= __('Average object size') %>" :value="metrics.mongo.dbStats.avgObjSize | autoBytes" v-if="metrics.mongo.dbStats.avgObjSize.toString()"></key-value>
+                    <key-value name="<%= __('Indexes') %>" :value="metrics.mongo.dbStats.indexes.toString()" v-if="metrics.mongo.dbStats.indexes.toString()"></key-value>
+                    <key-value name="<%= __('Index size') %>" :value="metrics.mongo.dbStats.indexSize.toString() | autoBytes" v-if="metrics.mongo.dbStats.indexSize.toString()"></key-value>
+                </key-value-store>
+            </div>
+        </div>
+
+        <div class="col-md-6" v-if="metrics.mongo.serverInfo">
+            <div class="panel panel-default" >
+                <div class="panel-heading"><b><%= __('MongoDB') %></b></div>
+                <key-value-store>
+                    <key-value name="<%= __('Version') %>" :value="metrics.mongo.serverInfo.version" v-if="metrics.mongo.serverInfo.version"></key-value>
+                    <key-value name="<%= __('Architecture') %>" :value="metrics.mongo.serverInfo.buildEnvironment.target_arch" v-if="metrics.mongo.serverInfo.buildEnvironment.target_arch"></key-value>
+                    <key-value name="<%= __('Minimum target OS') %>" :value="metrics.mongo.serverInfo.targetMinOS" v-if="metrics.mongo.serverInfo.targetMinOS"></key-value>
+                    <key-value name="<%= __('Modules') %>" v-if="metrics.mongo.serverInfo.modules">
+                        <ul class="list-unstyled" style="margin:0;" v-if="metrics.mongo.serverInfo.modules.length">
+                            <li v-for="module of metrics.mongo.serverInfo.modules">{{module}}</li>
+                        </ul>
+                        <span v-else><%= __('None') %></span>
+                    </key-value>
+                    <key-value name="<%= __('Javascript engine') %>" :value="metrics.mongo.serverInfo.javascriptEngine" v-if="metrics.mongo.serverInfo.javascriptEngine"></key-value>
+                    <key-value name="<%= __('Max BSON object size') %>" :value="metrics.mongo.serverInfo.maxBsonObjectSize.toString() | autoBytes" v-if="metrics.mongo.serverInfo.maxBsonObjectSize.toString()"></key-value>
+                    <key-value name="<%= __('Storage engines') %>" v-if="metrics.mongo.serverInfo.storageEngines">
+                        <ul class="list-unstyled" style="margin:0;" v-if="metrics.mongo.serverInfo.storageEngines.length">
+                            <li v-for="engine of metrics.mongo.serverInfo.storageEngines">{{engine}}</li>
+                        </ul>
+                        <span v-else><%= __('None') %></span>
+                    </key-value>
+                </key-value-store>
+            </div>
+        </div>
+    </div>
+
     <div class="panel panel-default" v-if="metrics.env">
         <div class="panel-heading"><b><%= __('Environment variables') %></b></div>
         <key-value-store>
             <key-value v-for="(value, name) of metrics.env" :name="name" :value="value" key="{{'env-' + name}}" ></key-value>
         </key-value-store>
+    </div>
     </div>
 
 </div>
@@ -210,6 +256,7 @@ $(function () {
                 this.autoRefresher.timer = setInterval(function () {
                     this.updateData();
                 }.bind(this), delay);
+                this.updateData();
             },
             stopAutoRefresh: function() {
                 clearInterval(this.autoRefresher.timer);

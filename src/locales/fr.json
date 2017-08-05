@@ -389,5 +389,22 @@
   "RSS": "RSS",
   "Heap": "Heap",
   "Environment variables": "Variables d'environnement",
-  "Storage usage": "Utilisation du stockage"
+  "Storage usage": "Utilisation du stockage",
+  "MongoDB": "MongoDB",
+  "Server information": "Informations server",
+  "Collections": "Collections",
+  "Views": "Vues",
+  "Objects": "Objets",
+  "Data size": "Taille des données",
+  "Average object size": "Taille moyenne d'un objet",
+  "Indexes": "Indexes",
+  "Index size": "Taille des indexes",
+  "Storage size": "Taille du stockage",
+  "Javascript engine": "Moteur javascript",
+  "Max BSON object size": "Max BSON object size",
+  "Database '%s'": "Base de données '%s'",
+  "Modules": "Modules",
+  "None": "Aucun",
+  "Minimum target OS": "OS cible minimum",
+  "Storage engines": "Storage engines"
 }

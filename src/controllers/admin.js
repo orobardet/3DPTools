@@ -5,6 +5,7 @@ module.exports = function(app) {
     const User = app.models.user;
     const util = require('util');
     const diskusage = util.promisify(require('diskusage').check);
+    const mongoose = require('mongoose');
 
     /**
      * Index page of the admin section
@@ -176,6 +177,11 @@ module.exports = function(app) {
                 });
             }
 
+            let promises = [];
+
+            const dbAdmin = mongoose.connection.db.admin(mongoose.connection.db);
+            let [mongoDbStats, mongoServerInfo] = await Promise.all([mongoose.connection.db.stats(), dbAdmin.serverInfo()]);
+
             const du = {};
             for (let path of [app.get('config').get('upload:tmpPath')]) {
                 du[path] = await diskusage(path);
@@ -198,7 +204,11 @@ module.exports = function(app) {
                     platform: process.platform,
                     du: du
                 },
-                env: process.env
+                env: process.env,
+                mongo: {
+                    serverInfo: mongoServerInfo,
+                    dbStats: mongoDbStats
+                }
             };
 
             return res.json({
