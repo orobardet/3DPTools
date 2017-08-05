@@ -388,5 +388,6 @@
   "Memory usage": "Utilisation de la mémoire",
   "RSS": "RSS",
   "Heap": "Heap",
-  "Environment variables": "Variables d'environnement"
+  "Environment variables": "Variables d'environnement",
+  "Storage usage": "Utilisation du stockage"
 }

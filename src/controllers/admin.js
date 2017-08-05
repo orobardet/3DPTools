@@ -3,6 +3,8 @@
 module.exports = function(app) {
     const libLocale = app.lib.locale;
     const User = app.models.user;
+    const util = require('util');
+    const diskusage = util.promisify(require('diskusage').check);
 
     /**
      * Index page of the admin section
@@ -174,6 +176,11 @@ module.exports = function(app) {
                 });
             }
 
+            const du = {};
+            for (let path of [app.get('config').get('upload:tmpPath')]) {
+                du[path] = await diskusage(path);
+            }
+
             let metricsData = {
                 app: {
                     version: app.config.get('version'),
@@ -188,7 +195,8 @@ module.exports = function(app) {
                 },
                 system: {
                     arch: process.arch,
-                    platform: process.platform
+                    platform: process.platform,
+                    du: du
                 },
                 env: process.env
             };

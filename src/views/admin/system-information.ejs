@@ -32,6 +32,11 @@
                 <key-value-store>
                     <key-value v-if="metrics.system.arch" name="<%= __('Architecture') %>" :value="metrics.system.arch"></key-value>
                     <key-value v-if="metrics.system.platform" name="<%= __('OS') %>" :value="metrics.system.platform"></key-value>
+
+                    <key-value-header v-if="metrics.system.du" name="<%= __('Storage usage') %>"></key-value-header>
+                    <key-value v-if="metrics.system.du" v-for="(du, path) of metrics.system.du" :name="path" value="" key="{{'du-' + path}}" >
+                        <disk-usage :total="du.total" :used="du.total - du.available"></disk-usage>
+                    </key-value>
                 </key-value-store>
             </div>
 
@@ -42,13 +47,14 @@
                     <key-value v-if="metrics.app.startTstamp" name="<%= __('Started on') %>" :value="metrics.app.startTstamp | dateTime"></key-value>
                     <key-value v-if="metrics.app.uptime" name="<%= __('Uptime') %>" :value="metrics.app.uptime | durationSeconds"></key-value>
                     <key-value v-if="metrics.app.pid" name="<%= __('PID') %>" :value="metrics.app.pid"></key-value>
+
                     <key-value-header v-if="metrics.app.memoryUsage" name="<%= __('Memory usage') %>"></key-value-header>
                     <key-value v-if="metrics.app.memoryUsage.rss" name="<%= __('RSS') %>" :value="metrics.app.memoryUsage.rss | autoBytes"></key-value>
                     <key-value v-if="metrics.app.memoryUsage.heapUsed || metrics.app.memoryUsage.heapTotal" name="<%= __('Heap') %>" value="">
                         {{ metrics.app.memoryUsage.heapUsed | autoBytes }} / {{ metrics.app.memoryUsage.heapTotal | autoBytes }}
-                        <div class="progress" v-show="heapPercentage" style="margin-bottom:0">
-                            <div class="progress-bar" role="progressbar" :style="{ width: heapPercentage + '%' }" style="min-width: 2em;">
-                                {{ heapPercentage }}%
+                        <div class="progress" style="margin-bottom:0" >
+                            <div class="progress-bar" role="progressbar" :style="{ width: percentage(metrics.app.memoryUsage.heapUsed, metrics.app.memoryUsage.heapTotal) + '%' }" style="min-width: 2em;">
+                                {{ percentage(metrics.app.memoryUsage.heapUsed, metrics.app.memoryUsage.heapTotal) }}%
                             </div>
                         </div>
                     </key-value>
@@ -61,6 +67,7 @@
                 <div class="panel-heading"><b><%= __('Node.js') %></b></div>
                 <key-value-store>
                     <key-value v-if="metrics.node.version" name="<%= __('Version') %>" :value="metrics.node.version"></key-value>
+
                     <key-value-header v-if="metrics.node.modulesVersions" name="<%= __("Modules' versions") %>"></key-value-header>
                     <key-value v-if="metrics.node.modulesVersions" v-for="(version, name) of metrics.node.modulesVersions" :name="name" :value="version" key="{{'node-module-' + name}}" ></key-value>
                 </key-value-store>
@@ -97,9 +104,44 @@
     </tr>
 </script>
 
+<script type="text/x-template" id="v-tpl-disk-usage">
+    <div v-if>
+        {{ used | autoBytes }} / {{ total | autoBytes }}
+        <div class="progress" style="margin-bottom:0" >
+            <div class="progress-bar" role="progressbar" :style="{ width: percentage(used, total) + '%' }" style="min-width: 2em;">
+                {{ percentage(used, total) }}%
+            </div>
+        </div>
+    </div>
+</script>
+
+
 <script type="text/javascript">
 let sysInfoApp;
 $(function () {
+    Vue.mixin({
+        filters: {
+            'autoBytes': function (value) {
+                return numeral(value).format('0.0 ib');
+            },
+            'durationSeconds': function(seconds) {
+                return moment.duration(seconds, "seconds").format("<%= __('Y [year(s)] M [month(s)] d [day(s)] h[h] mm[m] ss[s]') %>");
+            },'dateTime': function(tstamp) {
+                return moment(tstamp).format("LLLL:ss");
+            }
+        },
+        methods: {
+            percentage: function (part, full, precision) {
+                if (part && full && full > 0) {
+                    precision = precision || 0;
+                    return Math.round((part / full) * 100, precision);
+                } else {
+                    return 0;
+                }
+            }
+        }
+    });
+
     sysInfoApp = new Vue({
         el: '#system-information',
         data: {
@@ -143,24 +185,6 @@ $(function () {
                 } else {
                     return moment();
                 }
-            },
-            heapPercentage: function() {
-                if (this.metrics.app.memoryUsage.heapTotal && this.metrics.app.memoryUsage.heapUsed && this.metrics.app.memoryUsage.heapTotal > 0) {
-                    return Math.round(this.metrics.app.memoryUsage.heapUsed * 100 / this.metrics.app.memoryUsage.heapTotal);
-                }
-
-                return false;
-            }
-        },
-        filters: {
-            durationSeconds: function(seconds) {
-                return moment.duration(seconds, "seconds").format("<%= __('Y [year(s)] M [month(s)] d [day(s)] h[h] mm[m] ss[s]') %>");
-            },
-            dateTime: function(tstamp) {
-                return moment(tstamp).format("LLLL:ss");
-            },
-            autoBytes: function(value) {
-                return numeral(value).format('0.0b');
             }
         },
         methods: {
@@ -218,6 +242,10 @@ $(function () {
             'key-value-header': {
                 template: '#v-tpl-key-value-header',
                 props: ['name'],
+            },
+            'disk-usage': {
+                template: '#v-tpl-disk-usage',
+                props: ['total', 'used'],
             }
         },
         mounted: function() {

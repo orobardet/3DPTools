@@ -8818,7 +8818,8 @@ table td.not-found {
   background-color: #f5f5f5;
   padding: 10px 15px;
   padding-top: 5px;
-  padding-bottom: 5px; }
+  padding-bottom: 5px;
+  vertical-align: middle; }
   .system-section #system-information .table-key-value .key-value .key.header {
     padding-top: 10px;
     padding-bottom: 10px; }
