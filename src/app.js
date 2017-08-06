@@ -243,6 +243,17 @@ module.exports = function(bootstrapOptions) {
 
     }
 
+    // Init prometheus metrics endpoint
+    // After static routing, so that they will not be counted in stats
+    if (bootstrapOptions.setupHttpRouting && config.get('monitoring:prometheus:enabled')) {
+        const promBundle = require("express-prom-bundle");
+        promBundle.promClient.collectDefaultMetrics({ timeout: 5000 });
+        app.use(promBundle({
+            includeMethod: true,
+            includePath: true
+        }));
+    }
+
     // Init logger
     if (bootstrapOptions.initLogger) {
         const logger = require('morgan');

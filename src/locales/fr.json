@@ -406,5 +406,6 @@
   "Modules": "Modules",
   "None": "Aucun",
   "Minimum target OS": "OS cible minimum",
-  "Storage engines": "Storage engines"
+  "Storage engines": "Storage engines",
+  "Prometheus data": "Données Prometheus"
 }

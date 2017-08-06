@@ -21,7 +21,12 @@
             </ul>
         </div>
     </div>
-    <h1><%= __(pageTitle) %></h1>
+    <h1>
+        <%= __(pageTitle) %>
+        <% if (prometheusEnabled) { %>
+        <small style="margin-left: 30px;"><a href="/metrics" target="_blank"><i class="fa fa-area-chart"></i> <%= __('Prometheus data') %></a></small>
+        <% } %>
+    </h1>
     </div>
 
     <div id="app-loader" style="text-align: center; font-weight: bold; font-size: larger;margin-top: 50px;" v-if="!initialized">Loading data...</div>

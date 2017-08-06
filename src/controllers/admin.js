@@ -173,7 +173,8 @@ module.exports = function(app) {
             if (!req.xhr) {
                 return res.render('admin/system-information', {
                     navModule: 'system',
-                    pageTitle: "System's information"
+                    pageTitle: "System's information",
+                    prometheusEnabled: app.config.get('monitoring:prometheus:enabled') || false,
                 });
             }
 

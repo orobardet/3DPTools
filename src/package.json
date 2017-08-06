@@ -26,6 +26,7 @@
     "express-ejs-layouts": "^2.3.0",
     "express-flash": "0.0.2",
     "express-form": "^0.12.6",
+    "express-prom-bundle": "^3.1.0",
     "express-session": "^1.15.4",
     "fs-promise": "^2.0.3",
     "gm": "^1.23.0",
