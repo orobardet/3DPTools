@@ -8827,4 +8827,16 @@ table td.not-found {
   border-left: 1px solid #ddd;
   padding: 5px; }
 
+.config-section #jsonConfig {
+  display: block;
+  height: 100%;
+  overflow: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  box-shadow: inset 0px 0px 5px #ddd;
+  background-color: #fdfdfd; }
+  .config-section #jsonConfig .jsonview {
+    font-size: 0.9em; }
+
 /*# sourceMappingURL=style.css.map */

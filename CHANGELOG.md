@@ -3,6 +3,7 @@
 - [New] Show changelog when clicking on version number (#54)
 - [New] Add project source link (to Gitlab) on changelog page (#58)
 - [New] Add a system information page in admin section (#70)
+- [New] Add a show config page in admin section (#76)
 - [New] Prometheus metrics endpoint (`/metrics`), enabled by default (#78)
 - [New] Filament stats: menu with scrollspy for quick access to each graphs (#53)
 - [New] Filament stats, buy history, 2 splines added : (#53)

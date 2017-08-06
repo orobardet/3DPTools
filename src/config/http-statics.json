@@ -3,6 +3,7 @@
   "public": null,
   "public/vendor/jquery/dist": "/vendor/javascripts",
   "public/vendor/jquery-ui": "/vendor/javascripts",
+  "public/vendor/jquery-jsonview/dist": "/vendor/javascripts",
   "public/vendor/bootstrap-sass/assets": "/vendor",
   "public/vendor/font-awesome": "/vendor",
   "public/vendor/font-awesome/fonts": "/fonts",

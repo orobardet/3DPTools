@@ -48,7 +48,6 @@ module.exports = function(bootstrapOptions) {
                 alias: 'config-file',
                 description: 'Configuration file to load',
                 required: false,
-                default: null,
                 type: 'string'
             },
             "h": {
@@ -56,7 +55,13 @@ module.exports = function(bootstrapOptions) {
                 description: 'Show this help'
             }
         }, "Launch 3DPTools web app");
-        config.env({separator: '__'});
+
+        const configEnvKeys = require('./tools/extractConfigEnvKeys')(process.cwd() + '/config/default.json', '__');
+        config.env({
+            separator: '__',
+            whitelist: configEnvKeys
+        });
+
         if (config.get('config-file')) {
             config.file('user', config.get('config-file'));
         }

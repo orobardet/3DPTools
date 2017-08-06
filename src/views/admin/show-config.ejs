@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="/vendor/javascripts/jquery.jsonview.css">
+<script src="/vendor/javascripts/jquery.jsonview.js"></script>
+
+<h1>
+    <%= __(pageTitle) %>
+</h1>
+
+<div id="jsonConfig"></div>
+
+<script type="text/javascript">
+$(function() {
+    const configData = <%- JSON.stringify(configToShow) %>;
+
+    $('#jsonConfig').height('calc(100vh - ' + ($('#jsonConfig').offset().top + 30) + 'px)')
+
+    $('#jsonConfig').JSONView(configData);
+});
+</script>

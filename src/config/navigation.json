@@ -74,6 +74,14 @@
           "url": "/admin/system-information",
           "iconClasses": "fa fa-heartbeat",
           "onlyAdmin": true
+        },
+        {
+          "name": "config",
+          "label": "Show configuration",
+          "moduleName": "config",
+          "url": "/admin/show-config",
+          "iconClasses": "fa fa-cog",
+          "onlyAdmin": true
         }
       ]
     }

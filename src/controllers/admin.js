@@ -221,5 +221,24 @@ module.exports = function(app) {
         }
     };
 
+    /**
+     * Show the actual configuration used by the application
+     *
+     * It is not only the content of the configuration file, but the full runtime configuration that can come
+     * from multiple sources (config file, environment variables, command line arguments, ...)
+     */
+    this.showConfig = async (req, res, next) => {
+        const protectData = require(process.cwd()+'/tools/protectConfigData');
+        try {
+            return res.render('admin/show-config', {
+                navModule: 'config',
+                pageTitle: "System's configuration",
+                configToShow: protectData(app.config.get() || {}, [/.*secret.*/, /.*pass.*/, /.*password.*/, /dsn/], '*****')
+            });
+        } catch (err) {
+            return next(err);
+        }
+    };
+
     return this;
 };

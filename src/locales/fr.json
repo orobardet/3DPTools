@@ -408,5 +408,7 @@
   "Minimum target OS": "OS cible minimum",
   "Storage engines": "Storage engines",
   "Prometheus data": "Données Prometheus",
-  "Datas": "Données"
+  "Datas": "Données",
+  "Show configuration": "Afficher la configuration",
+  "System's configuration": "Configuration du système"
 }
