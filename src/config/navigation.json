@@ -15,15 +15,15 @@
       "iconClasses": "rs rs-filament"
     },
     {
-      "name": "settings",
-      "label": "Settings",
+      "name": "data",
+      "label": "Datas",
       "moduleNames": [
-        "settings",
+        "data",
         "shop",
         "brand",
         "material"
       ],
-      "iconClasses": "fa fa-wrench",
+      "iconClasses": "fa fa-archive",
       "pages": [
         {
           "name": "shop",

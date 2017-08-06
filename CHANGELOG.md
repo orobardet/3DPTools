@@ -14,6 +14,7 @@
 - [New] Filter filaments in cost calculator list (#61)
 - [Imp] Don't show finished filaments in cost calculator list (#62)
 - [Imp] Filament stats, buy history: add points on splines (#67)
+- [Imp] Rename 'Settings' menu (brand, shop, material) to 'Data' (#77)
 - [Fix] UI language selection (#75)
 - [Tec] Upgrade to latest NPM & Bower dependencies versions (#64)
 - [Tec] Upgrade to NodeJS 8.2 (#64)
