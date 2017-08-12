@@ -7,6 +7,7 @@ module.exports = function (app) {
     let materialSchema = new Schema({
         name: String,
         description: String,
+        parentMaterial: {type: Schema.Types.ObjectId, ref: 'Material'},
         density: Number,
         headTemp: {
             min: Number,
@@ -38,20 +39,21 @@ module.exports = function (app) {
      *
      * <b>Version history:</b>
      * - 1: printing speed range
+     * - 2: master filament
      */
-    materialSchema.statics.currentVersion = 1;
+    materialSchema.statics.currentVersion = 2;
 
     materialSchema.methods.setInMigration = function() {
         this.inMigration = true;
-    }
+    };
 
     materialSchema.methods.isInMigration = function() {
         return this.inMigration;
-    }
+    };
 
     materialSchema.methods.resetInMigration = function() {
         delete this.inMigration;
-    }
+    };
 
     materialSchema.pre('save', function(next) {
         // No pre save during migration, to avoid updating unwanted data
