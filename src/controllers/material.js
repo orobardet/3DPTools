@@ -44,46 +44,80 @@ module.exports = function (app) {
     /**
      * Add a new material (process the form shown by `this.addForm`)
      */
-    this.add = async function (req, res, next) {
-        if (!req.form.isValid) {
-            return res.render('material/add', {
-                errors: req.form.getErrors()
-            });
-        }
-
-        let material = new Material({
-            name: req.form.name,
-            description: req.form.description,
-            density: req.form.density
-        });
-
-        if (req.form.headTempMin) {
-            material.headTemp.min = req.form.headTempMin;
-        }
-        if (req.form.headTempMax) {
-            material.headTemp.max = req.form.headTempMax;
-        }
-        if (req.form.bedTempMin) {
-            material.bedTemp.min = req.form.bedTempMin;
-        }
-        if (req.form.bedTempMax) {
-            material.bedTemp.max = req.form.bedTempMax;
-        }
-        if (req.form.printingSpeedMin) {
-            material.printingSpeed.min = req.form.printingSpeedMin;
-        }
-        if (req.form.printingSpeedMax) {
-            material.printingSpeed.max = req.form.printingSpeedMax;
-        }
-
+    this.add = async (req, res, next) => {
         try {
-            await material.save();
+            let errors = {};
+            if (!req.form.isValid) {
+                errors = req.form.getErrors()
+            }
+
+            let parentMaterialId = req.form.parentMaterial;
+            let parentMaterial = null;
+
+            if (parentMaterialId) {
+                let parentMaterialErrors = [];
+
+                try {
+                    parentMaterial = await Material.findById(parentMaterialId).exec();
+                } catch (err) {
+                    parentMaterial = null;
+                }
+
+                if (!parentMaterial) {
+                    parentMaterialErrors.push('Unable to find parent material');
+                }
+                if (parentMaterial.parenMaterial) {
+                    parentMaterialErrors.push('A material having parent material can be used as parent material');
+                }
+
+                if (parentMaterialErrors.length) {
+                    errors.parenMaterial = parentMaterialErrors;
+                }
+            }
+
+            if (errors && errors.length) {
+                return res.render('material/add', {
+                    errors: errors
+                });
+            }
+
+            let material = new Material({
+                name: req.form.name,
+                parentMaterial: (parentMaterial) ? parentMaterial.id : null,
+                description: req.form.description,
+                density: req.form.density,
+            });
+
+            if (req.form.headTempMin) {
+                material.headTemp.min = req.form.headTempMin;
+            }
+            if (req.form.headTempMax) {
+                material.headTemp.max = req.form.headTempMax;
+            }
+            if (req.form.bedTempMin) {
+                material.bedTemp.min = req.form.bedTempMin;
+            }
+            if (req.form.bedTempMax) {
+                material.bedTemp.max = req.form.bedTempMax;
+            }
+            if (req.form.printingSpeedMin) {
+                material.printingSpeed.min = req.form.printingSpeedMin;
+            }
+            if (req.form.printingSpeedMax) {
+                material.printingSpeed.max = req.form.printingSpeedMax;
+            }
+
+            try {
+                await material.save();
+            } catch (err) {
+                return next(err);
+
+            }
+
+            return res.redirect("/material");
         } catch (err) {
             return next(err);
-
         }
-
-        return res.redirect("/material");
     };
 
     /**

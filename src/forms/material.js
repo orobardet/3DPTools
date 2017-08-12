@@ -8,6 +8,7 @@ module.exports = function (app) {
         field("name", "Name")
             .trim()
             .required(),
+        field("parentMaterial", "Parent material"),
         field("description", "Description")
             .trim(),
         field("density", "Density")

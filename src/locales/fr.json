@@ -413,5 +413,6 @@
   "System's configuration": "Configuration du système",
   "<none>": "<aucun>",
   "Parent material:": "Matière parente :",
-  "Get from parent material": "Récupérer de la matière parente"
+  "Get from parent material": "Récupérer de la matière parente",
+  "%s°C min": "%s°C min"
 }
