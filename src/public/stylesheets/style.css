@@ -8509,10 +8509,22 @@ form.logo-shop .row-or, form.logo-brand .row-or {
     max-height: 100px;
     max-width: 300px; }
 
+.form-material .with-parent-material > .input-group-btn:first-child {
+  display: none; }
+.form-material .with-parent-material > input {
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important; }
+.form-material.has-parent-material .with-parent-material > .input-group-btn:first-child {
+  display: table-cell; }
+.form-material.has-parent-material .with-parent-material > input {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important; }
 .form-material .input-density {
   max-width: 200px; }
 .form-material .input-temperature {
-  max-width: 75px; }
+  max-width: 100px; }
+.form-material .input-speed {
+  max-width: 100px; }
 
 table.material-list > tbody > tr > td.material-description, table.material-list > tbody > tr td.material-data {
   border-top: 0;

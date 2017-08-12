@@ -26,10 +26,19 @@ module.exports = function (app) {
     /**
      * Show the add new material form
      */
-    this.addForm = function (req, res) {
-        return res.render('material/add', {
-            errors: []
-        });
+    this.addForm = async (req, res, next) => {
+        try {
+            let materials = await Material.find().sort('name').exec();
+
+            materials.unshift({name: res.__('<none>'), id:null});
+
+            return res.render('material/add', {
+                materials: materials,
+                errors: []
+            });
+        } catch (err) {
+            return next(err);
+        }
     };
 
     /**

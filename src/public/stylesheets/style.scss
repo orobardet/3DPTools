@@ -393,11 +393,36 @@ form.logo-shop, form.logo-brand {
 }
 
 .form-material {
+  .with-parent-material {
+    & > .input-group-btn:first-child {
+      display: none;
+    }
+    & > input {
+      border-top-left-radius: $input-border-radius !important;
+      border-bottom-left-radius: $input-border-radius !important;
+    }
+  }
+
+  &.has-parent-material {
+    .with-parent-material {
+      & > .input-group-btn:first-child {
+        display: table-cell;
+      }
+      & > input {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+      }
+    }
+  }
+
   .input-density {
     max-width: 200px;
   }
   .input-temperature {
-    max-width: 75px;
+    max-width: 100px;
+  }
+  .input-speed {
+    max-width: 100px;
   }
 }
 
