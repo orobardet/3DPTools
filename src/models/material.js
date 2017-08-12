@@ -7,7 +7,11 @@ module.exports = function (app) {
     let materialSchema = new Schema({
         name: String,
         description: String,
-        parentMaterial: {type: Schema.Types.ObjectId, ref: 'Material'},
+        parentMaterial: {
+            type: Schema.Types.ObjectId,
+            ref: 'Material',
+            index: true
+        },
         density: Number,
         headTemp: {
             min: Number,
@@ -123,14 +127,55 @@ module.exports = function (app) {
         return false;
     };
 
+    materialSchema.statics.list = async function (options, cb) {
+        options = Object.assign({
+            rootMaterials: true,
+            childMaterials: true,
+            treeList: false
+        }, options);
+
+        let filters = {};
+
+        // Tree mode will return root and child material, ignoring dedicated options
+        if (options.tree === true) {
+            //return this.find(filters).sort('name').populate('parentMaterial').exec(cb);
+
+            return this.aggregate([
+                {
+                    $match: { parentMaterial: null }
+                },
+                {
+                    $lookup: {
+                        from: 'materials',
+                        localField: '_id',
+                        foreignField: 'parentMaterial',
+                        as: 'variants'
+                    }
+                },
+                { $sort: { name: 1, 'variants.name': 1 } }
+            ]).exec(cb);
+
+        } else {
+            if (options.childMaterials === false) {
+                filters.parentMaterial = null;
+            }
+            if (options.rootMaterials === false) {
+                filters.parentMaterial = { $ne : null };
+            }
+
+            return this.find(filters).sort('name').populate('parentMaterial').exec(cb);
+        }
+    };
+
     materialSchema.statics.findById = function (id, cb) {
         return this.findOne({_id: id}, cb);
     };
 
-    materialSchema.statics.findOneRandom = async function (callback) {
+
+    materialSchema.statics.findOneRandom = async function (cb) {
         let count = await this.count().exec();
         let rand = Math.floor(Math.random() * count);
-        return this.findOne({}, {}, {skip: rand}, callback);
+        return this.findOne({}, {}, {skip: rand}, cb);
     };
 
     return mongoose.model('Material', materialSchema);

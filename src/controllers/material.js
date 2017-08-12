@@ -11,7 +11,7 @@ module.exports = function (app) {
         let materials;
 
         try {
-            materials = await Material.find().sort('name').exec();
+            materials = await Material.list({tree: true});
         } catch (err) {
             return next(err);
         }

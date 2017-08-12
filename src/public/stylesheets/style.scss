@@ -312,13 +312,19 @@ a.anchor {
   text-shadow: -1px -1px white, -1px 1px white, 1px 1px white, 1px -1px white;
 }
 
+.actions-block {
+  display: inline-block;
+  text-align: left;
+
+  a:not(:last-of-type) {
+    margin-right: 5px;
+  }
+}
+
 table.table {
   > tr, tbody > tr {
     td.table-actions {
       text-align: right;
-      a:not(:last-of-type) {
-        margin-right: 5px;
-      }
     }
   }
 }
@@ -337,10 +343,6 @@ table.shop-list, table.brand-list, table.material-list, table.filament-list {
   }
   & > tbody > tr > td {
     vertical-align: middle;
-  }
-  td.table-actions > .actions-block {
-    display: inline-block;
-    text-align: left;
   }
 
   .shop-name, .brand-name, .material-name {
@@ -435,8 +437,28 @@ table.material-list {
       vertical-align: top;
     }
 
+    > td.material-header, > td.material-data {
+      background-color: $panel-default-heading-bg;
+    }
+
+    > td.material-description {
+      padding-top: 8px;
+      border-top: 1px solid $panel-default-border;
+      border-left: 1px solid $panel-default-border;
+      & > ul:not(.material-files) {
+        padding-left: 13px;
+      }
+    }
+
     > td.material-data > div {
       white-space: nowrap;
+      margin: 3px 3px 3px 0px;
+    }
+
+    &.material-variant {
+      > td.material-header, > td.material-data {
+        padding-left: 50px;
+      }
     }
   }
 }

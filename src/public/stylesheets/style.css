@@ -8433,10 +8433,14 @@ a.anchor {
   bottom: 0em;
   text-shadow: -1px -1px white, -1px 1px white, 1px 1px white, 1px -1px white; }
 
+.actions-block {
+  display: inline-block;
+  text-align: left; }
+  .actions-block a:not(:last-of-type) {
+    margin-right: 5px; }
+
 table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
   text-align: right; }
-  table.table > tr td.table-actions a:not(:last-of-type), table.table tbody > tr td.table-actions a:not(:last-of-type) {
-    margin-right: 5px; }
 
 .filament-finished {
   background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, #eee 20px, #eee 40px);
@@ -8448,9 +8452,6 @@ table.shop-list > tbody > tr > th, table.brand-list > tbody > tr > th, table.mat
     font-weight: normal; }
 table.shop-list > tbody > tr > td, table.brand-list > tbody > tr > td, table.material-list > tbody > tr > td, table.filament-list > tbody > tr > td {
   vertical-align: middle; }
-table.shop-list td.table-actions > .actions-block, table.brand-list td.table-actions > .actions-block, table.material-list td.table-actions > .actions-block, table.filament-list td.table-actions > .actions-block {
-  display: inline-block;
-  text-align: left; }
 table.shop-list .shop-name, table.shop-list .brand-name, table.shop-list .material-name, table.brand-list .shop-name, table.brand-list .brand-name, table.brand-list .material-name, table.material-list .shop-name, table.material-list .brand-name, table.material-list .material-name, table.filament-list .shop-name, table.filament-list .brand-name, table.filament-list .material-name {
   margin: 5px 0;
   font-size: larger;
@@ -8530,8 +8531,19 @@ table.material-list > tbody > tr > td.material-description, table.material-list 
   border-top: 0;
   padding-top: 0;
   vertical-align: top; }
+table.material-list > tbody > tr > td.material-header, table.material-list > tbody > tr > td.material-data {
+  background-color: #f5f5f5; }
+table.material-list > tbody > tr > td.material-description {
+  padding-top: 8px;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd; }
+  table.material-list > tbody > tr > td.material-description > ul:not(.material-files) {
+    padding-left: 13px; }
 table.material-list > tbody > tr > td.material-data > div {
-  white-space: nowrap; }
+  white-space: nowrap;
+  margin: 3px 3px 3px 0px; }
+table.material-list > tbody > tr.material-variant > td.material-header, table.material-list > tbody > tr.material-variant > td.material-data {
+  padding-left: 50px; }
 
 ul.material-files {
   float: right; }

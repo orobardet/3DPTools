@@ -1,0 +1,9 @@
+<% include list-item.ejs %>
+
+<% if (material.variants && material.variants.length) { %>
+<% for (let variant of material.variants) { %>
+<% let material = variant %>
+<% var isMaterialVariant = true; %>
+<% include list-item.ejs %>
+<% } %>
+<% } %>
