@@ -35,7 +35,7 @@ h1 {
 }
 
 a.disabled {
-  color: gray;
+  color: $gray-light;
   &:hover {
     text-decoration: none;
   }
@@ -196,6 +196,12 @@ a.anchor {
   &.with-errors:empty {
     display: none;
   }
+}
+
+.form-feature-disabled {
+  color: $gray-light;
+  font-style: italic;
+  font-size: smaller;
 }
 
 .form-horizontal-alternative-or {

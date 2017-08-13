@@ -8244,7 +8244,7 @@ h1 {
   margin-bottom: 30px; }
 
 a.disabled {
-  color: gray; }
+  color: #777777; }
   a.disabled:hover {
     text-decoration: none; }
 
@@ -8346,6 +8346,11 @@ a.anchor {
   padding-left: 30px; }
   .form-group > ul.help-block.with-errors:empty {
     display: none; }
+
+.form-feature-disabled {
+  color: #777777;
+  font-style: italic;
+  font-size: smaller; }
 
 .form-horizontal-alternative-or {
   display: table-cell; }

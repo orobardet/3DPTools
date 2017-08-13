@@ -125,10 +125,30 @@ module.exports = function (app) {
         }
     };
 
+    this._prepareEditForm = async (res, material, data) => {
+        let materials = await Material.list({childMaterials: false, locale: res.getLocale()});
+
+        // A material can be parent of itself
+        materials = materials.filter(parentMaterial => parentMaterial._id.toString() !== material._id.toString());
+
+        materials.unshift({name: res.__('<none>'), id:null});
+
+        const materialChildCount = await material.getChildCount();
+
+        data = Object.assign({
+            material: material,
+            materials: materials,
+            hasChild: (materialChildCount > 0),
+            errors: []
+        }, data);
+
+        return res.render('material/edit', data);
+    };
+
     /**
      * Show the edit material form
      */
-    this.editForm = async function (req, res) {
+    this.editForm = async (req, res) => {
         let materialId = req.params.material_id;
         let material;
 
@@ -141,56 +161,90 @@ module.exports = function (app) {
             });
         }
 
-        return res.render('material/edit', {
-            material: material,
-            errors: []
-        });
+        return this._prepareEditForm(res, material);
     };
 
     /**
      * Save and edited material (process the form shown by `this.editForm`)
      */
-    this.edit = async function (req, res, next) {
-        let materialId = req.params.material_id;
-
-        let material = await Material.findById(materialId).exec();
-
-        if (!req.form.isValid) {
-            return res.render('material/edit', {
-                material: material,
-                errors: req.form.getErrors()
-            });
-        }
-
-        material.name = req.form.name;
-        material.description = req.form.description;
-        material.density = req.form.density;
-        if (req.form.headTempMin) {
-            material.headTemp.min = req.form.headTempMin;
-        }
-        if (req.form.headTempMax) {
-            material.headTemp.max = req.form.headTempMax;
-        }
-        if (req.form.bedTempMin) {
-            material.bedTemp.min = req.form.bedTempMin;
-        }
-        if (req.form.bedTempMax) {
-            material.bedTemp.max = req.form.bedTempMax;
-        }
-        if (req.form.printingSpeedMin) {
-            material.printingSpeed.min = req.form.printingSpeedMin;
-        }
-        if (req.form.printingSpeedMax) {
-            material.printingSpeed.max = req.form.printingSpeedMax;
-        }
-
+    this.edit = async (req, res, next) => {
         try {
-            await material.save();
+            let materialId = req.params.material_id;
+            let material = await Material.findById(materialId).exec();
+
+            let errors = {};
+            if (!req.form.isValid) {
+                errors = req.form.getErrors()
+            }
+
+            let parentMaterialId = req.form.parentMaterial;
+            let parentMaterial = null;
+
+            if (parentMaterialId) {
+                let parentMaterialErrors = [];
+
+                try {
+                    parentMaterial = await Material.findById(parentMaterialId).exec();
+                } catch (err) {
+                    parentMaterial = null;
+                }
+
+                if (!parentMaterial) {
+                    parentMaterialErrors.push('Unable to find parent material');
+                }
+                if (parentMaterial.parentMaterial) {
+                    parentMaterialErrors.push('A material having parent material can be used as parent material');
+                }
+
+                if (parentMaterialErrors.length) {
+                    errors.parentMaterial = parentMaterialErrors;
+                }
+            }
+
+            if (errors && Object.keys(errors).length) {
+                return this._prepareEditForm(res, material, {errors: errors});
+            }
+
+            material.name = req.form.name;
+            material.description = req.form.description;
+            material.density = req.form.density;
+            if (parentMaterial) {
+                material.parentMaterial = parentMaterial.id;
+            } else {
+                if (material.parentMaterial) {
+                    material.parentMaterial = null;
+                }
+            }
+
+            if (req.form.headTempMin) {
+                material.headTemp.min = req.form.headTempMin;
+            }
+            if (req.form.headTempMax) {
+                material.headTemp.max = req.form.headTempMax;
+            }
+            if (req.form.bedTempMin) {
+                material.bedTemp.min = req.form.bedTempMin;
+            }
+            if (req.form.bedTempMax) {
+                material.bedTemp.max = req.form.bedTempMax;
+            }
+            if (req.form.printingSpeedMin) {
+                material.printingSpeed.min = req.form.printingSpeedMin;
+            }
+            if (req.form.printingSpeedMax) {
+                material.printingSpeed.max = req.form.printingSpeedMax;
+            }
+
+            try {
+                await material.save();
+            } catch (err) {
+                return next(err);
+            }
+
+            return res.redirect("/material");
         } catch (err) {
             return next(err);
         }
-
-        return res.redirect("/material");
     };
 
     /**

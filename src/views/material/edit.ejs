@@ -8,18 +8,58 @@
 
 <form class="form-material" method="POST">
     <fieldset>
-        <div class="form-group<%= (errors.name)?" has-error":"" %>">
-            <label for="name" class="control-label required"><%- __('Name:'); %></label>
-            <input type="text" class="form-control" id="name" name="name"
-                   placeholder="<%- __('Name'); %>" value="<%- (locals.name) ? name : material.name %>"
-                   required autofocus>
-            <% if (errors.name) { %>
-            <ul class="help-block with-errors">
-                <% errors.name.forEach(function(msg) { %>
-                <li><%= __(msg) %></li>
-                <% }); %>
-            </ul>
-            <% } %>
+        <div class="row form-group">
+            <div class="col-md-9">
+                <div class="form-group<%= (errors.name)?" has-error":"" %>">
+                    <label for="name" class="control-label required"><%- __('Name:'); %></label>
+                    <input type="text" class="form-control" id="name" name="name"
+                           placeholder="<%- __('Name'); %>" value="<%- (locals.name) ? name : material.name %>"
+                           required autofocus>
+                    <% if (errors.name) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.name.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <% if (hasChild) { %>
+                <div class="form-group<%= (errors.parentMaterial) ? " has-error" : "" %>">
+                    <label for="parentMaterial" class="control-label"><%- __('Parent material:'); %></label>
+                    <div class="form-feature-disabled">
+                    <%= __('A material with variant(s) can not have a parent material.')%>
+                    </div>
+                </div>
+                <% } else { %>
+                <div class="form-group<%= (errors.parentMaterial) ? " has-error" : "" %>">
+                    <label for="parentMaterial" class="control-label"><%- __('Parent material:'); %></label>
+                    <select class="form-control" id="parentMaterial" name="parentMaterial">
+                        <% if (locals.materials && materials.length) {
+                            selected = (locals.parentMaterial) ? parentMaterial.toString() : (material.parentMaterial) ? material.parentMaterial.toString() : ''; %>
+                        <% for (let material of materials) {
+                            const materialId = (material.id) ? material.id.toString() : (material._id) ? material._id.toString() : '';
+                        %>
+                        <option value="<%= materialId %>"
+                                <% if (materialId && materialId === selected) { %>
+                                selected
+                                <% } %>
+                        ><%= material.name %></option>
+                        <% } %>
+                        <% } %>
+                    </select>
+                    <% if (errors.parentMaterial) { %>
+                    <ul class="help-block with-errors">
+                        <% for (let msg of errors.parentMaterial) { %>
+                        <li><%= __(msg) %></li>
+                        <% } %>
+                    </ul>
+                    <% } %>
+                </div>
+                <% } %>
+            </div>
         </div>
 
         <div class="row">
@@ -47,7 +87,12 @@
             <div class="col-md-6">
                 <label for="density" class="control-label required"><%- __('Density:'); %></label>
                 <div class="form-inline">
-                    <div class="input-group input-density">
+                    <div class="input-group input-density with-parent-material">
+                        <span class="input-group-btn">
+                            <button class="btn btn-info trg-get-density-from-parent-material" data-density-id="density"
+                                    title="<%- __('Get from material') %>" type="button"><i class="fa fa-angle-double-down"></i>
+                            </button>
+                        </span>
                         <input type="number" class="form-control" id="density" name="density"
                                placeholder="<%- __('Density'); %>" value="<%- (locals.density) ? density : material.density %>"
                                required min="0" step="1">
@@ -69,8 +114,14 @@
                 <div class="row form-inline">
                     <div class="col-md-6 form-group<%= (errors.printingSpeedMin) ? " has-error" : "" %>">
                         <label for="printingSpeedMin" class="control-label"><%- __('Min:'); %></label>
-                        <div class="input-group">
-                            <input type="number" class="form-control input-temperature" id="printingSpeedMin"
+                        <div class="input-group with-parent-material">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-temp-from-parent-material" data-temp-id="printingSpeedMin"
+                                        data-temp-type="printingSpeed" , data-temp-field="min"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-angle-double-down"></i>
+                                </button>
+                            </span>
+                            <input type="number" class="form-control input-speed" id="printingSpeedMin"
                                    name="printingSpeedMin"
                                    value="<%- (locals.printingSpeedMin) ? printingSpeedMin : material.printingSpeed.min %>" min="0">
                             <div class="input-group-addon"><%- __('mm/s'); %></div>
@@ -85,8 +136,14 @@
                     </div>
                     <div class="col-md-6 form-group<%= (errors.printingSpeedMax) ? " has-error" : "" %>">
                         <label for="printingSpeedMax" class="control-label"><%- __('Max:'); %></label>
-                        <div class="input-group">
-                            <input type="number" class="form-control input-temperature" id="printingSpeedMax"
+                        <div class="input-group with-parent-material">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-temp-from-parent-material" data-temp-id="printingSpeedMax"
+                                        data-temp-type="printingSpeed" , data-temp-field="max"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-angle-double-down"></i>
+                                </button>
+                            </span>
+                            <input type="number" class="form-control input-speed" id="printingSpeedMax"
                                    name="printingSpeedMax"
                                    value="<%- (locals.printingSpeedMax) ? printingSpeedMax : material.printingSpeed.max %>" min="0">
                             <div class="input-group-addon"><%- __('mm/s'); %></div>
@@ -111,7 +168,13 @@
                 <div class="row form-inline">
                     <div class="col-md-6 form-group<%= (errors.headTempMin) ? " has-error" : "" %>">
                         <label for="headTempMin" class="control-label"><%- __('Min:'); %></label>
-                        <div class="input-group">
+                        <div class="input-group with-parent-material">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-temp-from-parent-material" data-temp-id="headTempMin"
+                                        data-temp-type="headTemp" , data-temp-field="min"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-angle-double-down"></i>
+                                </button>
+                            </span>
                             <input type="number" class="form-control input-temperature" id="headTempMin"
                                    name="headTempMin"
                                    value="<%- (locals.headTempMin) ? headTempMin : material.headTemp.min %>" min="0">
@@ -127,7 +190,13 @@
                     </div>
                     <div class="col-md-6 form-group<%= (errors.headTempMax) ? " has-error" : "" %>">
                         <label for="headTempMax" class="control-label"><%- __('Max:'); %></label>
-                        <div class="input-group">
+                        <div class="input-group with-parent-material">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-temp-from-parent-material" data-temp-id="headTempMax"
+                                        data-temp-type="headTemp" , data-temp-field="max"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-angle-double-down"></i>
+                                </button>
+                            </span>
                             <input type="number" class="form-control input-temperature" id="headTempMax"
                                    name="headTempMax"
                                    value="<%- (locals.headTempMax) ? headTempMax : material.headTemp.max %>" min="0">
@@ -150,7 +219,13 @@
                 <div class="row form-inline">
                     <div class="col-md-6 form-group<%= (errors.bedTempMin) ? " has-error" : "" %>">
                         <label for="bedTempMin" class="control-label"><%- __('Min:'); %></label>
-                        <div class="input-group">
+                        <div class="input-group with-parent-material">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-temp-from-parent-material" data-temp-id="bedTempMin"
+                                        data-temp-type="bedTemp" , data-temp-field="min"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-angle-double-down"></i>
+                                </button>
+                            </span>
                             <input type="number" class="form-control input-temperature" id="bedTempMin"
                                    name="bedTempMin"
                                    value="<%- (locals.bedTempMin) ? bedTempMin : material.bedTemp.min %>" min="0">
@@ -166,7 +241,13 @@
                     </div>
                     <div class="col-md-6 form-group<%= (errors.bedTempMax) ? " has-error" : "" %>">
                         <label for="bedTempMax" class="control-label"><%- __('Max:'); %></label>
-                        <div class="input-group">
+                        <div class="input-group with-parent-material">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info trg-get-temp-from-parent-material" data-temp-id="bedTempMax"
+                                        data-temp-type="bedTemp" , data-temp-field="max"
+                                        title="<%- __('Get from material') %>" type="button"><i class="fa fa-angle-double-down"></i>
+                                </button>
+                            </span>
                             <input type="number" class="form-control input-temperature" id="bedTempMax"
                                    name="bedTempMax"
                                    value="<%- (locals.bedTempMax) ? bedTempMax : material.bedTemp.max %>" min="0">
@@ -193,14 +274,72 @@
 </form>
 
 <script type="text/javascript">
-    $(function () {
-        $('textarea#description').keyup(function () {
-            var $this = $(this);
-            var $preview = $('#description-preview');
-            if (!$preview.length) {
-                return;
-            }
-            $preview.html(marked($this.val()));
-        }).trigger('keyup');
+var materialData = <%- JSON.stringify(materials) %>;
+
+$(function () {
+    $('textarea#description').keyup(function () {
+        var $this = $(this);
+        var $preview = $('#description-preview');
+        if (!$preview.length) {
+            return;
+        }
+        $preview.html(marked($this.val()));
+    }).trigger('keyup');
+
+    $('#parentMaterial').change(function() {
+        let materialId = $(this).val();
+
+        if (materialId && materialId.length) {
+            $('form.form-material').addClass('has-parent-material')
+        } else {
+            $('form.form-material').removeClass('has-parent-material')
+        }
+    }).trigger('change');
+
+    $('.trg-get-temp-from-parent-material').click(function () {
+        var $this = $(this);
+        var input = $('#' + $this.data('temp-id'));
+        var tempType = $this.data('temp-type');
+        var tempField = $this.data('temp-field');
+
+        if (!input.length || !tempType || !tempField) {
+            return;
+        }
+        var selectedMaterialId = $('#parentMaterial').val();
+
+        if (selectedMaterialId && selectedMaterialId.length && materialData.length) {
+            materialData.forEach(function (material) {
+                if (material._id == selectedMaterialId) {
+                    if (material[tempType] && material[tempType][tempField]) {
+                        input.val(material[tempType][tempField]);
+                    } else {
+                        input.val('');
+                    }
+                }
+            });
+        }
     });
+
+    $('.trg-get-density-from-parent-material').click(function () {
+        var $this = $(this);
+        var input = $('#' + $this.data('density-id'));
+
+        if (!input.length) {
+            return;
+        }
+        var selectedMaterialId = $('#parentMaterial').val();
+
+        if (selectedMaterialId && selectedMaterialId.length && materialData.length) {
+            materialData.forEach(function (material) {
+                if (material._id == selectedMaterialId) {
+                    if (material.density) {
+                        input.val(material.density);
+                    } else {
+                        input.val('');
+                    }
+                }
+            });
+        }
+    });
+});
 </script>
