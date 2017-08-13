@@ -217,6 +217,19 @@ module.exports = function(bootstrapOptions) {
         app.locals.languagesList = Object.keys(i18n.getCatalog());
         app.set('i18n', i18n);
         app.locals.i18n = i18n;
+        app.getCurrentLocale = function() {
+            try {
+                const i18n = this.get('i18n');
+
+                if (i18n) {
+                    return i18n.getLocale();
+                }
+            } catch (err) {
+                return 'en'
+            }
+
+            return 'en';
+        }
     }
 
     // view engine setup

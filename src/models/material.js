@@ -131,15 +131,20 @@ module.exports = function (app) {
         options = Object.assign({
             rootMaterials: true,
             childMaterials: true,
-            treeList: false
+            treeList: false,
+            locale: null
         }, options);
 
+        options.locale = options.locale || app.getCurrentLocale();
+
         let filters = {};
+        let collationOptions = {
+            locale: options.locale,
+            numericOrdering: true
+        };
 
         // Tree mode will return root and child material, ignoring dedicated options
         if (options.tree === true) {
-            //return this.find(filters).sort('name').populate('parentMaterial').exec(cb);
-
             return this.aggregate([
                 {
                     $match: { parentMaterial: null }
@@ -153,7 +158,7 @@ module.exports = function (app) {
                     }
                 },
                 { $sort: { name: 1, 'variants.name': 1 } }
-            ]).exec(cb);
+            ]).collation(collationOptions).exec(cb);
 
         } else {
             if (options.childMaterials === false) {
@@ -163,7 +168,7 @@ module.exports = function (app) {
                 filters.parentMaterial = { $ne : null };
             }
 
-            return this.find(filters).sort('name').populate('parentMaterial').exec(cb);
+            return this.find(filters).sort('name').collation(collationOptions).populate('parentMaterial').exec(cb);
         }
     };
 

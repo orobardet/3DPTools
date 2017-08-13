@@ -11,7 +11,9 @@ module.exports = function (app) {
         let materials;
 
         try {
-            materials = await Material.list({tree: true});
+            materials = await Material.list({
+                tree: true, locale: res.getLocale()
+            });
         } catch (err) {
             return next(err);
         }
@@ -24,7 +26,7 @@ module.exports = function (app) {
     };
 
     this._prepareAddForm = async (res, data) => {
-        let materials = await Material.list({childMaterials: false});
+        let materials = await Material.list({childMaterials: false, locale: res.getLocale()});
         materials.unshift({name: res.__('<none>'), id:null});
 
         data = Object.assign({
