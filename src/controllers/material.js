@@ -7,7 +7,7 @@ module.exports = function (app) {
     /**
      * List of all materials
      */
-    this.index = async function (req, res, next) {
+    this.index = async (req, res, next) => {
         let materials;
 
         try {
@@ -250,7 +250,7 @@ module.exports = function (app) {
     /**
      * Get material data
      */
-    this.get = async function (req, res) {
+    this.get = async (req, res) => {
         let materialId = req.params.material_id;
         let material;
 
@@ -272,7 +272,7 @@ module.exports = function (app) {
     /**
      * Delete a material
      */
-    this.delete = async function (req, res) {
+    this.delete = async (req, res) => {
         let materialId = req.params.material_id;
 
         try {
@@ -295,7 +295,7 @@ module.exports = function (app) {
     /**
      * Show the material file add form
      */
-    this.fileForm = async function (req, res, next) {
+    this.fileForm = async (req, res, next) => {
         let materialId = req.params.material_id;
 
         let material = await Material.findById(materialId).exec();
@@ -310,7 +310,7 @@ module.exports = function (app) {
     /**
      * Add a file to a material (process the form shown by `this.fileForm`)
      */
-    this.addFile = async function (req, res, next) {
+    this.addFile = async (req, res, next) => {
         let materialId = req.params.material_id;
 
         let material = await Material.findById(materialId).exec();
@@ -352,7 +352,7 @@ module.exports = function (app) {
     /**
      * Get a file of a material
      */
-    this.getFile = async function (req, res) {
+    this.getFile = async (req, res) => {
         let materialId = req.params.material_id;
         let fileId = req.params.file_id;
         let material;
@@ -381,7 +381,7 @@ module.exports = function (app) {
     /**
      * Delete a file from a material
      */
-    this.deleteFile = async function (req, res, next) {
+    this.deleteFile = async (req, res, next) => {
         let materialId = req.params.material_id;
         let fileId = req.params.file_id;
         let material;
