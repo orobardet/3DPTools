@@ -17,8 +17,8 @@
                 break;
         } %>
     <li>
-        <a href="/material/get-file/<%- material.id %>/<%- file._id %>" class="get"><i class="<%- fileIconClass %>"></i>&nbsp;<span class="link-label"><%- file.displayName; %></span></a>
-        <a href="/material/delete-file/<%- material.id %>/<%- file._id %>" class="delete trg-delete-file"><i class="fa fa-trash-o"></i></a>
+        <a href="/material/get-file/<%- materialId %>/<%- file._id %>" class="get"><i class="<%- fileIconClass %>"></i>&nbsp;<span class="link-label"><%- file.displayName; %></span></a>
+        <a href="/material/delete-file/<%- materialId %>/<%- file._id %>" class="delete trg-delete-file"><i class="fa fa-trash-o"></i></a>
     </li>
     <% }); %>
 </ul>
