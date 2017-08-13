@@ -127,6 +127,10 @@ module.exports = function (app) {
         return false;
     };
 
+    materialSchema.methods.getChildCount = async function() {
+        return await this.constructor.find({parentMaterial: this.id}).count().exec();
+    };
+
     materialSchema.statics.list = async function (options, cb) {
         options = Object.assign({
             rootMaterials: true,
@@ -143,33 +147,42 @@ module.exports = function (app) {
             numericOrdering: true
         };
 
+
+        let aggregationPipeline = [];
+
+        let matchPipeline = null;
         // Tree mode will return root and child material, ignoring dedicated options
-        if (options.tree === true) {
-            return this.aggregate([
-                {
-                    $match: { parentMaterial: null }
-                },
-                {
-                    $lookup: {
-                        from: 'materials',
-                        localField: '_id',
-                        foreignField: 'parentMaterial',
-                        as: 'variants'
-                    }
-                },
-                { $sort: { name: 1, 'variants.name': 1 } }
-            ]).collation(collationOptions).exec(cb);
-
+        if (options.tree === true || options.childMaterials === false) {
+            matchPipeline = {
+                $match: { parentMaterial: null }
+            };
         } else {
-            if (options.childMaterials === false) {
-                filters.parentMaterial = null;
-            }
             if (options.rootMaterials === false) {
-                filters.parentMaterial = { $ne : null };
+                matchPipeline = {
+                    $match: { parentMaterial: { $ne: null } }
+                };
             }
-
-            return this.find(filters).sort('name').collation(collationOptions).populate('parentMaterial').exec(cb);
         }
+        if (matchPipeline) {
+            aggregationPipeline.push(matchPipeline);
+        }
+
+        aggregationPipeline.push({
+            $lookup: {
+                from: 'materials',
+                localField: '_id',
+                foreignField: 'parentMaterial',
+                as: 'variants'
+            }
+        });
+        aggregationPipeline.push({
+            $addFields: {
+                childCount: {$size: '$variants'}
+            }
+        });
+        aggregationPipeline.push({ $sort: { name: 1, 'variants.name': 1 }});
+
+        return this.aggregate(aggregationPipeline).collation(collationOptions).exec(cb);
     };
 
     materialSchema.statics.findById = function (id, cb) {

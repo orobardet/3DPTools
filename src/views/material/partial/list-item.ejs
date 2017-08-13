@@ -1,15 +1,15 @@
 <tr<%- (isMaterialVariant)?' class="material-variant"':'' %>>
     <td colspan="2" class="material-header">
         <span class="material-name"><%- material.name %></span>
-        <% if (material.url && (material.url != '')) { %>
-        <br/>
-        <a href="<%- material.url %>" target="_blank"><%- material.url %></a>
-        <% } %>
         <div class="pull-right">
             <div class="actions-block">
                 <a href="/material/edit/<%- material.id || material._id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
+                <% if (material.childCount) { %>
+                <a href="#" onclick="return false;" class="disabled" data-toggle="tooltip" title="<%= __('A material with variant(s) can not be deleted.') %>"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %>
+                <% } else { %>
                 <a href="/material/delete/<%- material.id || material._id %>" data-id="<%- material.id || material._id %>"
                    class="trg-delete-material"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                <% } %>
                 <a href="/material/add-file/<%- material.id || material._id %>"><i class="fa fa-paperclip"></i>&nbsp;<%- __("add a file") %></a>
             </div>
         </div>

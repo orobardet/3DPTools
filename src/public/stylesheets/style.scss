@@ -34,6 +34,13 @@ h1 {
   margin-bottom: 30px;
 }
 
+a.disabled {
+  color: gray;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 .navbar-fixed-top {
   border-bottom: 0;
 }

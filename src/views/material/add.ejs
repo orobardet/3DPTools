@@ -31,8 +31,8 @@
                     <select class="form-control" id="parentMaterial" name="parentMaterial">
                         <% if (locals.materials && materials.length) { selected = (locals.parentMaterial) ? parentMaterial : ''; %>
                         <% materials.forEach(function (material) { %>
-                        <option value="<%- material.id %>"
-                                <% if (material.id == selected) { %>
+                        <option value="<%- material.id || material._id %>"
+                                <% if (material.id || material._id == selected) { %>
                                 selected
                                 <% } %>
                         ><%= material.name %></option>
@@ -262,27 +262,27 @@
 </form>
 
 <script type="text/javascript">
-    var materialData = <%- JSON.stringify(materials) %>;
+var materialData = <%- JSON.stringify(materials) %>;
 
-    $(function() {
-        $('textarea#description').keyup(function() {
-            var $this = $(this);
-            var $preview = $('#description-preview');
-            if (!$preview.length) {
-                return;
-            }
-            $preview.html(marked($this.val()));
-        }).trigger('keyup');
+$(function() {
+    $('textarea#description').keyup(function() {
+        var $this = $(this);
+        var $preview = $('#description-preview');
+        if (!$preview.length) {
+            return;
+        }
+        $preview.html(marked($this.val()));
+    }).trigger('keyup');
 
-        $('#parentMaterial').change(function() {
-            let materialId = $(this).val();
+    $('#parentMaterial').change(function() {
+        let materialId = $(this).val();
 
-            if (materialId && materialId.length) {
-                $('form.form-material').addClass('has-parent-material')
-            } else {
-                $('form.form-material').removeClass('has-parent-material')
-            }
-        }).trigger('change');
+        if (materialId && materialId.length) {
+            $('form.form-material').addClass('has-parent-material')
+        } else {
+            $('form.form-material').removeClass('has-parent-material')
+        }
+    }).trigger('change');
 
     $('.trg-get-temp-from-parent-material').click(function () {
         var $this = $(this);
@@ -308,26 +308,26 @@
         }
     });
 
-        $('.trg-get-density-from-parent-material').click(function () {
-            var $this = $(this);
-            var input = $('#' + $this.data('density-id'));
+    $('.trg-get-density-from-parent-material').click(function () {
+        var $this = $(this);
+        var input = $('#' + $this.data('density-id'));
 
-            if (!input.length) {
-                return;
-            }
-            var selectedMaterialId = $('#parentMaterial').val();
+        if (!input.length) {
+            return;
+        }
+        var selectedMaterialId = $('#parentMaterial').val();
 
-            if (selectedMaterialId && selectedMaterialId.length && materialData.length) {
-                materialData.forEach(function (material) {
-                    if (material._id == selectedMaterialId) {
-                        if (material.density) {
-                            input.val(material.density);
-                        } else {
-                            input.val('');
-                        }
+        if (selectedMaterialId && selectedMaterialId.length && materialData.length) {
+            materialData.forEach(function (material) {
+                if (material._id == selectedMaterialId) {
+                    if (material.density) {
+                        input.val(material.density);
+                    } else {
+                        input.val('');
                     }
-                });
-            }
-        });
+                }
+            });
+        }
     });
+});
 </script>
