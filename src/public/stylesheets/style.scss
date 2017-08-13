@@ -41,6 +41,23 @@ a.disabled {
   }
 }
 
+.quicklink {
+  color: inherit;
+  text-decoration: inherit;
+
+  & > .quicklink-icon {
+    display: none;
+  }
+  &:hover {
+    color: inherit;
+    text-decoration: inherit;
+
+    & > .quicklink-icon {
+      display: inline-block;
+    }
+  }
+}
+
 .navbar-fixed-top {
   border-bottom: 0;
 }
@@ -470,6 +487,7 @@ table.material-list {
 
     &.material-variant {
       > td.material-header, > td.material-data {
+        background-color: lighten($panel-default-heading-bg, 2%);
         padding-left: 50px;
       }
     }
@@ -478,6 +496,11 @@ table.material-list {
 
 ul.material-files {
   float: right;
+  border: 1px dashed $panel-default-border;
+  border-radius: $panel-border-radius;
+  padding: $panel-body-padding;
+  list-style-type: none;
+  background-color: lighten($panel-default-heading-bg, 3%);
 
   & > li {
     & > a.get {

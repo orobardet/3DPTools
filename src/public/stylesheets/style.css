@@ -8248,6 +8248,17 @@ a.disabled {
   a.disabled:hover {
     text-decoration: none; }
 
+.quicklink {
+  color: inherit;
+  text-decoration: inherit; }
+  .quicklink > .quicklink-icon {
+    display: none; }
+  .quicklink:hover {
+    color: inherit;
+    text-decoration: inherit; }
+    .quicklink:hover > .quicklink-icon {
+      display: inline-block; }
+
 .navbar-fixed-top {
   border-bottom: 0; }
 
@@ -8553,10 +8564,16 @@ table.material-list > tbody > tr > td.material-data > div {
   white-space: nowrap;
   margin: 3px 3px 3px 0px; }
 table.material-list > tbody > tr.material-variant > td.material-header, table.material-list > tbody > tr.material-variant > td.material-data {
+  background-color: #fafafa;
   padding-left: 50px; }
 
 ul.material-files {
-  float: right; }
+  float: right;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  list-style-type: none;
+  background-color: #fdfdfd; }
   ul.material-files > li > a.get {
     color: inherit;
     text-decoration: #333333; }

@@ -1,6 +1,6 @@
 <h1><i class="fa fa-leaf"></i>&nbsp;<%- __('Materials') %></h1>
 
-<div class="panel panel-default">
+<div class="panel panel-default" id="material-list">
     <div class="panel-heading with-button">
         <a href="/material/add" class="btn btn-primary trg-add-material"><i
                     class="fa fa-plus"></i>&nbsp;<%- __('Add material') %></a>
@@ -22,102 +22,119 @@
 <div id="material-message-container"></div>
 
 <script type="text/javascript">
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
+function scrollToHash() {
+    if (window.location.hash) {
+        var $item = $('#material-'+window.location.hash.replace(/^#/, ''));
+        if ($item.length) {
+            $(document).scrollTop($item.position().top - $item.height() - 10);
+        }
+    }
+}
 
-        $('.trg-delete-file').click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
 
-            var $this = $(this);
-            var $fileLink = $this.closest('li').find('a.get span.link-label').first();
-            var fileIcon = $this.closest('li').find('a.get i').first().attr('class');
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
 
-            var confirmContent = $('<div>').text(Locale3DPTools.__('Do you really want to delete this file?'));
-            confirmContent.append($('<br>'));
-            confirmContent.append($('<i>').addClass(fileIcon));
-            confirmContent.append('&nbsp;'+$fileLink.text());
+    $('.trg-delete-file').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-            App3DPTools.confirmModal(confirmContent, function () {
-                $.ajax({
-                    type: "DELETE",
-                    url: $this.attr('href'),
-                    contentType: 'application/json; charset=utf-8',
-                    dataType: 'json',
-                    success: function (data) {
-                        document.location = document.location;
-                    },
-                    error: function (xhr, status, errorMsg) {
-                        if (xhr.responseJSON) {
-                            var data = xhr.responseJSON;
-                            if (data.message) {
-                                App3DPTools.errorFlash('#filament-message-container', data.message);
-                                return;
-                            }
-                        }
-                        App3DPTools.errorFlash('#filament-message-container', errorMsg);
-                    }
-                });
-            });
-        });
+        var $this = $(this);
+        var $fileLink = $this.closest('li').find('a.get span.link-label').first();
+        var fileIcon = $this.closest('li').find('a.get i').first().attr('class');
 
-        function deleteMaterial(materialId) {
+        var confirmContent = $('<div>').text(Locale3DPTools.__('Do you really want to delete this file?'));
+        confirmContent.append($('<br>'));
+        confirmContent.append($('<i>').addClass(fileIcon));
+        confirmContent.append('&nbsp;'+$fileLink.text());
+
+        App3DPTools.confirmModal(confirmContent, function () {
             $.ajax({
                 type: "DELETE",
-                url: '/material/delete/'+materialId,
+                url: $this.attr('href'),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (data) {
-                    if (data.message) {
-                        App3DPTools.successFlash('#material-message-container', data.message);
-                    }
                     document.location = document.location;
                 },
                 error: function (xhr, status, errorMsg) {
                     if (xhr.responseJSON) {
                         var data = xhr.responseJSON;
                         if (data.message) {
-                            App3DPTools.errorFlash('#material-message-container', data.message);
+                            App3DPTools.errorFlash('#filament-message-container', data.message);
                             return;
                         }
                     }
-                    App3DPTools.errorFlash('#material-message-container', errorMsg);
-                }
-            });
-        }
-
-        $('.trg-delete-material').click(function (e) {
-            e.preventDefault();
-
-            var $this = $(this);
-            var materialId = $this.data('id');
-
-            $.ajax({
-                type: "GET",
-                url: '/material/get/'+materialId,
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.material) {
-                        App3DPTools.confirmModal(Locale3DPTools.__('Delete %s material?', data.material.name), function () {
-                            deleteMaterial(materialId);
-                        });
-                    } else {
-                        App3DPTools.errorFlash('#material-message-container', Locale3DPTools.__('Error while retrieving data for material %s.', materialId));
-                        return;
-                    }
-                },
-                error: function (xhr, status, errorMsg) {
-                    if (xhr.responseJSON) {
-                        var data = xhr.responseJSON;
-                        if (data.message) {
-                            App3DPTools.errorFlash('#material-message-container', data.message);
-                            return;
-                        }
-                    }
-                    App3DPTools.errorFlash('#material-message-container', errorMsg);
+                    App3DPTools.errorFlash('#filament-message-container', errorMsg);
                 }
             });
         });
     });
+
+    function deleteMaterial(materialId) {
+        $.ajax({
+            type: "DELETE",
+            url: '/material/delete/'+materialId,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                if (data.message) {
+                    App3DPTools.successFlash('#material-message-container', data.message);
+                }
+                document.location = document.location;
+            },
+            error: function (xhr, status, errorMsg) {
+                if (xhr.responseJSON) {
+                    var data = xhr.responseJSON;
+                    if (data.message) {
+                        App3DPTools.errorFlash('#material-message-container', data.message);
+                        return;
+                    }
+                }
+                App3DPTools.errorFlash('#material-message-container', errorMsg);
+            }
+        });
+    }
+
+    $('.trg-delete-material').click(function (e) {
+        e.preventDefault();
+
+        var $this = $(this);
+        var materialId = $this.data('id');
+
+        $.ajax({
+            type: "GET",
+            url: '/material/get/'+materialId,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                if (data.material) {
+                    App3DPTools.confirmModal(Locale3DPTools.__('Delete %s material?', data.material.name), function () {
+                        deleteMaterial(materialId);
+                    });
+                } else {
+                    App3DPTools.errorFlash('#material-message-container', Locale3DPTools.__('Error while retrieving data for material %s.', materialId));
+                    return;
+                }
+            },
+            error: function (xhr, status, errorMsg) {
+                if (xhr.responseJSON) {
+                    var data = xhr.responseJSON;
+                    if (data.message) {
+                        App3DPTools.errorFlash('#material-message-container', data.message);
+                        return;
+                    }
+                }
+                App3DPTools.errorFlash('#material-message-container', errorMsg);
+            }
+        });
+    });
+
+    window.onhashchange = function(e) {
+        $('.material-quicklink').blur();
+        scrollToHash();
+    };
+
+    scrollToHash();
+});
 </script>
