@@ -16,7 +16,11 @@ module.exports = function (app) {
             const issueRootURL = app.config.get('sourceCode:changelog:issueRootURL');
             const renderer = new marked.Renderer();
             renderer.link = (href, title, text) => {
-                return '<a href="'+issueRootURL+href+'" target="_blank">'+text+'</a>';
+                if (text.match(/#\d+/ug)) {
+                    return '<a href="' + issueRootURL + href + '" target="_blank">' + text + '</a>';
+                } else {
+                    return '<a href="' + href + '" target="_blank">' + text + '</a>';
+                }
             };
 
             return marked(text, { renderer: renderer });
