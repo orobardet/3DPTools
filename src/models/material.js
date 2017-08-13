@@ -189,6 +189,20 @@ module.exports = function (app) {
         return this.findOne({_id: id}, cb);
     };
 
+    materialSchema.statics.findByParentId = function (id, options, cb) {
+        options = Object.assign({
+            locale: null
+        }, options);
+
+        options.locale = options.locale || app.getCurrentLocale();
+
+        let collationOptions = {
+            locale: options.locale,
+            numericOrdering: true
+        };
+
+        return this.find({parentMaterial: id}).sort('name').collation(collationOptions).exec(cb);
+    };
 
     materialSchema.statics.findOneRandom = async function (cb) {
         let count = await this.count().exec();

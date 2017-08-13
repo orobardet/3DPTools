@@ -210,7 +210,6 @@ module.exports = function (app) {
                     throw new Error('%s must be "g" or "kg".');
                 }
             })
-
     );
 
     this.search = form(
@@ -219,7 +218,8 @@ module.exports = function (app) {
         field("brand", "Brand"),
         field("color", "Color"),
         field("finished", "Finished?"),
-        field("sort", "Sort")
+        field("sort", "Sort"),
+        field("materialVariants", "Material variants")
     );
 
     return this;

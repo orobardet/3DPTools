@@ -61,90 +61,101 @@ module.exports = function (app) {
      * List and search of filament
      */
     this.index = async (req, res) => {
-        req.setOriginUrl([
-            'filament/view',
-            'filament/add',
-            'filament/edit',
-            'filament/left-material',
-            'filament/add-picture',
-            'filament/finished',
-            'filament/cost-calculator'
-        ], req.originalUrl);
+        try {
+            req.setOriginUrl([
+                'filament/view',
+                'filament/add',
+                'filament/edit',
+                'filament/left-material',
+                'filament/add-picture',
+                'filament/finished',
+                'filament/cost-calculator'
+            ], req.originalUrl);
 
-        // Prepare a simplified sort list that will be used in the GUI for displaying sort options
-        const sortList = Object.entries(filamentSortDefinition).map(([sortId, sortData]) => {
-            return {value: sortId, label: sortData.label}
-        });
+            // Prepare a simplified sort list that will be used in the GUI for displaying sort options
+            const sortList = Object.entries(filamentSortDefinition).map(([sortId, sortData]) => {
+                return {value: sortId, label: sortData.label}
+            });
 
-        // Analyse received parameters and extract potential filter (search) values
-        const search = req.form;
-        let filamentFilter = {};
-        if (search.material && search.material !== '') {
-            filamentFilter.material = search.material;
-        }
-        if (search.shop && search.shop !== '') {
-            filamentFilter.shop = search.shop;
-        }
-        if (search.brand && search.brand !== '') {
-            filamentFilter.brand = search.brand;
-        }
-        if (search.color && search.color !== '') {
-            filamentFilter['color.code'] = search.color;
-        }
-        filamentFilter.finished = false;
-        if (search.finished) {
-            if (search.finished === 'finished') {
-                filamentFilter.finished = true;
-            } else if (search.finished === 'all') {
-                delete filamentFilter.finished;
+            // Analyse received parameters and extract potential filter (search) values
+            const search = req.form;
+
+            let filamentFilter = {};
+            if (search.material && search.material !== '') {
+                filamentFilter.material = search.material;
             }
-        }
+            if (search.material && search.material !== '') {
+                filamentFilter.material = search.material;
+            }
+            if (search.shop && search.shop !== '') {
+                filamentFilter.shop = search.shop;
+            }
+            if (search.brand && search.brand !== '') {
+                filamentFilter.brand = search.brand;
+            }
+            if (search.color && search.color !== '') {
+                filamentFilter['color.code'] = search.color;
+            }
+            filamentFilter.finished = false;
+            if (search.finished) {
+                if (search.finished === 'finished') {
+                    filamentFilter.finished = true;
+                } else if (search.finished === 'all') {
+                    delete filamentFilter.finished;
+                }
+            }
+            if (search.materialVariants && search.materialVariants === 'on' && filamentFilter.material) {
+                let materialVariantsDoc = await Material.findByParentId(filamentFilter.material, {locale: res.getLocale()});
+                let materialVariantsId = materialVariantsDoc.map(doc => doc._id);
+                materialVariantsId.unshift(filamentFilter.material);
+                filamentFilter.material = materialVariantsId;
+            }
 
-        // Check if the potential sort field received in parameters is valid (i.e. it is known)
-        let selectedSort = 'default';
-        if (search.sort && Object.keys(filamentSortDefinition).indexOf(search.sort) > -1) {
-            selectedSort = search.sort;
-        }
+            // Check if the potential sort field received in parameters is valid (i.e. it is known)
+            let selectedSort = 'default';
+            if (search.sort && Object.keys(filamentSortDefinition).indexOf(search.sort) > -1) {
+                selectedSort = search.sort;
+            }
 
-        // Retrieve the filament list, possibly with filter and sort options
-        // Also retrieve the lists of all materials, brands, shops and colors,
-        // that will be used to construct filter form
-        let [filaments, materials, brands, shops, colors] = await Promise.all([
-            Filament.list({
-                filter: filamentFilter,
-                sort: filamentSortDefinition[selectedSort].sort
-            }),
-            Material.find().sort('name').exec(),
-            Brand.find().sort('name').exec(),
-            Shop.find().sort('name').exec(),
-            Filament.getColors()
-        ]);
-        // Add an empty entry at the beginning of each filter list (which means 'no filtering on this field')
-        materials.unshift({name:'&nbsp;', id:null});
-        shops.unshift({name:'&nbsp;', id:null});
-        brands.unshift({name:'&nbsp;', id:null});
-        colors.unshift({name:'&nbsp;', code: null});
+            // Retrieve the filament list, possibly with filter and sort options
+            // Also retrieve the lists of all materials, brands, shops and colors,
+            // that will be used to construct filter form
+            let [filaments, materials, brands, shops, colors] = await Promise.all([
+                Filament.list({
+                    filter: filamentFilter,
+                    sort: filamentSortDefinition[selectedSort].sort
+                }),
+                Material.list({tree: true, locale: res.getLocale()}),
+                Brand.find().sort('name').exec(),
+                Shop.find().sort('name').exec(),
+                Filament.getColors()
+            ]);
+            // Add an empty entry at the beginning of each filter list (which means 'no filtering on this field')
+            materials.unshift({name: '&nbsp;', id: null});
+            shops.unshift({name: '&nbsp;', id: null});
+            brands.unshift({name: '&nbsp;', id: null});
+            colors.unshift({name: '&nbsp;', code: null});
 
-        let formSearchData = filamentFilter;
-        if (search.finished) {
-            filamentFilter.finished = search.finished;
-        }
-        if (typeof formSearchData.finished !== 'undefined' && formSearchData.finished === false) {
-            delete formSearchData.finished;
-        }
+            let formSearchData = filamentFilter;
+            if (typeof formSearchData.finished !== 'undefined' && formSearchData.finished === false) {
+                delete formSearchData.finished;
+            }
 
-        return res.render('filament/index', {
-            search: Object.keys(formSearchData).length?search:null,
-            materials: materials,
-            brands: brands,
-            shops: shops,
-            colors: colors,
-            filaments: filaments,
-            sortList: sortList,
-            selectedSort: selectedSort,
-            pageTitle: 'Filaments',
-            errors: []
-        });
+            return res.render('filament/index', {
+                search: Object.keys(formSearchData).length ? search : null,
+                materials: materials,
+                brands: brands,
+                shops: shops,
+                colors: colors,
+                filaments: filaments,
+                sortList: sortList,
+                selectedSort: selectedSort,
+                pageTitle: 'Filaments',
+                errors: []
+            });
+        } catch (err) {
+            return next(err);
+        }
     };
 
     /**
