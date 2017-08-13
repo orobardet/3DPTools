@@ -263,10 +263,11 @@ module.exports = function (app) {
             // Get the data to populate form choices:
             // - shops, brands, materials lists
             // - List of all colors used in existing filaments
-            let [shops, brands, materials, usedColors, sourceFilament] = await Promise.all([
+            let [shops, brands, materialsTree, materials, usedColors, sourceFilament] = await Promise.all([
                 Shop.find().sort('name').exec(),
                 Brand.find().sort('name').exec(),
-                Material.find().sort('name').exec(),
+                Material.list({tree: true, locale: res.getLocale()}),
+                Material.list({locale: res.getLocale()}),
                 Filament.find().distinct('color').exec(),
                 Filament.findById(filamentId).populate('material brand shop').exec()
             ]);
@@ -280,6 +281,7 @@ module.exports = function (app) {
                 cancelUrl: req.getOriginUrl("filament/add", "/filament"),
                 shops: shops,
                 brands: brands,
+                materialsTree: materialsTree,
                 materials: materials,
                 usedColors: usedColors,
                 predefinedColors: predefinedColors,
@@ -394,10 +396,11 @@ module.exports = function (app) {
             // Get the data to populate form choices:
             // - shops, brands, materials lists
             // - List of all colors used in existing filaments
-            let [shops, brands, materials, usedColors] = await Promise.all([
+            let [shops, brands, materialsTree, materials, usedColors] = await Promise.all([
                 Shop.find().sort('name').exec(),
                 Brand.find().sort('name').exec(),
-                Material.find().sort('name').exec(),
+                Material.list({tree: true, locale: res.getLocale()}),
+                Material.list({locale: res.getLocale()}),
                 Filament.find().distinct('color').exec()
             ]);
 
@@ -411,6 +414,7 @@ module.exports = function (app) {
                 filament: filament,
                 shops: shops,
                 brands: brands,
+                materialsTree: materialsTree,
                 materials: materials,
                 usedColors: usedColors,
                 predefinedColors: predefinedColors,

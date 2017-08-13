@@ -63,14 +63,24 @@
                 <div class="form-group<%= (errors.material) ? " has-error" : "" %>">
                     <label for="material" class="control-label required"><%- __('Material:'); %></label>
                     <select class="form-control" id="material" name="material" required>
-                        <% if (locals.materials && materials.length) { selected = (locals.material) ? material : filament.material.id; %>
-                        <% materials.forEach(function (material) { %>
-                        <option value="<%- material.id %>"
-                                <% if (material.id == selected) { %>
+                        <% if (locals.materials && materials.length) { %>
+                        <% selected = (locals.material) ? material : (filament.material) ? filament.material._id.toString() : ''; %>
+                        <% for (let material of materialsTree) { %>
+                        <option value="<%- material._id.toString() %>"
+                                <% if (material._id.toString() == selected) { %>
                                 selected
                                 <% } %>
                         ><%- material.name %></option>
-                        <% }); %>
+                            <% if (material.variants && material.variants.length) { %>
+                            <% for (let variant of material.variants) { %>
+                            <option class="indent" value="<%- variant._id.toString() %>"
+                                    <% if (variant._id.toString() == selected) { %>
+                                    selected
+                                    <% } %>
+                            >&nbsp;&nbsp;<%- variant.name %></option>
+                            <% } %>
+                            <% } %>
+                        <% } %>
                         <% } %>
                     </select>
                     <% if (errors.material) { %>
