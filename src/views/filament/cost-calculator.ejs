@@ -7,10 +7,10 @@
 
 <% if (filaments && filaments.length) { %>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-7">
         <div class="panel panel-default filaments-list-container">
             <div class="panel-heading with-button">
-                <h3 class="panel-title"><%- __n("%s filament", "%s filaments", filaments.length || 0); %></h3>
+                <h3 class="panel-title" id="search-result-title"><%= __n("%s filament", "%s filaments", filaments.length || 0); %></h3>
             </div>
 
             <form id="filament-search" method="GET" class="panel-body form-inline" style="padding: 8px;">
@@ -32,17 +32,34 @@
                     <% } %>
                 </select>
 
-                <select class="form-control selectpicker" id="material" name="material" data-width="auto"  title="<%- __('Material'); %>">
-                    <% if (locals.materials && materials.length) { selected = (locals.search && locals.search.material) ? search.material : ''; %>
-                    <% materials.forEach(function (material) { %>
-                    <option value="<%- material.id %>"
-                            <% if (material.id == selected) { %>
-                            selected
-                            <% } %>
-                    ><%- material.name %></option>
-                    <% }); %>
-                    <% } %>
-                </select>
+                <span style="margin-right: 10px;">
+                    <select class="form-control selectpicker" id="material" name="material" data-width="auto"  title="<%- __('Material'); %>">
+                        <% if (locals.materials && materials.length) { %>
+                        <% selected = (locals.search && locals.search.material) ? search.material : ''; %>
+                        <% for (let material of materials) { %>
+                        <option value="<%- material._id %>"
+                                <% if (material._id == selected) { %>
+                                selected
+                                <% } %>
+                                title="<%- material.name %>"><%- material.name %></option>
+                        <% if (material.variants && material.variants.length) { %>
+                        <% for (let variant of material.variants) { %>
+                        <option value="<%- variant._id %>"
+                                <% if (variant._id == selected) { %>
+                                selected
+                                <% } %>
+                                title="<%- variant.name %>">&nbsp;&nbsp;&nbsp;<%- variant.name %></option>
+                        <% } %>
+                        <% } %>
+                        <% } %>
+                        <% } %>
+                    </select>
+                    <span class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default<%= (locals.search && locals.search.materialVariants && search.materialVariants)?' active':'' %>" title="<%= __('Include variants') %>">
+                            <input type="checkbox" name="materialVariants" autocomplete="off" <%= (locals.search && locals.search.materialVariants && search.materialVariants)?' checked':'' %>><i class="fa fa-sitemap"></i>
+                        </label>
+                    </span>
+                </span>
 
                 <select class="form-control selectpicker" id="brand" name="brand" data-width="120px" title="<%- __('Brand'); %>">
                     <% if (locals.brands && brands.length) { selected = (locals.search && locals.search.brand) ? search.brand : ''; %>
@@ -73,7 +90,7 @@
     </div>
 
 
-    <div id="compute-form" class="col-md-6" style="display:none;">
+    <div id="compute-form" class="col-md-5" style="display:none;">
         <table class="table filament-list filament-details">
             <tr>
                 <td>
@@ -204,7 +221,7 @@ function filamentComputeCostOnChange() {
 function updateCancelSearchButtonVisibility() {
     let allFieldEmpty = true;
     $(':input', 'form#filament-search').each(function() {
-        if ($(this).val() !== '') {
+        if (this.type !== "checkbox" && $(this).val() !== '') {
             allFieldEmpty = false;
         }
     });
@@ -265,6 +282,7 @@ $(function() {
             url: '/filament/cost-calculator/search?'+$(this).serialize(),
             success: function(data) {
                 $('table#filament-list>tbody').html(data.html);
+                $('#search-result-title').html(data.resultTitle);
                 scrollToHash();
             },
             error: function(jqXHR, textStatus, errorThrown) {

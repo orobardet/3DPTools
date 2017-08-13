@@ -896,7 +896,7 @@ module.exports = function (app) {
                     'color.code': 1,
                     'brand.name': 1
                 }),
-                Material.find().sort('name').exec(),
+                Material.list({tree: true, locale: res.getLocale()}),
                 Brand.find().sort('name').exec(),
                 Filament.getColors()
             ]);
@@ -974,7 +974,9 @@ module.exports = function (app) {
         try {
             // Analyse received parameters and extract potential filter (search) values
             const search = req.form;
-            let filamentFilter = {};
+            let filamentFilter = {
+                finished: false
+            };
             if (search.material && search.material !== '') {
                 filamentFilter.material = search.material;
             }
@@ -983,6 +985,13 @@ module.exports = function (app) {
             }
             if (search.color && search.color !== '') {
                 filamentFilter['color.code'] = search.color;
+            }
+
+            if (search.materialVariants && search.materialVariants === 'on' && filamentFilter.material) {
+                let materialVariantsDoc = await Material.findByParentId(filamentFilter.material, {locale: res.getLocale()});
+                let materialVariantsId = materialVariantsDoc.map(doc => doc._id);
+                materialVariantsId.unshift(filamentFilter.material);
+                filamentFilter.material = materialVariantsId;
             }
 
             // Check if the potential sort field received in parameters is valid (i.e. it is known)
@@ -1021,6 +1030,7 @@ module.exports = function (app) {
             return res.json({
                 search: Object.keys(formSearchData).length?search:null,
                 filaments: filamentsLite,
+                resultTitle : res.__n("%s filament", "%s filaments", filaments.length || 0),
                 html: html
             });
         } catch (err) {
