@@ -23,19 +23,24 @@ module.exports = function (app) {
         });
     };
 
+    this._prepareAddForm = async (res, data) => {
+        let materials = await Material.list({childMaterials: false});
+        materials.unshift({name: res.__('<none>'), id:null});
+
+        data = Object.assign({
+            materials: materials,
+            errors: []
+        }, data);
+
+        return res.render('material/add', data);
+    };
+
     /**
      * Show the add new material form
      */
     this.addForm = async (req, res, next) => {
         try {
-            let materials = await Material.find().sort('name').exec();
-
-            materials.unshift({name: res.__('<none>'), id:null});
-
-            return res.render('material/add', {
-                materials: materials,
-                errors: []
-            });
+            return this._prepareAddForm(res);
         } catch (err) {
             return next(err);
         }
@@ -66,19 +71,17 @@ module.exports = function (app) {
                 if (!parentMaterial) {
                     parentMaterialErrors.push('Unable to find parent material');
                 }
-                if (parentMaterial.parenMaterial) {
+                if (parentMaterial.parentMaterial) {
                     parentMaterialErrors.push('A material having parent material can be used as parent material');
                 }
 
                 if (parentMaterialErrors.length) {
-                    errors.parenMaterial = parentMaterialErrors;
+                    errors.parentMaterial = parentMaterialErrors;
                 }
             }
 
-            if (errors && errors.length) {
-                return res.render('material/add', {
-                    errors: errors
-                });
+            if (errors && Object.keys(errors).length) {
+                return this._prepareAddForm(res, { errors: errors});
             }
 
             let material = new Material({

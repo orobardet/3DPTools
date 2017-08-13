@@ -41,9 +41,9 @@
                     </select>
                     <% if (errors.parentMaterial) { %>
                     <ul class="help-block with-errors">
-                        <% errors.parentMaterial.forEach(function(msg) { %>
+                        <% for (let msg of errors.parentMaterial) { %>
                         <li><%= __(msg) %></li>
-                        <% }); %>
+                        <% } %>
                     </ul>
                     <% } %>
                 </div>
