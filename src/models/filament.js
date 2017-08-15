@@ -16,8 +16,9 @@ module.exports = function (app) {
         diameter: Number,   // in mm
         color: {
             name: String,
-            code: String    // HTML compliant #hex color code
+            code: String    // CSS compliant #hex color code or rgba
         },
+        masterColorCode: String, // CSS compliant #hex color code or rgba
         pictures: [{
             id: Schema.Types.ObjectId,
             name: String,
@@ -66,8 +67,9 @@ module.exports = function (app) {
      * - 4: add finished and finishedDate
      * - 5: add pricePerKG
      * - 6: replace speedPercentage with printingSpeed range
+     * - 7: add masterColor
      */
-    filamentSchema.statics.currentVersion = 6;
+    filamentSchema.statics.currentVersion = 7;
 
     filamentSchema.methods.getData = function(noPictures) {
         let data = this.toObject({getters: false, virtuals: true, versionKey: false});
@@ -133,7 +135,7 @@ module.exports = function (app) {
         let migrated = false;
         if (app.models.migrate && app.models.migrate.filament) {
             for (let version of Object.keys(app.models.migrate.filament)) {
-                let migrator = new app.models.migrate.filament[version](this, filamentSchema.statics.currentVersion);
+                let migrator = new app.models.migrate.filament[version](this, filamentSchema.statics.currentVersion, app);
 
                 if (migrator.needMigration && typeof migrator.needMigration === 'function' && migrator.needMigration()) {
                     migrated = true;
