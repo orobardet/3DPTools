@@ -132,7 +132,7 @@ module.exports = function (app) {
     filamentSchema.methods.migrate = async function() {
         let migrated = false;
         if (app.models.migrate && app.models.migrate.filament) {
-            for (version of Object.keys(app.models.migrate.filament)) {
+            for (let version of Object.keys(app.models.migrate.filament)) {
                 let migrator = new app.models.migrate.filament[version](this, filamentSchema.statics.currentVersion);
 
                 if (migrator.needMigration && typeof migrator.needMigration === 'function' && migrator.needMigration()) {

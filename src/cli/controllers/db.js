@@ -103,7 +103,7 @@ module.exports = function(app) {
                     $or: [
                         { _version: { $exists : false } },
                         { _version: null },
-                        { _version: { $lt : 5 } }
+                        { _version: { $lt : model.currentVersion } }
                     ]
                 };
             }
