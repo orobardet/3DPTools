@@ -1,5 +1,7 @@
 'use strict';
 
+require('app-module-path').addPath(__dirname);
+
 module.exports = function(bootstrapOptions) {
     const merge = require('merge');
     const fs = require('fs');
@@ -288,8 +290,7 @@ module.exports = function(bootstrapOptions) {
 
         consign({
             verbose: false
-        }).include('lib')
-            .then('models')
+        }).include('models')
             .then('middlewares')
             .then('forms')
             .then('controllers')

@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(app) {
-    const libLocale = app.lib.locale;
+    const libLocale = require('lib/locale');
     const User = app.models.user;
     const util = require('util');
     const diskusage = util.promisify(require('diskusage').check);

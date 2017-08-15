@@ -1,8 +1,7 @@
 'use strict';
 
-module.exports = app => {
-
-    this.localizeFormErrors = (res, messages) => {
+module.exports = {
+    localizeFormErrors: (res, messages) => {
         let localizedMessages = {};
 
         for (const field of Object.keys(messages)) {
@@ -15,7 +14,5 @@ module.exports = app => {
         }
 
         return localizedMessages;
-    };
-
-    return this;
+    }
 };
