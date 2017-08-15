@@ -147,8 +147,7 @@ module.exports = function (app) {
                 return res.redirect('/setup');
             }
         } catch(err) {
-            console.error(err);
-            next();
+            return next(err);
         }
 
         // Show the login form
