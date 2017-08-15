@@ -375,11 +375,12 @@ module.exports = function (app) {
      */
     this.filterPredefinedColors = (used, predefined) => {
         let filtered = {};
-        let predefinedValues = Object.values(predefined);
+        let predefinedValues = Object.values(predefined).map( val => val.replace(/ /ug, ''));
 
         for (let color of used) {
-            if (predefinedValues.indexOf(color.code) === -1) {
-                filtered[color.name] = color.code;
+            let cleanedCode = color.code.replace(/ /ug, '');
+            if (predefinedValues.indexOf(cleanedCode) === -1) {
+                filtered[color.name] = cleanedCode;
             }
         }
 
