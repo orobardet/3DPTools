@@ -419,5 +419,7 @@
   "A material with variant(s) can not be deleted.": "Une matière avec des variantes ne peut pas être supprimée.",
   "A material with variant(s) can not have a parent material.": "Une matière avec des variantes ne peut pas avoir de manière parente.",
   "Gris clair": "Gris clair",
-  "Include variants": "Inclure les variantes"
+  "Include variants": "Inclure les variantes",
+  "Natural": "Naturel",
+  "Violet": "Violet"
 }

@@ -48,17 +48,19 @@
   "filament": {
     "colors": {
       "Black": "#000000",
-      "White": "#ffffff",
-      "Blue": "#1f77b4",
-      "Orange": "#ff7f0e",
-      "Green": "#2ca02c",
-      "Red": "#d62728",
-      "Purple": "#9467bd",
-      "Brown": "#8c564b",
-      "Pink": "#e377c2",
       "Gray": "#7f7f7f",
+      "White": "#ffffff",
+      "Red": "#d62728",
+      "Pink": "#e377c2",
+      "Orange": "#ff7f0e",
       "Yellow": "#f7f70e",
-      "Beige": "#f7f7e3"
+      "Green": "#2ca02c",
+      "Blue": "#1f77b4",
+      "Violet": "#9467bd",
+      "Brown": "#8c564b",
+      "Beige": "#f7f7e3",
+      "Natural": "rgba(255, 255, 255, 0.63)",
+      "Transparent": "rgba(255, 255, 255, 0)"
     },
     "leftThresholds": {
       "warning": 35,
