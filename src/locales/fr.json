@@ -422,5 +422,7 @@
   "Include variants": "Inclure les variantes",
   "Natural": "Naturel",
   "Violet": "Violet",
-  "Master color": "Couleur maîtresse"
+  "Master color": "Couleur maîtresse",
+  "Master color:": "Couleur maîtresse :",
+  "Master color is required": "La couleur maîtresse est obligatoire"
 }

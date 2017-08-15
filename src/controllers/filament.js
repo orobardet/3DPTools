@@ -324,6 +324,7 @@ module.exports = function (app) {
                     name: req.form.colorName,
                     code: req.form.colorCode
                 },
+                masterColorCode: req.form.masterColor,
                 shop: req.form.shop,
                 buyDate: new Date(req.form.buyDate * 1000),
                 price: req.form.price,
@@ -457,6 +458,7 @@ module.exports = function (app) {
             filament.diameter = req.form.diameter;
             filament.color.name = req.form.colorName;
             filament.color.code = req.form.colorCode;
+            filament.masterColorCode = req.form.masterColor;
             filament.shop = req.form.shop;
             filament.buyDate = new Date(req.form.buyDate * 1000);
             filament.price = req.form.price;

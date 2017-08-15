@@ -16,7 +16,7 @@
 <form class="form-filament" method="POST">
     <fieldset>
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-5">
                 <div class="form-group<%= (errors.name)?" has-error":"" %>">
                     <label for="name" class="control-label required"><%- __('Name:'); %></label>
                     <input type="text" class="form-control" id="name" name="name"
@@ -25,6 +25,60 @@
                     <% if (errors.name) { %>
                     <ul class="help-block with-errors">
                         <% errors.name.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group<%= (errors.material) ? " has-error" : "" %>">
+                    <label for="material" class="control-label required"><%- __('Material:'); %></label>
+                    <select class="form-control" id="material" name="material" required>
+                        <% if (locals.materials && materials.length) { %>
+                        <% selected = (locals.material) ? material : (filament.material) ? filament.material._id.toString() : ''; %>
+                        <% for (let material of materialsTree) { %>
+                        <option value="<%- material._id.toString() %>"
+                                <% if (material._id.toString() == selected) { %>
+                                selected
+                                <% } %>
+                        ><%- material.name %></option>
+                        <% if (material.variants && material.variants.length) { %>
+                        <% for (let variant of material.variants) { %>
+                        <option class="indent" value="<%- variant._id.toString() %>"
+                                <% if (variant._id.toString() == selected) { %>
+                                selected
+                                <% } %>
+                        >&nbsp;&nbsp;<%- variant.name %></option>
+                        <% } %>
+                        <% } %>
+                        <% } %>
+                        <% } %>
+                    </select>
+                    <% if (errors.material) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.material.forEach(function(msg) { %>
+                        <li><%= __(msg) %></li>
+                        <% }); %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group<%= (errors.diameter) ? " has-error" : "" %>">
+                    <label for="diameter" class="control-label required"><%- __('Diameter:'); %></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="diameter" name="diameter"
+                               placeholder="<%- __('Diameter'); %>"
+                               value="<%- (locals.diameter) ? diameter : filament.diameter %>"
+                               required>
+                        <div class="input-group-addon"><%- __('mm'); %></div>
+                    </div>
+                    <% if (errors.diameter) { %>
+                    <ul class="help-block with-errors">
+                        <% errors.diameter.forEach(function(msg) { %>
                         <li><%= __(msg) %></li>
                         <% }); %>
                     </ul>
@@ -59,62 +113,8 @@
         </div>
 
         <div class="row">
-            <div class="col-md-3">
-                <div class="form-group<%= (errors.material) ? " has-error" : "" %>">
-                    <label for="material" class="control-label required"><%- __('Material:'); %></label>
-                    <select class="form-control" id="material" name="material" required>
-                        <% if (locals.materials && materials.length) { %>
-                        <% selected = (locals.material) ? material : (filament.material) ? filament.material._id.toString() : ''; %>
-                        <% for (let material of materialsTree) { %>
-                        <option value="<%- material._id.toString() %>"
-                                <% if (material._id.toString() == selected) { %>
-                                selected
-                                <% } %>
-                        ><%- material.name %></option>
-                            <% if (material.variants && material.variants.length) { %>
-                            <% for (let variant of material.variants) { %>
-                            <option class="indent" value="<%- variant._id.toString() %>"
-                                    <% if (variant._id.toString() == selected) { %>
-                                    selected
-                                    <% } %>
-                            >&nbsp;&nbsp;<%- variant.name %></option>
-                            <% } %>
-                            <% } %>
-                        <% } %>
-                        <% } %>
-                    </select>
-                    <% if (errors.material) { %>
-                    <ul class="help-block with-errors">
-                        <% errors.material.forEach(function(msg) { %>
-                        <li><%= __(msg) %></li>
-                        <% }); %>
-                    </ul>
-                    <% } %>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-group<%= (errors.diameter) ? " has-error" : "" %>">
-                    <label for="diameter" class="control-label required"><%- __('Diameter:'); %></label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="diameter" name="diameter"
-                               placeholder="<%- __('Diameter'); %>"
-                               value="<%- (locals.diameter) ? diameter : filament.diameter %>"
-                               required>
-                        <div class="input-group-addon"><%- __('mm'); %></div>
-                    </div>
-                    <% if (errors.diameter) { %>
-                    <ul class="help-block with-errors">
-                        <% errors.diameter.forEach(function(msg) { %>
-                        <li><%= __(msg) %></li>
-                        <% }); %>
-                    </ul>
-                    <% } %>
-                </div>
-            </div>
-
-            <div class="col-md-7">
-                <label for="colorN" class="control-label required"><%- __('Color:'); %></label>
+            <div class="col-md-8">
+                <label for="colorName" class="control-label required"><%- __('Color:'); %></label>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="btn-group btn-block">
@@ -190,8 +190,45 @@
                     </div>
                 </div>
             </div>
-        </div>
 
+            <div class="col-md-4">
+                <label for="masterColor" class="control-label required "><%- __('Master color:'); %></label>
+                <div class="row">
+                    <div class="col-md-2" style="padding-right:0;">
+                        <button class="btn btn-info" id="guess-master-color"><i class="fa fa-magic"></i></button>
+                    </div>
+                    <div class="col-md-10" style="padding-left:0;">
+                        <div class="form-group<%= (errors.masterColor) ? " has-error" : "" %>">
+                            <% if (locals.predefinedColors) { %>
+                            <select class="form-control selectpicker" id="masterColor" name="masterColor" required title="<%- __('Master color'); %>">
+                                <% selected = (locals.masterColor) ? masterColor : filament.masterColorCode; %>
+                                <option value=""></option>
+                                <% for (let [name, code] of Object.entries(predefinedColors)) { %>
+                                <option value="<%- code %>"
+                                        <% if (code) { %>
+                                        data-content="<div class='color-preview-container'><i class='color-preview' style='background-color: <%- code %>;'></i></div> <span class='name'><%- name %></span>"
+                                        <% } else { %>
+                                        data-content="<span class='name'><%- name %></span>"
+                                        <% } %>
+                                        <% if (code == selected) { %>
+                                        selected
+                                        <% } %>
+                                ><%= name %></option>
+                                <% } %>
+                                <% } %>
+                            </select>
+                            <% if (errors.masterColor) { %>
+                            <ul class="help-block with-errors">
+                                <% for (let msg of errors.masterColor) { %>
+                                <li><%= __(msg) %></li>
+                                <% } %>
+                            </ul>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-6">
@@ -661,6 +698,30 @@
                     }
                 });
             }
+        });
+
+        $('#guess-master-color').click(function(e) {
+            e.preventDefault();
+
+            let colorCode = $('#colorCode').val();
+
+            if (colorCode && colorCode.length) {
+                $.ajax({
+                    method: 'GET',
+                    url: '/api/color/nearest-predefined/'+encodeURIComponent(colorCode),
+                    success: function(data) {
+                        if (data.code) {
+                            $('#masterColor').val(data.code).selectpicker('refresh');
+                        }
+                    },
+                });
+            } else {
+                $('#colorCode').focus();
+            }
+        })
+
+        $('#colorCode').change(function() {
+            $('#guess-master-color').trigger('click');
         });
     });
 </script>

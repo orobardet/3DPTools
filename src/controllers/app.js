@@ -2,6 +2,9 @@
 
 module.exports = function (app) {
     const fs = require('fs-promise');
+    const Color = require('color');
+    const NearestColor = require('lib/nearest-color');
+
     const User = app.models.user;
     const Shop = app.models.shop;
     const Brand = app.models.brand;
@@ -211,6 +214,33 @@ module.exports = function (app) {
             navModule: 'changelog',
             changelog: changelog
         });
+    };
+
+    this.nearestPredefinedColor = (req, res, next) => {
+        try {
+            const predefinedColors = app.get('config').get('filament:colors');
+
+            let normalizedPredefinedColors = {};
+            for (let [name, code] of Object.entries(predefinedColors)) {
+                let clrConverter = Color(code);
+                normalizedPredefinedColors[name] = clrConverter.rgb().array();
+            }
+            const colorFinder = new NearestColor(normalizedPredefinedColors);
+
+            let clrConverter = Color(req.params.code);
+            let nearest = colorFinder.findNearest(clrConverter.rgb().array());
+            let nearestCode = false;
+            if (nearest) {
+                nearestCode = predefinedColors[nearest];
+            }
+
+            return res.json({
+                name: nearest,
+                code: nearestCode
+            });
+        } catch (err) {
+            return next(err);
+        }
     };
 
     return this;

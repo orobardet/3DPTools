@@ -22,6 +22,9 @@ module.exports = function (app) {
         field("colorCode", "Color code")
             .trim()
             .required(),
+        field("masterColor", "Master color")
+            .trim()
+            .required(),
         field("diameter", "Diameter")
             .trim()
             .required()

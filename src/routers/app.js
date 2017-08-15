@@ -83,5 +83,7 @@ module.exports = function (app) {
     // changelog
     router.get('/changelog', Controller.changelog);
 
+    router.get('/api/color/nearest-predefined/:code', Controller.nearestPredefinedColor);
+
     app.use('/', router);
 };
