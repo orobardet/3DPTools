@@ -3,6 +3,7 @@
 > This version **REQUIRES** MongoDB **3.4**, with **[3.4 feature compatibility enabled](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)**!
 
 - [New] Allow creation of material variants (#68)
+- [New] Add master color for filament, to allow searching filament in all color nuances (#60)
 - [New] Show changelog when clicking on version number (#54)
 - [New] Add project source link (to Gitlab) on changelog page (#58)
 - [New] Add a system information page in admin section (#70)
