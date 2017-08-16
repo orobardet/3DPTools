@@ -2,7 +2,7 @@ FROM node:8-alpine
 MAINTAINER Olivier Robardet <olivier.robardet@gmail.com>
 
 RUN apk --update add bash ruby imagemagick ca-certificates git && \
-    apk --update add --virtual 3dpt-dev build-base ruby-dev libffi-dev && \
+    apk --update add --virtual 3dpt-dev build-base ruby-dev libffi-dev python g++ gcc libgcc libstdc++ linux-headers make && \
 	gem install -N sass && \
 	apk del 3dpt-dev
 
