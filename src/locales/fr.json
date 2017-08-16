@@ -424,5 +424,6 @@
   "Violet": "Violet",
   "Master color": "Couleur maîtresse",
   "Master color:": "Couleur maîtresse :",
-  "Master color is required": "La couleur maîtresse est obligatoire"
+  "Master color is required": "La couleur maîtresse est obligatoire",
+  "&nbsp;": "&nbsp;"
 }

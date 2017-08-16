@@ -60,7 +60,7 @@ module.exports = function (app) {
     /**
      * List and search of filament
      */
-    this.index = async (req, res) => {
+    this.index = async (req, res, next) => {
         try {
             req.setOriginUrl([
                 'filament/view',
@@ -94,7 +94,10 @@ module.exports = function (app) {
                 filamentFilter.brand = search.brand;
             }
             if (search.color && search.color !== '') {
-                filamentFilter['color.code'] = search.color;
+                filamentFilter['$or'] = [
+                    { 'color.code': search.color },
+                    { 'masterColorCode': search.color }
+                ];
             }
             filamentFilter.finished = false;
             if (search.finished) {
@@ -120,7 +123,7 @@ module.exports = function (app) {
             // Retrieve the filament list, possibly with filter and sort options
             // Also retrieve the lists of all materials, brands, shops and colors,
             // that will be used to construct filter form
-            let [filaments, materials, brands, shops, colors] = await Promise.all([
+            let [filaments, materials, brands, shops, usedColors] = await Promise.all([
                 Filament.list({
                     filter: filamentFilter,
                     sort: filamentSortDefinition[selectedSort].sort
@@ -130,6 +133,18 @@ module.exports = function (app) {
                 Shop.find().sort('name').exec(),
                 Filament.getColors()
             ]);
+
+            const predefinedColors = res.app.get('config').get('filament:colors');
+            usedColors = this.filterPredefinedColors(usedColors, predefinedColors);
+            let colors = [];
+            for (let [name, code] of Object.entries(predefinedColors)) {
+                colors.push({name: name, code: code});
+            }
+            colors.push(false);
+            for (let [name, code] of Object.entries(usedColors)) {
+                colors.push({name: name, code: code});
+            }
+
             // Add an empty entry at the beginning of each filter list (which means 'no filtering on this field')
             materials.unshift({name: '&nbsp;', id: null});
             shops.unshift({name: '&nbsp;', id: null});
@@ -893,7 +908,7 @@ module.exports = function (app) {
      */
     this.costCalculatorForm = async (req, res, next) => {
         try {
-            let [filaments, materials, brands, colors] = await Promise.all([
+            let [filaments, materials, brands, usedColors] = await Promise.all([
                 Filament.find({finished:false}).populate('material brand shop').sort({
                     'material.name': 1,
                     'color.code': 1,
@@ -903,6 +918,17 @@ module.exports = function (app) {
                 Brand.find().sort('name').exec(),
                 Filament.getColors()
             ]);
+
+            const predefinedColors = res.app.get('config').get('filament:colors');
+            usedColors = this.filterPredefinedColors(usedColors, predefinedColors);
+            let colors = [];
+            for (let [name, code] of Object.entries(predefinedColors)) {
+                colors.push({name: name, code: code});
+            }
+            colors.push(false);
+            for (let [name, code] of Object.entries(usedColors)) {
+                colors.push({name: name, code: code});
+            }
 
             // Add an empty entry at the beginning of each filter list (which means 'no filtering on this field')
             materials.unshift({name:'&nbsp;', id:null});
@@ -987,7 +1013,10 @@ module.exports = function (app) {
                 filamentFilter.brand = search.brand;
             }
             if (search.color && search.color !== '') {
-                filamentFilter['color.code'] = search.color;
+                filamentFilter['$or'] = [
+                    { 'color.code': search.color },
+                    { 'masterColorCode': search.color }
+                ];
             }
 
             if (search.materialVariants && search.materialVariants === 'on' && filamentFilter.material) {

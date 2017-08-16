@@ -30,19 +30,25 @@
             <th>
                 <select class="form-control selectpicker" id="color" name="color" data-width="60px" title="<%- __('Color'); %>">
                     <% if (locals.colors && colors.length) { selected = (locals.search && search.color) ? search.color : ''; %>
-                    <% colors.forEach(function (color) { %>
-                    <option value="<%- color.code %>"
-                            <% if (color.code) { %>
-                            data-content="<div class='color-preview-container'><i class='color-preview' style='background-color: <%- color.code %>;'></i></div> <span class='name'><%- color.name %></span>"
-                            <% } else { %>
-                            data-content="<span class='name'><%- color.name %></span>"
-                            <% } %>
-                            <% if (color.code == selected) { %>
-                            selected
-                            <% } %>
-                    ><%- color.name %></option>
-                    <% }); %>
+                    <optgroup label="">
+                    <% for (let color of colors) { %>
+                        <% if (color === false) {%>
+                    </optgroup><optgroup label="">
+                        <% } else {%>
+                        <option value="<%- color.code %>"
+                                <% if (color.code) { %>
+                                data-content="<div class='color-preview-container'><i class='color-preview' style='background-color: <%- color.code %>;'></i></div> <span class='name'><%- __(color.name) %></span>"
+                                <% } else { %>
+                                data-content="<span class='name'><%- __(color.name) %></span>"
+                                <% } %>
+                                <% if (color.code == selected) { %>
+                                selected
+                                <% } %>
+                        ><%- __(color.name) %></option>
+                        <% } %>
                     <% } %>
+                    <% } %>
+                    </optgroup>
                 </select>
             </th>
             <th colspan="4">
