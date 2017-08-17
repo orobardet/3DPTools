@@ -8,7 +8,6 @@ RUN apk --update add bash ruby imagemagick ca-certificates git && \
 
 ENV PORT=3000
 ENV NODE_ENV=production
-ENV sentry__dsn=https://88009fc2f595471ea9808336a43e42cd:38ebfe3e7c744d3fb19a8bab712a8a7a@sentry.io/148531
 
 COPY src /3dptools
 COPY CHANGELOG.md /3dptools/CHANGELOG.md
