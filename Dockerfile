@@ -10,6 +10,7 @@ ENV PORT=3000
 ENV NODE_ENV=production
 
 ENV database__host=mongo
+ENV redis__host=redis
 
 COPY src /3dptools
 COPY CHANGELOG.md /3dptools/CHANGELOG.md

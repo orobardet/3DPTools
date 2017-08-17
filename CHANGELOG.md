@@ -1,6 +1,6 @@
 # Next
 
-- [Tec] Improve Docker image (#71)
+- [Tec] Improve Docker image (#82 #85)
 
 # v1.3.0
 
