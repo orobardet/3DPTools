@@ -1,5 +1,6 @@
 FROM node:8-alpine
-MAINTAINER Olivier Robardet <olivier.robardet@gmail.com>
+
+LABEL maintainer="Olivier Robardet <olivier.robardet@gmail.com>"
 
 RUN apk --update add bash ruby imagemagick ca-certificates git && \
     apk --update add --virtual sass-dev build-base ruby-dev libffi-dev && \
