@@ -1,3 +1,7 @@
+# Next
+
+- [Tec] Improve Docker image (#71)
+
 # v1.3.0
 
 > This version **REQUIRES** MongoDB **3.4**, with **[3.4 feature compatibility enabled](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)**!

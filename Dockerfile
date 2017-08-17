@@ -9,6 +9,8 @@ RUN apk --update add bash ruby imagemagick ca-certificates git && \
 ENV PORT=3000
 ENV NODE_ENV=production
 
+ENV database__host=mongo
+
 COPY src /3dptools
 COPY CHANGELOG.md /3dptools/CHANGELOG.md
 COPY docker/docker_start.sh /docker_start.sh
