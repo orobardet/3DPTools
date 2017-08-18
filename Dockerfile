@@ -12,6 +12,7 @@ ENV NODE_ENV=production
 
 ENV database__host=mongo
 ENV redis__host=redis
+ENV sentry__dsn="https://88009fc2f595471ea9808336a43e42cd@sentry.io/148531"
 
 COPY src /3dptools
 COPY CHANGELOG.md /3dptools/CHANGELOG.md
