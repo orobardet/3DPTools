@@ -84,6 +84,7 @@ src/public/vendor
 src/tmp
 .nyc_output/
 /docker-volumes/
+docker-compose.override.yml
 yarn.lock
 .yarn-integrity
 package-lock.json
