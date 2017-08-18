@@ -7,8 +7,31 @@ services:
     - "./docker-volumes/mongo/db:/data/db"
 
   3dptools:
-    ports:
-    # change the first 3000 below to any other port you cant to listen to
-    - "3000:3000"
+    image: 3dptools-dev
+    build: .
+    # This will start the application using nodemon, with automatic node restart when a file change.
+    # Comment if you want to start the application normally
+    command: npm run startmon
+    # Uncomment the 'networks' block if you want to use Traefik to access the application
+    #networks:
+    #  - traefik
+    # Else uncomment the 'networks' block to expose the port on your host
+    #ports:
+    # Change the first 3000 below to any other port you cant to listen to
+    #- "3000:3000"
+    volumes:
+      - ./src:/3dptools
+      - ./CHANGELOG.md:/CHANGELOG.md
     environment:
       NODE_ENV: "dev"
+    labels:
+      traefik.enable: "true"
+      traefik.backend: "3dptools"
+      traefik.docker.network: "traefik"
+    # Replace 'container.my.fqdn' with the hostname you want to use to access the application
+      traefik.frontend.rule: "Host:container.my.fqdn"
+
+# Uncomment the 'networks' block if you want to use Traefik to access the application
+#networks:
+#  traefik:
+#    external: true

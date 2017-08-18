@@ -3,21 +3,28 @@ version: '2'
 services:
   mongo:
     image: mongo
+    networks:
+      - backend
     volumes:
     - "./docker-volumes/mongo/db:/data/db"
 
   redis:
     image: redis:alpine
+    networks:
+      - backend
 
   3dptools:
     image: orobardet/3dptools
+    networks:
+      - backend
     depends_on:
     - mongo
     - redis
-    ports:
-    - "3000:3000"
+    #ports:
+    #- "3000:3000"
     environment:
-      redis__host: "redis"
-      database__url: "mongodb://mongo/3dptools"
-      database__connectOptions__user: ""
-      database__connectOptions__pass: ""
+      database__user: ""
+      database__pass: ""
+
+networks:
+  backend:

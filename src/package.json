@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
+    "startmon": "nodemon ./bin/www",
     "cli": "node ./bin/cli",
     "test": "mocha -c --recursive",
     "coverage": "istanbul --hook-run-in-context cover node_modules/mocha/bin/_mocha -- --recursive -R spec -c",
@@ -55,6 +56,7 @@
     "debug": "^2.6.8",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^3.4.2",
+    "nodemon": "^1.11.0",
     "nyc": "^11.1.0",
     "should": "^11.1.0"
   }
