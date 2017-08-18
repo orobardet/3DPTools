@@ -191,13 +191,27 @@ module.exports = function(bootstrapOptions) {
         mongoOptions.useMongoClient = true;
         mongoOptions.promiseLibrary = global.Promise;
         mongoose.Promise = global.Promise;
-        let mongoUrl = fmt("mongodb://%s:%s@%s:%d/%s",
-            encodeURIComponent(config.get("database:user")),
-            encodeURIComponent(config.get("database:pass")),
-            encodeURIComponent(config.get("database:host")),
-            encodeURIComponent(config.get("database:port")),
-            encodeURIComponent(config.get("database:name"))
-        );
+
+        const dbUser = config.get("database:user");
+        const dbPass = config.get("database:pass");
+        const dbHost = config.get("database:host");
+        const dbPort = config.get("database:port");
+        const dbName = config.get("database:name");
+
+        let mongoAuth = "";
+        if (dbUser) {
+            if (dbPass) {
+                mongoAuth = `${dbUser}:${dbPass}@`;
+            } else {
+                mongoAuth = `${dbUser}@`;
+            }
+        }
+        let mongoServer = dbHost;
+        if (dbPort) {
+            mongoServer = `${dbHost}:${dbPort}`;
+        }
+
+        const mongoUrl = `mongodb://${mongoAuth}${mongoServer}/${dbName}`;
         mongoose.connect(mongoUrl, mongoOptions).catch(function(err) {
             console.error(err);
             process.exit(1);
