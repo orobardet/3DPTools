@@ -198,7 +198,10 @@ module.exports = function(bootstrapOptions) {
             encodeURIComponent(config.get("database:port")),
             encodeURIComponent(config.get("database:name"))
         );
-        mongoose.connect(mongoUrl, mongoOptions);
+        mongoose.connect(mongoUrl, mongoOptions).catch(function(err) {
+            console.error(err);
+            process.exit(1);
+        });
     }
 
     // Setting up i18n
