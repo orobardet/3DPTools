@@ -42,7 +42,9 @@ services:
       - ./src:/3dptools
       - ./CHANGELOG.md:/CHANGELOG.md
     environment:
-      NODE_ENV: "dev"
+      NODE_ENV: "development"
+      DEBUG: "3DPTools,3DPTools:*"
+      DEBUG_COLORS: 1
     labels:
       traefik.enable: "true"
       traefik.backend: "3dptools"
