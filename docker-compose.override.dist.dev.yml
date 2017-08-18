@@ -6,6 +6,25 @@ services:
     # change the first part before ':' below to any path you want data to persist
     - "./docker-volumes/mongo/db:/data/db"
 
+    # Uncomment the 'mongo-express' block if you want to setup the mongo-express web gui admin tool
+#  mongo-express:
+#    image: mongo-express
+#    networks:
+#      - backend
+#      - traefik
+#    depends_on:
+#      - mongo
+#    # Uncomment the 'ports' block to expose the port on your host
+#    #ports:
+#    # Change the 8090 below to any other available port on your host
+#    #- "8090:80"
+#    labels:
+#      traefik.enable: "true"
+#      traefik.backend: "mongo-express-3dpt"
+#      traefik.docker.network: "traefik"
+#    # Replace 'container.my.fqdn' with the hostname you want to use to access mongo-express
+#      traefik.frontend.rule: "Host:container.my.fqdn"
+
   3dptools:
     image: 3dptools-dev
     build: .
@@ -15,9 +34,9 @@ services:
     # Uncomment the 'networks' block if you want to use Traefik to access the application
     #networks:
     #  - traefik
-    # Else uncomment the 'networks' block to expose the port on your host
+    # Else uncomment the 'ports' block to expose the port on your host
     #ports:
-    # Change the first 3000 below to any other port you cant to listen to
+    # Change the first 3000 below to any other available port on your host
     #- "3000:3000"
     volumes:
       - ./src:/3dptools
