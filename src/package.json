@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "startmon": "nodemon ./bin/www",
+    "bower": "bower",
     "cli": "node ./bin/cli",
     "test": "mocha -c --recursive",
     "coverage": "istanbul --hook-run-in-context cover node_modules/mocha/bin/_mocha -- --recursive -R spec -c",
