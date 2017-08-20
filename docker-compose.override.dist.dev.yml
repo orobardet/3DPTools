@@ -45,7 +45,7 @@ services:
       NODE_ENV: "development"
       DEBUG: "3DPTools,3DPTools:*"
       DEBUG_COLORS: 1
-      changelog__filePath: "../CHANGELOG.md"
+      sourceCode__changelog__filePath: "../CHANGELOG.md"
     labels:
       traefik.enable: "true"
       traefik.backend: "3dptools"
