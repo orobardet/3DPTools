@@ -1,19 +1,12 @@
-FROM node:8-alpine
+# Build image
 
-LABEL maintainer="Olivier Robardet <olivier.robardet@gmail.com>"
+FROM node:8-alpine AS builder
 
-RUN apk --update add bash ruby imagemagick ca-certificates git && \
+RUN apk --update add ruby imagemagick ca-certificates git && \
     apk --update add --virtual sass-dev build-base ruby-dev libffi-dev && \
-	gem install -N sass && \
-	apk del sass-dev && rm -rf /var/cache/apk/*
+	gem install -N sass
 
-ENV PORT=3000
-ENV NODE_ENV=production
 ENV APP_USER=3dptools
-
-ENV database__host=mongo
-ENV redis__host=redis
-ENV sentry__dsn="https://88009fc2f595471ea9808336a43e42cd@sentry.io/148531"
 
 RUN adduser -D -g "" -G users $APP_USER
 
@@ -25,16 +18,38 @@ RUN chown -R $APP_USER:users /docker_start.sh /3dptools && chmod +x /docker_star
 WORKDIR /3dptools
 
 RUN apk --update add --virtual 3dpt-dev build-base python krb5-dev sudo && \
-    sudo -u $APP_USER npm install && \
-    sudo -u $APP_USER npm remove node-gyp && \
-    sudo -u $APP_USER npm cache clean --force && \
-    sudo -u $APP_USER rm -fr /home/$APP_USER/.node-gyp /home/$APP_USER/.npm /home/$APP_USER/.cache && \
-    apk del 3dpt-dev && rm -rf /var/cache/apk/*
+    sudo -u $APP_USER npm install --production && \
+    sudo -u $APP_USER npm cache clean --force
 
 USER $APP_USER
-RUN npm run bower install && \
+
+RUN npm run bower install --production && \
     npm run bower cache clean
 RUN scss -C -f public/stylesheets/style.scss public/stylesheets/style.css
+
+# Real image
+
+FROM node:8-alpine
+
+LABEL maintainer="Olivier Robardet <olivier.robardet@gmail.com>"
+
+ENV APP_USER=3dptools
+
+RUN adduser -D -g "" -G users $APP_USER
+
+COPY --from=builder /3dptools /3dptools
+COPY docker/docker_start.sh /docker_start.sh
+RUN chown -R $APP_USER:users /3dptools /docker_start.sh && chmod +x /docker_start.sh
+
+USER $APP_USER
+WORKDIR /3dptools
+
+ENV PORT=3000
+ENV NODE_ENV=production
+
+ENV database__host=mongo
+ENV redis__host=redis
+ENV sentry__dsn="https://88009fc2f595471ea9808336a43e42cd@sentry.io/148531"
 
 EXPOSE $PORT
 
