@@ -1,5 +1,6 @@
 # Next
 
+- [Tec] Add `versionSuffix` config setting (#92)
 - [Tec] Improve Docker image and stack (#80 #81 #82 #85 #86 #88)
 
 # v1.3.0
