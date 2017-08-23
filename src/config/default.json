@@ -1,5 +1,6 @@
 {
-  "version": "Dev",
+  "version": "",
+  "versionSuffix": "",
   "sourceCode": {
     "projectUrl": "https://gitlab.com/orobardet/3DPTools",
     "changelog": {

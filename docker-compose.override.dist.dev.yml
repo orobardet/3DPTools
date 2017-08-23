@@ -43,6 +43,7 @@ services:
       - ./CHANGELOG.md:/CHANGELOG.md
     environment:
       NODE_ENV: "development"
+      versionSuffix: "dev"
       DEBUG: "3DPTools,3DPTools:*"
       DEBUG_COLORS: 1
       sourceCode__changelog__filePath: "../CHANGELOG.md"

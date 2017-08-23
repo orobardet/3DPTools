@@ -75,9 +75,15 @@ module.exports = function(bootstrapOptions) {
             }
         }
 
+        let appVersion = config.get('version');
+        let appVersionSuffix = config.get('versionSuffix');
         if (packageInfo && packageInfo.version) {
-            config.set('version', packageInfo.version);
+            appVersion =  packageInfo.version;
         }
+        if (appVersionSuffix && appVersionSuffix.length) {
+            appVersion += "-" + appVersionSuffix;
+        }
+        config.set('version', appVersion);
         app.locals.config = config;
         app.locals.moment = moment;
         app.locals.Color = color;
