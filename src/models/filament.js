@@ -286,17 +286,52 @@ module.exports = function (app) {
             });
     };
 
-    filamentSchema.statics.getCostPerMaterials = async function () {
-        let aggregation = await this.aggregate([
+    filamentSchema.statics.getCostPerMasterMaterials = async function (remove_finished) {
+        let aggregationConfig = [
+            { $project: {
+                material: "$material",
+                price: "$price"
+            }},
+            { $lookup: {
+                from: "materials",
+                localField: "material",
+                foreignField: "_id",
+                as: "materialData"
+            }},
+            // Use parent material ID if there is one
+            { $project: {
+                materialId: {
+                    $cond: {
+                        if : { $gt: [ { $size : "$materialData.parentMaterial" },  0] } ,
+                        then: { $arrayElemAt: [ "$materialData.parentMaterial", 0 ] },
+                        else: "$material"
+                    }
+                },
+                price: "$price"
+            }},
             { $group: {
-                _id: '$material',
-                cost: { $sum: '$price' }
-            }
-            },
-            { $sort: { 'cost': -1 } }
-        ]).exec();
+                _id: '$materialId',
+                cost: { $sum: "$price" }
+            }},
+            { $sort: { 'cost': -1 } },
+            { $lookup: {
+                from: "materials",
+                localField: "_id",
+                foreignField: "_id",
+                as: "_id"
+            }},
+            { $project: {
+                _id: { $arrayElemAt: [ "$_id", 0 ] },
+                cost: "$cost"
+            }}
+        ];
 
-        let results = await app.models.material.populate(aggregation, { "path" : "_id"});
+        if (remove_finished === true) {
+            aggregationConfig.unshift({
+                $match: { finished: false }
+            });
+        }
+        let results = await this.aggregate(aggregationConfig).exec();
 
         return results.map(doc => {
             doc.label = doc._id.name;
@@ -351,32 +386,6 @@ module.exports = function (app) {
         ]).exec();
 
         let results = await app.models.shop.populate(aggregation, { "path" : "_id"});
-
-        return results.map(doc => {
-            doc.label = doc._id.name;
-            doc._id = doc._id._id;
-            return doc;
-        });
-    };
-
-    filamentSchema.statics.getCountPerMaterials = async function (remove_finished) {
-        let aggregationConfig = [
-            { $group: {
-                _id: '$material',
-                count: { $sum: 1 }
-            }
-            },
-            { $sort: { 'count': -1 } }
-        ];
-
-        if (remove_finished === true) {
-            aggregationConfig.unshift({
-                $match: { finished: false }
-            });
-        }
-
-        let aggregation = await this.aggregate(aggregationConfig).exec();
-        let results = await app.models.material.populate(aggregation, { "path" : "_id"});
 
         return results.map(doc => {
             doc.label = doc._id.name;
