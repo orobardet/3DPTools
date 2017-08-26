@@ -6,9 +6,11 @@
     <% if (filaments && filaments.length) { %>
     <li role="presentation"><a href="/filament/stats"><i class="fa fa-pie-chart"></i> <%- __('Statistics') %></a></li>
     <% } %>
+    <% if (filamentCount) { %>
     <div class="pull-right">
         <a href="/filament/cost-calculator" class="btn btn-default"><i class="fa fa-calculator"></i> <%- __('Cost calculator'); %></a>
     </div>
+    <% } %>
 </ul>
 
 <div class="panel panel-default">

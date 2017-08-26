@@ -925,7 +925,19 @@ module.exports = function (app) {
      */
     this.costCalculatorForm = async (req, res, next) => {
         try {
-            let [filaments, materials, brands, usedColors] = await Promise.all([
+            let availableFilamentCount = await Filament.count({}).exec();
+
+            if (!availableFilamentCount || availableFilamentCount <= 0) {
+                return res.redirect('/filament');
+            }
+
+            req.setOriginUrl([
+                'material/add',
+                'brand/add',
+                'shop/add',
+            ], req.originalUrl);
+
+            let [filaments, materials, brands, shopCount, usedColors] = await Promise.all([
                 Filament.find({finished:false}).populate('material brand shop').sort({
                     'material.name': 1,
                     'color.code': 1,
@@ -933,6 +945,7 @@ module.exports = function (app) {
                 }),
                 Material.list({tree: true, locale: res.getLocale()}),
                 Brand.find().sort('name').exec(),
+                Shop.count({}).exec(),
                 Filament.getColors()
             ]);
 
@@ -947,6 +960,8 @@ module.exports = function (app) {
                 colors.push({name: name, code: code});
             }
 
+            let materialCount = materials.length;
+            let brandCount = brands.length;
             // Add an empty entry at the beginning of each filter list (which means 'no filtering on this field')
             materials.unshift({name:'&nbsp;', id:null});
             brands.unshift({name:'&nbsp;', id:null});
@@ -958,6 +973,10 @@ module.exports = function (app) {
                 brands: brands,
                 colors: colors,
                 filaments: filaments,
+                filamentCount: availableFilamentCount,
+                materialCount: materialCount,
+                brandCount: brandCount,
+                shopCount: shopCount,
                 errors: (req.form) ? req.form.getErrors() : []
             });
 
