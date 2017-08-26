@@ -285,6 +285,21 @@ a.anchor {
   }
 }
 
+#app-message-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+
+  & > .alert {
+    max-width: 50%;
+    margin: 0px auto;
+    & > .close {
+      margin-left: 10px;
+    }
+  }
+}
+
 .login-section {
   > .container {
     margin-top: 100px;

@@ -4,8 +4,16 @@ var App3DPTools = {
         return this.messageFlash(container, message, 'danger', timeout);
     },
 
+    warningFlash: function (container, message, timeout) {
+        return this.messageFlash(container, message, 'warning', timeout);
+    },
+
     successFlash: function (container, message, timeout) {
         return this.messageFlash(container, message, 'success', timeout);
+    },
+
+    infoFlash: function (container, message, timeout) {
+        return this.messageFlash(container, message, 'info', timeout);
     },
 
     messageFlash: function (container, message, level, timeout) {
@@ -15,7 +23,7 @@ var App3DPTools = {
             return;
         }
 
-        $alertNode = $('<div>').addClass('alert').addClass('alert-' + level);
+        $alertNode = $('<div>').uniqueId().addClass('alert').addClass('alert-' + level);
         $('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>').appendTo($alertNode);
         $alertNode.append(message);
 
@@ -26,9 +34,9 @@ var App3DPTools = {
         }
 
         if (timeout > 0) {
-            setTimeout(function () {
-                $alertNode.remove();
-            }, timeout);
+            setTimeout(function ($node) {
+                $node.remove();
+            }, timeout, $alertNode);
         }
     },
 

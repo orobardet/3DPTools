@@ -259,6 +259,10 @@ module.exports = function(bootstrapOptions) {
 
     // view engine setup
     if (bootstrapOptions.initViews) {
+        if (bootstrapOptions.initHttpRouting) {
+            const flash = require('express-flash');
+            app.use(flash());
+        }
         const path = require('path');
         const bodyParser = require('body-parser');
         const expressLayouts = require('express-ejs-layouts');

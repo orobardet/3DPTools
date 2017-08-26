@@ -1,4 +1,5 @@
 {
+  "0": "0",
   "3DPTools": "3DPTools",
   "Home": "Accueil",
   "lang_fr_label": "Français",
@@ -425,5 +426,6 @@
   "Master color": "Couleur maîtresse",
   "Master color:": "Couleur maîtresse :",
   "Master color is required": "La couleur maîtresse est obligatoire",
-  "&nbsp;": "&nbsp;"
+  "&nbsp;": "&nbsp;",
+  "No statistics to displays as there is no filament.": "Pas de statistique à afficher car il n'y a pas de filament."
 }

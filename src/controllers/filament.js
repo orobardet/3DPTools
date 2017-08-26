@@ -179,9 +179,16 @@ module.exports = function (app) {
      * Heavily depends on Filament model, which is the one doing real stats computation.
      */
     this.stats = async (req, res, next) => {
+
+        let filamentTotalCount = await Filament.count({}).exec();
+
+        if (!filamentTotalCount || filamentTotalCount <= 0) {
+            req.flash('info', 'No statistics to displays as there is no filament.');
+            return res.redirect('/filament');
+        }
+
         try {
             let [
-                filamentTotalCount,
                 filamentTotalCost,
                 filamentTotalWeight,
                 filamentTotalLength,
@@ -201,7 +208,6 @@ module.exports = function (app) {
                 usagePerBrands,
                 pricePerKg
             ] = await Promise.all([
-                Filament.count({}).exec(),
                 Filament.getTotalCost(),
                 Filament.getTotalWeight(),
                 Filament.getTotalLength(),

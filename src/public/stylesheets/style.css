@@ -8412,6 +8412,17 @@ a.anchor {
     transform: rotate(0deg); }
   100% {
     transform: rotate(360deg); } }
+#app-message-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center; }
+  #app-message-container > .alert {
+    max-width: 50%;
+    margin: 0px auto; }
+    #app-message-container > .alert > .close {
+      margin-left: 10px; }
+
 .login-section > .container {
   margin-top: 100px;
   max-width: 400px; }

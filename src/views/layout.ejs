@@ -72,5 +72,37 @@
     v<%- config.get('version') %>
     <% if (locals.changelogAvailable) { %></a> <% } %>
 </div>
+<% if (locals.messages && Object.keys(messages).length) { %>
+<% if ((messages.error && messages.error.length) ||
+        (messages.warning && messages.warning.length) ||
+        (messages.info && messages.info.length) ||
+        (messages.success && messages.success.length)) {%>
+<div id="app-message-container"></div>
+<script type="text/javascript">
+$(function() {
+    <% if ((messages.error && messages.error.length)) { %>
+    <% for (let msg of messages.error) { %>
+    App3DPTools.errorFlash("#app-message-container", "<%= __(msg) %>", 5000);
+    <% } %>
+    <% } %>
+    <% if ((messages.warning && messages.warning.length)) { %>
+    <% for (let msg of messages.warning) { %>
+    App3DPTools.warningFlash("#app-message-container", "<%= __(msg) %>", 5000);
+    <% } %>
+    <% } %>
+    <% if ((messages.success && messages.success.length)) { %>
+    <% for (let msg of messages.success) { %>
+    App3DPTools.successFlash("#app-message-container", "<%= __(msg) %>", 5000);
+    <% } %>
+    <% } %>
+    <% if ((messages.info && messages.info.length)) { %>
+    <% for (let msg of messages.info) { %>
+    App3DPTools.infoFlash("#app-message-container", "<%= __(msg) %>", 5000);
+    <% } %>
+    <% } %>
+});
+</script>
+<% } %>
+<% } %>
 </body>
 </html>
