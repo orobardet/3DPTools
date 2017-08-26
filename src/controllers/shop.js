@@ -8,12 +8,23 @@ module.exports = function (app) {
      * List of all shops
      */
     this.index = async function (req, res, next) {
-        let shops = await Shop.find().sort('name').exec();
-        return res.render('shop/index', {
-            shops: shops,
-            pageTitle: 'Shops',
-            errors: []
-        });
+        try {
+            req.setOriginUrl([
+                'shop/add',
+                'shop/edit',
+                'shop/delete',
+            ], req.originalUrl);
+
+
+            let shops = await Shop.find().sort('name').exec();
+            return res.render('shop/index', {
+                shops: shops,
+                pageTitle: 'Shops',
+                errors: []
+            });
+        } catch (err) {
+            return next(err);
+        }
     };
 
     /**
@@ -21,6 +32,7 @@ module.exports = function (app) {
      */
     this.addForm = function (req, res) {
         return res.render('shop/add', {
+            cancelUrl: req.getOriginUrl("shop/add", "/shop"),
             errors: []
         });
     };
@@ -31,6 +43,7 @@ module.exports = function (app) {
     this.add = async function (req, res, next) {
         if (!req.form.isValid) {
             return res.render('shop/add', {
+                cancelUrl: req.getOriginUrl("shop/add", "/shop"),
                 errors: req.form.getErrors()
             });
         }
@@ -53,6 +66,7 @@ module.exports = function (app) {
         let shop = await Shop.findById(shopId).exec();
 
         return res.render('shop/edit', {
+            cancelUrl: req.getOriginUrl("shop/add", "/shop"),
             shop: shop,
             errors: []
         });
@@ -68,6 +82,7 @@ module.exports = function (app) {
 
         if (!req.form.isValid) {
             return res.render('shop/edit', {
+                cancelUrl: req.getOriginUrl("shop/add", "/shop"),
                 shop: shop,
                 errors: req.form.getErrors()
             });

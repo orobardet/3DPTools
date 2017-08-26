@@ -8,28 +8,32 @@ module.exports = function (app) {
      * List of all materials
      */
     this.index = async (req, res, next) => {
-        let materials;
-
         try {
-            materials = await Material.list({
+            req.setOriginUrl([
+                'material/add',
+                'material/edit',
+            ], req.originalUrl);
+
+            let materials = await Material.list({
                 tree: true, locale: res.getLocale()
+            });
+
+            return res.render('material/index', {
+                materials: materials,
+                pageTitle: 'Materials',
+                errors: []
             });
         } catch (err) {
             return next(err);
         }
-
-        return res.render('material/index', {
-            materials: materials,
-            pageTitle: 'Materials',
-            errors: []
-        });
     };
 
-    this._prepareAddForm = async (res, data) => {
+    this._prepareAddForm = async (req, res, data) => {
         let materials = await Material.list({childMaterials: false, locale: res.getLocale()});
         materials.unshift({name: res.__('<none>'), id:null});
 
         data = Object.assign({
+            cancelUrl: req.getOriginUrl("material/add", "/material"),
             materials: materials,
             errors: []
         }, data);
@@ -42,7 +46,7 @@ module.exports = function (app) {
      */
     this.addForm = async (req, res, next) => {
         try {
-            return this._prepareAddForm(res);
+            return this._prepareAddForm(req, res);
         } catch (err) {
             return next(err);
         }
@@ -83,7 +87,7 @@ module.exports = function (app) {
             }
 
             if (errors && Object.keys(errors).length) {
-                return this._prepareAddForm(res, { errors: errors});
+                return this._prepareAddForm(req, res, { errors: errors});
             }
 
             let material = new Material({
@@ -119,13 +123,13 @@ module.exports = function (app) {
 
             }
 
-            return res.redirect("/material");
+            return res.redirect(req.getOriginUrl("material/add", "/material"));
         } catch (err) {
             return next(err);
         }
     };
 
-    this._prepareEditForm = async (res, material, data) => {
+    this._prepareEditForm = async (req, res, material, data) => {
         let materials = await Material.list({childMaterials: false, locale: res.getLocale()});
 
         // A material can be parent of itself
@@ -136,6 +140,7 @@ module.exports = function (app) {
         const materialChildCount = await material.getChildCount();
 
         data = Object.assign({
+            cancelUrl: req.getOriginUrl("material/edit", "/material"),
             material: material,
             materials: materials,
             hasChild: (materialChildCount > 0),
@@ -161,7 +166,7 @@ module.exports = function (app) {
             });
         }
 
-        return this._prepareEditForm(res, material);
+        return this._prepareEditForm(req, res, material);
     };
 
     /**
@@ -202,7 +207,7 @@ module.exports = function (app) {
             }
 
             if (errors && Object.keys(errors).length) {
-                return this._prepareEditForm(res, material, {errors: errors});
+                return this._prepareEditForm(req, res, material, {errors: errors});
             }
 
             material.name = req.form.name;

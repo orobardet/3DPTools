@@ -18,95 +18,112 @@ module.exports = function (app) {
      * modules of the application.
      */
     this.index = async function (req, res, next) {
-        const config = res.app.get('config');
-        const lastUsedCount = config.get("filament:index:lastUsedCount") || 5;
-        const almostFinishedThreshold = config.get("filament:index:almostFinishedPercentThreshold") || 25;
-
-        let shopCount,                      // Number of shops in the database
-            brandCount,                     // Number of brands in the database
-            materialCount,                  // Number of materials in the database
-            randomShop,                     // Pick a random shop from the database
-            randomBrand,                    // Pick a random brand from the database
-            randomMaterial,                 // Pick a random material from the database
-            filamentTotalCount,             // Total number of all filaments in the database
-            filamentTotalFinishedCount,     // Number of finished filaments in the database
-            filamentTotalUnusedCount,       // Number of unused (not already user = brand new) filaments in the database
-            filamentTotalWeight,            // Total weight (in km) of filaments (including used ones) in the database
-            filamentTotalLength,            // Total length (in Kg) of filaments (including used ones) in the database
-            countPerMaterials,              // Number of filament in the database for each material (array of int)
-            lastUsedFilaments,              // List of the ${lastUsedCount} last used filament (array of Filaments)
-            almostFinishedFilaments,        // List of the ${lastUsedCount) last filaments below ${almostFinishedThreshold}% left (array of Filaments)
-            materials,                      // List of all materials (array of Materials)
-            colors;                         // List of all colors (array of objects)
-
         try {
-            // Getting all the data asynchronously
-            [
-                shopCount,
-                brandCount,
-                materialCount,
-                randomShop,
-                randomBrand,
-                randomMaterial,
-                filamentTotalCount,
-                filamentTotalFinishedCount,
-                filamentTotalUnusedCount,
-                filamentTotalWeight,
-                filamentTotalLength,
-                countPerMaterials,
-                lastUsedFilaments,
-                almostFinishedFilaments,
-                materials,
-                colors
-            ] = await Promise.all([
-                Shop.count().exec(),
-                Brand.count().exec(),
-                Material.count().exec(),
-                Shop.findOneRandom(),
-                Brand.findOneRandom(),
-                Material.findOneRandom(),
-                Filament.count({}).exec(),
-                Filament.count({finished:true}).exec(),
-                Filament.count({materialLeftPercentage:100}).exec(),
-                Filament.getTotalWeight(),
-                Filament.getTotalLength(),
-                Filament.getCountPerMaterials(true),
-                Filament.find({finished:false, materialLeftPercentage: {$lt : 100}}).sort({lastUsedDate:-1}).limit(lastUsedCount).populate('material brand shop').exec(),
-                Filament.find({finished:false, materialLeftPercentage: {$lt : almostFinishedThreshold}}).sort({materialLeftPercentage:1}).populate('material brand shop').exec(),
-                Material.find().sort('name').exec(),
-                Filament.getColors()
-            ]);
-        } catch (err) {
-            next(err);
-        }
+            const config = res.app.get('config');
+            const lastUsedCount = config.get("filament:index:lastUsedCount") || 5;
+            const almostFinishedThreshold = config.get("filament:index:almostFinishedPercentThreshold") || 25;
 
-        materials.unshift({name:'&nbsp;', id:null});
-        colors.unshift({name:'&nbsp;', code: null});
+            req.setOriginUrl([
+                'filament/add',
+                'material/add',
+                'brand/add',
+                'shop/add',
+            ], req.originalUrl);
 
-        return res.render('index', {
-            pageTitle: 'Home',
-            navModule: 'home',
-            shopCount: shopCount,
-            brandCount: brandCount,
-            materialCount: materialCount,
-            randomShop: randomShop,
-            randomBrand: randomBrand,
-            randomMaterial: randomMaterial,
-            filaments: {
-                stats: {
-                    totalCount: filamentTotalCount,
-                    totalFinishedCount: filamentTotalFinishedCount,
-                    totalUnusedCount: filamentTotalUnusedCount,
-                    totalWeight:filamentTotalWeight,
-                    totalLength: filamentTotalLength,
-                    countPerMaterials: countPerMaterials
+            let shopCount,                      // Number of shops in the database
+                brandCount,                     // Number of brands in the database
+                materialCount,                  // Number of materials in the database
+                randomShop,                     // Pick a random shop from the database
+                randomBrand,                    // Pick a random brand from the database
+                randomMaterial,                 // Pick a random material from the database
+                filamentTotalCount,             // Total number of all filaments in the database
+                filamentTotalFinishedCount,     // Number of finished filaments in the database
+                filamentTotalUnusedCount,       // Number of unused (not already user = brand new) filaments in the database
+                filamentTotalWeight,            // Total weight (in km) of filaments (including used ones) in the database
+                filamentTotalLength,            // Total length (in Kg) of filaments (including used ones) in the database
+                countPerMaterials,              // Number of filament in the database for each material (array of int)
+                lastUsedFilaments,              // List of the ${lastUsedCount} last used filament (array of Filaments)
+                almostFinishedFilaments,        // List of the ${lastUsedCount) last filaments below ${almostFinishedThreshold}% left (array of Filaments)
+                materials,                      // List of all materials (array of Materials)
+                colors;                         // List of all colors (array of objects)
+
+            try {
+                // Getting all the data asynchronously
+                [
+                    shopCount,
+                    brandCount,
+                    materialCount,
+                    randomShop,
+                    randomBrand,
+                    randomMaterial,
+                    filamentTotalCount,
+                    filamentTotalFinishedCount,
+                    filamentTotalUnusedCount,
+                    filamentTotalWeight,
+                    filamentTotalLength,
+                    countPerMaterials,
+                    lastUsedFilaments,
+                    almostFinishedFilaments,
+                    materials,
+                    colors
+                ] = await Promise.all([
+                    Shop.count().exec(),
+                    Brand.count().exec(),
+                    Material.count().exec(),
+                    Shop.findOneRandom(),
+                    Brand.findOneRandom(),
+                    Material.findOneRandom(),
+                    Filament.count({}).exec(),
+                    Filament.count({finished: true}).exec(),
+                    Filament.count({materialLeftPercentage: 100}).exec(),
+                    Filament.getTotalWeight(),
+                    Filament.getTotalLength(),
+                    Filament.getCountPerMaterials(true),
+                    Filament.find({
+                        finished: false,
+                        materialLeftPercentage: {$lt: 100}
+                    }).sort({lastUsedDate: -1}).limit(lastUsedCount).populate('material brand shop').exec(),
+                    Filament.find({
+                        finished: false,
+                        materialLeftPercentage: {$lt: almostFinishedThreshold}
+                    }).sort({materialLeftPercentage: 1}).populate('material brand shop').exec(),
+                    Material.find().sort('name').exec(),
+                    Filament.getColors()
+                ]);
+            } catch (err) {
+                next(err);
+            }
+
+            materials.unshift({name: '&nbsp;', id: null});
+            colors.unshift({name: '&nbsp;', code: null});
+
+            return res.render('index', {
+                pageTitle: 'Home',
+                navModule: 'home',
+                shopCount: shopCount,
+                brandCount: brandCount,
+                materialCount: materialCount,
+                randomShop: randomShop,
+                randomBrand: randomBrand,
+                randomMaterial: randomMaterial,
+                filaments: {
+                    stats: {
+                        totalCount: filamentTotalCount,
+                        totalFinishedCount: filamentTotalFinishedCount,
+                        totalUnusedCount: filamentTotalUnusedCount,
+                        totalWeight: filamentTotalWeight,
+                        totalLength: filamentTotalLength,
+                        countPerMaterials: countPerMaterials
+                    },
+                    lastUsed: lastUsedFilaments,
+                    almostFinished: almostFinishedFilaments
                 },
-                lastUsed: lastUsedFilaments,
-                almostFinished: almostFinishedFilaments
-            },
-            materials: materials,
-            colors: colors,
-        });
+                materials: materials,
+                colors: colors,
+            });
+        } catch (err) {
+            return next(err);
+        }
     };
 
     /**

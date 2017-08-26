@@ -8,19 +8,23 @@ module.exports = function (app) {
      * List of all brands
      */
     this.index = async function (req, res, next) {
-        let brands;
-
         try {
-            brands = await Brand.find().sort('name').exec();
+            req.setOriginUrl([
+                'brand/add',
+                'brand/edit',
+                'brand/delete',
+            ], req.originalUrl);
+
+            let brands = await Brand.find().sort('name').exec();
+
+            return res.render('brand/index', {
+                brands: brands,
+                pageTitle: 'Brands',
+                errors: []
+            });
         } catch (err) {
             return next(err);
         }
-
-        return res.render('brand/index', {
-            brands: brands,
-            pageTitle: 'Brands',
-            errors: []
-        });
     };
 
     /**
@@ -28,6 +32,7 @@ module.exports = function (app) {
      */
     this.addForm = function (req, res) {
         return res.render('brand/add', {
+            cancelUrl: req.getOriginUrl("brand/add", "/brand"),
             errors: []
         });
     };
@@ -38,6 +43,7 @@ module.exports = function (app) {
     this.add = async function (req, res, next) {
         if (!req.form.isValid) {
             return res.render('brand/add', {
+                cancelUrl: req.getOriginUrl("brand/add", "/brand"),
                 errors: req.form.getErrors()
             });
         }
@@ -72,6 +78,7 @@ module.exports = function (app) {
         }
 
         return res.render('brand/edit', {
+            cancelUrl: req.getOriginUrl("brand/add", "/brand"),
             brand: brand,
             errors: []
         });
@@ -85,6 +92,7 @@ module.exports = function (app) {
 
         if (!req.form.isValid) {
             return res.render('brand/edit', {
+                cancelUrl: req.getOriginUrl("brand/add", "/brand"),
                 brand: brand,
                 errors: req.form.getErrors()
             });
