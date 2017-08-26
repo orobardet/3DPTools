@@ -190,7 +190,8 @@
                 <% } else { %>
                     <center>
                         <%- __('No filament found.') %><br><br>
-                        <a href="/filament/add" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;<%- __('Add filament') %></a>
+                        <% let filamentCount = filaments.stats.totalCount; %>
+                        <% include partial/addFilamentButton.ejs %>
                     </center>
                 <% } %>
             </div>

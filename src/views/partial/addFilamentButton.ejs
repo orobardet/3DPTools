@@ -1,0 +1,18 @@
+<% if (filamentCount <= 0) { %>
+<% if (materialCount && brandCount && shopCount) { %>
+<a href="/filament/add" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;<%- __('Add filament') %></a>
+<% } else { %>
+<%= __('To be able to add filament, you miss some requrements:') %>
+<p>
+<% if (materialCount <= 0) { %>
+<a href="/material/add" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;<%- __('Add material') %></a>
+<% } %>
+<% if (brandCount <= 0) { %>
+<a href="/brand/add" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;<%- __('Add brand') %></a>
+<% } %>
+<% if (shopCount <= 0) { %>
+<a href="/shop/add" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;<%- __('Add shop') %></a>
+<% } %>
+</p>
+<% } %>
+<% } %>
