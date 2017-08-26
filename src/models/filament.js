@@ -340,17 +340,25 @@ module.exports = function (app) {
         });
     };
 
-    filamentSchema.statics.getCostPerColors = async function () {
+    filamentSchema.statics.getCostPerMasterColors = async function (predefinedColorsIndex) {
         let results = await this.aggregate([
             { $group: {
-                _id: '$color',
+                _id: '$masterColorCode',
                 cost: { $sum: '$price' }
             }
             },
-            { $sort: { '_id.code': 1 } }
+            { $sort: { '_id': 1 } }
         ]).exec();
 
         return results.map(doc => {
+            let colorCode = doc._id;
+            doc._id = {
+                code: colorCode,
+                name: ""
+            };
+            if (predefinedColorsIndex && predefinedColorsIndex[doc._id.code]) {
+                doc._id.name = predefinedColorsIndex[doc._id.code];
+            };
             doc.label = doc._id.name;
             return doc;
         });
@@ -446,26 +454,34 @@ module.exports = function (app) {
         });
     };
 
-    filamentSchema.statics.getCountPerColors = async function () {
+    filamentSchema.statics.getCountPerMasterColors = async function (predefinedColorsIndex) {
         let results = await this.aggregate([
             { $group: {
-                    _id: '$color',
+                    _id: '$masterColorCode',
                     count: { $sum: 1 }
                 }
             },
-            { $sort: { '_id.code': 1 } }
+            { $sort: { '_id': 1 } }
         ]).exec();
 
         return results.map(doc => {
+            let colorCode = doc._id;
+            doc._id = {
+                code: colorCode,
+                name: ""
+            };
+            if (predefinedColorsIndex && predefinedColorsIndex[doc._id.code]) {
+                doc._id.name = predefinedColorsIndex[doc._id.code];
+            };
             doc.label = doc._id.name;
             return doc;
         });
     };
 
-    filamentSchema.statics.getUsagePerColors = async function () {
-        return await this.aggregate([
+    filamentSchema.statics.getUsagePerMasterColors = async function (predefinedColorsIndex) {
+        let results = await this.aggregate([
             { $project: {
-                    color: '$color',
+                    color: '$masterColorCode',
                     initialWeight: '$initialMaterialWeight',
                     leftPercentage : '$materialLeftPercentage',
                     leftWeight: { $divide : [ { $multiply: [ '$initialMaterialWeight', '$materialLeftPercentage'] }, 100 ] }
@@ -490,6 +506,18 @@ module.exports = function (app) {
             { $match: { totalUsedWeight: { $gt: 0 } } },
             { $sort: { 'totalUsedWeight': -1 } }
         ]).exec();
+
+        return results.map(doc => {
+            let colorCode = doc._id;
+            doc._id = {
+                code: colorCode,
+                name: ""
+            };
+            if (predefinedColorsIndex && predefinedColorsIndex[doc._id.code]) {
+                doc._id.name = predefinedColorsIndex[doc._id.code];
+            };
+            return doc;
+        });
     };
 
     filamentSchema.statics.getUsagePerMaterials = async function () {

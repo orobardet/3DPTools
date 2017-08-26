@@ -198,6 +198,12 @@ module.exports = function (app) {
             return res.redirect('/filament');
         }
 
+        const predefinedColors = res.app.get('config').get('filament:colors');
+        let predefinedColorsIndex = {};
+        for (let [name, code] of Object.entries(predefinedColors)) {
+            predefinedColorsIndex[code] = name;
+        }
+
         try {
             let [
                 filamentTotalCost,
@@ -226,14 +232,14 @@ module.exports = function (app) {
                 Filament.getCountPerBrands(),
                 Filament.getCountPerShops(),
                 Filament.getCountPerMasterMaterials(),
-                Filament.getCountPerColors(),
+                Filament.getCountPerMasterColors(predefinedColorsIndex),
                 Filament.getCostPerBrands(),
                 Filament.getCostPerShops(),
                 Filament.getCostPerMasterMaterials(),
-                Filament.getCostPerColors(),
+                Filament.getCostPerMasterColors(predefinedColorsIndex),
                 Filament.getBoughtTimeline(),
                 Filament.getPurchaseIntervalStats(),
-                Filament.getUsagePerColors(),
+                Filament.getUsagePerMasterColors(predefinedColorsIndex),
                 Filament.getUsagePerMaterials(),
                 Filament.getUsagePerBrands(),
                 Filament.getStatsCostPerKg()
