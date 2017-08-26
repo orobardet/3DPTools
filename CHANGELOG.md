@@ -1,5 +1,6 @@
 # Next
 
+- [Imp] Configuration display in admin: better handling of secret value obfuscation (#93)
 - [Imp] No "Add filament" buttons if there is no materials, brands and shops (#90)
 - [Imp] Allow changelog page to be accessible for non-logged users (#94)
 - [Fix] Filament statistics page errors when no filaments (#91)

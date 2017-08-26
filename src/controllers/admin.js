@@ -230,10 +230,14 @@ module.exports = function(app) {
     this.showConfig = async (req, res, next) => {
         const protectData = require(process.cwd()+'/tools/protectConfigData');
         try {
+            let configData = app.config.get() || {};
+            configData["$0"] = undefined;
+            configData["_"] = undefined;
+            let protectedData = protectData(configData, [/.*secret.*/, /.*pass.*/, /.*password.*/, /dsn/], '*****');
             return res.render('admin/show-config', {
                 navModule: 'config',
                 pageTitle: "System's configuration",
-                configToShow: protectData(app.config.get() || {}, [/.*secret.*/, /.*pass.*/, /.*password.*/, /dsn/], '*****')
+                configToShow: protectedData
             });
         } catch (err) {
             return next(err);
