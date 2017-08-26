@@ -638,7 +638,11 @@ module.exports = function (app) {
             { $project: { purchaseDates: true , _id: false} }
         ]).exec();
 
-        let purchaseDates = aggregation[0].purchaseDates;
+        let purchaseDates = [];
+
+        if (aggregation.length && aggregation[0].purchaseDates && Array.isArray(aggregation[0].purchaseDates)) {
+            purchaseDates = aggregation[0].purchaseDates;
+        }
 
         let intervals = [];
         let previousDate = null;
