@@ -94,7 +94,7 @@ module.exports = function (app) {
                     Filament.count({materialLeftPercentage: 100}).exec(),
                     Filament.getTotalWeight(),
                     Filament.getTotalLength(),
-                    Filament.getCountPerMaterials(true),
+                    Filament.getCountPerMasterMaterials(true),
                     Filament.find({
                         finished: false,
                         materialLeftPercentage: {$lt: 100}

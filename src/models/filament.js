@@ -385,6 +385,58 @@ module.exports = function (app) {
         });
     };
 
+    filamentSchema.statics.getCountPerMasterMaterials = async function (remove_finished) {
+        let aggregationConfig = [
+            { $project: {
+               material: "$material",
+            }},
+            { $lookup: {
+                from: "materials",
+                localField: "material",
+                foreignField: "_id",
+                as: "materialData"
+            }},
+            // Use parent material ID if there is one
+            { $project: {
+                materialId: {
+                    $cond: {
+                        if : { $gt: [ { $size : "$materialData.parentMaterial" },  0] } ,
+                        then: { $arrayElemAt: [ "$materialData.parentMaterial", 0 ] },
+                        else: "$material"
+                    }
+                }
+            }},
+            { $group: {
+                _id: '$materialId',
+                count: { $sum: 1 }
+            }},
+            { $sort: { 'count': -1 } },
+            { $lookup: {
+                from: "materials",
+                localField: "_id",
+                foreignField: "_id",
+                as: "_id"
+            }},
+            { $project: {
+                _id: { $arrayElemAt: [ "$_id", 0 ] },
+                count: "$count"
+            }}
+        ];
+
+        if (remove_finished === true) {
+            aggregationConfig.unshift({
+                $match: { finished: false }
+            });
+        }
+        let results = await this.aggregate(aggregationConfig).exec();
+
+        return results.map(doc => {
+            doc.label = doc._id.name;
+            doc._id = doc._id._id;
+            return doc;
+        });
+    };
+
     filamentSchema.statics.getCountPerColors = async function () {
         let results = await this.aggregate([
             { $group: {
