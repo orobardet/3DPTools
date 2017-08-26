@@ -1,6 +1,7 @@
 # Next
 
 - [Fix] Filament statistics page errors when no filaments (#91)
+- [Fix] No link to filament statistics when no filaments (#95)
 - [Tec] Add `versionSuffix` config setting (#92)
 - [Tec] Improve Docker image and stack (#80 #81 #82 #85 #86 #88)
 
