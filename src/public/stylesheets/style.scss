@@ -62,6 +62,16 @@ a.disabled {
   border-bottom: 0;
 }
 
+.navbar-anonymous {
+  .navbar-brand {
+    color: $gray-lighter;
+
+    &:hover {
+      color: $gray-light;
+    }
+  }
+}
+
 .dropdown-menu-col > li > a {
   display: block;
   padding: 3px 20px;
@@ -301,6 +311,10 @@ a.anchor {
 }
 
 .login-section {
+  .navbar-anonymous {
+    display: none;
+  }
+
   > .container {
     margin-top: 100px;
     max-width: 400px;

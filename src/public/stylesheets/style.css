@@ -8262,6 +8262,11 @@ a.disabled {
 .navbar-fixed-top {
   border-bottom: 0; }
 
+.navbar-anonymous .navbar-brand {
+  color: #eeeeee; }
+  .navbar-anonymous .navbar-brand:hover {
+    color: #777777; }
+
 .dropdown-menu-col > li > a {
   display: block;
   padding: 3px 20px;
@@ -8423,6 +8428,8 @@ a.anchor {
     #app-message-container > .alert > .close {
       margin-left: 10px; }
 
+.login-section .navbar-anonymous {
+  display: none; }
 .login-section > .container {
   margin-top: 100px;
   max-width: 400px; }
