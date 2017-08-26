@@ -1,5 +1,6 @@
 # Next
 
+- [Imp] No "Add filament" buttons if there is no materials, brands and shops (#90)
 - [Fix] Filament statistics page errors when no filaments (#91)
 - [Fix] No link to filament statistics when no filaments (#95)
 - [Tec] Add `versionSuffix` config setting (#92)
