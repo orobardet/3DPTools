@@ -240,7 +240,7 @@ module.exports = function (app) {
                 Filament.getBoughtTimeline(),
                 Filament.getPurchaseIntervalStats(),
                 Filament.getUsagePerMasterColors(predefinedColorsIndex),
-                Filament.getUsagePerMaterials(),
+                Filament.getUsagePerMasterMaterials(),
                 Filament.getUsagePerBrands(),
                 Filament.getStatsCostPerKg()
             ]);

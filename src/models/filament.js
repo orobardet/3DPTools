@@ -520,15 +520,32 @@ module.exports = function (app) {
         });
     };
 
-    filamentSchema.statics.getUsagePerMaterials = async function () {
-        let aggregation = await this.aggregate([
+    filamentSchema.statics.getUsagePerMasterMaterials = async function () {
+        let results = await this.aggregate([
             { $project: {
-                material: '$material',
+                material: "$material",
+                initialMaterialWeight: '$initialMaterialWeight',
+                materialLeftPercentage: '$materialLeftPercentage'
+            }},
+            { $lookup: {
+                from: "materials",
+                localField: "material",
+                foreignField: "_id",
+                as: "materialData"
+            }},
+            // Use parent material ID if there is one
+            { $project: {
+                material: {
+                    $cond: {
+                        if : { $gt: [ { $size : "$materialData.parentMaterial" },  0] } ,
+                        then: { $arrayElemAt: [ "$materialData.parentMaterial", 0 ] },
+                        else: "$material"
+                    }
+                },
                 initialWeight: '$initialMaterialWeight',
                 leftPercentage : '$materialLeftPercentage',
                 leftWeight: { $divide : [ { $multiply: [ '$initialMaterialWeight', '$materialLeftPercentage'] }, 100 ] }
-            }
-            },
+            }},
             { $project: {
                 material: '$material',
                 initialWeight: '$initialWeight',
@@ -546,10 +563,21 @@ module.exports = function (app) {
             }
             },
             { $match: { totalUsedWeight: { $gt: 0 } } },
-            { $sort: { 'totalUsedWeight': -1 } }
+            { $sort: { 'totalUsedWeight': -1 } },
+            { $lookup: {
+                from: "materials",
+                localField: "_id",
+                foreignField: "_id",
+                as: "_id"
+            }},
+            { $project: {
+                _id: { $arrayElemAt: [ "$_id", 0 ] },
+                count: "$count",
+                totalWeight: "$totalWeight",
+                totalLeftWeight: "$totalLeftWeight",
+                totalUsedWeight: "$totalUsedWeight"
+            }}
         ]).exec();
-
-        let results = await app.models.material.populate(aggregation, { "path" : "_id"});
 
         return results.map(doc => {
             doc.label = doc._id.name;
@@ -766,7 +794,25 @@ module.exports = function (app) {
     filamentSchema.statics.getStatsCostPerKg = async function () {
         return await this.aggregate([
             { $project: {
-                materialId: '$material',
+                material: "$material",
+                initialMaterialWeight: '$initialMaterialWeight',
+                price: '$price',
+            }},
+            { $lookup: {
+                from: "materials",
+                localField: "material",
+                foreignField: "_id",
+                as: "materialData"
+            }},
+            // Use parent material ID if there is one
+            { $project: {
+                materialId: {
+                    $cond: {
+                        if : { $gt: [ { $size : "$materialData.parentMaterial" },  0] } ,
+                        then: { $arrayElemAt: [ "$materialData.parentMaterial", 0 ] },
+                        else: "$material"
+                    }
+                },
                 materialWeight: '$initialMaterialWeight',
                 price: '$price',
                 pricePerKg: { $divide : [ '$price', '$initialMaterialWeight'] }
