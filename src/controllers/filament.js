@@ -69,7 +69,10 @@ module.exports = function (app) {
                 'filament/left-material',
                 'filament/add-picture',
                 'filament/finished',
-                'filament/cost-calculator'
+                'filament/cost-calculator',
+                'material/add',
+                'brand/add',
+                'shop/add',
             ], req.originalUrl);
 
             // Prepare a simplified sort list that will be used in the GUI for displaying sort options
@@ -123,7 +126,8 @@ module.exports = function (app) {
             // Retrieve the filament list, possibly with filter and sort options
             // Also retrieve the lists of all materials, brands, shops and colors,
             // that will be used to construct filter form
-            let [filaments, materials, brands, shops, usedColors] = await Promise.all([
+            let [availableFilamentCount, filaments, materials, brands, shops, usedColors] = await Promise.all([
+                Filament.count({}).exec(),
                 Filament.list({
                     filter: filamentFilter,
                     sort: filamentSortDefinition[selectedSort].sort
@@ -146,6 +150,9 @@ module.exports = function (app) {
             }
 
             // Add an empty entry at the beginning of each filter list (which means 'no filtering on this field')
+            let materialCount = materials.length;
+            let brandCount = brands.length;
+            let shopCount = shops.length;
             materials.unshift({name: '&nbsp;', id: null});
             shops.unshift({name: '&nbsp;', id: null});
             brands.unshift({name: '&nbsp;', id: null});
@@ -163,6 +170,10 @@ module.exports = function (app) {
                 shops: shops,
                 colors: colors,
                 filaments: filaments,
+                filamentCount: availableFilamentCount,
+                materialCount: materialCount,
+                brandCount: brandCount,
+                shopCount: shopCount,
                 sortList: sortList,
                 selectedSort: selectedSort,
                 pageTitle: 'Filaments',

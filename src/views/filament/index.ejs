@@ -11,16 +11,17 @@
     </div>
 </ul>
 
-
 <div class="panel panel-default">
     <div class="panel-heading with-button">
+        <% if (materialCount && brandCount && shopCount) { %>
         <a href="/filament/add" class="btn btn-primary trg-add-filament"><i
                     class="fa fa-plus"></i>&nbsp;<%- __('Add filament') %></a>
+        <% } %>
         <% if (locals.search && search != {}) { %>
             <a href="#" id="clear-search" class="btn btn-danger"><i
                         class="fa fa-eraser"></i>&nbsp;<%- __('Clear search') %></a>
         <% } %>
-        <% if (filaments && filaments.length) { %>
+        <% if (locals.filaments && filamentCount) { %>
         <h3 class="panel-title"><%- __n("%s filament", "%s filaments", filaments.length || 0); %></h3>
         <% } else { %>
         <%- __('No filament found.') %>
@@ -240,7 +241,13 @@
         <% }); %>
         <% } else { %>
         <tr>
-            <td colspan="8" class="not-found"><%- __('No filament found.') %></td>
+            <td colspan="8" class="not-found">
+                <%- __('No filament found.') %>
+                <% if (!filamentCount) {%>
+                <br><br>
+                <% include ../partial/addFilamentButton.ejs %>
+                <% } %>
+            </td>
         </tr>
         <% } %>
     </table>
