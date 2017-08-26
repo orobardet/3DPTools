@@ -1,5 +1,21 @@
 'use strict';
 
+/**
+ * List of regexp that must match the request url to allow anonymous (not logged) user to access the page.
+ * All page not matching are considered in restricted access and the user is redirected to the login page.
+ *
+ *  - javascript brower locale access (/locale.js)
+ *  - login page (/login)
+ *  - setup section (/setup*)
+ *  - changelog page (/changelog)
+ **/
+const gAnonymousAccessAllowed = [
+    /^\/locale\.js$/,
+    /^\/login$/,
+    /^\/setup*/,
+    /^\/changelog*/,
+];
+
 module.exports = function (app) {
     const fs = require('fs-promise');
     const Color = require('color');
@@ -189,13 +205,13 @@ module.exports = function (app) {
      * If there is no user logged and the requested page is not in the anonymous whitelist, redirect to the
      * login page.
      *
-     * **Anonymous allowed pages:**
-     *  - login page (/login)
-     *  - setup section (/setup*)
+     * Anonymous allowed pages are described in the variable gAnonymousAccessAllowed
      */
     this.isUserLogged = function (req, res, next) {
-        if (req.url === '/login' || req.url.match(/^\/setup*/)) {
-            return next();
+        for (let pattern of gAnonymousAccessAllowed) {
+            if (req.url.match(pattern)) {
+                return next();
+            }
         }
 
         if (req.isAuthenticated()) {
