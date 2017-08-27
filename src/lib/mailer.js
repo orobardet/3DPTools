@@ -74,10 +74,27 @@ module.exports = class {
         return true;
     }
 
+    /**
+     * Tells if the mailling feature is enabled and usable
+     *
+     * @returns {boolean}
+     */
     isMailerEnabled() {
         return this.mailerEnabled;
     }
 
+    /**
+     * Send an email
+     *
+     * Accepter options are the those of [Nodemailer](https://nodemailer.com/message/), plus :
+     *  - `template`: name of an EJS template to use
+     *  - `templateData`: object containing data to pass to the EJS template (ignored if `template` is absent)
+     *
+     * If `template` is given, `html` and `text` will be ignored.
+     *
+     * @param options
+     * @returns {Promise.<boolean>}
+     */
     async sendMail(options) {
         if (!this.isMailerEnabled()) {
             return false;
@@ -93,6 +110,11 @@ module.exports = class {
 
         try {
             let result = await this.mailTransporter.sendMail(msgOptions);
+            if (result && result.accepted && result.accepted.length) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (err) {
             throw err;
         }

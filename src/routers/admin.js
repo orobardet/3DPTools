@@ -29,6 +29,7 @@ module.exports = function(app) {
     router.get('/system-information', Controller.systemInformation);
 
     router.get('/show-config', Controller.showConfig);
+    router.get('/send-test-email', Controller.sendTestEmail);
 
     app.use('/admin', router);
 

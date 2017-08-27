@@ -3,6 +3,9 @@
 
 <h1>
     <%= __(pageTitle) %>
+    <div class="pull-right">
+        <button id="send-email" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" <%- (!locals.canSendEmail || (canSendEmail === false)) ? 'disabled title="'+__('Account recovery feature is disabled as there is no valid email sending configuration.')+'"' : '' -%>><i class="fa fa-envelope"></i> <%- __('Send a test email'); %></button>
+    </div>
 </h1>
 
 <div id="jsonConfig"></div>
@@ -14,5 +17,34 @@ $(function() {
     $('#jsonConfig').height('calc(100vh - ' + ($('#jsonConfig').offset().top + 30) + 'px)')
 
     $('#jsonConfig').JSONView(configData);
+
+    $('[data-toggle="tooltip"]').tooltip();
+    $('#send-email').click(function(e) {
+        e.preventDefault();
+        let $this = $(this);
+
+        $this.prop('disabled', 'disabled');
+        $('i.fa', $this).first().addClass('fa-spin');
+        $.ajax('/admin/send-test-email', {
+            success: function(data) {
+                if (data.status) {
+                    if (data.recipent && data.recipent !== "") {
+                        App3DPTools.successFlash('#app-message-container', Locale3DPTools.__('Test email successfully sent to %s.', data.recipent), 5000);
+                    } else {
+                        App3DPTools.successFlash('#app-message-container', Locale3DPTools.__('Test email successfully sent.'), 5000);
+                    }
+                } else {
+                    App3DPTools.errorFlash('#app-message-container', Locale3DPTools.__('Error while sending test email: %s', data.message || 'unknown error'), 5000);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown ) {
+                App3DPTools.errorFlash('#app-message-container', Locale3DPTools.__('Error while sending test email: %s', errorThrown), 5000);
+            },
+            complete: function() {
+                $('i.fa', $this).first().removeClass('fa-spin');
+                $this.removeAttr('disabled');
+            }
+        });
+    })
 });
 </script>

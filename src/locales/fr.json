@@ -433,5 +433,9 @@
   "Account recovery": "Récupération de compte",
   "Recover": "Récupérer",
   "Input in the field below the email address used for your account.\n\nIf the address is valid, the system will send you a message with instructions to recover your account.": "Saisissez dans le champ ci-dessous l'adresse email utilisée pour votre compte.\n\nSi l'adresse est valide, le système vous enverra un message contenant les instructions pour récupérer votre compte.",
-  "Account recovery feature is disabled as there is no valid email sending configuration.": "La fonctionnalité de récupération de compte est désactivée faute d'une configuration d'envoi d'emails invalide."
+  "Account recovery feature is disabled as there is no valid email sending configuration.": "La fonctionnalité de récupération de compte est désactivée faute d'une configuration d'envoi d'emails invalide.",
+  "Send a test email": "Envoyer un email de test",
+  "Test email successfully sent.": "Email de test envoyé avec succès.",
+  "Test email successfully sent to %s.": "Email de test envoyé avec succès à %s.",
+  "Error while sending test email: %s": "Erreur lors de l'envoi du mail de test: %s"
 }

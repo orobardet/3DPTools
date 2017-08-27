@@ -22,7 +22,10 @@ module.exports = function (app) {
                 'Do you really want to delete this picture?',
                 '~ %.2f Kg',
                 '~ %.2f m',
-                'Do you really want to delete this file?'
+                'Do you really want to delete this file?',
+                'Test email successfully sent.',
+                'Test email successfully sent to %s.',
+                'Error while sending test email: %s',
             ]
         });
     };

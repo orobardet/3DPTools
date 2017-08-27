@@ -234,10 +234,61 @@ module.exports = function(app) {
             configData["$0"] = undefined;
             configData["_"] = undefined;
             let protectedData = protectData(configData, [/.*secret.*/, /.*pass.*/, /.*password.*/, /dsn/], '*****');
+
+            let canSendEmail = false;
+            const mailer = app.get('mailer');
+            if (mailer && mailer.isMailerEnabled()) {
+                canSendEmail = true;
+            }
+
             return res.render('admin/show-config', {
                 navModule: 'config',
                 pageTitle: "System's configuration",
-                configToShow: protectedData
+                configToShow: protectedData,
+                canSendEmail: canSendEmail,
+            });
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    /**
+     * Send a test email to the logged user
+     *
+     * @param req
+     * @param res
+     * @param next
+     * @returns {Promise.<*>}
+     */
+    this.sendTestEmail = async (req, res, next) => {
+        try {
+            const user = req.user;
+            let to = req.user.email;
+            if (req.user.firstname || req.user.lastname) {
+                to = `"${req.user.firstname} ${req.user.lastname}" <${req.user.email}>`;
+            }
+
+            let status = false;
+            let message = '';
+            const mailer = app.get('mailer');
+            if (mailer) {
+                let result = await mailer.sendMail({
+                    to: to,
+                    subject: "Test mail " + Date.now(),
+                    text: "Yay!",
+                    html: "<b>Yay!</b>"
+                });
+                if (result) {
+                    status = true;
+                }
+            } else {
+                message = res.__('Account recovery feature is disabled as there is no valid email sending configuration.');
+            }
+
+            return res.json({
+                status: status,
+                message: message,
+                recipent: to,
             });
         } catch (err) {
             return next(err);

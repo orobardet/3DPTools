@@ -80,12 +80,12 @@
     v<%- config.get('version') %>
     <% if (locals.changelogAvailable) { %></a> <% } %>
 </div>
+<div id="app-message-container"></div>
 <% if (locals.messages && Object.keys(messages).length) { -%>
 <% if ((messages.error && messages.error.length) ||
         (messages.warning && messages.warning.length) ||
         (messages.info && messages.info.length) ||
         (messages.success && messages.success.length)) { -%>
-<div id="app-message-container"></div>
 <script type="text/javascript">
 $(function() {
     <% if ((messages.error && messages.error.length)) { -%>
