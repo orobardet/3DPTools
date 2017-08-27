@@ -429,5 +429,9 @@
   "&nbsp;": "&nbsp;",
   "No statistics to displays as there is no filament.": "Pas de statistique à afficher car il n'y a pas de filament.",
   "To be able to add filament, you miss some requrements:": "Pour pouvoir ajouter un filament, il vous manque quelques pré-requis :",
-  "I forgot my password": "J'ai oublié mon mot de passe"
+  "I forgot my password": "J'ai oublié mon mot de passe",
+  "Account recovery": "Récupération de compte",
+  "Recover": "Récupérer",
+  "Input in the field below the email address used for your account.\n\nIf the address is valid, the system will send you a message with instructions to recover your account.": "Saisissez dans le champ ci-dessous l'adresse email utilisée pour votre compte.\n\nSi l'adresse est valide, le système vous enverra un message contenant les instructions pour récupérer votre compte.",
+  "Account recovery feature is disabled as there is no valid email sending configuration.": "La fonctionnalité de récupération de compte est désactivée faute d'une configuration d'envoi d'emails invalide."
 }

@@ -10,18 +10,19 @@
     <link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="stylesheet" href="/stylesheets/style.css">
     <link rel="stylesheet" href="/vendor/css/flag-icon.min.css">
-    <%- style %>
+    <%- style -%>
+
     <script src="/vendor/javascripts/jquery.min.js"></script>
     <script src="/vendor/javascripts/jquery-ui.min.js"></script>
     <script src="/vendor/javascripts/bootstrap.min.js"></script>
     <script src="/vendor/javascripts/sprintf.min.js"></script>
     <script src="/locale.js"></script>
     <script src="/javascripts/app.js"></script>
-    <%- script %>
+    <%- script -%>
 </head>
 <body class="<%- navModule %>-section<% if (locals.navSubModule) { %> <%- navSubModule %>-subsection<% } %>">
 
-<% if (isUserLogged && showNavbar) { %>
+<% if (isUserLogged && showNavbar) { -%>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -62,53 +63,53 @@
         </div><!--/.nav-collapse -->
     </div>
 </nav>
-<% } else { %>
+<% } else { -%>
 <nav class="navbar-anonymous navbar-fixed-top">
     <div class="navbar-header">
         <a class="navbar-brand" href="/"><%- __('3DPTools'); %></a>
     </div>
 </nav>
-<% } %>
+<% } -%>
 <div id="main-container" class="container">
     <%- body %>
 </div>
 <div id="version">
-    <% if (locals.changelogAvailable) { %><a href="/changelog">
-    <% } %>
+    <% if (locals.changelogAvailable) { -%><a href="/changelog">
+    <% } -%>
     v<%- config.get('version') %>
     <% if (locals.changelogAvailable) { %></a> <% } %>
 </div>
-<% if (locals.messages && Object.keys(messages).length) { %>
+<% if (locals.messages && Object.keys(messages).length) { -%>
 <% if ((messages.error && messages.error.length) ||
         (messages.warning && messages.warning.length) ||
         (messages.info && messages.info.length) ||
-        (messages.success && messages.success.length)) {%>
+        (messages.success && messages.success.length)) { -%>
 <div id="app-message-container"></div>
 <script type="text/javascript">
 $(function() {
-    <% if ((messages.error && messages.error.length)) { %>
-    <% for (let msg of messages.error) { %>
+    <% if ((messages.error && messages.error.length)) { -%>
+    <% for (let msg of messages.error) { -%>
     App3DPTools.errorFlash("#app-message-container", "<%= __(msg) %>", 5000);
-    <% } %>
-    <% } %>
-    <% if ((messages.warning && messages.warning.length)) { %>
-    <% for (let msg of messages.warning) { %>
+    <% } -%>
+    <% } -%>
+    <% if ((messages.warning && messages.warning.length)) { -%>
+    <% for (let msg of messages.warning) { -%>
     App3DPTools.warningFlash("#app-message-container", "<%= __(msg) %>", 5000);
-    <% } %>
-    <% } %>
-    <% if ((messages.success && messages.success.length)) { %>
-    <% for (let msg of messages.success) { %>
+    <% } -%>
+    <% } -%>
+    <% if ((messages.success && messages.success.length)) { -%>
+    <% for (let msg of messages.success) { -%>
     App3DPTools.successFlash("#app-message-container", "<%= __(msg) %>", 5000);
-    <% } %>
-    <% } %>
-    <% if ((messages.info && messages.info.length)) { %>
-    <% for (let msg of messages.info) { %>
+    <% } -%>
+    <% } -%>
+    <% if ((messages.info && messages.info.length)) { -%>
+    <% for (let msg of messages.info) { -%>
     App3DPTools.infoFlash("#app-message-container", "<%= __(msg) %>", 5000);
-    <% } %>
-    <% } %>
+    <% } -%>
+    <% } -%>
 });
 </script>
-<% } %>
-<% } %>
+<% } -%>
+<% } -%>
 </body>
 </html>

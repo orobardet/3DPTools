@@ -51,7 +51,9 @@ module.exports = function (app) {
 
         res.locals.messages = {
             info: req.flash('info'),
-            error: req.flash('error')
+            warning: req.flash('warning'),
+            error: req.flash('error'),
+            success: req.flash('success'),
         };
 
         next();
@@ -69,6 +71,7 @@ module.exports = function (app) {
     router.get('/logout', Controller.logout);
 
     router.get('/recover-account', Controller.recoverAccountForm);
+    router.post('/recover-account', Controller.recoverAccountForm);
 
     /* GET home page. */
     router.get('/', Controller.index);

@@ -1,0 +1,25 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><%- __(pageTitle) %></h3>
+    </div>
+    <div class="panel-body">
+        <form class="account-recovery-form" method="post">
+            <div>
+                <%- marked(__('Input in the field below the email address used for your account.\n\nIf the address is valid, the system will send you a message with instructions to recover your account.')); %>
+            </div>
+            <div class="form-group">
+                <label for="email" class="sr-only"><%- __('Email address'); %></label>
+                <div class="input-group">
+                    <div class="input-group-addon">@</div>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="<%- __('Email'); %>" autofocus>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="pull-right">
+                    <a href="/" class="btn btn-default"><%- __('Cancel') %></a>
+                    <button type="submit" class="btn btn-primary"><%- __('Recover'); %></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

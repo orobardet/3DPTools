@@ -231,19 +231,20 @@ module.exports = function (app) {
     this.recoverAccountForm = async function (req, res, next) {
         try {
             const mailer = app.get('mailer');
-            if (mailer) {
-                await mailer.sendMail({
-                    to: "olivier.robardet@gmail.com",
-                    subject: "Test mail " + Date.now(),
-                    text: "Yay!",
-                    html: "<b>Yay!</b>"
+            if (mailer && mailer.isMailerEnabled()) {
+                // Show the account recovery form
+                return res.render('account-recovery', {
+                    pageTitle: 'Account recovery',
+                    navModule: 'login',
+                    showNavbar: false
                 });
+            } else {
+                req.flash('warning', 'Account recovery feature is disabled as there is no valid email sending configuration.');
+                return res.redirect('/');
             }
         } catch (err) {
             return next(err);
         }
-
-        return res.redirect('/login');
     };
 
     /**
