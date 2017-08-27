@@ -1,9 +1,15 @@
 'use strict';
 
+const util = require('util');
 const nodemailer = require('nodemailer');
+const ejs = require('ejs');
+const ejsRenderFile = util.promisify(ejs.renderFile);
+
+const templatePath = 'views/emails/';
+const templateLayoutFile = templatePath + 'layout.ejs';
 
 module.exports = class {
-    constructor(config) {
+    constructor(config, i18n) {
         this.mailerEnabled = false;
 
         if (!config ||Object.prototype.toString.call(config) !== "[object Object]") {
@@ -45,6 +51,8 @@ module.exports = class {
         }
 
         this.nodemailerConfig = nodemailerConfig;
+
+        this.i18n = i18n;
     }
 
     /**
@@ -109,6 +117,8 @@ module.exports = class {
         msgOptions.from = from;
 
         try {
+            await this._prepareMailContent(msgOptions);
+
             let result = await this.mailTransporter.sendMail(msgOptions);
             if (result && result.accepted && result.accepted.length) {
                 return true;
@@ -118,5 +128,34 @@ module.exports = class {
         } catch (err) {
             throw err;
         }
+    }
+
+    /**
+     * Construct email content using template and data if given
+     *
+     * @param options
+     * @returns {Promise.<void>}
+     * @private
+     */
+    async _prepareMailContent(options) {
+        if (!options.template || options.template === "") {
+            return;
+        }
+
+        let templateData = options.templateData || {};
+
+        if (this.i18n && this.i18n.init) {
+            this.i18n.init(templateData);
+            if (options.locale && options.locale !== "") {
+                templateData.setLocale(options.locale);
+            }
+        }
+
+        templateData['body'] = await ejsRenderFile(templatePath + options.template, templateData);
+        options.html = await ejsRenderFile(templateLayoutFile, templateData);
+
+        delete options.text;
+        delete options.template;
+        delete options.templateData;
     }
 };

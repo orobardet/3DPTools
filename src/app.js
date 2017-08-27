@@ -311,7 +311,7 @@ module.exports = function(bootstrapOptions) {
     // Init mailer
     if (bootstrapOptions.initMailer) {
         const Mailer = require('lib/mailer');
-        const appMailer = new Mailer(config.get("mail"));
+        const appMailer = new Mailer(config.get("mail"), app.get('i18n'));
         appMailer.connect();
         app.set('mailer', appMailer);
     }

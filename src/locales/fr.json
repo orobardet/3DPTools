@@ -437,5 +437,7 @@
   "Send a test email": "Envoyer un email de test",
   "Test email successfully sent.": "Email de test envoyé avec succès.",
   "Test email successfully sent to %s.": "Email de test envoyé avec succès à %s.",
-  "Error while sending test email: %s": "Erreur lors de l'envoi du mail de test: %s"
+  "Error while sending test email: %s": "Erreur lors de l'envoi du mail de test: %s",
+  "This is a test email from 3DPTools.": "Ceci est un email de test de 3DPTools.",
+  "Version: %s": "Version : %s"
 }
