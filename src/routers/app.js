@@ -68,6 +68,8 @@ module.exports = function (app) {
     });
     router.get('/logout', Controller.logout);
 
+    router.get('/recover-account', Controller.recoverAccountForm);
+
     /* GET home page. */
     router.get('/', Controller.index);
 

@@ -13,7 +13,8 @@ const gAnonymousAccessAllowed = [
     /^\/locale\.js$/,
     /^\/login$/,
     /^\/setup*/,
-    /^\/changelog*/,
+    /^\/changelog$/,
+    /^\/recover-account$/,
 ];
 
 module.exports = function (app) {
@@ -183,8 +184,15 @@ module.exports = function (app) {
             return next(err);
         }
 
+        let showForgotPasswordLink = false;
+        const mailer = app.get('mailer');
+        if (mailer && mailer.isMailerEnabled()) {
+            showForgotPasswordLink = true;
+        }
+
         // Show the login form
         res.render('login', {
+            showForgotPasswordLink: showForgotPasswordLink,
             pageTitle: 'Login',
             navModule: 'login',
             showNavbar: false
@@ -196,7 +204,7 @@ module.exports = function (app) {
      */
     this.logout = function (req, res) {
         req.logout();
-        res.redirect('/');
+        return res.redirect('/');
     };
 
     /**
@@ -217,7 +225,25 @@ module.exports = function (app) {
         if (req.isAuthenticated()) {
             return next();
         }
-        res.redirect('/login');
+        return res.redirect('/login');
+    };
+
+    this.recoverAccountForm = async function (req, res, next) {
+        try {
+            const mailer = app.get('mailer');
+            if (mailer) {
+                await mailer.sendMail({
+                    to: "olivier.robardet@gmail.com",
+                    subject: "Test mail " + Date.now(),
+                    text: "Yay!",
+                    html: "<b>Yay!</b>"
+                });
+            }
+        } catch (err) {
+            return next(err);
+        }
+
+        return res.redirect('/login');
     };
 
     /**
