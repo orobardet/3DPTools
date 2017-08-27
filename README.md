@@ -84,6 +84,80 @@ You can change some parameters of the docker-compose environment by creating a `
 
 Some `docker-compose.override.yml` sample are provided in the files `docker-compose.override.dist.*.yml`
 
+# Configuration
+
+This application can be configured by giving it some parameters on startup. Most of the settings have default values. 
+Those who don't correspond to disabled feature by default (e.g. sending email), or requires specific environment configuration 
+(e.g. Redis and MongoDB on localhost without authentification). 
+
+It is recommended to configure the application in order to fit your needs, secure your setup and enable all features.
+
+There is mainly 2 ways to pass configuration settings to the application:
+- using a (`JSON`) configuration file
+- with environment variables
+
+When running in a Docker container, environment variables are highly recommended (actually, although it's possible to 
+use a configuration file for a Docker container, it can be a bit tricky and it's not supported).
+
+When running directly in the host, you can choose whatever method you prefer. But the configuration file may be easier.
+
+## Configuration file
+
+You need to create a `.json` file, and add any configuration settings you want to override.
+
+All available configuration settings can be found in the internal default configuration file: [src/config/default.json](src/config/default.json).
+
+> Do **NOT** modify this file! Create a new one with your overrided settings, that will be loaded when starting the application.
+
+Some of theses settings are not interesting to override. You don't need to use all the settings in your configuration file, 
+just add the one you need, but you must respect the structire.  
+For example, if you want to configure a specific host for Redis and MongoDB, with a user and password for the latter, 
+and set a SMTP server host for sending emails, create a `myconfig.json` file containing: 
+
+```json
+{
+  "redis": {
+    "host": "redis.host"
+  },
+  "database": {
+    "host": "mongo.host",
+    "user": "3dptools",
+    "pass": "secret_password"
+  },
+  "mail": {
+    "smtp": {
+      "host": "smtp.mailserver.org"
+    }
+  }
+}
+``` 
+
+> Beware of the syntax of JSON, which not as flexible as pure javascript: no tailling ',' after the last element of objects 
+> or array, every object keys must be quoted (").
+
+Once the file is created, you can use the `-c` option to start the application and have it use your configuration file:
+
+```shell
+npm start -c path/to/myconfig.json
+```
+
+## Environment variables
+
+Using environment variables is simple: each settings in the JSON configuration file correspond to a variable whose name 
+is the concatenation of each key from the top of the structure, joined by `__` (2 underscores).
+
+So for example, the same configuration than the example above can be set using environment variables like this:
+
+```shell
+redis__host="redis.host"
+database__host="mongo.host"
+database__user="3dptools"
+database__pass="secret_password"
+mail__smtp__host="smtp.mailserver.org"
+```
+
+> The variable names are **case-sensitive**.
+
 # FAQ
 
 ## Error `req.flash() requires sessions`
