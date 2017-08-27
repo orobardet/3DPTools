@@ -274,9 +274,12 @@ module.exports = function(app) {
             if (mailer) {
                 let result = await mailer.sendMail({
                     to: to,
-                    subject: "Test mail " + Date.now(),
-                    text: "Yay!",
-                    html: "<b>Yay!</b>"
+                    subject: "Test mail",
+                    template: "test-email.ejs",
+                    templateData: {
+                        appVersion: app.config.get('version')
+                    },
+                    locale: req.getLocale()
                 });
                 if (result) {
                     status = true;
