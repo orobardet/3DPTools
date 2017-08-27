@@ -34,6 +34,24 @@
     "connectOptions": {
     }
   },
+  "mail": {
+    "enabled": true,
+    "debug": false,
+    "verboseDebug": false,
+    "testConnection": true,
+    "smtp": {
+      "host": "",
+      "port": "587",
+      "secure": false,
+      "needAuth": false,
+      "user": "",
+      "pass": ""
+    },
+    "from": {
+      "name": "3DPTools",
+      "mail": ""
+    }
+  },
   "sentry": {
     "enabled": true,
     "dsn": ""

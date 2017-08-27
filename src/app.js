@@ -20,6 +20,7 @@ module.exports = function(bootstrapOptions) {
         initI18n: true,
         initViews: true,
         initLogger: true,
+        initMailer: true,
         loadComponents: true,
         loadNavigation: true,
         setupHttpRouting: true
@@ -309,6 +310,14 @@ module.exports = function(bootstrapOptions) {
         } else {
             app.use(logger('dev'));
         }
+    }
+
+    // Init mailer
+    if (bootstrapOptions.initMailer) {
+        const Mailer = require('lib/mailer');
+        const appMailer = new Mailer(config.get("mail"));
+        appMailer.connect();
+        app.set('mailer', appMailer);
     }
 
     // Autoload app components
