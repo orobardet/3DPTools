@@ -61,6 +61,12 @@
       "enabled": true
     }
   },
+  "accounts": {
+    "recovery": {
+      "ttl": 24,
+      "tokenLength": 32
+    }
+  },
   "upload": {
     "tmpPath":"tmp/uploads"
   },

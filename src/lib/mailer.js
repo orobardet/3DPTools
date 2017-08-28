@@ -4,6 +4,8 @@ const util = require('util');
 const nodemailer = require('nodemailer');
 const ejs = require('ejs');
 const ejsRenderFile = util.promisify(ejs.renderFile);
+const marked = require('marked');
+const moment = require('moment');
 
 const templatePath = 'views/emails/';
 const templateLayoutFile = templatePath + 'layout.ejs';
@@ -150,6 +152,10 @@ module.exports = class {
                 templateData.setLocale(options.locale);
             }
         }
+
+        moment.locale(templateData.getLocale());
+        templateData.marked = marked;
+        templateData.moment = moment;
 
         templateData['body'] = await ejsRenderFile(templatePath + options.template, templateData);
         options.html = await ejsRenderFile(templateLayoutFile, templateData);

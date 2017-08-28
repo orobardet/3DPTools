@@ -439,5 +439,14 @@
   "Test email successfully sent to %s.": "Email de test envoyé avec succès à %s.",
   "Error while sending test email: %s": "Erreur lors de l'envoi du mail de test: %s",
   "This is a test email from 3DPTools.": "Ceci est un email de test de 3DPTools.",
-  "Version: %s": "Version : %s"
+  "version: %s": "version : %s",
+  "An email has been sent to your address containing the instructions to recover your account.  \nPlease check you mailbox.": "Un email vous a été envoyé contenant les instructions pour récupérer votre compte.  \nMerci de consulter votre boite aux lettres.",
+  "The message may take a moment to reach you. If you don't receive it, please first check you SPAM folder.": "Le message peut mettre un moment avant d'arriver. Si vous ne le recevez pas, merci d'abord de vérifier votre dossier SPAM.",
+  "Ok": "Ok",
+  "No user found with this email address.": "Aucun utilisateur trouvé avec cette adresse email.",
+  "Hello %s,": "Bonjour %s,",
+  "An account recovery request was made for your [3DPTools](%s) account.": "Une demande de récupération de compte a été faite pour votre compte sur [3DPTools](%s).",
+  "If you are the requestor, please follow the link below to recover your account.  \n**If you did not request this recovery, please ignore this message.**": "Si vous êtes le demandeur, merci de suivre le lien ci-dessous pour récupérer votre compte.  \n**Si vous n'avez pas demandé cette récupération, merci d'ignorer ce message.**",
+  "Recover my account": "Récupérer mon compte",
+  "This link will expire on **%s**.": "Ce lien expirera le **%s**."
 }

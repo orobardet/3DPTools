@@ -17,10 +17,12 @@ const gAnonymousAccessAllowed = [
     /^\/recover-account$/,
 ];
 
+const fs = require('fs-promise');
+const Color = require('color');
+const NearestColor = require('lib/nearest-color');
+const crypto = require('crypto');
+
 module.exports = function (app) {
-    const fs = require('fs-promise');
-    const Color = require('color');
-    const NearestColor = require('lib/nearest-color');
 
     const User = app.models.user;
     const Shop = app.models.shop;
@@ -242,6 +244,57 @@ module.exports = function (app) {
                 req.flash('warning', 'Account recovery feature is disabled as there is no valid email sending configuration.');
                 return res.redirect('/');
             }
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    this.recoverAccountSend = async function (req, res, next) {
+        try {
+            const mailer = app.get('mailer');
+            if (!mailer || !mailer.isMailerEnabled()) {
+                return res.redirect('/');
+            }
+
+            let user = await User.findOne({email: req.body.email}).exec();
+
+            if (!user) {
+                return res.render('account-recovery', {
+                    pageTitle: 'Account recovery',
+                    navModule: 'login',
+                    showNavbar: false,
+                    errors: { email: [ 'No user found with this email address.' ]}
+                });
+            }
+
+            user.generateRecovery(app.get('config').get('accounts:recovery'));
+            await user.save();
+
+            const recoveryID = crypto.createHash('sha256').update(user.email).digest('hex');
+            const recoveryToken = user.recovery.token;
+
+            const rootUrl = req.protocol + '://' + req.get('host');
+
+            const to = `"${user.name}" <${user.email}>`;
+            let result = await mailer.sendMail({
+                to: to,
+                subject: "Test mail",
+                template: "account-recovery.ejs",
+                templateData: {
+                    recoveryID: recoveryID,
+                    recoveryToken: recoveryToken,
+                    rootUrl: rootUrl,
+                    user: user,
+                    expirationDate: user.recovery.expiration
+                },
+                locale: req.getLocale()
+            });
+
+            return res.render('account-recovery-sent', {
+                pageTitle: 'Account recovery',
+                navModule: 'login',
+                showNavbar: false
+            });
         } catch (err) {
             return next(err);
         }

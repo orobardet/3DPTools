@@ -1,0 +1,20 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><%- __(pageTitle) %></h3>
+    </div>
+    <div class="panel-body">
+        <div>
+            <p>
+            <%- marked(__('An email has been sent to your address containing the instructions to recover your account.  \nPlease check you mailbox.')); %>
+            </p>
+            <p>
+            <%- marked(__('The message may take a moment to reach you. If you don\'t receive it, please first check you SPAM folder.')); %>
+            </p>
+        </div>
+        <div class="form-group">
+            <div class="pull-right">
+                <a href="/" class="btn btn-primary"><%- __('Ok') %></a>
+            </div>
+        </div>
+    </div>
+</div>

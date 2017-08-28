@@ -4,6 +4,11 @@
     </div>
     <div class="panel-body">
         <form class="account-recovery-form" method="post">
+            <% if (locals.errors && errors.email && errors.email.length) { %>
+            <div class="alert alert-danger">
+                <%= __(errors.email[0]) %>
+            </div>
+            <% } %>
             <div>
                 <%- marked(__('Input in the field below the email address used for your account.\n\nIf the address is valid, the system will send you a message with instructions to recover your account.')); %>
             </div>
@@ -11,7 +16,7 @@
                 <label for="email" class="sr-only"><%- __('Email address'); %></label>
                 <div class="input-group">
                     <div class="input-group-addon">@</div>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="<%- __('Email'); %>" autofocus>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="<%- __('Email'); %>" autofocus required>
                 </div>
             </div>
             <div class="form-group">

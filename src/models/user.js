@@ -4,6 +4,8 @@ module.exports = function(app) {
     const mongoose = require('mongoose');
     const Schema = mongoose.Schema;
     const bcrypt = require('bcrypt-nodejs');
+    const moment = require('moment');
+    const crypto = require('crypto');
 
     let userSchema = new Schema({
         email: {type: String, index: {unique: true}},
@@ -11,7 +13,11 @@ module.exports = function(app) {
         firstname: String,
         creationDate: {type: Date, default: Date.now},
         passwordHash: String,
-        isAdmin: {type: Boolean, default: false}
+        isAdmin: {type: Boolean, default: false},
+        recovery: {
+            token: {type: String, index: {unique: true}},
+            expiration: {type: Date, index: true}
+        }
     });
 
     userSchema.virtual('name').get(function () {
@@ -29,6 +35,18 @@ module.exports = function(app) {
 
     userSchema.statics.generateHash = function (password) {
         return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+    };
+
+    userSchema.methods.generateRecovery = function (options) {
+        options = Object.assign({
+            ttl: 24,
+            tokenLength: 32
+        }, options);
+
+        // tokenLength represent the length in char of the token string. Has each bytes is represented by
+        // 2 chars in Hex, we need to compute a random of half bytes the length
+        this.recovery.token = crypto.randomBytes(Math.floor(options.tokenLength / 2)).toString('hex');
+        this.recovery.expiration = moment().add(options.ttl, 'hours');
     };
 
     userSchema.statics.getActiveUserCount = function () {

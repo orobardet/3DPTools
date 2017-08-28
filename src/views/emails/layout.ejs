@@ -7,5 +7,8 @@
 </div>
 
 <div class="footer" style="color: #555; border-top: 1px solid #ccc; font-size: smaller; margin-top: 20px; padding-top:3px;">
-<%= __('Version: %s', appVersion) %>
+3DPTools
+<% if (locals.appVersion) { %>
+    <%= __('version: %s', appVersion) %>
+<% } %>
 </div>

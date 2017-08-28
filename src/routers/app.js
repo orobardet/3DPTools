@@ -71,7 +71,7 @@ module.exports = function (app) {
     router.get('/logout', Controller.logout);
 
     router.get('/recover-account', Controller.recoverAccountForm);
-    router.post('/recover-account', Controller.recoverAccountForm);
+    router.post('/recover-account', Controller.recoverAccountSend);
 
     /* GET home page. */
     router.get('/', Controller.index);
