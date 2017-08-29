@@ -8,13 +8,14 @@
  *  - login page (/login)
  *  - setup section (/setup*)
  *  - changelog page (/changelog)
+ *  - account recovery (/recover-account*)
  **/
 const gAnonymousAccessAllowed = [
     /^\/locale\.js$/,
     /^\/login$/,
-    /^\/setup*/,
+    /^\/setup.*/,
     /^\/changelog$/,
-    /^\/recover-account$/,
+    /^\/recover-account.*/,
 ];
 
 const fs = require('fs-promise');
@@ -291,6 +292,53 @@ module.exports = function (app) {
             });
 
             return res.render('account-recovery-sent', {
+                pageTitle: 'Account recovery',
+                navModule: 'login',
+                showNavbar: false
+            });
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+
+    this.recoverAccount = async function (req, res, next) {
+        try {
+            const recoveryID = req.params.recoveryID;
+            const recoveryToken = req.params.recoveryToken;
+
+            // Find the user account to recover using the token
+            let user = await User.findOne({'recovery.token': recoveryToken}).exec();
+            if (!user) {
+                return res.render('account-recovery-error', {
+                    message: 'No valid recovery account request found.',
+                    pageTitle: 'Account recovery',
+                    navModule: 'login',
+                    showNavbar: false
+                });
+            }
+
+            // Check if the ID (hashed email) received match the current user email
+            const recoveryIDCheck = crypto.createHash('sha256').update(user.email).digest('hex');
+            if (recoveryIDCheck !== recoveryID) {
+                return res.render('account-recovery-error', {
+                    message: 'No valid recovery account request found.',
+                    pageTitle: 'Account recovery',
+                    navModule: 'login',
+                    showNavbar: false
+                });
+            }
+
+            // Check if the recovery has not expired
+            if (user.recovery.expiration < new Date()) {
+                return res.render('account-recovery-expired', {
+                    pageTitle: 'Account recovery',
+                    navModule: 'login',
+                    showNavbar: false
+                });
+            }
+
+            return res.render('account-recovery-set-password', {
                 pageTitle: 'Account recovery',
                 navModule: 'login',
                 showNavbar: false

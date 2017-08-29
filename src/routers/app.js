@@ -70,6 +70,7 @@ module.exports = function (app) {
     });
     router.get('/logout', Controller.logout);
 
+    router.get('/recover-account/:recoveryID/:recoveryToken', Controller.recoverAccount);
     router.get('/recover-account', Controller.recoverAccountForm);
     router.post('/recover-account', Controller.recoverAccountSend);
 

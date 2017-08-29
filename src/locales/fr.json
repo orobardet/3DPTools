@@ -448,5 +448,8 @@
   "An account recovery request was made for your [3DPTools](%s) account.": "Une demande de récupération de compte a été faite pour votre compte sur [3DPTools](%s).",
   "If you are the requestor, please follow the link below to recover your account.  \n**If you did not request this recovery, please ignore this message.**": "Si vous êtes le demandeur, merci de suivre le lien ci-dessous pour récupérer votre compte.  \n**Si vous n'avez pas demandé cette récupération, merci d'ignorer ce message.**",
   "Recover my account": "Récupérer mon compte",
-  "This link will expire on **%s**.": "Ce lien expirera le **%s**."
+  "This link will expire on **%s**.": "Ce lien expirera le **%s**.",
+  "No valid recovery account request found.": "Aucune demande valide de récupération de compte n'a été trouvée.",
+  "The account recovery request has expired. Please, [create a new one](%s).": "La demande de récupération de compte a expirée.Merci d'en [créer une nouvelle](%s).",
+  "Set a new password for your account:": "Choisissez un nouveau mot de passe pour votre compte :"
 }
