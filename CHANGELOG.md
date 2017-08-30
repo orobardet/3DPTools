@@ -1,5 +1,6 @@
 # Next
 
+- [New] Forgotten password feature now available, if a mail send configuration is given (no one by default) (#89)
 - [Imp] Configuration display in admin: better handling of secret value obfuscation (#93)
 - [Imp] No "Add filament" buttons if there is no materials, brands and shops (#90)
 - [Imp] Allow changelog page to be accessible for non-logged users (#94)
