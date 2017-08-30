@@ -49,6 +49,12 @@ module.exports = function(app) {
         this.recovery.expiration = moment().add(options.ttl, 'hours');
     };
 
+    userSchema.methods.clearRecovery = function () {
+        this.recovery.token = undefined;
+        this.recovery.expiration = undefined;
+        this.recovery = undefined;
+    };
+
     userSchema.statics.getActiveUserCount = function () {
         return this.count().exec();
     };

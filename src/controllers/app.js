@@ -274,17 +274,15 @@ module.exports = function (app) {
             const recoveryID = crypto.createHash('sha256').update(user.email).digest('hex');
             const recoveryToken = user.recovery.token;
 
-            const rootUrl = req.protocol + '://' + req.get('host');
-
             const to = `"${user.name}" <${user.email}>`;
             let result = await mailer.sendMail({
                 to: to,
-                subject: "Test mail",
+                subject: "Account recovery",
                 template: "account-recovery.ejs",
                 templateData: {
                     recoveryID: recoveryID,
                     recoveryToken: recoveryToken,
-                    rootUrl: rootUrl,
+                    rootUrl: req.protocol + '://' + req.get('host'),
                     user: user,
                     expirationDate: user.recovery.expiration
                 },
@@ -302,7 +300,7 @@ module.exports = function (app) {
     };
 
 
-    this.recoverAccount = async function (req, res, next) {
+    this.$checkRecoveryToken = async (req, res, next) => {
         try {
             const recoveryID = req.params.recoveryID;
             const recoveryToken = req.params.recoveryToken;
@@ -338,11 +336,61 @@ module.exports = function (app) {
                 });
             }
 
+            req.recoveryData = [recoveryID, recoveryToken, user];
+
+            return next();
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    this.recoverAccount = async (req, res, next) => {
+        try {
             return res.render('account-recovery-set-password', {
                 pageTitle: 'Account recovery',
                 navModule: 'login',
-                showNavbar: false
+                showNavbar: false,
+                errors: []
             });
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    this.recoverAccountChangePassword = async (req, res, next) => {
+        try {
+            if (!req.form.isValid) {
+                return res.render('account-recovery-set-password', {
+                    pageTitle: 'Account recovery',
+                    navModule: 'login',
+                    showNavbar: false,
+                    errors: req.form.getErrors()
+                });
+            }
+
+            let [recoveryID, recoveryToken, user] = req.recoveryData;
+
+            user.passwordHash = User.generateHash(req.form.password);
+            user.clearRecovery();
+            await user.save();
+
+            const mailer = app.get('mailer');
+            if (mailer && mailer.isMailerEnabled()) {
+                await mailer.sendMail({
+                    to: `"${user.name}" <${user.email}>`,
+                    subject: "Password changed",
+                    template: "password-changed.ejs",
+                    templateData: {
+                        rootUrl: req.protocol + '://' + req.get('host'),
+                        user: user
+                    },
+                    locale: req.getLocale()
+                });
+            }
+
+            req.flash('success', 'Password successfully changed.');
+            res.redirect("/");
+
         } catch (err) {
             return next(err);
         }

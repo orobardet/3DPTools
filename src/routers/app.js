@@ -8,6 +8,7 @@ module.exports = function (app) {
 
     const Controller = app.controllers.app;
     const User = app.models.user;
+    const UserForm = app.forms.user;
 
     app.use(passport.initialize());
     app.use(passport.session());
@@ -70,7 +71,8 @@ module.exports = function (app) {
     });
     router.get('/logout', Controller.logout);
 
-    router.get('/recover-account/:recoveryID/:recoveryToken', Controller.recoverAccount);
+    router.get('/recover-account/:recoveryID/:recoveryToken', Controller.$checkRecoveryToken, Controller.recoverAccount);
+    router.post('/recover-account/:recoveryID/:recoveryToken', UserForm.changePassword, Controller.$checkRecoveryToken, Controller.recoverAccountChangePassword);
     router.get('/recover-account', Controller.recoverAccountForm);
     router.post('/recover-account', Controller.recoverAccountSend);
 

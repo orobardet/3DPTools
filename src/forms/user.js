@@ -5,6 +5,17 @@ module.exports = function (app) {
     const field = form.field;
     const User = app.models.user;
 
+    this.changePassword = form(
+        field("password", "Password")
+            .trim()
+            .required()
+            .is(/^\w{6,}$/),
+        field("passwordConfirmation", "Password verification")
+            .trim()
+            .required()
+            .equals("field::password", "Passwords does not match"),
+    );
+
     this.createUser = form(
         field("email", "Email")
             .trim()

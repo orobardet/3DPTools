@@ -435,6 +435,7 @@
   "Input in the field below the email address used for your account.\n\nIf the address is valid, the system will send you a message with instructions to recover your account.": "Saisissez dans le champ ci-dessous l'adresse email utilisée pour votre compte.\n\nSi l'adresse est valide, le système vous enverra un message contenant les instructions pour récupérer votre compte.",
   "Account recovery feature is disabled as there is no valid email sending configuration.": "La fonctionnalité de récupération de compte est désactivée faute d'une configuration d'envoi d'emails invalide.",
   "Send a test email": "Envoyer un email de test",
+  "Test email": "Email de test",
   "Test email successfully sent.": "Email de test envoyé avec succès.",
   "Test email successfully sent to %s.": "Email de test envoyé avec succès à %s.",
   "Error while sending test email: %s": "Erreur lors de l'envoi du mail de test: %s",
@@ -451,5 +452,9 @@
   "This link will expire on **%s**.": "Ce lien expirera le **%s**.",
   "No valid recovery account request found.": "Aucune demande valide de récupération de compte n'a été trouvée.",
   "The account recovery request has expired. Please, [create a new one](%s).": "La demande de récupération de compte a expirée.Merci d'en [créer une nouvelle](%s).",
-  "Set a new password for your account:": "Choisissez un nouveau mot de passe pour votre compte :"
+  "Set a new password for your account:": "Choisissez un nouveau mot de passe pour votre compte :",
+  "Password successfully changed.": "Mot de passe changé avec succès",
+  "Password changed": "Mot de passe modifié",
+  "We inform you that your password for your [3DPTools](%s)'s account has been changed.": "Nous vous informons que votre mot de passe pour votre compte sur [3DPTools](%s) vient d'être changé.",
+  "**If you are not the one who changed the password, please immediately follow the [account recovery process](%s) to reset your password to a new one.**": "**Si vous n'êtes pas à l'origine de ce changement de mot de passe, merci de suivre immédiatement [la procédure de récupération de compte](%s) pour réinitialiser un nouveau mot de passe.**"
 }

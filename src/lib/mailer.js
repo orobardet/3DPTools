@@ -153,6 +153,11 @@ module.exports = class {
             }
         }
 
+        // Localize the message subject, if any
+        if (options.subject && options.subject !== "") {
+            options.subject = templateData.__(options.subject);
+        }
+
         moment.locale(templateData.getLocale());
         templateData.marked = marked;
         templateData.moment = moment;
