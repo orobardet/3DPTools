@@ -5,6 +5,7 @@ module.exports = function (app) {
     const router = express.Router();
     const passport = require('passport');
     const LocalStrategy = require('passport-local').Strategy;
+    const schedule = require('node-schedule');
 
     const Controller = app.controllers.app;
     const User = app.models.user;
@@ -94,4 +95,7 @@ module.exports = function (app) {
     router.get('/api/color/nearest-predefined/:code', Controller.nearestPredefinedColor);
 
     app.use('/', router);
+
+    // Clean expired token account recovery, every day at 23:23
+    schedule.scheduleJob('23 23 * * *', () => User.CleanExpiredRecovery());
 };

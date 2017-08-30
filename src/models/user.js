@@ -55,6 +55,20 @@ module.exports = function(app) {
         this.recovery = undefined;
     };
 
+    userSchema.statics.CleanExpiredRecovery = async function () {
+        let users = await this.find({'recovery.expiration': { $lt: new Date() } }).exec();
+
+        let toSave = [];
+        for (let user of users) {
+            user.clearRecovery();
+            toSave.push(user.save());
+        }
+
+        await(Promise.all(toSave));
+
+        return toSave.length;
+    };
+
     userSchema.statics.getActiveUserCount = function () {
         return this.count().exec();
     };
