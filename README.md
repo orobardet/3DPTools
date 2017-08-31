@@ -158,6 +158,67 @@ mail__smtp__host="smtp.mailserver.org"
 
 > The variable names are **case-sensitive**.
 
+## Configuration settings
+
+This section will list all available configuration settings with description of how to use them.  
+
+All examples use the json syntax, from as a complete standalone `config.json` file. 
+Merge them smartly and convert them in environment variables name if needed.
+
+### Send email
+
+Some of the feature within the application needs to send email. And sending emails needs a specific configuration.   
+By default there is no configuration.
+
+In case no valid email configuration is found, the application will disable all features requiring to send emails (account recovery)
+
+For now, only one transport method is supported: SMTP.
+
+If you need to test your configuration, there is a button to send a test email on the WebUI, in admin -> show configuration section.
+
+```json
+{
+  "mail": {
+    "enabled": true,
+    "debug": false,
+    "verboseDebug": false,
+    "testConnection": true,
+    "smtp": {
+      "host": "",
+      "port": "587",
+      "secure": false,
+      "needAuth": false,
+      "user": "",
+      "pass": ""
+    },
+    "from": {
+      "name": "3DPTools",
+      "mail": ""
+    }
+  }
+}
+```
+
+The main configuration block is `mail`.
+
+- `enabled` (boolean) Enable or not the mail sending capabilities, and so all the dependent features. If `true` but no valid and working configuration is defined, the application will force this settings to `false` on startup.
+- `debug` (boolean) Enable debug message on console. Helpfull to fix non working email configuration. 
+- `verboseDebug` (boolean) If '`debug` is enabled, setting this to `true` will log even more message on console.
+- `testConnection` (boolean) If enabled, on startup the application will try to "connect" using the transport method (for SMTP, it will try to connect to the SMTP serveur, but *not* to send an email). If the test failed, the application will force the `enabled` setting to `false`.
+- `smtp` *Required* Configure the SMTP transport
+  - `host` *Required*(string) Hostname of the SMTP server
+  - `port` *Required* (string|int) Port of the SMTP server
+  - `secure` (boolean) Set to `true` to enable secured (SSL) connection to the SMTP server
+  - `needAuth` (boolean) Set to `true` it the SMTP server need authentification, and set values to `user` and `pass`.
+  - `user` (string) Only if authentification is enabled, the username (login) for auth
+  - `pass` (string) Only if authentification is enabled, the password for auth
+- `from` *Required* Identity the application will use as sender (*From:*) of all emails
+  - `name` *Required* (string) Name of the sender
+  - `mail` *Required* (string) email address of the sender.  
+
+> Please not that **many** email servers **require** the sender email address to exists (or at least the domain, with a valid and responding email server). So use a real email address.  
+
+
 # FAQ
 
 ## Error `req.flash() requires sessions`
