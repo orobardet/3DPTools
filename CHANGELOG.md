@@ -1,5 +1,9 @@
 # Next
 
+> This version introduce features requiring new application capabilitiy: sending emails. 
+> By default, **email sending and all dependent feature are disabled**.
+> Check README for documentation about email configuration.
+
 - [New] Forgotten password feature now available, if a mail send configuration is given (no one by default) (#89)
 - [Imp] Configuration display in admin: better handling of secret value obfuscation (#93)
 - [Imp] No "Add filament" buttons if there is no materials, brands and shops (#90)
