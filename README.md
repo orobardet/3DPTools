@@ -1,4 +1,4 @@
-# 3DPTools
+²# 3DPTools
 
 [![build status](https://gitlab.com/orobardet/3DPTools/badges/master/build.svg)](https://gitlab.com/orobardet/3DPTools/commits/master) 
 [![coverage report](https://gitlab.com/orobardet/3DPTools/badges/master/coverage.svg)](https://gitlab.com/orobardet/3DPTools/commits/master)
@@ -162,8 +162,94 @@ mail__smtp__host="smtp.mailserver.org"
 
 This section will list all available configuration settings with description of how to use them.  
 
-All examples use the json syntax, from as a complete standalone `config.json` file. 
-Merge them smartly and convert them in environment variables name if needed.
+All examples use the json syntax, as a complete standalone `config.json` file.  
+All values used in the example are the default values.
+Merge them smartly and convert them in environment variables name if needed.  
+
+### Redis
+
+Redis is used to store session data, as well as cache storage. It is required for the application to run.
+
+```json
+{
+  "redis": {
+    "host": "localhost",
+    "port": "6379"
+  }
+}
+```
+
+The main configuration block is `redis`.
+
+- `host` *Required* (string) Hostname of the Redis server
+- `port` *Required* (string|int) Port of the Redis server. Default value will fit most users.
+
+### Database
+
+The database use is a MongoDB, >= v3.4. 
+
+```json
+{
+  "database": {
+    "host": "localhost",
+    "port": "27017",
+    "name": "3dptools",
+    "user": "3dptools",
+    "pass": "<changeit>",
+    "connectOptions": {
+    }
+  }
+}
+```
+
+The main configuration block is `database`.
+
+- `host` *Required* (string) Hostname of the MongoDB server
+- `port` *Required* (string|int) Port of the MongoDB server
+- `name` *Required* (string) Name of the MongoDB to use to store 3DPTools data. Will be created if not exists
+- `user` (string) Username to connect to the MongoDB server, if needed. *It is recommended to enable auth on the MongoDb server* 
+- `pass` (string) Password to connect to the MongoDB server, if needed. *It is recommended to enable auth on the MongoDb server* 
+- `connectOptions` (object) Allow to pass some specific connection options to the MongoDB client driver
+
+### Session
+
+Settings to configure web session. 
+
+```json
+{
+  "session": {
+    "name": "3dptools",
+    "secret": [
+      "9729dcac-5df4-46e7-acd5-0789ce17f0f3",
+      "3e9c7e2e-469f-4ce0-97b7-f424ae7020ac",
+      "ad89f8fa-9653-4ba4-836c-86d147eb1796",
+      "72d01cca-1824-4dd0-97f8-f2eef1dda21d",
+      "068ba006-1cd2-473e-ae39-506c20fa2dc1"
+    ]
+  }
+}
+```
+
+The main configuration block is `session`.
+
+- `name` (string) Then name of the session to use, which is the cookie name. You may safely leave the default value.
+- `secret` *Required* (array of strings) A list string used to encrypt session data. *It is highly recommended to replace the default value by specific one for your instance*. [UUID](https://www.uuidgenerator.net/) a great as values. **Do NOT use the value from the example above**.
+
+### Language
+
+Used to configure localization.
+
+```json
+{
+  "language": {
+    "cookieName": "locale"
+  }
+}
+```
+
+The main configuration block is `language`.
+
+- `cookieName` (string) Name of the cookie that will contains the locale selected by the user.
 
 ### Send email
 
@@ -218,6 +304,81 @@ The main configuration block is `mail`.
 
 > Please not that **many** email servers **require** the sender email address to exists (or at least the domain, with a valid and responding email server). So use a real email address.  
 
+### Monitoring
+
+You can enable some monitoring feature, like a Prometheus metrics endpoint.
+
+```json
+{
+  "monitoring": {
+    "prometheus": {
+      "enabled": true
+    }
+  }
+}
+```
+
+The main configuration block is `monitoring`.
+
+- `prometheus` Configure Prometheus metrics endpoint. It will be accessible on the `http://your.3dptools.fqdn:PORT/metrics` URL.
+  - `enabled` (boolean) Enable the Prometheus metrics endpoint
+
+### User accounts
+
+```json
+{
+  "accounts": {
+    "recovery": {
+      "ttl": 24,
+      "tokenLength": 32
+    }
+  }
+}
+```
+
+The main configuration block is `accounts`.
+  
+- `recovery` Configure the account recovy feature ("I forgot my password")
+  - `ttl` (int) In hours. Number of hours after which the account recovery request will expire.
+  - `tokenLength` (int) Lneght in byte of the random unique recovery token generated for the recovery (will be used in the link sent to the user to recover his account). 
+
+### Filament
+
+```json
+{
+  "filament": {
+    "leftThresholds": {
+      "warning": 35,
+      "danger": 10
+    },
+    "index": {
+      "lastUsedCount": 5,
+      "almostFinishedPercentThreshold": 25
+    }
+  }
+}
+```
+
+The main configuration block is `filament`.
+
+- `leftThresholds`
+  - `warning` (int) Threshold in percentage under which a filament will be consider as low level (orange color) 
+  - `danger` (int) Threshold in percentage under which a filament will be consider as very low level (red color)
+- `index` Settings for the homepage
+  - `lastUsedCount` (int) Number of last used filaments
+  - `almostFinishedPercentThreshold` (int) Percentage under which a filament is consider as "almost finished".
+
+### Misc
+
+```json
+{
+  "upload": {
+    "tmpPath":"tmp/uploads"
+  }
+}
+```
+
+- `upload.tmpPath` (string) Path where the application will temporary store the file uploaded by the user (images and other attachements) 
 
 # FAQ
 
