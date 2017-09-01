@@ -1,13 +1,5 @@
 {
-  "version": "",
   "versionSuffix": "",
-  "sourceCode": {
-    "projectUrl": "https://gitlab.com/orobardet/3DPTools",
-    "changelog": {
-      "filePath": "CHANGELOG.md",
-      "issueRootURL": "https://gitlab.com/orobardet/3DPTools/issues/"
-    }
-  },
   "session": {
     "name": "3dptools",
     "secret": [
@@ -71,22 +63,6 @@
     "tmpPath":"tmp/uploads"
   },
   "filament": {
-    "colors": {
-      "Black": "#000000",
-      "Gray": "#7f7f7f",
-      "White": "#ffffff",
-      "Red": "#d62728",
-      "Pink": "#e377c2",
-      "Orange": "#ff7f0e",
-      "Yellow": "#f7f70e",
-      "Green": "#2ca02c",
-      "Blue": "#1f77b4",
-      "Violet": "#9467bd",
-      "Brown": "#8c564b",
-      "Beige": "#f7f7e3",
-      "Natural": "rgba(255, 255, 255, 0.63)",
-      "Transparent": "rgba(255, 255, 255, 0)"
-    },
     "leftThresholds": {
       "warning": 35,
       "danger": 10
@@ -95,8 +71,5 @@
       "lastUsedCount": 5,
       "almostFinishedPercentThreshold": 25
     }
-  },
-  "charts": {
-    "colors": ["#0072AD", "#A7C4E3", "#FF7C15", "#FFB97A", "#009D37", "#87DD8C", "#DC141D", "#FF9291", "#955EB7", "#C6AAD0", "#8C5049", "#C59790", "#E96FBE", "#FDB1CE", "#7D7D7D", "#C5C5C5", "#B7BD36", "#D6D88E", "#00BCCB", "#91D7E1"]
   }
 }

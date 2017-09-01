@@ -45,6 +45,7 @@ module.exports = function(bootstrapOptions) {
         const moment = require('moment');
         const color = require('color');
 
+        config.file('internal', 'config/internal.json');
         config.use('memory');
         config.argv({
             "c": {
