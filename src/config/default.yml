@@ -1,58 +1,85 @@
-versionSuffix: ''
+# Redis settings. Used for session data and cache
+redis:
+  host: localhost
+  port: '6379'
+
+# MongoDB settings
+database:
+  host: localhost
+  port: '27017'
+  name: 3dptools        # The name of the database that will contains all the application data. Will be created if not exists
+  user: 3dptools        # Set empty if no authentification is required
+  pass: 3dpt            # Set empty if no authentification is required
+  connectOptions: {}
+
+# Session settings
 session:
-  name: 3dptools
-  secret:
+  name: 3dptools        # Name of the session cookie
+  secret:               # A list of strings used to encrypt session data. UUID are a good choice.
     - 5b9d3ab6-4985-4419-b590-82d63f209d2e
     - 1c89ce0b-56ec-4f8d-a81a-bb62c57e51e1
     - b1d86ef4-3f40-4bb6-b9c8-dc88ce0498a3
     - 74a906d2-ba0d-4969-b37a-b5974ca44e1b
     - 2bfe2cad-76b6-4f29-aad4-6304d8293d83
+
+# Localization settings
 language:
-  cookieName: locale
-redis:
-  host: localhost
-  port: '6379'
-database:
-  host: localhost
-  port: '27017'
-  name: 3dptools
-  user: 3dptools
-  pass: 3dpt
-  connectOptions: {}
+  cookieName: locale    # Name of the cookie that will contains the user selected language
+
+# Settings to allow the application to send emails
 mail:
-  enabled: true
-  debug: false
-  verboseDebug: false
-  testConnection: true
+  enabled: true         # Enable the email sending function. Automatically set to false if the others settings are invalid or not working
+  debug: false          # If enabled, will write on console messages when initializing and sending emails
+  verboseDebug: false   # If enabled with `debug`, the messages on console are more verbose
+  testConnection: true  # If enabled, the application will try to `connect` on the transport when starting up
+  # Settings for the SMTP transport method
   smtp:
-    host: ''
-    port: '587'
-    secure: false
-    needAuth: false
-    user: ''
-    pass: ''
+    host: ''            # Host of the SMTP server
+    port: '587'         # Port of the SMTP server
+    secure: false       # If enabled, connection to the SMTP server will use TLS
+    needAuth: false     # Enable if the SMTP server requires authentification. If so, `user` and `pass` are mandatory
+    user: ''            # Login to use for SMTP server authentification
+    pass: ''            # Password to use for SMTP server authentification
+  # Required. The identity the application will use when sending email. If `mail` is not set, the mail feature will be disabled.
   from:
-    name: 3DPTools
-    mail: ''
-sentry:
-  enabled: true
-  dsn: ''
+    name: '3DPTools'    # The name to use in as sender identity (From:). Optional
+    mail: ''            # REQUIRED! The email addresse to use as email sender
+
+# Application supervision & monitoring settings
 monitoring:
+  # The application can expose a Prometheus `/metrics` HTTP endpoint
   prometheus:
-    enabled: true
+    enabled: true       # If enabled, a `/metrics` HTTP url will respond with a valid Prometheus format
+
+# Settings for application internal accounts management
 accounts:
+  # Setting for the account recovery feature ("I forgot my password"). Only works if the application can send emails.
   recovery:
-    ttl: 24
-    tokenLength: 32
+    ttl: 24             # In hours. Time after which an account recovery request will expires
+    tokenLength: 32     # Number of characters for the random recovery account token (send as url in a recovery email)
+
+# 3D printing filaments management settings
+filament:
+  # Thresholds (in %) used by the application to handle left level of filament
+  leftThresholds:
+    warning: 35         # Below this % of left filament, the application will consider it low level
+    danger: 10          # Below this % of left filament, the application will consider it almost empty
+  # Settings for the filament stats in the home page
+  index:
+    lastUsedCount: 5    # Number of last used filament to display
+    almostFinishedPercentThreshold: 25  # % of left filament above which there will be displayed in the almost finished list
+
+# File upload settings
 upload:
-  tmpPath: tmp/uploads
+  tmpPath: tmp/uploads  # Directory where the application will temporarly put uploaded file before storing them for good
+
+# Sentry.io setting, used for tracking application's internal errors (exceptions and so)
+sentry:
+  enabled: true         # If enabled, and a valid `dsn` is define, the application will report errors to Sentry
+  dsn: ''               # Sentry DSN to use for error reporting
+
+# Projet and sourcecode settings. No need to be changed except for developers
 sourceCode:
   changelog:
-    filePath: CHANGELOG.md
-filament:
-  leftThresholds:
-    warning: 35
-    danger: 10
-  index:
-    lastUsedCount: 5
-    almostFinishedPercentThreshold: 25
+    filePath: CHANGELOG.md # Path of the CHANGELOG.md relative to the `/src` application directory (for the Web changelog page)
+versionSuffix: ''       # Suffix that will be used in application version. i.e. '-dev' will use version '1.2.3-dev'

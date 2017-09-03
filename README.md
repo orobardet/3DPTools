@@ -93,7 +93,7 @@ Those who don't correspond to disabled feature by default (e.g. sending email), 
 It is recommended to configure the application in order to fit your needs, secure your setup and enable all features.
 
 There is mainly 2 ways to pass configuration settings to the application:
-- using a (`JSON`) configuration file
+- using a (`YAML`) configuration file
 - with environment variables
 
 When running in a Docker container, environment variables are highly recommended (actually, although it's possible to 
@@ -103,47 +103,40 @@ When running directly in the host, you can choose whatever method you prefer. Bu
 
 ## Configuration file
 
-You need to create a `.json` file, and add any configuration settings you want to override.
+You need to create a `.yml` file, and add any configuration settings you want to override.
 
-All available configuration settings can be found in the internal default configuration file: [src/config/default.json](src/config/default.json).
+All available configuration settings can be found in the internal default configuration file: [src/config/default.yml](src/config/default.yml).
 
 > Do **NOT** modify this file! Create a new one with your overrided settings, that will be loaded when starting the application.
 
 Some of theses settings are not interesting to override. You don't need to use all the settings in your configuration file, 
 just add the one you need, but you must respect the structire.  
 For example, if you want to configure a specific host for Redis and MongoDB, with a user and password for the latter, 
-and set a SMTP server host for sending emails, create a `myconfig.json` file containing: 
+and set a SMTP server host for sending emails, create a `myconfig.yml` file containing: 
 
-```json
-{
-  "redis": {
-    "host": "redis.host"
-  },
-  "database": {
-    "host": "mongo.host",
-    "user": "3dptools",
-    "pass": "secret_password"
-  },
-  "mail": {
-    "smtp": {
-      "host": "smtp.mailserver.org"
-    }
-  }
-}
+```yaml
+redis:
+  host: 'redis.host'
+database:
+  host: 'mongo.host'
+  user: '3dptools'
+  pass: 'secret_password'
+mail:
+  smtp:
+    host: 'smtp.mailserver.org'
 ``` 
 
-> Beware of the syntax of JSON, which not as flexible as pure javascript: no tailling ',' after the last element of objects 
-> or array, every object keys must be quoted (").
+> Beware of the syntax of YAML, which is pretty strict: **2 spaces** intendation (not 3, not 4, not tab), no space between a key name and the following colon, a space after this colon.
 
 Once the file is created, you can use the `-c` option to start the application and have it use your configuration file:
 
 ```shell
-npm start -c path/to/myconfig.json
+npm start -c path/to/myconfig.yml
 ```
 
 ## Environment variables
 
-Using environment variables is simple: each settings in the JSON configuration file correspond to a variable whose name 
+Using environment variables is simple: each settings in the YAML configuration file correspond to a variable whose name 
 is the concatenation of each key from the top of the structure, joined by `__` (2 underscores).
 
 So for example, the same configuration than the example above can be set using environment variables like this:
@@ -162,7 +155,7 @@ mail__smtp__host="smtp.mailserver.org"
 
 This section will list all available configuration settings with description of how to use them.  
 
-All examples use the json syntax, as a complete standalone `config.json` file.  
+All examples use the YAML syntax, as root from a `.yml` file (e.g.: you can copy paste the block as is in you config file).  
 All values used in the example are the default values.
 Merge them smartly and convert them in environment variables name if needed.  
 
@@ -170,13 +163,10 @@ Merge them smartly and convert them in environment variables name if needed.
 
 Redis is used to store session data, as well as cache storage. It is required for the application to run.
 
-```json
-{
-  "redis": {
-    "host": "localhost",
-    "port": "6379"
-  }
-}
+```yaml
+redis:
+  host: localhost
+  port: '6379'
 ```
 
 The main configuration block is `redis`.
@@ -186,20 +176,16 @@ The main configuration block is `redis`.
 
 ### Database
 
-The database use is a MongoDB, >= v3.4. 
+The database used is a MongoDB, **>= v3.4**. 
 
-```json
-{
-  "database": {
-    "host": "localhost",
-    "port": "27017",
-    "name": "3dptools",
-    "user": "3dptools",
-    "pass": "<changeit>",
-    "connectOptions": {
-    }
-  }
-}
+```yaml
+database:
+  host: localhost
+  port: '27017'
+  name: 3dptools
+  user: 3dptools
+  pass: 3dpt
+  connectOptions: {}
 ```
 
 The main configuration block is `database`.
@@ -215,36 +201,29 @@ The main configuration block is `database`.
 
 Settings to configure web session. 
 
-```json
-{
-  "session": {
-    "name": "3dptools",
-    "secret": [
-      "9729dcac-5df4-46e7-acd5-0789ce17f0f3",
-      "3e9c7e2e-469f-4ce0-97b7-f424ae7020ac",
-      "ad89f8fa-9653-4ba4-836c-86d147eb1796",
-      "72d01cca-1824-4dd0-97f8-f2eef1dda21d",
-      "068ba006-1cd2-473e-ae39-506c20fa2dc1"
-    ]
-  }
-}
+```yaml
+session:
+  name: 3dptools
+  secret:
+    - 9729dcac-5df4-46e7-acd5-0789ce17f0f3
+    - 3e9c7e2e-469f-4ce0-97b7-f424ae7020ac
+    - ad89f8fa-9653-4ba4-836c-86d147eb1796
+    - 72d01cca-1824-4dd0-97f8-f2eef1dda21d
+    - 068ba006-1cd2-473e-ae39-506c20fa2dc1
 ```
 
 The main configuration block is `session`.
 
 - `name` (string) Then name of the session to use, which is the cookie name. You may safely leave the default value.
-- `secret` *Required* (array of strings) A list string used to encrypt session data. *It is highly recommended to replace the default value by specific one for your instance*. [UUID](https://www.uuidgenerator.net/) a great as values. **Do NOT use the value from the example above**.
+- `secret` *Required* (array of strings) A list of strings used to encrypt session data. *It is highly recommended to replace the default value by specific one for your instance*. [UUID](https://www.uuidgenerator.net/) a great as values. **Do NOT use the value from the example above**.
 
 ### Language
 
 Used to configure localization.
 
-```json
-{
-  "language": {
-    "cookieName": "locale"
-  }
-}
+```yaml
+language:
+  cookieName: locale
 ```
 
 The main configuration block is `language`.
@@ -262,27 +241,22 @@ For now, only one transport method is supported: SMTP.
 
 If you need to test your configuration, there is a button to send a test email on the WebUI, in admin -> show configuration section.
 
-```json
-{
-  "mail": {
-    "enabled": true,
-    "debug": false,
-    "verboseDebug": false,
-    "testConnection": true,
-    "smtp": {
-      "host": "",
-      "port": "587",
-      "secure": false,
-      "needAuth": false,
-      "user": "",
-      "pass": ""
-    },
-    "from": {
-      "name": "3DPTools",
-      "mail": ""
-    }
-  }
-}
+```yaml
+mail:
+  enabled: true
+  debug: false
+  verboseDebug: false
+  testConnection: true
+  smtp:
+    host: ''
+    port: '587'
+    secure: false
+    needAuth: false
+    user: ''
+    pass: ''
+  from:
+    name: 3DPTools
+    mail: ''
 ```
 
 The main configuration block is `mail`.
@@ -308,14 +282,10 @@ The main configuration block is `mail`.
 
 You can enable some monitoring feature, like a Prometheus metrics endpoint.
 
-```json
-{
-  "monitoring": {
-    "prometheus": {
-      "enabled": true
-    }
-  }
-}
+```yaml
+monitoring:
+  prometheus:
+    enabled: true
 ```
 
 The main configuration block is `monitoring`.
@@ -325,15 +295,11 @@ The main configuration block is `monitoring`.
 
 ### User accounts
 
-```json
-{
-  "accounts": {
-    "recovery": {
-      "ttl": 24,
-      "tokenLength": 32
-    }
-  }
-}
+```yaml
+accounts:
+  recovery:
+    ttl: 24
+    tokenLength: 32
 ```
 
 The main configuration block is `accounts`.
@@ -344,19 +310,14 @@ The main configuration block is `accounts`.
 
 ### Filament
 
-```json
-{
-  "filament": {
-    "leftThresholds": {
-      "warning": 35,
-      "danger": 10
-    },
-    "index": {
-      "lastUsedCount": 5,
-      "almostFinishedPercentThreshold": 25
-    }
-  }
-}
+```yaml
+filament:
+  leftThresholds:
+    warning: 35
+    danger: 10
+  index:
+    lastUsedCount: 5
+    almostFinishedPercentThreshold: 25
 ```
 
 The main configuration block is `filament`.
@@ -370,12 +331,9 @@ The main configuration block is `filament`.
 
 ### Misc
 
-```json
-{
-  "upload": {
-    "tmpPath":"tmp/uploads"
-  }
-}
+```yaml
+upload:
+  tmpPath: tmp/uploads
 ```
 
 - `upload.tmpPath` (string) Path where the application will temporary store the file uploaded by the user (images and other attachements) 
