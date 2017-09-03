@@ -91,6 +91,8 @@ module.exports = function (app) {
 
     // changelog
     router.get('/changelog', Controller.changelog);
+    router.get('/change-password', Controller.changePasswordForm);
+    router.post('/change-password', UserForm.changePassword, Controller.changePassword);
 
     router.get('/api/color/nearest-predefined/:code', Controller.nearestPredefinedColor);
 

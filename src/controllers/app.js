@@ -400,7 +400,63 @@ module.exports = function (app) {
      * Page showing the profile of the currently logged in user
      */
     this.userProfile = function (req, res) {
-        res.render('profile');
+        req.setOriginUrl([
+            'change-password',
+        ], req.originalUrl);
+
+        return res.render('profile');
+    };
+
+    /**
+     * Show the page to change the logged user password
+     */
+    this.changePasswordForm = async (req, res, next) => {
+        try {
+            return res.render('change-password', {
+                cancelUrl: req.getOriginUrl("change-password", "/profile"),
+                errors: [],
+            });
+        } catch (err) {
+            return next(err);
+        }
+    };
+
+    /**
+     * Change the logged user password (process the form of `changePasswordForm`)
+     */
+    this.changePassword = async (req, res, next) => {
+        try {
+            if (!req.form.isValid) {
+                return res.render('change-password', {
+                    cancelUrl: req.getOriginUrl("change-password", "/profile"),
+                    errors: req.form.getErrors(),
+                });
+            }
+
+            let user = await User.findById(req.user._id);
+
+            user.passwordHash = User.generateHash(req.form.password);
+            await user.save();
+
+            const mailer = app.get('mailer');
+            if (mailer && mailer.isMailerEnabled()) {
+                await mailer.sendMail({
+                    to: `"${user.name}" <${user.email}>`,
+                    subject: "Password changed",
+                    template: "password-changed.ejs",
+                    templateData: {
+                        rootUrl: req.protocol + '://' + req.get('host'),
+                        user: user
+                    },
+                    locale: req.getLocale()
+                });
+            }
+
+            req.flash('success', 'Password successfully changed.');
+            res.redirect(req.getOriginUrl("change-password", "/profile"));
+        } catch (err) {
+            return next(err);
+        }
     };
 
     /**

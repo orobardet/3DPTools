@@ -1,13 +1,29 @@
 <h1><%- __("My user profile") %></h1>
 
-<p>
-    <% if (user.isAdmin) { %>
-    <span class="label label-info"><%- __('Administrator') %></span><br/>
-    <% } %>
-</p>
-<p>
-    <b><%- __("Email: ") %></b><%- user.email %><br/>
-    <b><%- __("Firstname: ") %></b><%- user.firstname %><br/>
-    <b><%- __("Lastname: ") %></b><%- user.lastname %><br/>
-    <b><%- __("Creation date: ") %></b><%- __("%s (%s)", moment(user.creationDate).format('LLLL'), moment(user.creationDate).fromNow()) %>
-</p>
+<div class="row">
+
+    <div class="col-md-9">
+        <p>
+            <% if (user.isAdmin) { %>
+            <span class="label label-info"><%- __('Administrator') %></span><br/>
+            <% } %>
+        </p>
+        <p>
+            <b><%- __("Email: ") %></b><%- user.email %><br/>
+            <b><%- __("Firstname: ") %></b><%- user.firstname %><br/>
+            <b><%- __("Lastname: ") %></b><%- user.lastname %><br/>
+            <b><%- __("Creation date: ") %></b><%- __("%s (%s)", moment(user.creationDate).format('LLLL'), moment(user.creationDate).fromNow()) %>
+        </p>
+    </div>
+
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <a href="/change-password" class="btn btn-block btn-primary"><i class="fa fa-key"></i> <%= __('Change my password'); %></a>
+
+                <a href="/logout" class="btn btn-block btn-danger"><i class="fa fa-sign-out"></i> <%= __('Logout'); %></a>
+            </div>
+        </div>
+    </div>
+
+</div>
