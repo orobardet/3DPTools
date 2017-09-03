@@ -3,7 +3,6 @@
   "public": null,
   "public/vendor/jquery/dist": "/vendor/javascripts",
   "public/vendor/jquery-ui": "/vendor/javascripts",
-  "public/vendor/jquery-jsonview/dist": "/vendor/javascripts",
   "public/vendor/bootstrap-sass/assets": "/vendor",
   "public/vendor/font-awesome": "/vendor",
   "public/vendor/font-awesome/fonts": "/fonts",
@@ -19,5 +18,6 @@
   "public/vendor/numeral/min": "/vendor/javascripts/numeral",
   "public/vendor/ejs": "/vendor/javascripts",
   "public/vendor/he": "/vendor/javascripts",
-  "public/vendor/vue/dist": "/vendor/javascripts"
+  "public/vendor/vue/dist": "/vendor/javascripts",
+  "public/vendor/prism": "/vendor/javascripts"
 }

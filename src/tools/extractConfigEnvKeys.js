@@ -19,7 +19,10 @@ function extractKey(data, separator) {
 
 module.exports = function (config, separator) {
 
-    const defaultConfig = require(config);
+    let defaultConfig = config;
+    if (! config instanceof Object) {
+        defaultConfig = require(config);
+    }
 
     return extractKey(defaultConfig, separator);
 

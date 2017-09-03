@@ -44,6 +44,9 @@ module.exports = function(bootstrapOptions) {
         config = require("nconf");
         const moment = require('moment');
         const color = require('color');
+        const yaml = require('js-yaml');
+
+        let jsonDefaultConfig = yaml.safeLoad(fs.readFileSync(process.cwd() + '/config/default.yml', 'utf8'));
 
         config.file('internal', 'config/internal.json');
         config.use('memory');
@@ -60,16 +63,16 @@ module.exports = function(bootstrapOptions) {
             }
         }, "Launch 3DPTools web app");
 
-        const configEnvKeys = require('./tools/extractConfigEnvKeys')(process.cwd() + '/config/default.json', '__');
+        const configEnvKeys = require('./tools/extractConfigEnvKeys')(jsonDefaultConfig, '__');
         config.env({
             separator: '__',
             whitelist: configEnvKeys
         });
 
         if (config.get('config-file')) {
-            config.file('user', config.get('config-file'));
+            config.overrides(yaml.safeLoad(fs.readFileSync(config.get('config-file'), 'utf8')));
         }
-        config.file('default', 'config/default.json');
+        config.defaults(jsonDefaultConfig);
         if (bootstrapOptions.initCliOptions) {
             if (config.get('help')) {
                 config.stores.argv.showHelp('log');

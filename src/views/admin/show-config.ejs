@@ -1,5 +1,7 @@
-<link rel="stylesheet" href="/vendor/javascripts/jquery.jsonview.css">
-<script src="/vendor/javascripts/jquery.jsonview.js"></script>
+<link rel="stylesheet" href="/vendor/javascripts/themes/prism.css">
+<script src="/vendor/javascripts/prism.js"></script>
+<script src="/vendor/javascripts/components/prism-json.js"></script>
+<script src="/vendor/javascripts/components/prism-yaml.js"></script>
 
 <h1>
     <%= __(pageTitle) %>
@@ -8,17 +10,35 @@
     </div>
 </h1>
 
-<div id="jsonConfig"></div>
+<ul class="nav nav-tabs" id="configTabs">
+    <li role="presentation" class="active"><a href="#yamlConfigPane">YAML</a></li>
+    <li role="presentation"><a href="#jsonConfigPane">JSON</a></li>
+</ul>
+
+<div class="tab-content" id="configViewer">
+    <div id="yamlConfigPane" class="tab-pane active">
+        <div id="yamlConfig">
+            <pre><code class="language-yaml"><%- yamlConfigToShow -%></code></pre>
+        </div>
+    </div>
+    <div id="jsonConfigPane" class="tab-pane">
+        <div id="jsonConfig">
+            <pre><code class="language-json"><%- JSON.stringify(jsonConfigToShow, null, 2) -%></code></pre>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
 $(function() {
-    const configData = <%- JSON.stringify(configToShow) %>;
-
-    $('#jsonConfig').height('calc(100vh - ' + ($('#jsonConfig').offset().top + 30) + 'px)')
-
-    $('#jsonConfig').JSONView(configData);
+    $('#configViewer').height('calc(100vh - ' + ($('#configViewer').offset().top + 30) + 'px)')
 
     $('[data-toggle="tooltip"]').tooltip();
+
+    $('#configTabs a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
     $('#send-email').click(function(e) {
         e.preventDefault();
         let $this = $(this);

@@ -1,11 +1,13 @@
 'use strict';
 
+const libLocale = require('lib/locale');
+const util = require('util');
+const diskusage = util.promisify(require('diskusage').check);
+const mongoose = require('mongoose');
+const yaml = require('js-yaml');
+
 module.exports = function(app) {
-    const libLocale = require('lib/locale');
     const User = app.models.user;
-    const util = require('util');
-    const diskusage = util.promisify(require('diskusage').check);
-    const mongoose = require('mongoose');
 
     /**
      * Index page of the admin section
@@ -231,8 +233,13 @@ module.exports = function(app) {
         const protectData = require(process.cwd()+'/tools/protectConfigData');
         try {
             let configData = app.config.get() || {};
+            // Cleaning 'garbage" entries in the configuration object (dirty to show, and not compatible with YAML
             configData["$0"] = undefined;
             configData["_"] = undefined;
+            configData["type"] = undefined;
+            delete configData["$0"];
+            delete configData["_"];
+            delete configData["type"];
             let protectedData = protectData(configData, [/.*secret.*/, /.*pass.*/, /.*password.*/, /dsn/], '*****');
 
             let canSendEmail = false;
@@ -244,7 +251,8 @@ module.exports = function(app) {
             return res.render('admin/show-config', {
                 navModule: 'config',
                 pageTitle: "System's configuration",
-                configToShow: protectedData,
+                jsonConfigToShow: protectedData,
+                yamlConfigToShow: yaml.safeDump(protectedData, {noRefs: true}),
                 canSendEmail: canSendEmail,
             });
         } catch (err) {

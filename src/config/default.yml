@@ -1,0 +1,58 @@
+versionSuffix: ''
+session:
+  name: 3dptools
+  secret:
+    - 5b9d3ab6-4985-4419-b590-82d63f209d2e
+    - 1c89ce0b-56ec-4f8d-a81a-bb62c57e51e1
+    - b1d86ef4-3f40-4bb6-b9c8-dc88ce0498a3
+    - 74a906d2-ba0d-4969-b37a-b5974ca44e1b
+    - 2bfe2cad-76b6-4f29-aad4-6304d8293d83
+language:
+  cookieName: locale
+redis:
+  host: localhost
+  port: '6379'
+database:
+  host: localhost
+  port: '27017'
+  name: 3dptools
+  user: 3dptools
+  pass: 3dpt
+  connectOptions: {}
+mail:
+  enabled: true
+  debug: false
+  verboseDebug: false
+  testConnection: true
+  smtp:
+    host: ''
+    port: '587'
+    secure: false
+    needAuth: false
+    user: ''
+    pass: ''
+  from:
+    name: 3DPTools
+    mail: ''
+sentry:
+  enabled: true
+  dsn: ''
+monitoring:
+  prometheus:
+    enabled: true
+accounts:
+  recovery:
+    ttl: 24
+    tokenLength: 32
+upload:
+  tmpPath: tmp/uploads
+sourceCode:
+  changelog:
+    filePath: CHANGELOG.md
+filament:
+  leftThresholds:
+    warning: 35
+    danger: 10
+  index:
+    lastUsedCount: 5
+    almostFinishedPercentThreshold: 25
