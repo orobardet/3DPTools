@@ -4,6 +4,7 @@
 > By default, **email sending and all dependent feature are disabled**.
 > Check README for documentation about email configuration.
 
+- [New] Configuration file are now in YAML (#99)
 - [New] Forgotten password feature now available, if a mail send configuration is given (no one by default) (#89)
 - [New] Password can be changed in the profile page (#97)
 - [Imp] Separate internal and overridable settings, and documents them (#98)
