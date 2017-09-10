@@ -226,7 +226,6 @@ module.exports = function(bootstrapOptions) {
                 app.use(express.static(path.join(__dirname, staticPath)));
             }
         }
-
     }
 
     // Init prometheus metrics endpoint

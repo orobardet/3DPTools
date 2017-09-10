@@ -12,6 +12,7 @@ RUN adduser -D -g "" -G users $APP_USER
 
 COPY src /3dptools
 COPY CHANGELOG.md /3dptools/CHANGELOG.md
+COPY doc /3dptools/doc
 COPY docker/docker_start.sh /docker_start.sh
 RUN chown -R $APP_USER:users /docker_start.sh /3dptools && chmod +x /docker_start.sh
 

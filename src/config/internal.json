@@ -1,9 +1,55 @@
 {
+  "overridableInternals": [
+    "sourceCode__changelog__filePath",
+    "doc__root",
+    "versionSuffix"
+  ],
   "version": "",
+  "versionSuffix": "",
   "sourceCode": {
     "projectUrl": "https://gitlab.com/orobardet/3DPTools",
     "changelog": {
+      "filePath": "CHANGELOG.md",
       "issueRootURL": "https://gitlab.com/orobardet/3DPTools/issues/"
+    }
+  },
+  "doc": {
+    "root": "doc",
+    "defaultPage": "README.md",
+    "defaultLang": "en",
+    "navigation": {
+      "headersLevelMax": 3,
+      "TOC": {
+        "Home": {
+          "link": "/doc"
+        },
+        "Filaments": {
+          "link": "/doc/filaments",
+          "items": {
+            "Materials": {
+              "link": "/doc/materials"
+            },
+            "Brands": {
+              "link": "/doc/brands"
+            },
+            "Shops": {
+              "link": "/doc/shops"
+            },
+            "Statistics": {
+              "link": "/doc/filaments/statistics.md"
+            }
+          }
+        },
+        "Installation": {
+          "link": "/doc/install.md"
+        },
+        "Configuration": {
+          "link": "/doc/configuration.md"
+        },
+        "Administration": {
+          "link": "/doc/administration"
+        }
+      }
     }
   },
   "filament": {

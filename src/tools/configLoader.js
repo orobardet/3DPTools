@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require('fs');
+const fs = require('fs-extra');
 const packageInfo = require('package.json');
 const moment = require('moment');
 const color = require('color');
@@ -29,7 +29,7 @@ class ConfigLoader {
     }
 
     setupConfig() {
-        this.config.file('internal', 'config/internal.json');
+        this.internalConfig = require('config/internal.json');
         this.config.use('memory');
         this.config.argv({
             "c": {
@@ -48,7 +48,7 @@ class ConfigLoader {
     }
 
     loadEnv() {
-        const configEnvKeys = require('./extractConfigEnvKeys')(this.jsonDefaultConfig, '__');
+        const configEnvKeys = require('./extractConfigEnvKeys')(this.jsonDefaultConfig, '__').concat(this.internalConfig.overridableInternals || []);
         this.config.env({
             separator: '__',
             whitelist: configEnvKeys
@@ -62,6 +62,8 @@ class ConfigLoader {
     }
 
     loadDefaults() {
+        delete this.internalConfig.overridableInternals;
+        this.config.overrides(this.internalConfig);
         this.config.defaults(this.jsonDefaultConfig);
         if (this.bootstrapOptions.initCliOptions) {
             if (this.config.get('help')) {
@@ -94,6 +96,16 @@ class ConfigLoader {
         // Process changelog
         if (fs.existsSync(this.config.get('sourceCode:changelog:filePath'))) {
             this.app.locals.changelogAvailable = true;
+        }
+
+        // Process doc
+        let documentationRoot = this.config.get('doc:root');
+        if (fs.existsSync(documentationRoot)) {
+            let stats = fs.stat(documentationRoot).then((stats) => {
+                if (stats.isDirectory()) {
+                    this.app.locals.documentationAvailable = true;
+                }
+            });
         }
 
         // Process sentry

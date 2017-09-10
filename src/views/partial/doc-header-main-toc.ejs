@@ -1,0 +1,15 @@
+<% function renderTOCList(tocList, tocLevel) { -%>
+    <% if (tocList && Object.keys(tocList).length) { -%>
+    <ul class="nav">
+        <% for (let [label, item] of Object.entries(tocList)) { -%>
+        <li<%- (item.active)?' class="selected"':'' %>><a href="<%= item.link; %>"><%- __(label); %></a>
+        <% if (item.items && Object.keys(item.items).length && tocLevel < headersNavigationLevelMax) { -%>
+        <% let tocList = item.items; -%>
+        <% renderTOCList(item.items, tocLevel+1); %>
+        <% } -%>
+        <% } -%>
+        </li>
+    </ul>
+    <% } %>
+<% } %>
+<% renderTOCList(toc, 1); %>

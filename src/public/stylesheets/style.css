@@ -8239,6 +8239,14 @@ a.disabled {
   a.disabled:hover {
     text-decoration: none; }
 
+a.page-top {
+  display: inline-block;
+  position: fixed;
+  padding: 15px;
+  background-color: #eeeeee;
+  border-radius: 4px;
+  bottom: 10px; }
+
 .quicklink {
   color: inherit;
   text-decoration: inherit; }
@@ -8326,25 +8334,48 @@ a.disabled {
   color: #333333; }
   .nav-sidemenu a:hover {
     color: #337ab7; }
-.nav-sidemenu ul.nav > li > a {
-  padding: 0px;
-  padding-left: 15px; }
-  .nav-sidemenu ul.nav > li > a:hover {
-    background: none;
-    border-left: 1px solid #337ab7;
-    padding-left: 14px; }
-.nav-sidemenu ul.nav > li.active > a {
-  font-weight: bold;
-  color: #337ab7;
-  border-left: 2px solid #337ab7;
-  padding-left: 13px; }
+.nav-sidemenu ul.nav {
+  padding-bottom: 5px; }
+  .nav-sidemenu ul.nav > li > a {
+    padding: 2px 0px;
+    padding-left: 15px; }
+    .nav-sidemenu ul.nav > li > a:hover {
+      background: none;
+      border-left: 1px solid #337ab7;
+      padding-left: 14px; }
+  .nav-sidemenu ul.nav > li.active > a, .nav-sidemenu ul.nav > li.selected > a {
+    font-weight: bold;
+    color: #337ab7;
+    border-left: 2px solid #337ab7;
+    padding-left: 13px; }
 .nav-sidemenu ul.nav ul.nav > li > a {
   padding-left: 30px; }
   .nav-sidemenu ul.nav ul.nav > li > a:hover {
     padding-left: 29px; }
-.nav-sidemenu ul.nav ul.nav > li.active > a {
+.nav-sidemenu ul.nav ul.nav > li.active > a, .nav-sidemenu ul.nav ul.nav > li.selected > a {
   font-weight: normal;
   padding-left: 28px; }
+.nav-sidemenu ul.nav ul.nav ul.nav > li > a {
+  padding-left: 45px; }
+  .nav-sidemenu ul.nav ul.nav ul.nav > li > a:hover {
+    padding-left: 44px; }
+.nav-sidemenu ul.nav ul.nav ul.nav > li.active > a, .nav-sidemenu ul.nav ul.nav ul.nav > li.selected > a {
+  font-weight: normal;
+  padding-left: 43px; }
+.nav-sidemenu ul.nav ul.nav ul.nav ul.nav > li > a {
+  padding-left: 60px; }
+  .nav-sidemenu ul.nav ul.nav ul.nav ul.nav > li > a:hover {
+    padding-left: 59px; }
+.nav-sidemenu ul.nav ul.nav ul.nav ul.nav > li.active > a, .nav-sidemenu ul.nav ul.nav ul.nav ul.nav > li.selected > a {
+  font-weight: normal;
+  padding-left: 58px; }
+.nav-sidemenu ul.nav ul.nav ul.nav ul.nav ul.nav > li > a {
+  padding-left: 75px; }
+  .nav-sidemenu ul.nav ul.nav ul.nav ul.nav ul.nav > li > a:hover {
+    padding-left: 74px; }
+.nav-sidemenu ul.nav ul.nav ul.nav ul.nav ul.nav > li.active > a, .nav-sidemenu ul.nav ul.nav ul.nav ul.nav ul.nav > li.selected > a {
+  font-weight: normal;
+  padding-left: 73px; }
 
 a.anchor {
   display: block;
@@ -8936,5 +8967,101 @@ table td.not-found {
     border: 0;
     padding: 0;
     margin: 0; }
+
+.documentation-section {
+  position: relative; }
+  .documentation-section ul.nav > li.active > a {
+    font-weight: normal; }
+  .documentation-section #main-container {
+    width: 100%; }
+  .documentation-section .docpage-container {
+    vertical-align: top; }
+    .documentation-section .docpage-container > div {
+      vertical-align: top; }
+    .documentation-section .docpage-container .docpage-navigation {
+      float: left;
+      width: 250px;
+      position: relative; }
+      .documentation-section .docpage-container .docpage-navigation > div > nav {
+        width: 250px; }
+      .documentation-section .docpage-container .docpage-navigation .affix-top {
+        position: absolute; }
+      .documentation-section .docpage-container .docpage-navigation #doc-global-toc li:not(.selected) {
+        visibility: hidden;
+        height: 0;
+        transition: visibility 0s, height 0.2s linear; }
+      .documentation-section .docpage-container .docpage-navigation #doc-global-toc:hover li {
+        visibility: visible;
+        height: auto;
+        transition: visibility 0s, height 0.2s linear; }
+      .documentation-section .docpage-container .docpage-navigation #doc-global-toc:hover:after {
+        content: '\25B4'; }
+      .documentation-section .docpage-container .docpage-navigation #doc-global-toc:after {
+        display: inline-block;
+        content: '\25be';
+        width: 100%;
+        text-align: center;
+        color: #777777;
+        border-bottom: dotted 1px #eeeeee;
+        margin-bottom: 5px; }
+    .documentation-section .docpage-container .docpage-content {
+      width: 100%;
+      padding-left: 270px;
+      margin-bottom: 100px; }
+      .documentation-section .docpage-container .docpage-content img {
+        max-width: 100%;
+        box-shadow: 5px 5px 8px rgba(51, 51, 51, 0.3); }
+      .documentation-section .docpage-container .docpage-content span.removed-img {
+        border: solid 1px #CCCCCC;
+        padding: 2px;
+        box-shadow: 5px 5px 8px rgba(51, 51, 51, 0.3);
+        color: #d9534f; }
+        .documentation-section .docpage-container .docpage-content span.removed-img:before {
+          content: '\1F6AB';
+          margin-right: 3px; }
+      .documentation-section .docpage-container .docpage-content a.external {
+        font-style: italic; }
+        .documentation-section .docpage-container .docpage-content a.external:after {
+          display: inline-block;
+          font: normal normal normal 14px/1 FontAwesome;
+          font-size: 14px;
+          font-size: inherit;
+          text-rendering: auto;
+          margin-left: 0.5em;
+          content: "\f08e"; }
+      .documentation-section .docpage-container .docpage-content a.internal {
+        font-style: italic; }
+      .documentation-section .docpage-container .docpage-content .removed-link {
+        color: #286090;
+        text-decoration: underline dotted;
+        cursor: help; }
+      .documentation-section .docpage-container .docpage-content h1, .documentation-section .docpage-container .docpage-content h2, .documentation-section .docpage-container .docpage-content h3, .documentation-section .docpage-container .docpage-content h4, .documentation-section .docpage-container .docpage-content h5, .documentation-section .docpage-container .docpage-content h6 {
+        position: relative; }
+        .documentation-section .docpage-container .docpage-content h1:hover .anchor-link, .documentation-section .docpage-container .docpage-content h2:hover .anchor-link, .documentation-section .docpage-container .docpage-content h3:hover .anchor-link, .documentation-section .docpage-container .docpage-content h4:hover .anchor-link, .documentation-section .docpage-container .docpage-content h5:hover .anchor-link, .documentation-section .docpage-container .docpage-content h6:hover .anchor-link {
+          visibility: visible; }
+      .documentation-section .docpage-container .docpage-content .anchor-link {
+        position: absolute;
+        left: -1em;
+        font-size: 0.8em;
+        color: inherit;
+        visibility: hidden; }
+        .documentation-section .docpage-container .docpage-content .anchor-link:after {
+          content: '_';
+          visibility: hidden; }
+      .documentation-section .docpage-container .docpage-content h1:not(:first-of-type) {
+        border-bottom: 1px solid #eeeeee;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        font-size: 32px; }
+      .documentation-section .docpage-container .docpage-content h2 {
+        border-bottom: 1px solid #eeeeee;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        font-size: 28px; }
+      .documentation-section .docpage-container .docpage-content h3 {
+        border-bottom: 1px solid #eeeeee;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        font-size: 22px; }
 
 /*# sourceMappingURL=style.css.map */

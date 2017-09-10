@@ -81,9 +81,3 @@ upload:
 sentry:
   enabled: true         # If enabled, and a valid `dsn` is define, the application will report errors to Sentry
   dsn: ''               # Sentry DSN to use for error reporting
-
-# Projet and sourcecode settings. No need to be changed except for developers
-sourceCode:
-  changelog:
-    filePath: CHANGELOG.md # Path of the CHANGELOG.md relative to the `/src` application directory (for the Web changelog page)
-versionSuffix: ''       # Suffix that will be used in application version. i.e. '-dev' will use version '1.2.3-dev'

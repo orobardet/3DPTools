@@ -460,9 +460,14 @@
   "Change my password": "Changer mon mot de passe",
   "Set a new password for your account (%s):": "Choisissez un nouveau mot de passe pour votre compte (%s) :",
   "Stay connected": "Rester connecté",
-  "Gris foncé": "Gris foncé",
+  "Documentation": "Documentation",
+  "Gris": "Gris",
   "Phosphorescent vert": "Phosphorescent vert",
+  "Gris foncé": "Gris foncé",
+  "Installation": "Installation",
+  "Configuration": "Configuration",
   "Neon blue": "Neon blue",
   "Wood brown": "Wood brown",
   "Rose": "Rose"
+
 }

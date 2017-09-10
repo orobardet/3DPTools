@@ -279,6 +279,9 @@
   "An email has been sent to your address containing the instructions to recover your account.  \nPlease check you mailbox.": "An email has been sent to your address containing the instructions to recover your account.  \nPlease check you mailbox.",
   "The message may take a moment to reach you. If you don't receive it, please first check you SPAM folder.": "The message may take a moment to reach you. If you don't receive it, please first check you SPAM folder.",
   "Ok": "Ok",
+  "Documentation": "Documentation",
+  "Gris foncé": "Gris foncé",
+  "Phosphorescent vert": "Phosphorescent vert"
   "Average purchase interval: %s": "Average purchase interval: %s",
   "Last purchase %s": "Last purchase %s"
 }

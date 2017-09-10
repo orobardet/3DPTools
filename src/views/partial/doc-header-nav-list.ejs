@@ -1,0 +1,15 @@
+<% function renderList(headersList, headersLevel) { -%>
+    <% if (headersList && headersList.length) { -%>
+    <ul class="nav">
+        <% for (let hdr of headersList) { -%>
+        <li><a href="#<%= hdr.anchor; %>"><%- hdr.text; %></a>
+        <% if (hdr.subHdr && hdr.subHdr.length && headersLevel < headersNavigationLevelMax) { -%>
+        <% let headersList = hdr.subHdr; -%>
+        <% renderList(headersList, headersLevel+1); %>
+        <% } -%>
+        <% } -%>
+        </li>
+    </ul>
+    <% } %>
+<% } %>
+<% renderList(headersList, 1); %>

@@ -41,12 +41,14 @@ services:
     volumes:
       - ./src:/3dptools
       - ./CHANGELOG.md:/CHANGELOG.md
+      - ./doc:/doc
     environment:
       NODE_ENV: "development"
       versionSuffix: "dev"
       DEBUG: "3DPTools,3DPTools:*"
       DEBUG_COLORS: 1
       sourceCode__changelog__filePath: "../CHANGELOG.md"
+      doc__root: "../doc"
     labels:
       traefik.enable: "true"
       traefik.backend: "3dptools"
