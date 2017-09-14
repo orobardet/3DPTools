@@ -12,9 +12,10 @@
 - [Imp] No "Add filament" buttons if there is no materials, brands and shops (#90)
 - [Imp] Allow changelog page to be accessible for non-logged users (#94)
 - [Imp] Homepage's count per material chart no use root material for grouping (#96)
-- [Imp] Filament statistics now use master colors and parent materials for aggregation (#83 #101)
+- [Imp] Filament statistics now use master colors and parent materials for aggregation (#83)
 - [Fix] Filament statistics page errors when no filaments (#91)
 - [Fix] No link to filament statistics when no filaments (#95)
+- [Fix] Master color on homepage filtering (#101)
 - [Tec] Add `versionSuffix` config setting (#92)
 - [Tec] Improve Docker image and stack (#80 #81 #82 #85 #86 #88)
 
