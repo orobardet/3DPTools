@@ -65,7 +65,7 @@ module.exports = function (app) {
                 lastUsedFilaments,              // List of the ${lastUsedCount} last used filament (array of Filaments)
                 almostFinishedFilaments,        // List of the ${lastUsedCount) last filaments below ${almostFinishedThreshold}% left (array of Filaments)
                 materials,                      // List of all materials (array of Materials)
-                colors;                         // List of all colors (array of objects)
+                usedColors;                         // List of all colors (array of objects)
 
             try {
                 // Getting all the data asynchronously
@@ -85,7 +85,7 @@ module.exports = function (app) {
                     lastUsedFilaments,
                     almostFinishedFilaments,
                     materials,
-                    colors
+                    usedColors
                 ] = await Promise.all([
                     Shop.count().exec(),
                     Brand.count().exec(),
@@ -112,6 +112,17 @@ module.exports = function (app) {
                 ]);
             } catch (err) {
                 next(err);
+            }
+
+            const predefinedColors = res.app.get('config').get('filament:colors');
+            usedColors = app.controllers.filament.filterPredefinedColors(usedColors, predefinedColors);
+            let colors = [];
+            for (let [name, code] of Object.entries(predefinedColors)) {
+                colors.push({name: name, code: code});
+            }
+            colors.push(false);
+            for (let [name, code] of Object.entries(usedColors)) {
+                colors.push({name: name, code: code});
             }
 
             materials.unshift({name: '&nbsp;', id: null});
