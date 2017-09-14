@@ -68,12 +68,19 @@
                     <% } %>
 
 
+                    <input type="hidden" name="materialVariants" id="material-variants" value="on">
                     <select class="selectpicker" data-style="btn-default btn-sm" id="material" name="material" data-width="auto"  title="<%- __('Material'); %>">
                         <% if (locals.materials && materials.length) { %>
-                        <% materials.forEach(function (material) { %>
-                        <option value="<%- material.id %>"
-                        ><%- material.name %></option>
-                        <% }); %>
+                        <% for (let material of materials) { %>
+                        <option value="<%- material._id %>"
+                                title="<%- material.name %>"><%- material.name %></option>
+                        <% if (material.variants && material.variants.length) { %>
+                        <% for (let variant of material.variants) { %>
+                        <option value="<%- variant._id %>"
+                                title="<%- variant.name %>">&nbsp;&nbsp;&nbsp;<%- variant.name %></option>
+                        <% } %>
+                        <% } %>
+                        <% } %>
                         <% } %>
                     </select>
                 </form>
@@ -313,6 +320,20 @@
         $('form#filament-search').on('change', 'input, select', function() {
             $('form#filament-search').submit();
         }).on('submit', function() {
+            if ($('#material').val() !== "") {
+                $('#material').prop('disabled', false);
+                $('#material-variants').prop('disabled', false);
+            } else {
+                $('#material').prop('disabled', true);
+                $('#material-variants').prop('disabled', true);
+            }
+
+            if ($('#color').val() !== "") {
+                $('#color').prop('disabled', false);
+            } else {
+                $('#color').prop('disabled', true);
+            }
+
             $('.form-control:input', $(this)).each(function() {
                 var $input = $(this);
 

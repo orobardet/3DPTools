@@ -107,7 +107,7 @@ module.exports = function (app) {
                         finished: false,
                         materialLeftPercentage: {$lt: almostFinishedThreshold}
                     }).sort({materialLeftPercentage: 1}).populate('material brand shop').exec(),
-                    Material.find().sort('name').exec(),
+                    Material.list({tree: true, locale: res.getLocale()}),
                     Filament.getColors()
                 ]);
             } catch (err) {
