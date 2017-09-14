@@ -11,6 +11,15 @@
     "coverage": "istanbul --hook-run-in-context cover node_modules/mocha/bin/_mocha -- --recursive -R spec -c",
     "coverage-colorless": "istanbul --no-color --hook-run-in-context cover node_modules/mocha/bin/_mocha -- --recursive -R spec -c"
   },
+  "nodemonConfig": {
+    "ignore": [
+      ".git",
+      "node_modules/**/node_modules",
+      "public/",
+      "converage/",
+      ".nyc_output"
+    ]
+  },
   "dependencies": {
     "app-module-path": "^2.2.0",
     "bcrypt-nodejs": "0.0.3",
