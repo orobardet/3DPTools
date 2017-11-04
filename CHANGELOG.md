@@ -13,6 +13,7 @@
 - [Imp] Allow changelog page to be accessible for non-logged users (#94)
 - [Imp] Homepage's count per material chart no use root material for grouping (#96)
 - [Imp] Filament statistics now use master colors and parent materials for aggregation (#83)
+- [Imp] Better default name extraction in the material file form (#108)
 - [Fix] Filament statistics page errors when no filaments (#91)
 - [Fix] No link to filament statistics when no filaments (#95)
 - [Fix] Material variants on homepage filtering (#100)

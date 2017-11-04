@@ -47,7 +47,15 @@
 <script type="text/javascript">
     $(function () {
         $('input[name=file]').change(function () {
-            $('input[name=name]').val($(this).val());
+            let name = $(this).val();
+            // Extract the filename from the full path
+            // (Note: path separator used are '/' and '\' to match both Windows and Unix-based OS
+            let filename = name.match(/([^/\\]+)$/);
+            if (filename && filename.length) {
+                // If a filename is found, remove its possible extension
+                name = filename[0].replace(/\.[^.]+$/, '');
+            }
+            $('input[name=name]').val(name);
         });
     });
 </script>
