@@ -18,9 +18,7 @@ module.exports = {
     },
 
     disconnectDB: function(done) {
-        if (this.mongoose) {
-            mongoose.disconnect();
-        }
+        mongoose.disconnect();
 
         if (done) done();
     },

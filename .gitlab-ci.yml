@@ -1,4 +1,4 @@
-image: node:8
+image: node:9
 
 stages:
   - tests
@@ -8,7 +8,7 @@ stages:
   - dockerhub
 
 cache:
-  key: 3dptools-ci
+  key: 3dptools-ci_${CI_COMMIT_REF_NAME}
   paths:
   - src/node_modules
   - src/public/vendor
@@ -19,11 +19,16 @@ Unit tests:
   stage: tests
   services:
     - mongo
-  script: |
-    cd src
-    npm install && node_modules/.bin/bower --allow-root install
-    npm run coverage-colorless
-  coverage: /^\s*Lines\s*:\s*(\d+.\d+)\%/
+  script:
+    - cd src
+    - npm install && node_modules/.bin/bower --allow-root install
+    - npm run coverage-colorless
+  coverage: /^Lines\s*:\s*(\d+.\d+)\%/
+  artifacts:
+    name: "${CI_PROJECT_NAME}_TU-code-coverage"
+    paths:
+      - src/coverage
+    expire_in: 1 week
   only:
     - branches
   except:
@@ -61,15 +66,15 @@ Docker build:
 Docker release:
   image: docker:git
   stage: release
-  script: |
-    docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-    export IMG_TAG=$CI_BUILD_TAG
-    docker pull $CI_REGISTRY_IMAGE:$IMG_TAG || true
-    docker pull $CI_REGISTRY_IMAGE || true
-    docker build -t $CI_REGISTRY_IMAGE:$IMG_TAG --cache-from $CI_REGISTRY_IMAGE --cache-from $CI_REGISTRY_IMAGE:$IMG_TAG .
-    docker push $CI_REGISTRY_IMAGE:$IMG_TAG
-    docker tag $CI_REGISTRY_IMAGE:$IMG_TAG $CI_REGISTRY_IMAGE:latest
-    docker push $CI_REGISTRY_IMAGE:latest
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - export IMG_TAG=$CI_BUILD_TAG
+    - docker pull $CI_REGISTRY_IMAGE:$IMG_TAG || true
+    - docker pull $CI_REGISTRY_IMAGE || true
+    - docker build -t $CI_REGISTRY_IMAGE:$IMG_TAG --cache-from $CI_REGISTRY_IMAGE --cache-from $CI_REGISTRY_IMAGE:$IMG_TAG .
+    - docker push $CI_REGISTRY_IMAGE:$IMG_TAG
+    - docker tag $CI_REGISTRY_IMAGE:$IMG_TAG $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
   environment: production
   only:
     - tags

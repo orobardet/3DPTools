@@ -15,7 +15,11 @@ var Locale3DPTools = {
 
         if ((/%/).test(msg) && args && args.length > 0) {
             args = args.map(function(param) {
-                return he.encode(param);
+                if (typeof param === 'string') {
+                    return he.encode(param);
+                } else {
+                    return param;
+                }
             });
             msg = vsprintf(msg, args);
         }

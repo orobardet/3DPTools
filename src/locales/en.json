@@ -252,5 +252,16 @@
   "Y [year(s)] M [month(s)] d [day(s)] h[h] mm[m] ss[s]": "Y [year(s)] M [month(s)] d [day(s)] h[h] mm[m] ss[s]",
   "Users": "Users",
   "This is a test email from 3DPTools.": "This is a test email from 3DPTools.",
-  "Version: %s": "Version: %s"
+  "Version: %s": "Version: %s",
+  "&nbsp;": "&nbsp;",
+  "Violet": "Violet",
+  "Natural": "Natural",
+  "Gris clair": "Gris clair",
+  "Include variants": "Include variants",
+  "copy": "copy",
+  "Datas": "Datas",
+  "Show configuration": "Show configuration",
+  "Test email successfully sent.": "Test email successfully sent.",
+  "Test email successfully sent to %s.": "Test email successfully sent to %s.",
+  "Error while sending test email: %s": "Error while sending test email: %s"
 }
