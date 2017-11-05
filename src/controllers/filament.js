@@ -10,10 +10,12 @@ module.exports = function (app) {
 
     // Sorting modes definition
     // Each mode correspond to a list of field to order, with order way for each field (1 or -1)
+    const defaultSort = 'color';
     const filamentSortDefinition = {
-        'default': {
-            label: 'Default sort',
+        'color': {
+            label: 'Color',
             sort: {
+                'masterColorCode': 1,
                 'color.code': 1,
                 'material.name': 1,
                 'brand.name': 1
@@ -118,7 +120,7 @@ module.exports = function (app) {
             }
 
             // Check if the potential sort field received in parameters is valid (i.e. it is known)
-            let selectedSort = 'default';
+            let selectedSort = defaultSort;
             if (search.sort && Object.keys(filamentSortDefinition).indexOf(search.sort) > -1) {
                 selectedSort = search.sort;
             }
@@ -943,12 +945,13 @@ module.exports = function (app) {
                 'shop/add',
             ], req.originalUrl);
 
+            let selectedSort = defaultSort;
+            let sortData = {};
+            if (filamentSortDefinition[selectedSort]) {
+                sortData = filamentSortDefinition[selectedSort].sort;
+            }
             let [filaments, materials, brands, shopCount, usedColors] = await Promise.all([
-                Filament.find({finished:false}).populate('material brand shop').sort({
-                    'material.name': 1,
-                    'color.code': 1,
-                    'brand.name': 1
-                }),
+                Filament.find({finished:false}).populate('material brand shop').sort(sortData),
                 Material.list({tree: true, locale: res.getLocale()}),
                 Brand.find().sort('name').exec(),
                 Shop.count({}).exec(),
@@ -1069,7 +1072,7 @@ module.exports = function (app) {
             }
 
             // Check if the potential sort field received in parameters is valid (i.e. it is known)
-            let selectedSort = 'default';
+            let selectedSort = defaultSort;
             if (search.sort && Object.keys(filamentSortDefinition).indexOf(search.sort) > -1) {
                 selectedSort = search.sort;
             }
