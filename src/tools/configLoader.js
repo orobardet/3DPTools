@@ -17,6 +17,7 @@ const parseDuration = require('parse-duration');
 // Note: if the value of the key is already detected as something else of a string, or a string representing a full valid
 // integer, it will not be converted, and stay untouched
 const stringDurationKeys = {
+    'session:stayConnected:expiration': 60
 };
 
 class ConfigLoader {

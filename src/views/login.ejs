@@ -21,6 +21,14 @@
                 </div>
             </div>
 
+            <% if (locals.allowStayConnected) { -%>
+            <div class="form-group checkbox stay-connected-container">
+                <label for="stay-connected">
+                    <input type="checkbox" id="stay-connected" name="stayConnected"<% if (locals.stayConnectedChecked === true) { %> checked<% } %>> <%- __('Stay connected'); %>
+                </label>
+            </div>
+            <% } -%>
+
             <div class="form-group">
                 <div class="pull-right">
                     <button type="submit" class="btn btn-primary"><%- __('Login'); %></button>

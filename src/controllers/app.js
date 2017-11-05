@@ -22,6 +22,7 @@ const fs = require('fs-promise');
 const Color = require('color');
 const NearestColor = require('lib/nearest-color');
 const crypto = require('crypto');
+const schedule = require('node-schedule');
 
 module.exports = function (app) {
 
@@ -30,6 +31,25 @@ module.exports = function (app) {
     const Brand = app.models.brand;
     const Material = app.models.material;
     const Filament = app.models.filament;
+
+    this.asyncPostListeningInit = async function() {
+        const debug = require('debug')('3DPTools:asyncInit');
+
+        debug("Setting up scheduled jobs...");
+        // Clean expired token account recovery, every day at 23:23
+        schedule.scheduleJob('23 23 * * *', () => User.CleanAllExpiredRecovery());
+        // Clean expired users' session keeper tokens ("stay connected" feature) every hours at :47
+        schedule.scheduleJob('47 * * * *', () => User.CleanAllExpiredSessionKeeperTokens());
+
+        // Run some tasks in //
+        debug("Running init tasks...");
+        await Promise.all([
+            User.CleanAllExpiredRecovery(),
+            User.CleanAllExpiredSessionKeeperTokens()
+        ]);
+
+        debug("App async init done!");
+    };
 
     /**
      * Homepage of the application
@@ -198,26 +218,115 @@ module.exports = function (app) {
             return next(err);
         }
 
+        // Check if the "forgot password" feature is enabled and working,
+        // which implied if a "forgot password" link should be rendered or not.
         let showForgotPasswordLink = false;
-        const mailer = app.get('mailer');
+        const mailer = res.app.get('mailer');
         if (mailer && mailer.isMailerEnabled()) {
             showForgotPasswordLink = true;
+        }
+
+        // Check if the "stay connected" feature is enabled.
+        const config = res.app.get('config');
+        let allowStayConnected = (config.get('session:stayConnected:enabled') === true);
+        // If there is a stay connected cookie, the "stay connected" option
+        // on the login form should be checked
+        let preCheckStayConnected = false;
+        if (req.cookies[config.get('session:stayConnected:cookieName')]) {
+            preCheckStayConnected = true
         }
 
         // Show the login form
         res.render('login', {
             showForgotPasswordLink: showForgotPasswordLink,
+            allowStayConnected: allowStayConnected,
+            stayConnectedChecked: preCheckStayConnected,
             pageTitle: 'Login',
             navModule: 'login',
             showNavbar: false
         });
     };
 
+
+    this.$getUserComputerIdentificationData = (req) => {
+        let userComputerData = {};
+        userComputerData.userAgent = req.header('user-agent');
+        userComputerData.remoteIp = req.header('x-forwarded-for') || req.connection.remoteAddress;
+
+        return userComputerData;
+    };
+
+
+    this.$getSessionKeeperCookieOptions = (config) => {
+        if (config.get('session:stayConnected:enabled') !== true) {
+            return false;
+        }
+
+        let expiration = config.get('session:stayConnected:expiration');
+
+        return {
+            name: config.get('session:stayConnected:cookieName'),
+            httpOnly: true,
+            maxAge: expiration * 60000,
+            sameSite: true
+        }
+    };
+
+    /**
+     * When a user has successfully logged in
+     *
+     * Handle some features like "stay connected"
+     */
+    this.postLogin = async (req, res, next) => {
+        const config = req.app.get('config');
+        let sessionKeeperCookieOptions = this.$getSessionKeeperCookieOptions(config);
+
+        // "Stay connected" feature handling, if enabled and asked by the user
+        if (sessionKeeperCookieOptions !== false) {
+            if (req.body.stayConnected && (req.body.stayConnected === true || req.body.stayConnected === 'on')) {
+                // The user asked to stay connected
+
+                // Gather some information
+                let {userAgent, remoteIp} = this.$getUserComputerIdentificationData(req);
+
+                // Generate and assign a session keeper token to the user account in database
+                let {id, token} = req.user.createSessionKeeperToken(userAgent, remoteIp, config.get('session:stayConnected:expiration'));
+
+                // Put a stay connected cookie containing the session keeper token, for next visits
+                let { name:cookieName, ...cookieOpts } = sessionKeeperCookieOptions;
+                res.cookie(cookieName, id + "," + token, cookieOpts);
+
+                await req.user.save();
+            } else {
+                // Remove the stay connected cookie if any, as the user did not want to stay connected anymore
+                res.clearCookie(sessionKeeperCookieOptions.name);
+                let {userAgent, remoteIp} = this.$getUserComputerIdentificationData(req);
+                req.user.clearSessionKeeperTokens(userAgent, remoteIp);
+
+                await req.user.save();
+            }
+        }
+
+        res.redirect('/');
+    };
+
     /**
      * Logout management
      */
-    this.logout = function (req, res) {
+    this.logout = async (req, res) => {
+        const config = res.app.get('config');
+
+        if (config.get('session:stayConnected:enabled') === true) {
+            // Delete the session keeper cookie
+            res.clearCookie(config.get('session:stayConnected:cookieName'));
+            // Delete all current session keeper tokens associated to the user in the database
+            let {userAgent, remoteIp} = this.$getUserComputerIdentificationData(req);
+            req.user.clearSessionKeeperTokens(userAgent, remoteIp);
+            await req.user.save();
+        }
+
         req.logout();
+
         return res.redirect('/');
     };
 
@@ -239,6 +348,7 @@ module.exports = function (app) {
         if (req.isAuthenticated()) {
             return next();
         }
+
         return res.redirect('/login');
     };
 
@@ -309,7 +419,6 @@ module.exports = function (app) {
             return next(err);
         }
     };
-
 
     this.$checkRecoveryToken = async (req, res, next) => {
         try {

@@ -285,6 +285,10 @@ module.exports = function(bootstrapOptions) {
             app.use(Raven.errorHandler());
         }
 
+        app.on('postListeningInit', function() {
+            app.controllers.app.asyncPostListeningInit();
+        });
+
         // catch 404 and forward to error.ejs handler
         app.use((req, res, next) => {
             let err = new Error('Not Found');

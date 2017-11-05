@@ -8433,6 +8433,8 @@ a.anchor {
 .login-section > .container {
   margin-top: 100px;
   max-width: 400px; }
+.login-section .stay-connected-container {
+  text-align: right; }
 
 .setup-section > h1 {
   margin: 20px; }

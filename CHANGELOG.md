@@ -7,6 +7,7 @@
 - [New] Configuration files are now in YAML (#99)
 - [New] Forgotten password feature now available, if a mail send configuration is given (no one by default) (#89)
 - [New] Password can be changed in the profile page (#97)
+- [New] "Stay connected"/"Remember me" feature in user authentification (#102)
 - [Imp] Separate internal and overridable settings, and documents them (#98)
 - [Imp] Configuration display in admin: better handling of secret value obfuscation (#93)
 - [Imp] No "Add filament" buttons if there is no materials, brands and shops (#90)
