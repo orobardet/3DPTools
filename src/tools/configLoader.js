@@ -7,6 +7,18 @@ const color = require('color');
 const yaml = require('js-yaml');
 const parseDuration = require('parse-duration');
 
+// List of the config key that can have an duration expressed in string, like "1 month" or "1h 5mins".
+// These keys will be parsed and converted to int, as a number of second value.
+// The unit (seconds) can be customized in the list below: the value of each key is a divider that will be used to
+// convert the int duration value from seconds. e.g. a divider of 60 will set the value in minutes, a divider of 0.001
+// will set the value in milliseconds
+// Each converted key will have its original (string) value store in the config using the same key name with a '_StringValue' suffix.
+//
+// Note: if the value of the key is already detected as something else of a string, or a string representing a full valid
+// integer, it will not be converted, and stay untouched
+const stringDurationKeys = {
+};
+
 class ConfigLoader {
 
     constructor(app, bootstrapOptions) {
@@ -86,6 +98,29 @@ class ConfigLoader {
         // Process sentry
         if (!this.config.get('sentry:enabled') || !this.config.get('sentry:dsn') || this.config.get('sentry:dsn') === "") {
             this.config.set('sentry:enabled', false);
+        }
+
+        // Compute config duration
+        for (let key in stringDurationKeys) {
+            let configValue = this.config.get(key);
+            if (typeof configValue === 'undefined' || typeof configValue !== 'string') {
+                continue;
+            }
+            let divider = stringDurationKeys[key];
+            if (divider <= 0) {
+                divider = 1;
+            }
+
+            // Is already an integer?
+            let isInt = Number.parseInt(configValue, 10);
+            if (isInt.toString() === configValue) {
+                continue;
+            }
+
+            let parsedValue = parseDuration(configValue) / 1000 / divider;
+
+            this.config.set(key, parsedValue);
+            this.config.set(key+'_StringValue', configValue);
         }
     }
 
