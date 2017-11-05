@@ -4,9 +4,6 @@ require('app-module-path').addPath(__dirname);
 
 module.exports = function(bootstrapOptions) {
     const merge = require('merge');
-    const fs = require('fs');
-    const fmt = require('util').format;
-    const packageInfo = require('./package.json');
     const Raven = require('raven');
     const debug = require('debug')('3DPTools');
     const cookieParser = require('cookie-parser');
@@ -41,70 +38,12 @@ module.exports = function(bootstrapOptions) {
 
     // Load configuration
     if (bootstrapOptions.loadConfig) {
-        config = require("nconf");
-        const moment = require('moment');
-        const color = require('color');
-        const yaml = require('js-yaml');
-
-        let jsonDefaultConfig = yaml.safeLoad(fs.readFileSync(process.cwd() + '/config/default.yml', 'utf8'));
-
-        config.file('internal', 'config/internal.json');
-        config.use('memory');
-        config.argv({
-            "c": {
-                alias: 'config-file',
-                description: 'Configuration file to load',
-                required: false,
-                type: 'string'
-            },
-            "h": {
-                alias: 'help',
-                description: 'Show this help'
-            }
-        }, "Launch 3DPTools web app");
-
-        const configEnvKeys = require('./tools/extractConfigEnvKeys')(jsonDefaultConfig, '__');
-        config.env({
-            separator: '__',
-            whitelist: configEnvKeys
-        });
-
-        if (config.get('config-file')) {
-            config.overrides(yaml.safeLoad(fs.readFileSync(config.get('config-file'), 'utf8')));
-        }
-        config.defaults(jsonDefaultConfig);
-        if (bootstrapOptions.initCliOptions) {
-            if (config.get('help')) {
-                config.stores.argv.showHelp('log');
-                process.exit(0);
-            }
-        }
-
-        let appVersion = config.get('version');
-        let appVersionSuffix = config.get('versionSuffix');
-        if (packageInfo && packageInfo.version) {
-            appVersion =  packageInfo.version;
-        }
-        if (appVersionSuffix && appVersionSuffix.length) {
-            appVersion += "-" + appVersionSuffix;
-        }
-        config.set('version', appVersion);
-        app.locals.config = config;
-        app.locals.moment = moment;
-        app.locals.Color = color;
-        app.config = config;
-        app.set('config', config);
-        if (fs.existsSync(config.get('sourceCode:changelog:filePath'))) {
-            app.locals.changelogAvailable = true;
-        }
-
-        if (!config.get('sentry:enabled') || !config.get('sentry:dsn') || config.get('sentry:dsn') === "") {
-            bootstrapOptions.initSentry = false;
-        }
+        const configLoader = require("tools/configLoader");
+        config = configLoader(app, bootstrapOptions);
     }
 
     // Init sentry
-    if (bootstrapOptions.initSentry) {
+    if (bootstrapOptions.initSentry && config && config.get('sentry:enabled') === true) {
         let sentryExtraConfig = null;
         if (config) {
             sentryExtraConfig = config.get();
