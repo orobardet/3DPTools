@@ -199,7 +199,6 @@ module.exports = function(bootstrapOptions) {
         let mongoose = require('mongoose');
 
         let mongoOptions = config.get("database:connectOptions");
-        mongoOptions.useMongoClient = true;
         mongoOptions.promiseLibrary = global.Promise;
         mongoose.Promise = global.Promise;
 

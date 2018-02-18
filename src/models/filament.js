@@ -192,7 +192,7 @@ module.exports = function (app) {
     };
 
     filamentSchema.statics.getTotalCost = async function () {
-        let result = await this.aggregate({
+        let result = await this.aggregate([{
             $group: {
                 _id: '',
                 total: { $sum: '$price' }
@@ -202,7 +202,7 @@ module.exports = function (app) {
                 _id: 0,
                 total: '$total'
             }
-        }).exec();
+        }]).exec();
 
         if (result.length) {
             return result[0].total;
@@ -212,7 +212,7 @@ module.exports = function (app) {
     };
 
     filamentSchema.statics.getTotalWeight = async function () {
-        let result = await this.aggregate({
+        let result = await this.aggregate([{
             $group: {
                 _id: '',
                 total: { $sum: '$initialMaterialWeight' }
@@ -222,7 +222,7 @@ module.exports = function (app) {
                 _id: 0,
                 total: '$total'
             }
-        }).exec();
+        }]).exec();
 
         if (result.length) {
             return result[0].total;
@@ -232,14 +232,14 @@ module.exports = function (app) {
     };
 
     filamentSchema.statics.getTotalLength = async function () {
-        let results = await this.aggregate({
+        let results = await this.aggregate([{
             $group: {
                 _id: {diameter: '$diameter',
                     density: '$density'
                 },
                 weight: { $sum: '$initialMaterialWeight' }
             }
-        }).exec();
+        }]).exec();
 
         let totalLength = 0;
         for (let doc of results) {
