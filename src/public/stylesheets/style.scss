@@ -63,11 +63,35 @@ a.disabled {
 }
 
 .navbar-anonymous {
+  .container {
+    width: 100%;
+  }
   .navbar-brand {
     color: $gray-lighter;
 
     &:hover {
       color: $gray-light;
+    }
+  }
+
+  .dropdown.language-selector {
+    & > a.dropdown-toggle {
+      opacity: 0.25;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    &.open > a.dropdown-toggle {
+      opacity: 1;
+    }
+
+    & > .dropdown-menu > li.active {
+      &.active > a {
+        color: $brand-primary;
+        &:hover {
+          background-color: $dropdown-link-hover-bg;
+        }
+      }
     }
   }
 }
@@ -312,7 +336,9 @@ a.anchor {
 
 .login-section {
   .navbar-anonymous {
-    display: none;
+    .navbar-brand {
+      display: none;
+    }
   }
 
   > .container {

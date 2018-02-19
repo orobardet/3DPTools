@@ -66,8 +66,24 @@
 </nav>
 <% } else { -%>
 <nav class="navbar-anonymous navbar-fixed-top">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="/"><%- __('3DPTools'); %></a>
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/"><%- __('3DPTools'); %></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown language-selector">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="<%- __('lang_'+getLocale()+'_label'); %>"><i class="fa fa-fw flag-icon flag-icon-<%- getLocale() %>"></i></a>
+                    <ul class="dropdown-menu">
+                        <% languagesList.forEach(function (lang, idx) { %>
+                        <li<% if (lang == getLocale()) {%> class="active"<%}%>><a href="/_lang/<%- lang %>"><% if (lang == getLocale()) {%><i class="fa fa-check pull-right"></i><%}%><i class="fa fa-fw flag-icon flag-icon-<%- lang %>"></i>&nbsp;&nbsp;<%- __('lang_'+lang+'_label') %></a></li>
+                        <% }); %>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/_lang/auto"><i class="fa fa-magic fa-fw"></i>&nbsp;&nbsp;<%- __('Auto detect') %></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
     </div>
 </nav>
 <% } -%>

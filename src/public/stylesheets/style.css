@@ -8262,10 +8262,22 @@ a.disabled {
 .navbar-fixed-top {
   border-bottom: 0; }
 
+.navbar-anonymous .container {
+  width: 100%; }
 .navbar-anonymous .navbar-brand {
   color: #eeeeee; }
   .navbar-anonymous .navbar-brand:hover {
     color: #777777; }
+.navbar-anonymous .dropdown.language-selector > a.dropdown-toggle {
+  opacity: 0.25; }
+  .navbar-anonymous .dropdown.language-selector > a.dropdown-toggle:hover {
+    opacity: 1; }
+.navbar-anonymous .dropdown.language-selector.open > a.dropdown-toggle {
+  opacity: 1; }
+.navbar-anonymous .dropdown.language-selector > .dropdown-menu > li.active.active > a {
+  color: #337ab7; }
+  .navbar-anonymous .dropdown.language-selector > .dropdown-menu > li.active.active > a:hover {
+    background-color: #f5f5f5; }
 
 .dropdown-menu-col > li > a {
   display: block;
@@ -8428,7 +8440,7 @@ a.anchor {
     #app-message-container > .alert > .close {
       margin-left: 10px; }
 
-.login-section .navbar-anonymous {
+.login-section .navbar-anonymous .navbar-brand {
   display: none; }
 .login-section > .container {
   margin-top: 100px;

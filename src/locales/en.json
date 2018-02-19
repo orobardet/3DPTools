@@ -263,5 +263,20 @@
   "Show configuration": "Show configuration",
   "Test email successfully sent.": "Test email successfully sent.",
   "Test email successfully sent to %s.": "Test email successfully sent to %s.",
-  "Error while sending test email: %s": "Error while sending test email: %s"
+  "Error while sending test email: %s": "Error while sending test email: %s",
+  "Login to %s": "Login to %s",
+  "Stay connected": "Stay connected",
+  "Login": "Login",
+  "I forgot my password": "I forgot my password",
+  "Account recovery": "Account recovery",
+  "Input in the field below the email address used for your account.\n\nIf the address is valid, the system will send you a message with instructions to recover your account.": "Input in the field below the email address used for your account.\n\nIf the address is valid, the system will send you a message with instructions to recover your account.",
+  "Recover": "Recover",
+  "Hello %s,": "Hello %s,",
+  "An account recovery request was made for your [3DPTools](%s) account.": "An account recovery request was made for your [3DPTools](%s) account.",
+  "If you are the requestor, please follow the link below to recover your account.  \n**If you did not request this recovery, please ignore this message.**": "If you are the requestor, please follow the link below to recover your account.  \n**If you did not request this recovery, please ignore this message.**",
+  "Recover my account": "Recover my account",
+  "This link will expire on **%s**.": "This link will expire on **%s**.",
+  "An email has been sent to your address containing the instructions to recover your account.  \nPlease check you mailbox.": "An email has been sent to your address containing the instructions to recover your account.  \nPlease check you mailbox.",
+  "The message may take a moment to reach you. If you don't receive it, please first check you SPAM folder.": "The message may take a moment to reach you. If you don't receive it, please first check you SPAM folder.",
+  "Ok": "Ok"
 }

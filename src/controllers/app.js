@@ -11,6 +11,7 @@
  *  - account recovery (/recover-account*)
  **/
 const gAnonymousAccessAllowed = [
+    /^\/_lang\/.*/,
     /^\/locale\.js$/,
     /^\/login$/,
     /^\/setup.*/,
