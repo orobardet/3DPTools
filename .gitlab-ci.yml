@@ -38,7 +38,7 @@ Test Docker build:
   image: docker:git
   stage: build
   script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME || true
     - docker pull $CI_REGISTRY_IMAGE || true
     - docker build -t $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME --cache-from $CI_REGISTRY_IMAGE --cache-from $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME .
@@ -52,7 +52,7 @@ Docker build:
   image: docker:git
   stage: build
   script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME || true
     - docker pull $CI_REGISTRY_IMAGE || true
     - docker build -t $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME --cache-from $CI_REGISTRY_IMAGE --cache-from $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME .
@@ -67,7 +67,7 @@ Docker release:
   image: docker:git
   stage: release
   script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     - export IMG_TAG=$CI_BUILD_TAG
     - docker pull $CI_REGISTRY_IMAGE:$IMG_TAG || true
     - docker pull $CI_REGISTRY_IMAGE || true
