@@ -11,7 +11,6 @@ module.exports = {
         mongoose.Promise = global.Promise;
         if (mongoose.connection.readyState === 0) {
             await mongoose.connect(process.env.MONGO_URL, {
-                useMongoClient: true,
                 promiseLibrary: global.Promise
             });
         }

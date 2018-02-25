@@ -2,14 +2,12 @@
 
 const helper = require('./helper.js');
 
-before(done => {
-    helper.connectDB();
-    helper.clearDB();
-    done();
+before(async () => {
+    await helper.connectDB();
+    await helper.clearDB();
 });
 
-after(done => {
-    helper.clearDB();
-    helper.disconnectDB();
-    done();
+after(async () => {
+    await helper.clearDB();
+    await helper.disconnectDB();
 });
