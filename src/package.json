@@ -8,7 +8,7 @@
     "bower": "bower",
     "cli": "node ./bin/cli",
     "test": "mocha -c --recursive",
-    "coverage": "nyc npm test",
+    "coverage": "nyc yarn test",
     "coverage-colorless": "nyc --no-color mocha --recursive -R spec -c"
   },
   "nyc": {

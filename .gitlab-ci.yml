@@ -21,8 +21,8 @@ Unit tests:
     - mongo
   script:
     - cd src
-    - npm install && node_modules/.bin/bower --allow-root install
-    - npm run coverage-colorless
+    - yarn install && yarn run bower --allow-root install
+    - yarn run coverage-colorless
   coverage: /^Lines\s*:\s*(\d+.\d+)\%/
   artifacts:
     name: "${CI_PROJECT_NAME}_TU-code-coverage"

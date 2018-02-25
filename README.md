@@ -9,7 +9,7 @@ Web-based 3DPrinting tools
 
 ## Run
 
-- [NodeJS](https://nodejs.org/) (9.x) with npm
+- [NodeJS](https://nodejs.org/) (9.x) with [Yarn](https://yarnpkg.com)
 - ImageMagick
 - [MongoDB](https://www.mongodb.com/) (3.4, **with [3.4 Feature compatibility enabled](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)**)
 - [Redis](http://redis.io/)
@@ -20,7 +20,7 @@ Web-based 3DPrinting tools
 ## Dev/build
 
 - Bower (`sudo npm install -g bower`)
-- build-essential (as know on Debian-like OS, or any other equivalent on your OS ; needed by npm to build some extensions)
+- build-essential (as know on Debian-like OS, or any other equivalent on your OS ; needed to build some dependencies)
 - SASS (`sudo apt-get install ruby-sass`)
 - Any OS where the previous requirements runs. Has been proven to work for development on Linux (Ubuntu and Debian tested) and Windows (Windows 10 tested).
 - Docker (only to build docker image or run the development environment as Docker containers)
@@ -39,7 +39,7 @@ cd 3DPTools/src
 Then prepare it:
 
 ```shell
-npm install
+yarn install
 bower install
 scss -f public/stylesheets/style.scss > public/stylesheets/style.css
 ```

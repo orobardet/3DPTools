@@ -85,7 +85,6 @@ src/tmp
 .nyc_output/
 /docker-volumes/
 docker-compose.override.yml
-yarn.lock
 .yarn-integrity
 /node_modules/
 /src/build/

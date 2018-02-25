@@ -18,13 +18,13 @@ RUN chown -R $APP_USER:users /docker_start.sh /3dptools && chmod +x /docker_star
 WORKDIR /3dptools
 
 RUN apk --update add --virtual 3dpt-dev build-base python krb5-dev sudo && \
-    sudo -u $APP_USER npm install --production && \
-    sudo -u $APP_USER npm cache clean --force
+    sudo -u $APP_USER yarn install --production && \
+    sudo -u $APP_USER yarn cache clean --force
 
 USER $APP_USER
 
-RUN npm run bower install --production && \
-    npm run bower cache clean
+RUN yarn run bower install --production && \
+    yarn run bower cache clean
 RUN scss -C -f public/stylesheets/style.scss public/stylesheets/style.css
 
 # Real image
