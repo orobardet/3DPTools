@@ -11,6 +11,9 @@
     "coverage": "nyc yarn test",
     "coverage-colorless": "nyc --no-color mocha --recursive -R spec -c"
   },
+  "engines" : {
+    "node" : ">=9.6"
+  },
   "nyc": {
     "cache": true,
     "all": true,
