@@ -6,7 +6,6 @@ variables:
 
 stages:
   - tests
-  - sast
   - build
   - release
   - mirror
@@ -59,7 +58,7 @@ codequality:
 
 sast:
   image: docker:latest
-  stage: sast
+  stage: tests
   allow_failure: true
   services:
     - docker:dind
