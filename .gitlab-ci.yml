@@ -1,5 +1,9 @@
 image: node:9
 
+variables:
+  CODECLIMATE_DEBUG: 1
+  CODECLIMATE_VERSION: "0.69.0"
+
 stages:
   - tests
   - sast
@@ -38,17 +42,17 @@ Unit tests:
 codequality:
   image: docker:latest
   stage: tests
-  variables:
-    CODECLIMATE_VERSION: "0.69.0"
   services:
     - docker:dind
   script:
     - docker pull codeclimate/codeclimate:$CODECLIMATE_VERSION
     - |
-      docker run --env CODECLIMATE_CODE="$PWD" --volume "$PWD":/code --volume /var/run/docker.sock:/var/run/docker.sock \
+      docker run --env CODECLIMATE_DEBUG="${CODECLIMATE_DEBUG:0}" --env CODECLIMATE_CODE="$PWD" \
+        --volume "$PWD":/code --volume /var/run/docker.sock:/var/run/docker.sock \
         --volume /tmp/cc:/tmp/cc codeclimate/codeclimate:$CODECLIMATE_VERSION init
     - |
-      docker run --env CODECLIMATE_CODE="$PWD" --volume "$PWD":/code --volume /var/run/docker.sock:/var/run/docker.sock \
+      docker run -env CODECLIMATE_DEBUG="${CODECLIMATE_DEBUG:0}" --env CODECLIMATE_CODE="$PWD" \
+        --volume "$PWD":/code --volume /var/run/docker.sock:/var/run/docker.sock \
         --volume /tmp/cc:/tmp/cc codeclimate/codeclimate:$CODECLIMATE_VERSION analyze -f json > codeclimate.json || true
   artifacts:
     paths: [codeclimate.json]
