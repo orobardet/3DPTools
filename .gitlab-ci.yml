@@ -35,8 +35,10 @@ Unit tests:
     - tags
 
 Test Docker build:
-  image: docker:dind
+  image: docker:git
   stage: build
+  services:
+    - docker:dind
   script:
     - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME || true
@@ -49,8 +51,10 @@ Test Docker build:
     - tags
 
 Docker build:
-  image: docker:dind
+  image: docker:git
   stage: build
+  services:
+    - docker:dind
   script:
     - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME || true
@@ -64,8 +68,10 @@ Docker build:
     - tags
 
 Docker release:
-  image: docker:dind
+  image: docker:git
   stage: release
+  services:
+    - docker:dind
   script:
     - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     - export IMG_TAG=$CI_BUILD_TAG
