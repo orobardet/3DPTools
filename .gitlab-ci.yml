@@ -67,8 +67,8 @@ sast:
     - |
       docker run --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}" \
         --env SAST_DISABLE_REMOTE_CHECKS="${SAST_DISABLE_REMOTE_CHECKS:-false}" \
-        --volume "$PWD/src:/code" --volume /var/run/docker.sock:/var/run/docker.sock \
-        "registry.gitlab.com/gitlab-org/security-products/sast:$SAST_VERSION" /app/bin/run /code
+        --volume "$PWD:/code" --volume /var/run/docker.sock:/var/run/docker.sock \
+        "registry.gitlab.com/gitlab-org/security-products/sast:$SAST_VERSION" /app/bin/run /code/src
     - mv src/gl-sast-report.json .
   artifacts:
     paths: [gl-sast-report.json]
@@ -88,6 +88,7 @@ Test Docker build:
     - branches
   except:
     - tags
+    - master
 
 Docker build:
   image: docker:git
