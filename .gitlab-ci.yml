@@ -35,7 +35,7 @@ Unit tests:
     - tags
 
 Test Docker build:
-  image: docker:git
+  image: docker:dind
   stage: build
   script:
     - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
@@ -49,7 +49,7 @@ Test Docker build:
     - tags
 
 Docker build:
-  image: docker:git
+  image: docker:dind
   stage: build
   script:
     - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
@@ -64,7 +64,7 @@ Docker build:
     - tags
 
 Docker release:
-  image: docker:git
+  image: docker:dind
   stage: release
   script:
     - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
