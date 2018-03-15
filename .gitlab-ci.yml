@@ -122,7 +122,6 @@ Test Docker build:
 
 codequality:
   <<: *_codequality
-  when: manual
   only:
     - master
   except:
@@ -130,7 +129,6 @@ codequality:
 
 sast:
   <<: *_sast
-  when: manual
   only:
     - master
   except:
