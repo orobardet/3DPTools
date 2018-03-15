@@ -38,7 +38,7 @@ Unit tests:
   except:
     - tags
 
-codequality:
+.codequality: &_codequality
   image: docker:latest
   stage: tests
   services:
@@ -56,7 +56,7 @@ codequality:
   artifacts:
     paths: [codeclimate.json]
 
-sast:
+.sast: &_sast
   image: docker:latest
   stage: tests
   allow_failure: true
@@ -72,6 +72,24 @@ sast:
     - mv src/gl-sast-report.json .
   artifacts:
     paths: [gl-sast-report.json]
+
+Test codequality:
+  <<: *_codequality
+  when: manual
+  only:
+    - branches
+  except:
+    - tags
+    - master
+
+Test sast:
+  <<: *_sast
+  when: manual
+  only:
+    - branches
+  except:
+    - tags
+    - master
 
 Test Docker build:
   image: docker:git
@@ -89,6 +107,22 @@ Test Docker build:
   except:
     - tags
     - master
+
+codequality:
+  <<: *_codequality
+  when: manual
+  only:
+    - master
+  except:
+    - tags
+
+sast:
+  <<: *_sast
+  when: manual
+  only:
+    - master
+  except:
+    - tags
 
 Docker build:
   image: docker:git
