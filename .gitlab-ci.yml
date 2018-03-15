@@ -38,6 +38,18 @@ Unit tests:
   except:
     - tags
 
+Snyk:
+  stage: tests
+  script:
+    - cd src
+    - yarn install
+    - node_modules/.bin/snyk test
+    - node_modules/.bin/snyk monitor
+  only:
+    - branches
+  except:
+    - tags
+
 .codequality: &_codequality
   image: docker:latest
   stage: tests
