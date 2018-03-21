@@ -65,7 +65,7 @@ Une marque correspond au fabriquant du filament.
 
 Chaque filament est associé à une marque, et le stock de filaments peut être filtré sur une marque particulière.
 
-[™️ Comment gérer les marque dans 3DPTools](doc/fr/brands).
+[™️ Comment gérer les marques dans 3DPTools](doc/fr/brands).
 
 
 ## Les magasins
@@ -81,13 +81,15 @@ Chaque filament est associé à un magasin, et le stock de filaments peut être 
 
 ## Les filaments
 
-La collection de filaments et le coeur de la gestion des stocks de filament dans *3DPTools*.
+La collection de filaments est le coeur de la gestion des stocks de filament dans *3DPTools*.
 
 [🗄️ Comment gérer les filaments dans 3DPTools](doc/fr/filaments)
 
 
 ## Statistiques sur les filaments
 
+L'application *3DPTools* propose une page de diverses statistique sur le stock de filaments : réparition par matières/marques/magasins/couleurs, 
+historique d'achat, ...
 
 [📊 En savoir plus sur les statistiques de filaments dans 3DPTools](doc/fr/filaments/statistics.md)
 
