@@ -237,17 +237,24 @@ module.exports = function (app) {
                 if (title) {
                     titleAttr = ` title="${title}"`;
                 }
+                let imgTag = '';
                 if (href.match(/^[^/]+:\/\//i)) {
-                    return `<p><img src="${href}" class="external" alt="${text}"${titleAttr}/></p>`;
+                    imgTag = `<img src="${href}" class="external" alt="${text}"${titleAttr}/>`;
                 } else if (href.match(/^\/?doc/i)) {
                     let localHref = href.replace(/\/?(doc)\/([^/]+\/?.*)$/i, '/$1-statics/$2');
-                    return `<p><img src="${localHref}" class="doc" alt="${text}"${titleAttr}/></p>`;;
+                    imgTag = `<img src="${localHref}" class="doc" alt="${text}"${titleAttr}/>`;;
                 } else if (href.match(/^\/?src/i)) {
-                    return `<span class="removed-img"${titleAttr}>${text}</span>`;
+                    imgTag = `<span class="removed-img"${titleAttr}>${text}</span>`;
                 } else if (href.match(/^[^/]/i)) {
-                    return `<p><img src="/doc-statics/${href}" class="doc" alt="${text}"${titleAttr}/></p>`;
+                    imgTag = `<img src="/doc-statics/${href}" class="doc" alt="${text}"${titleAttr}/>`;
                 } else {
-                    return `<p><img src="${href}" class="internal" alt="${text}"${titleAttr}/></p>`;
+                    imgTag = `<img src="${href}" class="internal" alt="${text}"${titleAttr}/>`;
+                }
+
+                if (title && title != '') {
+                    return `<figure>${imgTag}\n<figcaption>${title}</figcaption></figure>`;
+                } else {
+                    return `<p>${imgTag}</p>`;
                 }
             };
             renderer.heading = (text, level) => {

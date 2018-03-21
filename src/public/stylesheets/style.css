@@ -9011,6 +9011,14 @@ table td.not-found {
       .documentation-section .docpage-container .docpage-content img {
         max-width: 100%;
         box-shadow: 5px 5px 8px rgba(51, 51, 51, 0.3); }
+      .documentation-section .docpage-container .docpage-content figure {
+        display: inline-block; }
+        .documentation-section .docpage-container .docpage-content figure > img + figcaption {
+          text-align: center;
+          text-shadow: 5px 5px 8px rgba(51, 51, 51, 0.3);
+          margin-top: 5px;
+          color: #666;
+          font-style: italic; }
       .documentation-section .docpage-container .docpage-content span.removed-img {
         border: solid 1px #CCCCCC;
         padding: 2px;

@@ -1241,6 +1241,18 @@ table td.not-found {
         box-shadow: 5px 5px 8px rgba(51,51,51,0.3);
       }
 
+      figure {
+        display: inline-block;
+
+        & > img + figcaption {
+          text-align: center;
+          text-shadow: 5px 5px 8px rgba(51, 51, 51, 0.3);
+          margin-top: 5px;
+          color: #666;
+          font-style: italic;
+        }
+      }
+
       span.removed-img {
         border: solid 1px #CCCCCC;
         padding: 2px;
