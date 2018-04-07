@@ -284,7 +284,7 @@
   "Phosphorescent vert": "Phosphorescent vert",
   "<none>": "<none>",
   "Parent material:": "Parent material:",
-  "(<a %s>markdown</a> is accepted)": "(<a %s>markdown</a> is accepted)",
+  "(<a %s>Markdown</a> is accepted)": "(<a %s>Markdown</a> is accepted)",
   "Density": "Density"
   "Average purchase interval: %s": "Average purchase interval: %s",
   "Last purchase %s": "Last purchase %s"

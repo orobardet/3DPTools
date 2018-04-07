@@ -16,18 +16,16 @@ Cela affiche la liste des matières (qui peut être vide s'il n'y a pas de mati�
 
 # Caractéristiques d'une matière
 
-> En **gras** les informations obligatoires
-
 - **Nom** : nom d'affichage de la matière (ou de la variante). Par exemple : `PLA`, `ABS`, `PLA PolyMax`, `Laybrick`, ...
-- Matière parent : si une matière parente est définie, la matière courante sera considérée par l'application comme une variante de la matière parente.
-- Description : un texte de description de la matière, pouvant être écrit en utilisant du [Markdown](/doc/fr/markdown.md).
+- **Matière parente** : si une matière parente est définie, la matière courante sera considérée par l'application comme une variante de la matière parente.
+- **Description** : un texte de description de la matière, pouvant être écrit en utilisant du [Markdown](/doc/fr/markdown.md).
 - **Densité** : la densité de la matière en kg/m³. Cette information est nécessaire pour que l'application puisse gérer les volumes de matière restante, consommée, etc.
-- Vitesse d'impression minimale et maximale : en mm/s, l'interval de vitesse d'impression recommandé, s'il y en a un.
-- Température d'extrusion : en °C, l'interval de température d'extrusion de la matière.
-- Température du plateau : en °C, l'interval de température du plateau chauffant, s'il y en a un.
-- Des fichiers joints, comme par exemple des fiches de descriptions techniques ou commerciales.
+- **Vitesse d'impression minimale et maximale** : en mm/s, l'intervalle de vitesse d'impression recommandé, s'il y en a un.
+- **Température d'extrusion** : en °C, l'intervalle de température d'extrusion de la matière.
+- **Température du plateau** : en °C, l'intervalle de température du plateau chauffant, s'il y en a un.
+- **Des fichiers joints**, comme par exemple des fiches de descriptions techniques ou commerciales.
 
-Pour les informations d'interval (min/max) non obligatoires, il est tout à fait possible de mettre les 2 valeurs ou une seule des 2 (ou aucune).
+Pour les informations d'intervalles (min/max) non obligatoires, il est tout à fait possible de mettre les 2 valeurs ou une seule des 2 (ou aucune).
 
 # Liste des matières
 
