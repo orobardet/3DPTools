@@ -22,6 +22,7 @@
 - [Fix] Material variants on homepage filtering (#100)
 - [Fix] Master color on homepage filtering (#101)
 - [Fix] Upgrade marked NPM library to fix a vulnerability (#109)
+- [Fix] Fix dependency packages' vulnerabilities (#124)
 - [Tec] Upgrade to NodeJS 9 (#107)
 - [Tec] Add `versionSuffix` config setting (#92)
 - [Tec] Improve Docker image and stack (#80 #81 #82 #85 #86 #88)
