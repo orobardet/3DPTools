@@ -90,7 +90,8 @@
                 <div class="form-group<%= (errors.brand) ? " has-error" : "" %>">
                     <label for="brand" class="control-label required"><%- __('Brand:'); %></label>
                     <select class="form-control selectpicker" id="brand" name="brand" required>
-                        <% if (locals.brands && brands.length) { selected = (locals.brand) ? brand : filament.brand.id; %>
+                        <% let currentBrandID = filament.brand ? filament.brand.id : null; %>
+                        <% if (locals.brands && brands.length) { selected = (locals.brand) ? brand : currentBrandID; %>
                         <% brands.forEach(function (brand) { %>
                         <option value="<%- brand.id %>"
                                 data-content="<img class='brand-logo' src='/brand/get-logo/<%- brand.id %>'></img> <%- brand.name %> "

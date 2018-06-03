@@ -57,7 +57,7 @@
                 <% } %>
             </th>
             <th colspan="4">
-                <select class="form-control selectpicker" id="material" name="material" data-width="auto"  title="<%- __('Material'); %>">
+                <select class="form-control selectpicker" id="material" name="material" data-width="250px"  title="<%- __('Material'); %>">
                     <% if (locals.materials && materials.length) { %>
                     <% selected = (locals.search && locals.search.material) ? search.material : ''; %>
                     <% for (let material of materials) { %>
@@ -177,11 +177,13 @@
                 <% } %>
             </td>
             <td class="trg-show-filament" >
+                <% if (filament.brand) { %>
                 <% if (filament.brand.logo && filament.brand.logo.size) { %>
                 <img alt="<%- filament.brand.name %>" title="<%- filament.brand.name %>" class="brand-logo"
                      src="/brand/get-logo/<%- filament.brand.id %>">
                 <% } else { %>
                 <%- filament.brand.name %>
+                <% } %>
                 <% } %>
             </td>
             <td class="trg-show-filament">

@@ -89,17 +89,19 @@
             <tr>
                 <td><%- __('Brand:') %></td>
                 <td>
+                    <% if (filament.brand) { %>
                     <% if (filament.brand.url) { %>
                     <a href="<%- filament.brand.url %>" target="_blank">
-                        <% } %>
+                    <% } %>
                         <%- filament.brand.name %>
                         <% if (filament.brand.url) { %>
                     </a>
                     <% } %>
+                    <% } %>
                 </td>
             </tr>
         </table>
-        <% if (filament.brand.logo && filament.brand.logo.size) { %>
+        <% if (filament.brand && filament.brand.logo && filament.brand.logo.size) { %>
         <div class="brand-logo-container">
             <% if (filament.brand.url) { %>
             <a href="<%- filament.brand.url %>" target="_blank">

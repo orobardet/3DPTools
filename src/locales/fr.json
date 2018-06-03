@@ -459,5 +459,7 @@
   "**If you are not the one who changed the password, please immediately follow the [account recovery process](%s) to reset your password to a new one.**": "**Si vous n'êtes pas à l'origine de ce changement de mot de passe, merci de suivre immédiatement [la procédure de récupération de compte](%s) pour réinitialiser un nouveau mot de passe.**",
   "Change my password": "Changer mon mot de passe",
   "Set a new password for your account (%s):": "Choisissez un nouveau mot de passe pour votre compte (%s) :",
-  "Stay connected": "Rester connecté"
+  "Stay connected": "Rester connecté",
+  "Gris foncé": "Gris foncé",
+  "Phosphorescent vert": "Phosphorescent vert"
 }
