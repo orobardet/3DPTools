@@ -23,7 +23,7 @@ Le premier formulaire permet de saisir le nom et l'URL de la marque.
 
 ![Ajout d'une marque](doc/fr/brands/add_brand.png "Exemple d'ajout d'une marque dans l'application")
 
-La validation de ce premier formulaire enregistre la nouvelle marque dans l'application, et affiche le second un second 
+La validation de ce premier formulaire enregistre la nouvelle marque dans l'application, et affiche le second  
 formulaire qui permet de sélectionner un fichier image local qui sera envoyé dans l'application pour être utilisé comme 
 logo de la marque.
 

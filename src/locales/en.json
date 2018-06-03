@@ -293,7 +293,14 @@
   "%s°C min": "%s°C min",
   "%s mm/s min": "%s mm/s min",
   "Edit material %s": "Edit material %s",
-  "Material %s successfully deleted.": "Material %s successfully deleted."
+  "Material %s successfully deleted.": "Material %s successfully deleted.",
+  "Neon blue": "Neon blue",
+  "Wood brown": "Wood brown",
+  "Rose": "Rose",
+  "Set %s brand's picture": "Set %s brand's picture",
+  "Do you really want to delete the logo? You won't be able to retrieve it.": "Do you really want to delete the logo? You won't be able to retrieve it.",
+  "Remove logo": "Remove logo",
+  "Brand %s successfully deleted.": "Brand %s successfully deleted.",
   "Average purchase interval: %s": "Average purchase interval: %s",
   "Last purchase %s": "Last purchase %s"
 }
