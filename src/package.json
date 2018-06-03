@@ -13,7 +13,7 @@
     "coverage-colorless": "nyc --no-color mocha --recursive -R spec -c"
   },
   "engines": {
-    "node": ">=9.8"
+    "node": ">=10"
   },
   "nyc": {
     "cache": true,

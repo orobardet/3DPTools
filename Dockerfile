@@ -1,6 +1,6 @@
 # Build image
 
-FROM node:9-alpine AS builder
+FROM node:10-alpine AS builder
 
 RUN apk --update add ruby imagemagick ca-certificates git && \
     apk --update add --virtual sass-dev build-base ruby-dev libffi-dev && \
@@ -29,7 +29,7 @@ RUN scss -C -f public/stylesheets/style.scss public/stylesheets/style.css
 
 # Real image
 
-FROM node:9-alpine
+FROM node:10-alpine
 
 LABEL maintainer="Olivier Robardet <olivier.robardet@gmail.com>"
 
