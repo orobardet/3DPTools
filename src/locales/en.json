@@ -301,6 +301,8 @@
   "Do you really want to delete the logo? You won't be able to retrieve it.": "Do you really want to delete the logo? You won't be able to retrieve it.",
   "Remove logo": "Remove logo",
   "Brand %s successfully deleted.": "Brand %s successfully deleted.",
+  "Set %s shop's picture": "Set %s shop's picture",
+  "Shop %s successfully deleted.": "Shop %s successfully deleted.",
   "Average purchase interval: %s": "Average purchase interval: %s",
   "Last purchase %s": "Last purchase %s"
 }

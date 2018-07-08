@@ -42,7 +42,7 @@ will, be used as brand's logo, or use the _Remove logo_ button to delete the exi
 In the brand list, a action _delete_ allows you to ask for the deletion of the brand.
 
 The link for this action may be grayed it the deletion of the brand in not possible. Deleting a brand is not possible if 
-at least one filament uses it. You will first have to edit filaments usign the brand to free it, and then the brand's deletion 
+at least one filament uses it. You will first have to edit filaments using the brand to free it, and then the brand's deletion 
 will be allowed.
 
 Clicking on the _delete_ link display a confirmation poping:
