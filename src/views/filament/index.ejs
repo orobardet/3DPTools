@@ -13,7 +13,7 @@
     <% } %>
 </ul>
 
-<div class="panel panel-default">
+<div class="panel panel-default filament-list">
     <div class="panel-heading with-button">
         <% if (materialCount && brandCount && shopCount) { %>
         <a href="/filament/add" class="btn btn-primary trg-add-filament"><i
@@ -31,7 +31,8 @@
     </div>
     <form id="filament-search" method="GET" class="form-inline">
     <table class="table table-hover filament-list">
-        <tr>
+        <thead>
+        <tr class="filter-row">
             <th>
                 <% if (locals.colors && colors.length) { selected = (locals.search && search.color) ? search.color : ''; %>
                 <select class="form-control selectpicker" id="color" name="color" data-width="60px" title="<%- __('Color'); %>">
@@ -129,13 +130,17 @@
                 </select>
             </th>
             <th>
-                <select class="pull-right form-control selectpicker" id="sort" name="sort" data-width="fit" title="<%- __('Sort'); %>">
-                    <% sortList.forEach(function (sort) { %>
-                    <option value="<%- sort.value %>"<% if (sort.value == selectedSort) { %> selected<% } %>><%- __(sort.label) %></option>
-                    <% }); %>
-                </select>
+                <div class="input-group pull-right">
+                    <span class="input-group-addon" title="<%- __('Sort'); %>"><i class="fa fa-sort"></i></span>
+                    <select class="form-control selectpicker" id="sort" name="sort" data-width="fit" title="<%- __('Sort'); %>">
+                        <% sortList.forEach(function (sort) { %>
+                        <option value="<%- sort.value %>"<% if (sort.value == selectedSort) { %> selected<% } %>><%- __(sort.label) %></option>
+                        <% }); %>
+                    </select>
+                </div>
             </th>
         </tr>
+        </thead>
         <% if (filaments && filaments.length) { %>
         <% filaments.forEach(function (filament) { %>
         <tr data-url="/filament/show/<%- filament.id %>"<% if (filament.finished) { %> class="filament-finished"<% } %>>

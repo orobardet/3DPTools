@@ -8490,6 +8490,12 @@ table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
   background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, #eee 20px, #eee 40px);
   box-shadow: inset 5px 5px 5px 0px #ccc,inset -5px -5px 5px 0px #ccc; }
 
+.panel.filament-list > .panel-heading, .filament-show-layout .filament-list.filament-details > .panel-heading {
+  border-bottom-width: 0px; }
+
+table.shop-list > thead > tr > th, table.brand-list > thead > tr > th, table.material-list > thead > tr > th, table.filament-list > thead > tr > th {
+  border-bottom-width: 1px;
+  background-color: #f5f5f5; }
 table.shop-list > tbody > tr > th, table.brand-list > tbody > tr > th, table.material-list > tbody > tr > th, table.filament-list > tbody > tr > th {
   border-top: 0; }
   table.shop-list > tbody > tr > th input, table.shop-list > tbody > tr > th select, table.shop-list > tbody > tr > th textarea, table.shop-list > tbody > tr > th label, table.shop-list > tbody > tr > th button, table.brand-list > tbody > tr > th input, table.brand-list > tbody > tr > th select, table.brand-list > tbody > tr > th textarea, table.brand-list > tbody > tr > th label, table.brand-list > tbody > tr > th button, table.material-list > tbody > tr > th input, table.material-list > tbody > tr > th select, table.material-list > tbody > tr > th textarea, table.material-list > tbody > tr > th label, table.material-list > tbody > tr > th button, table.filament-list > tbody > tr > th input, table.filament-list > tbody > tr > th select, table.filament-list > tbody > tr > th textarea, table.filament-list > tbody > tr > th label, table.filament-list > tbody > tr > th button {
@@ -8695,6 +8701,15 @@ ul.material-files {
     font-size: larger; }
 .filament-section .filaments-list-container {
   margin-bottom: 10px; }
+  .filament-section .filaments-list-container > .panel-heading {
+    border-bottom-width: 0px; }
+  .filament-section .filaments-list-container #filament-search {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd; }
+  .filament-section .filaments-list-container table#filament-list {
+    margin-bottom: 0px; }
+    .filament-section .filaments-list-container table#filament-list > tbody > tr:first-of-type > td {
+      border-top-width: 0px; }
   .filament-section .filaments-list-container .filament-list-static-container {
     display: block;
     height: 100%;
@@ -8741,6 +8756,8 @@ ul.material-files {
         position: absolute; }
       .filament-section.stats-subsection #stats-container #stats-menu .affix {
         margin-top: -78px; }
+.filament-section.cost-calculator-subsection #main-container {
+  width: 100%; }
 
 .filament-content .brand-logo-container {
   text-align: center; }

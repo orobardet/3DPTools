@@ -977,6 +977,7 @@ module.exports = function (app) {
             colors.unshift({name:'&nbsp;', code: null});
 
             return res.render('filament/cost-calculator', {
+                navSubModule: 'cost-calculator',
                 cancelUrl: req.getOriginUrl("filament/cost-calculator", "/filament"),
                 materials: materials,
                 brands: brands,

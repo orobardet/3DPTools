@@ -17,6 +17,7 @@
 - [Imp] Filament statistics now use master colors and parent materials for aggregation (#83)
 - [Imp] Filament sorting by color (default) now sort first by master color code (#105)
 - [Imp] Better default name extraction in the material file form (#108)
+- [Imp] Add a icon to help identify sort combo box in filament list (#127)
 - [Fix] Filament statistics page errors when no filaments (#91)
 - [Fix] No link to filament statistics when no filaments (#95)
 - [Fix] Material variants on homepage filtering (#100)

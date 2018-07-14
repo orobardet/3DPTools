@@ -7,7 +7,7 @@
 
 <% if (filaments && filaments.length) { %>
 <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-6">
         <div class="panel panel-default filaments-list-container">
             <div class="panel-heading with-button">
                 <h3 class="panel-title" id="search-result-title"><%= __n("%s filament", "%s filaments", filaments.length || 0); %></h3>
@@ -39,7 +39,7 @@
                 </select>
 
                 <span style="margin-right: 10px;">
-                    <select class="form-control selectpicker" id="material" name="material" data-width="auto"  title="<%- __('Material'); %>">
+                    <select class="form-control selectpicker" id="material" name="material" data-width="220px"  title="<%- __('Material'); %>">
                         <% if (locals.materials && materials.length) { %>
                         <% selected = (locals.search && locals.search.material) ? search.material : ''; %>
                         <% for (let material of materials) { %>
@@ -96,7 +96,7 @@
     </div>
 
 
-    <div id="compute-form" class="col-md-5" style="display:none;">
+    <div id="compute-form" class="col-md-6" style="display:none;">
         <table class="table filament-list filament-details">
             <tr>
                 <td>

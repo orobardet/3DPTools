@@ -422,7 +422,15 @@ table.table {
   box-shadow: inset 5px 5px 5px 0px #ccc,inset -5px -5px 5px 0px #ccc;
 }
 
+.panel.filament-list > .panel-heading {
+  border-bottom-width: 0px;
+}
+
 table.shop-list, table.brand-list, table.material-list, table.filament-list {
+  & > thead > tr > th {
+    border-bottom-width: 1px;
+    background-color: $panel-default-heading-bg;
+  }
   & > tbody > tr > th {
     border-top: 0;
     & input, & select, & textarea, & label, & button {
@@ -714,6 +722,20 @@ ul.material-files {
   .filaments-list-container {
     margin-bottom: 10px;
 
+    & > .panel-heading {
+      border-bottom-width: 0px;
+    }
+    #filament-search {
+      background-color: $panel-default-heading-bg;
+      border-bottom: 1px solid $panel-default-border;
+    }
+    table#filament-list {
+      margin-bottom: 0px;
+
+      & > tbody > tr:first-of-type > td {
+        border-top-width: 0px;
+      }
+    }
     .filament-list-static-container {
       display: block;
       height: 100%;
@@ -802,6 +824,9 @@ ul.material-files {
     }
   }
 
+  &.cost-calculator-subsection #main-container {
+    width: 100%;
+  }
 }
 
 .filament-content {
