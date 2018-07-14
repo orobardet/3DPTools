@@ -5,13 +5,13 @@ ignore:
   'npm:validator:20130705':
     - express-form > validator:
         reason: No possible fix
-        expires: '2018-06-14T17:31:43.207Z'
+        expires: '2018-12-31T23:59:59.000Z'
   'npm:validator:20160218':
     - express-form > validator:
         reason: No possible fix
-        expires: '2018-06-14T17:31:43.207Z'
+        expires: '2018-12-31T23:59:59.000Z'
   'npm:validator:20180218':
     - express-form > validator:
         reason: No possible fix
-        expires: '2018-06-14T17:31:43.207Z'
+        expires: '2018-12-31T23:59:59.000Z'
 patch: {}
