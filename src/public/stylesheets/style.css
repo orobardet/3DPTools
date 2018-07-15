@@ -8854,7 +8854,10 @@ ul.material-files {
   .img-overlay-container:hover > .img-actions {
     visibility: visible; }
   .img-overlay-container.img-thumbnail > .img-actions {
-    padding-right: 4px; }
+    padding-right: 4px;
+    background-color: #333333;
+    opacity: 0.75;
+    border-radius: 4px; }
     .img-overlay-container.img-thumbnail > .img-actions > a {
       margin-left: 4px; }
 
