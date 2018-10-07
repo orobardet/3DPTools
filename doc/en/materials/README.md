@@ -21,7 +21,7 @@ This will display the list of materials (which can be empty if there is no mater
 - **Density**: the material density in kg/m³. This is needed for the application when dealing with amount of material left, consumed, ...
 - **Minimal and maximal print speed**: in mm/s, the recommended print speed interval, if any.
 - **Hotend temperature**: in °C, the hotend printing temperature interval for the material.
-- **Hot bed temperature**: in °C, the hot bed temperature interval for the material, if any.
+- **Heated bed temperature**: in °C, the hot bed temperature interval for the material, if any.
 - **Attached files**, like technical or commercial sheets.
 
 For non mandatory intervals (min/max), it is possible to set the 2 values, or only one of them (or none).

@@ -11,6 +11,7 @@
   "public/vendor/marked": "/vendor/javascripts",
   "public/vendor/bootstrap-colorpicker/dist": "/vendor",
   "public/vendor/bootstrap-datepicker/dist": "/vendor",
+  "public/vendor/bootstrap-datepicker/dist/locales/bootstrap-datepicker.en-GB.min.js": "/vendor/locales/bootstrap-datepicker.en.min.js",
   "public/vendor/bootstrap-select/dist": "/vendor",
   "public/vendor/moment/min": "/vendor/javascripts",
   "public/vendor/moment/locale": "/vendor/locales",

@@ -2,7 +2,7 @@
 
 La gestion d'une collection de filament est une des fonctionnalités principales de *3DPTools*.
 
-Une filament représente un exemplaire d'un consommable de type filament d'imprimante 3D. Généralement, 
+Un filament représente un exemplaire d'un consommable de type filament d'imprimante 3D. Généralement, 
 il s'agit d'une bobine de filament, mais au sens large du terme : un échantillon ou une longueur sans bobine correspond 
 à un exemplaire de filament dans l'application.
 
@@ -65,7 +65,7 @@ restante, en mètre.
 
 ### Caractéristiques techniques
 
-- **La densité"** de la matière du filament en *kg/m³*. Obligatoire, elle est utilisée dans l'application pour les calculs 
+- **La densité** de la matière du filament en *kg/m³*. Obligatoire, elle est utilisée dans l'application pour les calculs 
   de poids et de volumétrie, par exemple pour les fonctionnalités de gestion de la quantité de filament restant, ou  
   dans le [💵 calculateur de coût](doc/fr/filaments/cost_calculator.md). 
 - **La température d'extrusion**, en *°C*. Optionnelle, il s'agit de plusieurs valeurs :
@@ -103,7 +103,7 @@ Ils sont affichés sous forme d'une liste, avec pour chacun d'eux :
 - Le prix d'achat et le prix au kilo calculé
 - Les recommendations de températures d'impression (correspond aux températures expérimentés/recommandées)
 - La marque (via son logo)
-- La quantité de filament restant, sous forme d'une barre de progession par rapport au poids initial, avec la poids et   
+- La quantité de filament restant, sous forme d'une barre de progression par rapport au poids initial, avec la poids et   
   longueur restant.
 - Un ensemble d'actions réalisables sur le filament
 
@@ -175,10 +175,8 @@ Cette fonctionnalité permet d'ajouter rapidement d'autres exemplaire d'un même
 
 # Images d'un filament
 
-
-
 Il est possible d'illustrer un filament en lui associant des images. Ces images peuvent être par exemple des photos de 
-la bobine de filament, sa boite ou son étiquette, ou bien des photos d'objets résultat de l'impression avec ce filaments.
+la bobine de filament, sa boite ou son étiquette, ou bien des photos d'objets résultat de l'impression avec ce filament.
 
 ## Ajout
 
