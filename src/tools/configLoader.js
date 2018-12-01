@@ -101,7 +101,7 @@ class ConfigLoader {
         // Process doc
         let documentationRoot = this.config.get('doc:root');
         if (fs.existsSync(documentationRoot)) {
-            let stats = fs.stat(documentationRoot).then((stats) => {
+            fs.stat(documentationRoot).then((stats) => {
                 if (stats.isDirectory()) {
                     this.app.locals.documentationAvailable = true;
                 }

@@ -22,7 +22,7 @@ module.exports = function (app) {
             .required()
             .isEmail()
             .custom((email, source, validatorCb) => {
-                User.count({'email': email}).exec((err, count) => {
+                User.countDocuments({'email': email}).exec((err, count) => {
                     if (err) {
                         validatorCb(err);
                     } else if (count) {

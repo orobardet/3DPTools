@@ -21,7 +21,7 @@ module.exports = function (app) {
     };
 
     brandSchema.statics.findOneRandom = async function () {
-        let count = await this.count().exec();
+        let count = await this.countDocuments().exec();
         let rand = Math.floor(Math.random() * count);
         return this.findOne({}, {}, {skip: rand});
     };

@@ -48,7 +48,7 @@ module.exports = function(app) {
         let itemName = this.modelNameFromCollectionParameter(collectionName);
         if (app.models[itemName] && (typeof app.models[itemName] === "function") && app.models[itemName].base.Mongoose) {
             let model = app.models[itemName];
-            return when(model.count().exec().then(nbItems => {
+            return when(model.countDocuments().exec().then(nbItems => {
                 console.log("Re-saving " + nbItems + " " + collectionName + "(s)...");
                 let countCharacters = sprintf('%d', nbItems).length;
 
@@ -109,8 +109,8 @@ module.exports = function(app) {
             }
 
             return when.all([
-                model.count().exec(),
-                model.count(versionFilter).exec()
+                model.countDocuments().exec(),
+                model.countDocuments(versionFilter).exec()
             ]).spread((nbItems, nbItemsToMigrate) => {
                 if (nbItemsToMigrate) {
                     console.log("Migrating " + nbItemsToMigrate + " " + itemName + "(s) out of " + nbItems + "...");

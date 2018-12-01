@@ -1,11 +1,11 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.10.2
+version: v1.13.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   'npm:validator:20130705':
-    - express-form > validator:
-        reason: No possible fix
-        expires: '2018-12-31T23:59:59.000Z'
+    - '*':
+        reason: None Given
+        expires: 2018-12-31T17:34:09.936Z
   'npm:validator:20160218':
     - express-form > validator:
         reason: No possible fix
@@ -14,4 +14,8 @@ ignore:
     - express-form > validator:
         reason: No possible fix
         expires: '2018-12-31T23:59:59.000Z'
+  'npm:chownr:20180731':
+    - '*':
+        reason: None Given
+        expires: 2018-12-31T17:34:35.316Z
 patch: {}

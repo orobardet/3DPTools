@@ -139,7 +139,9 @@ module.exports = function(bootstrapOptions) {
 
         let mongoOptions = config.get("database:connectOptions");
         mongoOptions.promiseLibrary = global.Promise;
+        mongoOptions.useNewUrlParser = true;
         mongoose.Promise = global.Promise;
+        mongoose.set('useCreateIndex', true);
 
         const dbUser = config.get("database:user");
         const dbPass = config.get("database:pass");

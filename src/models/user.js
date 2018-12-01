@@ -235,7 +235,7 @@ module.exports = function(app) {
     };
 
     userSchema.statics.getActiveUserCount = function () {
-        return this.count().exec();
+        return this. countDocuments().exec();
     };
 
     userSchema.statics.findById = function (id, cb) {

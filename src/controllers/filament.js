@@ -129,7 +129,7 @@ module.exports = function (app) {
             // Also retrieve the lists of all materials, brands, shops and colors,
             // that will be used to construct filter form
             let [availableFilamentCount, filaments, materials, brands, shops, usedColors] = await Promise.all([
-                Filament.count({}).exec(),
+                Filament.countDocuments({}).exec(),
                 Filament.list({
                     filter: filamentFilter,
                     sort: filamentSortDefinition[selectedSort].sort
@@ -193,7 +193,7 @@ module.exports = function (app) {
      */
     this.stats = async (req, res, next) => {
 
-        let filamentTotalCount = await Filament.count({}).exec();
+        let filamentTotalCount = await Filament.countDocuments({}).exec();
 
         if (!filamentTotalCount || filamentTotalCount <= 0) {
             req.flash('info', 'No statistics to displays as there is no filament.');
@@ -933,7 +933,7 @@ module.exports = function (app) {
      */
     this.costCalculatorForm = async (req, res, next) => {
         try {
-            let availableFilamentCount = await Filament.count({}).exec();
+            let availableFilamentCount = await Filament.countDocuments({}).exec();
 
             if (!availableFilamentCount || availableFilamentCount <= 0) {
                 return res.redirect('/filament');
@@ -954,7 +954,7 @@ module.exports = function (app) {
                 Filament.find({finished:false}).populate('material brand shop').sort(sortData),
                 Material.list({tree: true, locale: res.getLocale()}),
                 Brand.find().sort('name').exec(),
-                Shop.count({}).exec(),
+                Shop.countDocuments({}).exec(),
                 Filament.getColors()
             ]);
 
