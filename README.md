@@ -6,7 +6,7 @@ Web-based 3DPrinting tools
 
 ## Run
 
-- [NodeJS](https://nodejs.org/) (10.x) with [Yarn](https://yarnpkg.com)
+- [NodeJS](https://nodejs.org/) (10.x) with 
 - ImageMagick
 - [MongoDB](https://www.mongodb.com/) (3.4, **with [3.4 Feature compatibility enabled](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)**)
 - [Redis](http://redis.io/)

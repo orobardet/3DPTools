@@ -72,7 +72,7 @@ Chaque filament est associé à une marque, et le stock de filaments peut être 
 
 *3DPTools* gère une collection de [magasins](/doc/fr/shops), à saisir par l'utilisateur.
 
-Un magasin correspond correspond à l'endroid où a été acheté un filament.  
+Un magasin correspond correspond à l'endroit où a été acheté un filament.  
 
 Chaque filament est associé à un magasin, et le stock de filaments peut être filtré sur une marque particulière.
 
@@ -91,14 +91,14 @@ La collection de filaments est le coeur de la gestion des stocks de filament dan
 L'application *3DPTools* propose une page de diverses statistique sur le stock de filaments : réparition par matières/marques/magasins/couleurs, 
 historique d'achat, ...
 
-[📊 En savoir plus sur les statistiques de filaments dans 3DPTools](doc/fr/filaments/statistics.md)
+[📊 En savoir plus sur les statistiques de filaments dans 3DPTools](doc/fr/filaments/statistics.md).
 
 
 # Autres fonctionnalités de l'application
 
 ## Accès par compte nominatif
 
-> Multi-utilisateurs mais **PAS** multi-organisation. Une instance de l'application = une seule collection d'imprimantes, filaments, ... (une seule organisation)
+> *3DPtools* est multi-utilisateurs mais **PAS** multi-organisation. Une instance de l'application = une seule collection d'imprimantes, filaments, ... (une seule organisation)
 
 La création d'un compte utilisateur se fait par un administrateur (pas de mécanisme d'inscription).  
 Chaque compte peut avoir le statut d'administrateur, qui lui confère les droits d'administration de l'application.
@@ -122,7 +122,7 @@ consulter le paragraphe [Contribution - Rédaction de documentations et traducti
 
 ## Administration de l'application
 
-Les utilisateurs ayant le status d'administrateur auront accès dans l'interface de l'application une gestion administrative 
+Les utilisateurs ayant le status d'administrateur auront accès dans l'interface de l'application à une gestion administrative 
 de cette dernière : utilisateur, certaines configuration, état du système...
 
 Consulter la [documentation sur l'administration de 3DPTools](doc/fr/administration) pour plus d'information.
@@ -137,7 +137,7 @@ Les documentations sont des fichiers Markdown, rangés dans le répertoire [doc/
 Chaque sous-répertoire correspond à une langue (via le code ISO 639-1), et contient une structure de répertoire et de 
 fichiers markdown, qui doit être respectées.
 
-Les noms des repertoires est fichiers ne doivent pas être traduis. Cela permet à l'application, lorsqu'une page n'existe 
+Les noms des repertoires et fichiers ne doivent pas être traduis. Cela permet à l'application, lorsqu'une page n'existe 
 pas pour la langue en cours, de pouvoir à la place afficher la page dans la langue pas défaut (l'anglais, code `en`).
 
 Les liens dans ces pages de documentations ont un traitement spécial. Les liens vers d'autres pages de la documentation 
@@ -164,7 +164,7 @@ puis à démarrer l'application *3DPTools* en mode développement, puis choisir 
 L'application créera alors automatiquement le fichier `.json`, et le remplira des textes non traduit (avec leur valeur en anglais) 
 au fur et à mesure que vous navigerez dans l'interface de l'application.
 
-**A noter pour les nouvelles langues :** chaque langue à nom, traduit lui aussi, donc la clé de texte correspond à `lang_<CODE_ISO-639-1>`.
+**A noter pour les nouvelles langues :** chaque langue a nom, traduit lui aussi, dont la clé de texte correspond à `lang_<CODE_ISO-639-1>`.
 L'application a donc besoin d'une traduction pour cette clé, **au moins dans le fichier [src/locales/en.json](src/locales/en.json) 
 et le fichier `.json` de la nouvelle langue elle-même**. Vous pouvez ajouter nom de cette nouvelle langue dans les autres 
 fichers de langues pour lesquels vous connaissez la traduction.  
