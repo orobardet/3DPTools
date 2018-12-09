@@ -97,6 +97,11 @@
 <div id="main-container" class="container">
     <%- body %>
 </div>
+<% if (locals.documentationAvailable && locals.docPath && locals.docPath != "") { %>
+<div id="help-link">
+    <a href="/doc/<%- docPath %>" target="_blank" title="<%- __('Help') %>"><i class="fa fa-question-circle"></i></a>
+</div>
+<% } // locals.docPath %>
 <div id="version">
     <% if (locals.changelogAvailable) { -%><a href="/changelog">
     <% } -%>

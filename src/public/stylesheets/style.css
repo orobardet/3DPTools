@@ -8218,6 +8218,14 @@ body {
   body.setup-section {
     padding-top: 0px; }
 
+#help-link {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 0 5px;
+  color: gray;
+  font-size: x-large; }
+
 #version {
   position: fixed;
   bottom: 0;
@@ -8895,6 +8903,12 @@ ul.material-files {
 .confirm-modal .modal-body .picture {
   max-width: 100%;
   max-height: 100%; }
+
+.modal-help-link {
+  float: left;
+  padding: 0 5px;
+  color: gray;
+  font-size: x-large; }
 
 .filament-stats .filament-stats-text {
   text-align: center;

@@ -37,6 +37,9 @@
             },
             "Statistics": {
               "link": "/doc/filaments/statistics.md"
+            },
+            "Cost calculator": {
+              "link": "/doc/filaments/cost_calculator.md"
             }
           }
         },

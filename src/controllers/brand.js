@@ -18,8 +18,9 @@ module.exports = function (app) {
             let brands = await Brand.find().sort('name').exec();
 
             return res.render('brand/index', {
+                pageTitle: "Brands",
+                docPath: "brands",
                 brands: brands,
-                pageTitle: 'Brands',
                 errors: []
             });
         } catch (err) {
@@ -32,6 +33,8 @@ module.exports = function (app) {
      */
     this.addForm = function (req, res) {
         return res.render('brand/add', {
+            pageTitle: "Add brand",
+            docPath: "brands#"+res.__("add-a-brand"),
             cancelUrl: req.getOriginUrl("brand/add", "/brand"),
             errors: []
         });
@@ -78,6 +81,8 @@ module.exports = function (app) {
         }
 
         return res.render('brand/edit', {
+            pageTitle: "Edit brand",
+            docPath: "brands#"+res.__("edit-a-brand"),
             cancelUrl: req.getOriginUrl("brand/add", "/brand"),
             brand: brand,
             errors: []
@@ -126,6 +131,8 @@ module.exports = function (app) {
         }
 
         return res.render('brand/logo', {
+            pageTitle: "Set brand's picture",
+            docPath: "brands#"+res.__("add-a-brand"),
             brandId: brandId,
             brand: brand,
             errors: []

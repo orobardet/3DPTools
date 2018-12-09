@@ -26,6 +26,7 @@ module.exports = function(app) {
             navModule: 'user',
             users: users,
             pageTitle: "Users administration",
+            docPath: "administration",
             errors: []
         });
     };
@@ -176,6 +177,7 @@ module.exports = function(app) {
                 return res.render('admin/system-information', {
                     navModule: 'system',
                     pageTitle: "System's information",
+                    docPath: "administration",
                     prometheusEnabled: app.config.get('monitoring:prometheus:enabled') || false,
                 });
             }
@@ -251,6 +253,7 @@ module.exports = function(app) {
             return res.render('admin/show-config', {
                 navModule: 'config',
                 pageTitle: "System's configuration",
+                docPath: "configuration.md",
                 jsonConfigToShow: protectedData,
                 yamlConfigToShow: yaml.safeDump(protectedData, {noRefs: true}),
                 canSendEmail: canSendEmail,

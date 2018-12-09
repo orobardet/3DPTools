@@ -91,7 +91,7 @@
                     if (data.shop) {
                         App3DPTools.confirmModal(Locale3DPTools.__('Delete %s shop?', data.shop.name), function () {
                             deleteShop(shopId);
-                        });
+                        }, "shops#"+Locale3DPTools.__('delete-a-shop'));
                     } else {
                         App3DPTools.errorFlash('#shop-message-container', Locale3DPTools.__('Error while retrieving data for shop %s.', shopId));
                         return;

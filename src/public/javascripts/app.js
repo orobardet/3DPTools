@@ -83,10 +83,10 @@ var App3DPTools = {
         }
     },
 
-    confirmModal: function (message, cb) {
+    confirmModal: function (message, cb, docPath) {
         var $modal = $('#3dptoolConfirmModal');
         if (!$modal.length) {
-            $('body').append('<div id="3dptoolConfirmModal" class="modal confirm-modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true">'
+            let modalHTML = '<div id="3dptoolConfirmModal" class="modal confirm-modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true">'
                 + '<div class="modal-dialog" role="document">'
                 + '<div class="modal-content">'
                 + '<div class="modal-header draggable">'
@@ -94,15 +94,19 @@ var App3DPTools = {
                 + '<h4 class="modal-title">' + Locale3DPTools.__('Confirm') + '</h4>'
                 + '</div>'
                 + '<div class="modal-body"></div>'
-                + '<div class="modal-footer">'
-                + '<fieldset>'
+                + '<div class="modal-footer">';
+            if (docPath && docPath != "") {
+                modalHTML += '<div class="modal-help-link"><a href="/doc/' + docPath + '" target="_blank"><i class="fa fa-question-circle"></i></a></div>';
+            }
+            modalHTML += '<fieldset>'
                 + '<button type="button" class="btn btn-default" data-dismiss="modal">' + Locale3DPTools.__('No') + '</button>'
                 + '<button type="button" class="btn btn-primary btn-validate-modal">' + Locale3DPTools.__('Yes') + '</button>'
                 + '</fieldset>'
                 + '</div>'
                 + '</div>'
                 + '</div>'
-                + '</div>');
+                + '</div>';
+            $('body').append(modalHTML);
 
             $modal = $('#3dptoolConfirmModal');
 

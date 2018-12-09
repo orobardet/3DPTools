@@ -91,7 +91,7 @@
                     if (data.brand) {
                         App3DPTools.confirmModal(Locale3DPTools.__('Delete %s brand?', data.brand.name), function () {
                             deleteBrand(brandId);
-                        });
+                        }, "brands#"+Locale3DPTools.__('delete-a-brand'));
                     } else {
                         App3DPTools.errorFlash('#brand-message-container', Locale3DPTools.__('Error while retrieving data for brand %s.', brandId));
                         return;

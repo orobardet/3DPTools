@@ -179,6 +179,7 @@ module.exports = function (app) {
                 sortList: sortList,
                 selectedSort: selectedSort,
                 pageTitle: 'Filaments',
+                docPath: "filaments",
                 errors: []
             });
         } catch (err) {
@@ -250,6 +251,7 @@ module.exports = function (app) {
             return res.render('filament/stats', {
                 navSubModule: 'stats',
                 pageTitle: 'Filaments statistics',
+                docPath: "filaments/statistics.md",
                 stats: {
                     totals: {
                         count: filamentTotalCount,
@@ -329,6 +331,8 @@ module.exports = function (app) {
             usedColors = this.filterPredefinedColors(usedColors, predefinedColors);
 
             return res.render('filament/add', {
+                pageTitle: "Add filament",
+                docPath: "filaments#"+res.__("add-a-filament"),
                 cancelUrl: req.getOriginUrl("filament/add", "/filament"),
                 shops: shops,
                 brands: brands,
@@ -463,6 +467,8 @@ module.exports = function (app) {
             // Get the list of all predefined colors (from config), and removed them
             // from colors already used in filament (to avoid duplicates)
             return res.render('filament/edit', {
+                pageTitle: "Edit filament",
+                docPath: "filaments#"+res.__("edit-a-filament"),
                 cancelUrl: req.getOriginUrl("filament/edit", "/filament"),
                 filament: filament,
                 shops: shops,
@@ -583,6 +589,8 @@ module.exports = function (app) {
             }
 
             return res.render('filament/show', {
+                pageTitle: "Show a filament",
+                docPath: "filaments#"+res.__("display-filament-s-details"),
                 filament: filament
             });
 
@@ -636,6 +644,8 @@ module.exports = function (app) {
             }
 
             return res.render('filament/left-material', {
+                pageTitle: "Material left",
+                docPath: "filaments#"+res.__("left-material"),
                 cancelUrl: req.getOriginUrl("filament/left-material", "/filament"),
                 filament: filament,
                 errors: (req.form) ? req.form.getErrors() : []
@@ -777,6 +787,8 @@ module.exports = function (app) {
             let filament = await Filament.findById(filamentId).exec();
 
             return res.render('filament/picture', {
+                pageTitle: "Add picture to a filament",
+                docPath: "filaments#"+res.__("pictures-of-a-filament"),
                 cancelUrl: req.getOriginUrl("filament/add-picture", "/filament"),
                 filamentId: filamentId,
                 filament: filament,
@@ -978,6 +990,7 @@ module.exports = function (app) {
 
             return res.render('filament/cost-calculator', {
                 navSubModule: 'cost-calculator',
+                docPath: "filaments/cost_calculator.md",
                 cancelUrl: req.getOriginUrl("filament/cost-calculator", "/filament"),
                 materials: materials,
                 brands: brands,

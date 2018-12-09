@@ -18,8 +18,9 @@ module.exports = function (app) {
 
             let shops = await Shop.find().sort('name').exec();
             return res.render('shop/index', {
-                shops: shops,
                 pageTitle: 'Shops',
+                docPath: "shops",
+                shops: shops,
                 errors: []
             });
         } catch (err) {
@@ -32,6 +33,8 @@ module.exports = function (app) {
      */
     this.addForm = function (req, res) {
         return res.render('shop/add', {
+            pageTitle: 'Add shop',
+            docPath: "shops#"+res.__("add-a-shop"),
             cancelUrl: req.getOriginUrl("shop/add", "/shop"),
             errors: []
         });
@@ -66,6 +69,8 @@ module.exports = function (app) {
         let shop = await Shop.findById(shopId).exec();
 
         return res.render('shop/edit', {
+            pageTitle: 'Edit shop',
+            docPath: "shops#"+res.__("edit-a-shop"),
             cancelUrl: req.getOriginUrl("shop/add", "/shop"),
             shop: shop,
             errors: []
@@ -104,6 +109,8 @@ module.exports = function (app) {
         let shop = await Shop.findById(shopId).exec();
 
         return res.render('shop/logo', {
+            pageTitle: "Set shop's picture",
+            docPath: "shops#"+res.__("add-a-shop"),
             shopId: shopId,
             shop: shop,
             errors: []

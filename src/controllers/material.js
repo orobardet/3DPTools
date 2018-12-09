@@ -19,8 +19,9 @@ module.exports = function (app) {
             });
 
             return res.render('material/index', {
+                pageTitle: "Materials",
+                docPath: "materials",
                 materials: materials,
-                pageTitle: 'Materials',
                 errors: []
             });
         } catch (err) {
@@ -33,6 +34,8 @@ module.exports = function (app) {
         materials.unshift({name: res.__('<none>'), id:null});
 
         data = Object.assign({
+            pageTitle: "Add material",
+            docPath: "materials#"+res.__("add-a-material"),
             cancelUrl: req.getOriginUrl("material/add", "/material"),
             materials: materials,
             errors: []
@@ -140,6 +143,8 @@ module.exports = function (app) {
         const materialChildCount = await material.getChildCount();
 
         data = Object.assign({
+            pageTitle: "Edit material",
+            docPath: "materials#"+res.__("edit-a-material"),
             cancelUrl: req.getOriginUrl("material/edit", "/material"),
             material: material,
             materials: materials,
@@ -306,6 +311,8 @@ module.exports = function (app) {
         let material = await Material.findById(materialId).exec();
 
         return res.render('material/file', {
+            pageTitle: "Add a file to a material",
+            docPath: "materials#"+res.__("attache-file-to-a-material"),
             materialId: materialId,
             material: material,
             errors: []

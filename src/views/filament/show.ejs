@@ -323,7 +323,7 @@
                     if (data.filament) {
                         App3DPTools.confirmModal(Locale3DPTools.__('Delete %s filament?', data.filament.name), function () {
                             deleteFilament(filamentId);
-                        });
+                        }, "filaments#"+Locale3DPTools.__('delete-a-filament'));
                     } else {
                         App3DPTools.errorFlash('#filament-message-container', Locale3DPTools.__('Error while retrieving data for filament %s.', filamentId));
                         return;

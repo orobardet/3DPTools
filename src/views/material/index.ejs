@@ -111,7 +111,7 @@ $(function () {
                 if (data.material) {
                     App3DPTools.confirmModal(Locale3DPTools.__('Delete %s material?', data.material.name), function () {
                         deleteMaterial(materialId);
-                    });
+                    }, "materials#"+Locale3DPTools.__('delete-a-material'));
                 } else {
                     App3DPTools.errorFlash('#material-message-container', Locale3DPTools.__('Error while retrieving data for material %s.', materialId));
                     return;

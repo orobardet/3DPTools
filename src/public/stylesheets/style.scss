@@ -14,6 +14,15 @@ body {
   }
 }
 
+#help-link {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 0 5px;
+  color: gray;
+  font-size: x-large;
+}
+
 #version {
   position: fixed;
   bottom: 0;
@@ -1057,6 +1066,13 @@ ul.material-files {
       max-height: 100%;
     }
   }
+}
+
+.modal-help-link {
+  float: left;
+  padding: 0 5px;
+  color: gray;
+  font-size: x-large;
 }
 
 .filament-stats {

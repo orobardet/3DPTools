@@ -235,6 +235,11 @@
             <div class="col-md-6">
                 <div class="form-group<%= (errors.description) ? " has-error" : "" %>">
                     <label for="description" class="control-label"><%- __('Description:'); %></label>
+                    <% if (locals.documentationAvailable) { -%>
+                        <div class="pull-right">
+                            <%- __('(<a %s>Markdown</a> is accepted)', 'href="/doc/markdown.md" target="_blank"',  '/doc/markdown.md')%>
+                        </div>
+                    <% } -%>
                     <textarea rows="5" class="form-control" id="description" name="description"
                               placeholder="<%- __('Description'); %>"><%- (locals.description) ? description : filament.description %></textarea>
                     <% if (errors.description) { %>

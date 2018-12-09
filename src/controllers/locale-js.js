@@ -26,6 +26,10 @@ module.exports = function (app) {
                 'Test email successfully sent.',
                 'Test email successfully sent to %s.',
                 'Error while sending test email: %s',
+                'delete-a-shop',
+                'delete-a-brand',
+                'delete-a-material',
+                'delete-a-filament'
             ]
         });
     };
