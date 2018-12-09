@@ -54,7 +54,7 @@ mail:
 Once the file is created, you can use the `-c` option to start the application and have it use your configuration file:
 
 ```shell
-npm start -c path/to/myconfig.yml
+yarn start -c path/to/myconfig.yml
 ```
 
 ## Variables d'environnement

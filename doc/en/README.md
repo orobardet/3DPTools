@@ -113,7 +113,7 @@ The application is internationalized. It is currently localized in several langu
 
 Other languages can be added easily by translating some files, to localize the interface of the application, but also 
 this documentation. If you wish to contribute to the addition or the maintenance of a language, please read the section
-[Contribution - Writing of documentations and translations] (# r-action-of-documentations-and-translations).
+[Contribution - Writing of documentations and translations](#documentation-writing-and-translation).
 
 ## Application administration
 
