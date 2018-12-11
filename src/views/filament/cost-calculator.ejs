@@ -101,8 +101,7 @@
             <tr>
                 <td>
                     <div class="color-preview-container">
-                        <div title="" class="color-preview">
-                            <div class="color-name"></div>
+                        <div title="" data-toggle="tooltip" data-placement="top" class="color-preview">
                         </div>
                     </div>
                 </td>
@@ -113,7 +112,7 @@
                     <span class="filament-weight"></span>
                 </td>
                 <td>
-                    <b>∅</b> <span class="filament-diameter"></span>
+                    <b>∅</b> <span class="filament-diameter-value"></span>
                     <br/>
                     <span class="filament-density"></span>
                 </td>
@@ -377,11 +376,11 @@ $(function() {
 
         $filamentDetails.data('id', filament._id);
 
-        $filamentDetails.find('.color-preview').attr('title', filament.color.name).css('background-color', filament.color.code)
-                .find('.color-name').text(filament.color.name);
+        $filamentDetails.find('.color-preview').tooltip('destroy').attr('title', filament.color.name.replace(" ", "&nbsp;")).css('background-color', filament.color.code)
+            .tooltip({html:true});
         $filamentDetails.find('.filament-material-name').text(filament.material.name);
         $filamentDetails.find('.filament-weight').text(Locale3DPTools.__('%s kg', filament.initialMaterialWeight));
-        $filamentDetails.find('.filament-diameter').text(filament.diameter);
+        $filamentDetails.find('.filament-diameter-value').text(filament.diameter);
         $filamentDetails.find('.filament-density').text(Locale3DPTools.__('%s kg/m³', filament.density));
 
         if (filament.brand.logo && filament.brand.logo.size) {

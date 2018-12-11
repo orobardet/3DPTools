@@ -14,11 +14,11 @@ module.exports = function(app) {
         app.program
             .command('database')
             .alias('db')
-            .arguments('<action> <collection>')
+            .arguments('<action> [params...]')
             .description('Run maintenance operations on collection of the database')
-            .action((action, collection, program) => {
+            .action((action, params, program) => {
                 if (this[action] && (typeof this[action] === 'function')) {
-                    this[action](collection, program);
+                    this[action](params, program);
                 } else {
                     app.program.outputHelp(text => {
                         return colors.red('*** Unknown action "' + action + '"\n') + text;
@@ -28,8 +28,9 @@ module.exports = function(app) {
             }).on('--help', () => {
             console.log('  Actions:');
             console.log();
-            console.log('    migrate : Migrate every items in the collections to the last version, saving them if needed.');
-            console.log('    resave : Resave every items in the collections. Useful to force schema update on existing data. Try migrate before resave.');
+            console.log('    migrate: Migrate every items in the collections to the last version, saving them if needed.');
+            console.log('    patch: Apply patches to database, which are specific data manipulation scripts.');
+            console.log('    resave: Resave every items in the collections. Useful to force schema update on existing data. Try migrate before resave.');
             console.log();
         });
 
@@ -39,13 +40,19 @@ module.exports = function(app) {
     /**
      * Do a resave of each items in a collection of the database
      *
-     * @param {string} collectionName - Name of the collection as received on the command line.
+     * @param {string[]} collectionNames - Name of the collection as received on the command line.
      * @param {Command} program - A commander object representing the parsed command line
      *
      * @returns {Promise}
      */
-    this.resave = function (collectionName, program) {
-        let itemName = this.modelNameFromCollectionParameter(collectionName);
+    this.resave = function (collectionNames, program) {
+        if (!Array.isArray(collectionNames) || collectionNames.length == 0) {
+            console.error(colors.red('*** No collection name given'));
+            app.cliStop();
+            process.exit(1);
+        }
+
+        let itemName = this.modelNameFromCollectionParameter(collectionNames[0]);
         if (app.models[itemName] && (typeof app.models[itemName] === "function") && app.models[itemName].base.Mongoose) {
             let model = app.models[itemName];
             return when(model.countDocuments().exec().then(nbItems => {
@@ -74,21 +81,27 @@ module.exports = function(app) {
 
             }));
         } else {
-            console.error(colors.red('*** No models found for collection "'+collectionName+'"'));
+            console.error(colors.red('*** No models found for collection "'+collectionNames+'"'));
             app.cliStop();
+            process.exit(1);
         }
     };
 
     /**
      * Migrate of each items in a collection of the database
      *
-     * @param {string} collectionName - Name of the collection as received on the command line.
+     * @param {string[]} collectionNames - Name of the collection as received on the command line.
      * @param {Command} program - A commander object representing the parsed command line
      *
      * @returns {Promise}
      */
-    this.migrate = function (collectionName, program) {
-        let itemName = this.modelNameFromCollectionParameter(collectionName);
+    this.migrate = function (collectionNames, program) {
+        if (!Array.isArray(collectionNames) || collectionNames.length == 0) {
+            console.error(colors.red('*** No collection name given'));
+            app.cliStop();
+            process.exit(1);
+        }
+        let itemName = this.modelNameFromCollectionParameter(collectionNames[0]);
         if (app.models[itemName] && (typeof app.models[itemName] === "function") && app.models[itemName].base.Mongoose) {
             let model = app.models[itemName];
 
@@ -144,9 +157,61 @@ module.exports = function(app) {
 
             });
         } else {
-            console.error(colors.red('*** No models found for collection "'+collectionName+'"'));
+            console.error(colors.red('*** No models found for collection "'+collectionNames+'"'));
             app.cliStop();
+            process.exit(1);
         }
+    };
+
+    /**
+     * Run database patch scripts
+     *
+     * @param {string[]} patches - Name of the patches to apply
+     * @param {Command} program - A commander object representing the parsed command line
+     *
+     * @returns {Promise}
+     */
+    this.patch = async function (patches, program) {
+        // Only keep non empty patches names
+        patches = patches.filter(str => str.trim() != "");
+
+        // Lazy loading of patches
+        const consign = require('consign');
+        consign({
+            verbose: false
+        }).include('models/patches')
+            .into(app);
+
+        // Is there any optional patches?
+        if (!app.models.patches || !app.models.patches.optionals) {
+            console.error(colors.red('*** No patches available'));
+            app.cliStop();
+            process.exit(1);
+        }
+
+        // Check if all patches exists
+        let validPatches = [];
+        for (let patch of patches) {
+            if (app.models.patches.optionals[patch] && (typeof app.models.patches.optionals[patch] === "function")) {
+                validPatches.push(patch)
+            } else {
+                console.error(colors.yellow(`Invalid patch "${patch}"`));
+            }
+        }
+        // At least one existing patch should be given
+        if (validPatches.length == 0) {
+            console.error(colors.red('*** No patches given'));
+            app.cliStop();
+            process.exit(1);
+        }
+
+        // Run each patch sequentially
+        for (let patch of validPatches) {
+            console.log(`Running patch "${patch}":`);
+            await app.models.patches.optionals[patch](app);
+        }
+
+        app.cliStop();
     };
 
     /**

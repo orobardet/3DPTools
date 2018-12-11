@@ -71,6 +71,23 @@ module.exports = function (app) {
      */
     filamentSchema.statics.currentVersion = 7;
 
+    filamentSchema.virtual("displayName").get(function() {
+        if (this.name && this.name.trim() != "") {
+            return this.name;
+        }
+
+        if (this.material && this.material.name && this.material.name.trim() != "") {
+            let name = this.material.name;
+
+            if (this.color && this.color.name && this.color.name.trim() != "") {
+                name += " " + this.color.name;
+            }
+            return name;
+        }
+
+        return "";
+    });
+
     filamentSchema.methods.getData = function(noPictures) {
         let data = this.toObject({getters: false, virtuals: true, versionKey: false});
 
@@ -84,6 +101,9 @@ module.exports = function (app) {
             }
             if (data.brand && data.brand.logo) {
                 data.brand.logo.data = null;
+            }
+            if (data.material && data.material.files) {
+                data.material.files = null;
             }
         }
 

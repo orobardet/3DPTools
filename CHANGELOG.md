@@ -10,6 +10,7 @@
 - [New] Password can be changed in the profile page (#97)
 - [New] "Stay connected"/"Remember me" feature in user authentification (#102)
 - [New] Language selector on non logged in pages (#111)
+- [New] Filament's name is now optional (#110)
 - [Imp] Separate internal and overridable settings, and documents them (#98)
 - [Imp] Configuration display in admin: better handling of secret value obfuscation (#93)
 - [Imp] No "Add filament" buttons if there is no materials, brands and shops (#90)
@@ -30,6 +31,16 @@
 - [Tec] Add `versionSuffix` config setting (#92)
 - [Tec] Improve Docker image and stack (#80 #81 #82 #85 #86 #88)
 - [Tec] Use Yarn instead of NPM for node dependencies management (#112)
+
+## Upgrade notes :
+
+- Filament name is now optional. You can clean name for all filament where it match the `material name + color name`
+ (e.g. `PLA Black`) with:
+```shell
+bin/cli database patch 110-filament-names-clean
+```
+Can be run any time on a running instance, after version upgrade.
+
 
 # v1.3.0
 

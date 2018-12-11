@@ -540,8 +540,7 @@ module.exports = function (app) {
             let filament;
 
             try {
-                // Pas de populate des magasin/marque/matière, pour éviter que le document ne soit trop gros.
-                filament = await Filament.findById(filamentId).exec();
+                filament = await Filament.findById(filamentId).populate('material brand shop').exec();
             } catch(err) {
                 res.status(404);
                 return res.json({
@@ -549,8 +548,7 @@ module.exports = function (app) {
                 });
             }
 
-            let filamentData = filament.toObject({getters: false, virtuals: true, versionKey: false});
-            delete filamentData.pictures; // Pour éviter de renvoyer un document avec toutes les images qui ne soit trop gros.
+            let filamentData = filament.getData(true);
 
             return res.json({
                 filament: filamentData

@@ -1,4 +1,4 @@
-<h1><i class="rs rs-filament" style="color:<%- filament.color.code %>"></i>&nbsp;<%- filament.name %></h1>
+<h1><i class="rs rs-filament" style="color:<%- filament.color.code %>"></i>&nbsp;<%- filament.displayName %></h1>
 
 <div class="filament-show-layout">
     <div class="filament-details<% if (filament.finished) { %> filament-finished<% } %>">
@@ -321,7 +321,7 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.filament) {
-                        App3DPTools.confirmModal(Locale3DPTools.__('Delete %s filament?', data.filament.name), function () {
+                        App3DPTools.confirmModal(Locale3DPTools.__('Delete %s filament?', data.filament.displayName), function () {
                             deleteFilament(filamentId);
                         }, "filaments#"+Locale3DPTools.__('delete-a-filament'));
                     } else {

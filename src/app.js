@@ -271,6 +271,7 @@ module.exports = function(bootstrapOptions) {
             .then('controllers')
             .then('routers/app.js') // must be loaded first for main overidding routes (like auth ones)
             .then('routers')
+            .exclude('models/patches')  // Don't load models' patches for normal run ; their should be lazy loaded when needed
             .into(app);
     }
 

@@ -6,8 +6,7 @@ module.exports = function (app) {
 
     this.filament = form(
         field("name", "Name")
-            .trim()
-            .required(),
+            .trim(),
         field("description", "Description")
             .trim(),
         field("material", "Material")

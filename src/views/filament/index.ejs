@@ -146,22 +146,23 @@
         <tr data-url="/filament/show/<%- filament.id %>"<% if (filament.finished) { %> class="filament-finished"<% } %>>
             <td class="trg-show-filament" >
                 <div class="color-preview-container">
-                    <div title="<%- filament.color.name %>" class="color-preview"
-                   style="background-color: <%- filament.color.code %> %>;">
-                        <div class="color-name"><%- filament.color.name %></div>
+                    <div class="color-preview" data-toggle="tooltip" data-placement="left"
+                         title="<%- filament.color.name.replace(" ", "&nbsp;") %>"
+                         style="background-color: <%- filament.color.code %> %>;">
                     </div>
                 </div>
             </td>
             <td class="trg-show-filament" >
-                <%- filament.material.name %>
+                <span class="material-name" title="<%- filament.material.name %>"><%- filament.material.name %></span>
+                <span class="filament-diameter"><b>∅</b> <%- filament.diameter %></span>
+                <br/>
+                <span class="filament-name" title="<%- filament.name %>"><%- filament.name %></span>
+            </td>
+            <td class="trg-show-filament" >
+                <%- __('%s kg/m³', filament.density) %>
                 <br/>
                 <i class="p3di p3di-weight"></i>
                 <%- __('%s kg', filament.initialMaterialWeight) %>
-            </td>
-            <td class="trg-show-filament" >
-                <b>∅</b> <%- filament.diameter %>
-                <br/>
-                <%- __('%s kg/m³', filament.density) %>
             </td>
             <td class="trg-show-filament" >
                 <%- __('%.2f €', filament.price) %>
@@ -267,6 +268,8 @@
 
 <script type="text/javascript">
     $(function () {
+        $('[data-toggle="tooltip"]').tooltip({html:true})
+
         function deleteFilament(filamentId) {
             $.ajax({
                 type: "DELETE",
@@ -308,7 +311,7 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.filament) {
-                        App3DPTools.confirmModal(Locale3DPTools.__('Delete %s filament?', data.filament.name), function () {
+                        App3DPTools.confirmModal(Locale3DPTools.__('Delete %s filament?', data.filament.displayName), function () {
                             deleteFilament(filamentId);
                         }, "filaments#"+Locale3DPTools.__('delete-a-filament'));
                     } else {

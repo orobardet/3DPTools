@@ -11,17 +11,17 @@
     <i class="rs rs-filament"></i>
     <i class="fa fa-pencil fa-overlay-se" style="color:white"></i>
     <i class="fa fa-pencil fa-overlay-se text-primary"></i>
-</span> <%- __('Edit filament %s', filament.name) %></h1>
+</span> <%- __('Edit filament %s', filament.displayName) %></h1>
 
 <form class="form-filament" method="POST">
     <fieldset>
         <div class="row">
             <div class="col-md-5">
                 <div class="form-group<%= (errors.name)?" has-error":"" %>">
-                    <label for="name" class="control-label required"><%- __('Name:'); %></label>
+                    <label for="name" class="control-label"><%- __('Name:'); %></label>
                     <input type="text" class="form-control" id="name" name="name"
                            placeholder="<%- __('Name'); %>" value="<%- (locals.name) ? name : filament.name %>"
-                           required autofocus>
+                           autofocus>
                     <% if (errors.name) { %>
                     <ul class="help-block with-errors">
                         <% errors.name.forEach(function(msg) { %>

@@ -24,10 +24,10 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="form-group<%= (errors.name)?" has-error":"" %>">
-                    <label for="name" class="control-label required"><%- __('Name:'); %></label>
+                    <label for="name" class="control-label"><%- __('Name:'); %></label>
                     <input type="text" class="form-control" id="name" name="name"
                            placeholder="<%- __('Name'); %>" value="<%- (locals.name) ? name : (locals.sourceFilament) ? sourceFilament.name : '' %>"
-                           required autofocus>
+                           autofocus>
                     <% if (errors.name) { %>
                     <ul class="help-block with-errors">
                         <% errors.name.forEach(function(msg) { %>
@@ -611,7 +611,7 @@
             <a href="<%- cancelUrl %>" class="btn btn-default"><%- __('Cancel') %></a>
             <button type="submit" class="btn btn-primary"><%- __('Save') %></button>
         </p>
-    </fieldset>
+    </div>
 </form>
 
 <script type="text/javascript">
