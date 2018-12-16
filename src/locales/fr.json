@@ -499,7 +499,8 @@
   "ABS noir": "ABS noir",
   "Add picture to a filament": "Ajouter une image à un filament",
   "Show a filament": "Afficher un filament",
-  "Filaments:": "Filaments:",
+  "Filaments:": "Filaments :",
   "Material is being used by some filaments.": "La matière est actuellement utilisée par des filaments.",
-  "Material has variants.": "La matière a des variantes."
+  "Material has variants.": "La matière a des variantes.",
+  "A brand used by filament(s) can not be deleted.": "Une matière utilisée par des filaments ne peut être supprimée."
 }

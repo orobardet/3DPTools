@@ -26,6 +26,12 @@
                 <br/>
                 <a href="<%- brand.url %>" target="_blank"><%- brand.url %></a>
                 <% } %>
+                <% if (brand.filamentsCount > 0) { %>
+                <div class="filament-using">
+                    <b><%- __('Filaments:') %></b>
+                    <a href="/filament?finished=all&brand=<%- brand.id%>"><%- brand.filamentsCount %></a>
+                </div>
+                <% } %>
             </td>
             <td>
                 <% if (brand.logo && brand.logo.size) { %>
@@ -38,7 +44,11 @@
                     <a href="/brand/set-logo/<%- brand.id %>"><i class="fa fa-picture-o"></i>&nbsp;<%- __("change picture") %></a>
                     <br/>
                     <a href="/brand/edit/<%- brand.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
+                    <% if (brand.filamentsCount) { %>
+                    <a href="#" onclick="return false;" class="disabled" data-toggle="tooltip" title="<%= __('A brand used by filament(s) can not be deleted.') %>"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %>
+                    <% } else { %>
                     <a href="/brand/delete/<%- brand.id %>" data-id="<%- brand.id %>" class="trg-delete-brand"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                    <% } %>
                 </div>
             </td>
         </tr>

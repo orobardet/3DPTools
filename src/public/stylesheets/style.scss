@@ -536,7 +536,7 @@ table.filament-list {
 }
 
 table.shop-list, table.brand-list, table.material-list {
-    .shop-name, .brand-name, .material-name {
+  .shop-name, .brand-name, .material-name {
     margin: 5px 0;
     font-size: larger;
     font-weight: bold;
@@ -545,6 +545,13 @@ table.shop-list, table.brand-list, table.material-list {
   .shop-logo, .brand-logo {
     max-height: 100px;
     max-width: 300px;
+  }
+
+  .filament-using {
+    margin-top: 5px;
+    font-style: italic;
+    font-size: small;
+    opacity: 0.75;
   }
 }
 

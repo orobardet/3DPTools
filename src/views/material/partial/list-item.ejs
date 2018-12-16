@@ -21,7 +21,7 @@
         <% if (material.filamentsCount > 0) { %>
         <div>
             <b><%- __('Filaments:') %></b>
-            <a href="/filament?material=<%- material._id%>"><%- material.filamentsCount %></a>
+            <a href="/filament?finished=all&material=<%- material._id%>"><%- material.filamentsCount %></a>
         </div>
         <% } %>
         <div>

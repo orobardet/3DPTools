@@ -8570,6 +8570,11 @@ table.shop-list .shop-name, table.shop-list .brand-name, table.shop-list .materi
 table.shop-list .shop-logo, table.shop-list .brand-logo, table.brand-list .shop-logo, table.brand-list .brand-logo, table.material-list .shop-logo, table.material-list .brand-logo {
   max-height: 100px;
   max-width: 300px; }
+table.shop-list .filament-using, table.brand-list .filament-using, table.material-list .filament-using {
+  margin-top: 5px;
+  font-style: italic;
+  font-size: small;
+  opacity: 0.75; }
 
 form.logo-shop .row-or, form.logo-brand .row-or {
   margin-left: -15px;

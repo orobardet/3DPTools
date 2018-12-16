@@ -15,7 +15,7 @@ module.exports = function (app) {
                 'brand/delete',
             ], req.originalUrl);
 
-            let brands = await Brand.find().sort('name').exec();
+            let brands = await Brand.list({countFilaments: true});
 
             return res.render('brand/index', {
                 pageTitle: "Brands",
@@ -235,7 +235,9 @@ module.exports = function (app) {
         let brandId = req.params.brand_id;
 
         try {
-            if (!await Brand.findById(brandId).remove().exec()) {
+            let brand = await Brand.findById(brandId).exec();
+
+            if (!await brand.remove()) {
                 throw new Error(res.__('Error while deleting brand %s', brandId));
             }
         } catch (err) {
