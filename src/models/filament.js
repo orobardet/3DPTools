@@ -423,6 +423,22 @@ module.exports = function (app) {
         });
     };
 
+    filamentSchema.statics.getCountPerMaterialsMapping = async function () {
+        let results = await this.aggregate([
+            { $group: {
+                    _id: '$material',
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { 'count': -1 } }
+        ]).exec();
+
+        return results.reduce((mapping, doc) => {
+            mapping[doc._id] = doc.count;
+            return mapping;
+        }, {});
+    };
+
     filamentSchema.statics.getCountPerMasterMaterials = async function (remove_finished) {
         let aggregationConfig = [
             { $project: {

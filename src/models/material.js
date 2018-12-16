@@ -3,6 +3,7 @@
 module.exports = function (app) {
     const mongoose = require('mongoose');
     const Schema = mongoose.Schema;
+    const Filament = app.models.filament;
 
     let materialSchema = new Schema({
         name: String,
@@ -127,15 +128,26 @@ module.exports = function (app) {
         return false;
     };
 
+    materialSchema.pre('remove', async function(next) {
+        if (await Filament.find({material: this.id}).countDocuments().exec() > 0) {
+            return next(new Error("Material is being used by some filaments."));
+        } else if (await this.getChildCount() > 0) {
+            return next(new Error("Material has variants."));
+        } else {
+            return next();
+        }
+    });
+
     materialSchema.methods.getChildCount = async function() {
         return await this.constructor.find({parentMaterial: this.id}).countDocuments().exec();
     };
 
-    materialSchema.statics.list = async function (options, cb) {
+    materialSchema.statics.list = async function (options) {
         options = Object.assign({
             rootMaterials: true,
             childMaterials: true,
             treeList: false,
+            countFilaments: false,
             locale: null
         }, options);
 
@@ -146,7 +158,6 @@ module.exports = function (app) {
             locale: options.locale,
             numericOrdering: true
         };
-
 
         let aggregationPipeline = [];
 
@@ -182,7 +193,31 @@ module.exports = function (app) {
         });
         aggregationPipeline.push({ $sort: { name: 1, 'variants.name': 1 }});
 
-        return this.aggregate(aggregationPipeline).collation(collationOptions).exec(cb);
+        let results = await this.aggregate(aggregationPipeline).collation(collationOptions).exec();
+
+        if (options.countFilaments && results.length) {
+            let filamentsCounts = await Filament.getCountPerMaterialsMapping();
+
+            for (let material of results) {
+                if (filamentsCounts[material._id]) {
+                    material.filamentsCount = filamentsCounts[material._id];
+                } else {
+                    material.filamentsCount = 0;
+                }
+
+                if (material.variants && material.variants.length) {
+                    for (let variant of material.variants) {
+                        if (filamentsCounts[variant._id]) {
+                            variant.filamentsCount = filamentsCounts[variant._id];
+                        } else {
+                            variant.filamentsCount = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        return results;
     };
 
     materialSchema.statics.findById = function (id, cb) {

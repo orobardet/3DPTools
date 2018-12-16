@@ -79,7 +79,7 @@ $(function () {
             dataType: 'json',
             success: function (data) {
                 if (data.message) {
-                    App3DPTools.successFlash('#material-message-container', data.message);
+                    App3DPTools.successFlash('#app-message-container', data.message);
                 }
                 document.location = document.location;
             },
@@ -87,11 +87,11 @@ $(function () {
                 if (xhr.responseJSON) {
                     var data = xhr.responseJSON;
                     if (data.message) {
-                        App3DPTools.errorFlash('#material-message-container', data.message);
+                        App3DPTools.errorFlash('#app-message-container', data.message);
                         return;
                     }
                 }
-                App3DPTools.errorFlash('#material-message-container', errorMsg);
+                App3DPTools.errorFlash('#app-message-container', errorMsg);
             }
         });
     }

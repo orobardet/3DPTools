@@ -5,8 +5,8 @@
         <div class="pull-right">
             <div class="actions-block">
                 <a href="/material/edit/<%= materialId %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
-                <% if (material.childCount) { %>
-                <a href="#" onclick="return false;" class="disabled" data-toggle="tooltip" title="<%= __('A material with variant(s) can not be deleted.') %>"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %>
+                <% if (material.childCount || material.filamentsCount) { %>
+                <a href="#" onclick="return false;" class="disabled" data-toggle="tooltip" title="<%= __('A material with variant(s) or used by filament(s) can not be deleted.') %>"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %>
                 <% } else { %>
                 <a href="/material/delete/<%= materialId %>" data-id="<%= materialId %>"
                    class="trg-delete-material"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
@@ -18,6 +18,12 @@
 </tr>
 <tr<%- (isMaterialVariant)?' class="material-variant"':'' %>>
     <td class="material-data">
+        <% if (material.filamentsCount > 0) { %>
+        <div>
+            <b><%- __('Filaments:') %></b>
+            <a href="/filament?material=<%- material._id%>"><%- material.filamentsCount %></a>
+        </div>
+        <% } %>
         <div>
             <b><%- __('Density:') %></b>
             <%- __('%s kg/m³', material.density) %>

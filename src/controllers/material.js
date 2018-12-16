@@ -15,7 +15,7 @@ module.exports = function (app) {
             ], req.originalUrl);
 
             let materials = await Material.list({
-                tree: true, locale: res.getLocale()
+                tree: true, countFilaments: true, locale: res.getLocale()
             });
 
             return res.render('material/index', {
@@ -286,7 +286,9 @@ module.exports = function (app) {
         let materialId = req.params.material_id;
 
         try {
-            if (!await Material.findById(materialId).remove().exec()) {
+            let material = await Material.findById(materialId).exec();
+
+            if (!await material.remove()) {
                 throw new Error(res.__('Error while deleting material %s', materialId));
             }
         } catch (err) {

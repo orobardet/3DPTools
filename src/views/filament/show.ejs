@@ -5,7 +5,7 @@
         <table>
             <tr>
                 <td><%- __('Material:') %></td>
-                <td><%- filament.material.name %></td>
+                <td><% if (filament.material) { %><%- filament.material.name %><% } %></td>
             </tr>
             <tr>
                 <td><%- __('Color:') %></td>

@@ -288,7 +288,7 @@
   "Density": "Density",
   "Installation": "Installation",
   "Configuration": "Configuration",
-  "A material with variant(s) can not be deleted.": "A material with variant(s) can not be deleted.",
+  "A material with variant(s) or used by filament(s) can not be deleted.": "A material with variant(s) or used by filament(s) can not be deleted.",
   "From %s mm/s to %s mm/s": "From %s mm/s to %s mm/s",
   "%s°C min": "%s°C min",
   "%s mm/s min": "%s mm/s min",
@@ -386,5 +386,8 @@
   "File:": "File:",
   "Choose a local file.": "Choose a local file.",
   "Display name of the file.": "Display name of the file.",
-  "Add a file to a material": "Add a file to a material"
+  "Add a file to a material": "Add a file to a material",
+  "Filaments:": "Filaments:",
+  "Material is being used by some filaments.": "Material is being used by some filaments.",
+  "Material has variants.": "Material has variants."
 }

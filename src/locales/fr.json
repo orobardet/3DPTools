@@ -417,7 +417,7 @@
   "Get from parent material": "Récupérer de la matière parente",
   "%s°C min": "%s°C min",
   "A material having parent material can be used as parent material": "Une matière ayant une parente ne peut être une matière parente",
-  "A material with variant(s) can not be deleted.": "Une matière avec des variantes ne peut pas être supprimée.",
+  "A material with variant(s) or used by filament(s) can not be deleted.": "Une matière avec des variantes ou utilisée par des filaments ne peut pas être supprimée.",
   "A material with variant(s) can not have a parent material.": "Une matière avec des variantes ne peut pas avoir de manière parente.",
   "Gris clair": "Gris clair",
   "Include variants": "Inclure les variantes",
@@ -498,5 +498,8 @@
   "Edit filament": "Modifier un filament",
   "ABS noir": "ABS noir",
   "Add picture to a filament": "Ajouter une image à un filament",
-  "Show a filament": "Afficher un filament"
+  "Show a filament": "Afficher un filament",
+  "Filaments:": "Filaments:",
+  "Material is being used by some filaments.": "La matière est actuellement utilisée par des filaments.",
+  "Material has variants.": "La matière a des variantes."
 }
