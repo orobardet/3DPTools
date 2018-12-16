@@ -177,12 +177,17 @@ module.exports = function(bootstrapOptions) {
 
         const i18n = require("i18n");
 
-        i18n.configure({
+        let i18nOptions = {
             locales: ['en', 'fr'],
             directory: __dirname + '/locales',
             cookie: config.get("language:cookieName"),
             indent: "  "
-        });
+        };
+        if (app.get('env') === 'production') {
+            i18nOptions.autoReload = false;
+            i18nOptions.updateFiles = false;
+        }
+        i18n.configure(i18nOptions);
         app.use(i18n.init);
         app.locals.languagesList = Object.keys(i18n.getCatalog());
         app.set('i18n', i18n);
