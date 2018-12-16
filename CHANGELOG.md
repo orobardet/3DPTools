@@ -29,6 +29,7 @@
 - [Fix] Fix filament display when it has no brand (#125)
 - [Fix] It was possible to delete a material used by filament. It's no more allowed. (#118)
 - [Fix] It was possible to delete a brand used by filament. It's no more allowed. (#120)
+- [Fix] It was possible to delete a shop used by filament. It's no more allowed. (#121)
 - [Tec] Upgrade to NodeJS 10 (#107, #122)
 - [Tec] Add `versionSuffix` config setting (#92)
 - [Tec] Improve Docker image and stack (#80 #81 #82 #85 #86 #88)

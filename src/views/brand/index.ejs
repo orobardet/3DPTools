@@ -45,7 +45,7 @@
                     <br/>
                     <a href="/brand/edit/<%- brand.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
                     <% if (brand.filamentsCount) { %>
-                    <a href="#" onclick="return false;" class="disabled" data-toggle="tooltip" title="<%= __('A brand used by filament(s) can not be deleted.') %>"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %>
+                    <a href="#" onclick="return false;" class="disabled" data-toggle="tooltip" title="<%= __('A brand used by filament(s) can not be deleted.') %>"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
                     <% } else { %>
                     <a href="/brand/delete/<%- brand.id %>" data-id="<%- brand.id %>" class="trg-delete-brand"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
                     <% } %>
@@ -61,6 +61,8 @@
 
 <script type="text/javascript">
     $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
         function deleteBrand(brandId) {
             $.ajax({
                 type: "DELETE",

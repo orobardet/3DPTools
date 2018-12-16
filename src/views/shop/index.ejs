@@ -26,6 +26,12 @@
                 <br/>
                 <a href="<%- shop.url %>" target="_blank"><%- shop.url %></a>
                 <% } %>
+                <% if (shop.filamentsCount > 0) { %>
+                    <div class="filament-using">
+                        <b><%- __('Filaments:') %></b>
+                        <a href="/filament?finished=all&shop=<%- shop.id%>"><%- shop.filamentsCount %></a>
+                    </div>
+                <% } %>
             </td>
             <td>
                 <% if (shop.logo && shop.logo.size) { %>
@@ -38,7 +44,11 @@
                     <a href="/shop/set-logo/<%- shop.id %>"><i class="fa fa-picture-o"></i>&nbsp;<%- __("change picture") %></a>
                     <br/>
                     <a href="/shop/edit/<%- shop.id %>"><i class="fa fa-pencil"></i>&nbsp;<%- __("edit") %></a>
-                    <a href="/shop/delete/<%- shop.id %>" data-id="<%- shop.id %>" class="trg-delete-shop"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                    <% if (shop.filamentsCount) { %>
+                        <a href="#" onclick="return false;" class="disabled" data-toggle="tooltip" title="<%= __('A shop used by filament(s) can not be deleted.') %>"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                    <% } else { %>
+                        <a href="/shop/delete/<%- shop.id %>" data-id="<%- shop.id %>" class="trg-delete-shop"><i class="fa fa-trash"></i>&nbsp;<%- __("delete") %></a>
+                    <% } %>
                 </div>
             </td>
         </tr>
@@ -51,6 +61,8 @@
 
 <script type="text/javascript">
     $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+
         function deleteShop(shopId) {
             $.ajax({
                 type: "DELETE",
