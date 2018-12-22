@@ -4,7 +4,7 @@ require('app-module-path').addPath(__dirname);
 
 module.exports = function(bootstrapOptions) {
     const merge = require('merge');
-    const Raven = require('raven');
+    const sentry = require('@sentry/node');
     const debug = require('debug')('3DPTools');
     const cookieParser = require('cookie-parser');
 
@@ -48,58 +48,17 @@ module.exports = function(bootstrapOptions) {
         if (config) {
             sentryExtraConfig = config.get();
         }
-        Raven.config(config.get('sentry:dsn'), {
+
+        sentry.init({
+            dsn: config.get('sentry:dsn'),
             release: config.get('version'),
             environment: process.env.NODE_ENV || 'development',
-            autoBreadcrumbs: {
-                'console': false,
-                'http': true
-            },
-            extra: {
-                bootstrapOptions: bootstrapOptions,
-                config: sentryExtraConfig
-            },
-            parseUser: req => {
-                if (req.user && (req.user.id || req.user.email || req.user.firstname || req.user.lastname)) {
-                    let userData = {};
+            attachStacktrace: true,
+            sendDefaultPii: true,
+        });
 
-                    if (req.user._id) {
-                        userData.id = req.user._id;
-                    }
-                    if (req.user.email) {
-                        userData.email = req.user.email;
-                    }
-                    let userName = [];
-                    if (req.user.firstname) {
-                        userName.push(req.user.firstname);
-                    }
-                    if (req.user.lastname) {
-                        userName.push(req.user.lastname);
-                    }
-                    if (userName.length) {
-                        userData.username = userName.join(' ');
-                    }
-
-                    return userData;
-                }
-
-                return {username: 'none'};
-            },
-            dataCallback: data =>{
-                if (data.req) {
-                    if (data.req.route && data.req.route.path) {
-                        data.tags.route = data.req.route.path;
-                    }
-                    data.extra.req = data.req;
-                    delete data.req;
-                }
-
-                return data;
-            }
-        }).install();
-
-        app.use(Raven.requestHandler());
-        app.set('raven', Raven);
+        app.use(sentry.Handlers.requestHandler());
+        app.set('sentry', sentry);
     }
 
     // This middleware need to be declared early, at least _before_ i18n initialisation
@@ -289,7 +248,46 @@ module.exports = function(bootstrapOptions) {
 
     if (bootstrapOptions.setupHttpRouting) {
         if (bootstrapOptions.initSentry) {
-            app.use(Raven.errorHandler());
+            app.use(sentry.Handlers.errorHandler());
+            app.use((err, req, res, next) => {
+                sentry.configureScope(scope => {
+                    if (req.user && (req.user.id || req.user.email || req.user.firstname || req.user.lastname)) {
+                        let userData = {};
+
+                        if (req.user._id) {
+                            userData.id = req.user._id;
+                        }
+                        if (req.user.email) {
+                            userData.email = req.user.email;
+                        }
+                        let userName = [];
+                        if (req.user.firstname) {
+                            userName.push(req.user.firstname);
+                        }
+                        if (req.user.lastname) {
+                            userName.push(req.user.lastname);
+                        }
+                        if (userName.length) {
+                            userData.username = userName.join(' ');
+                        }
+
+                        scope.setUser(userData);
+                    }
+
+                    const protectData = require('tools/protectConfigData');
+                    scope.setTag("url", req.url);
+                    scope.setTag("method", req.method);
+                    scope.setTag("sessionID", req.sessionID);
+                    scope.setTag("locale", res.getLocale())
+                    scope.setExtra("config", protectData(app.config.get(), [/.*secret.*/, /.*pass.*/, /.*password.*/, /dsn/], '*****'));
+                    scope.setExtra("headers", req.headers);
+                    scope.setExtra("cookies", req.cookies);
+                    scope.setExtra("session", req.session);
+                    scope.setExtra("user", protectData(req.user.toJSON(), [/.*password.*/], '*****'));
+                    scope.setExtra("form", req.form);
+                });
+                next(err);
+            });
         }
 
         app.on('postListeningInit', function() {
@@ -325,25 +323,25 @@ module.exports = function(bootstrapOptions) {
                     sentryId: res.sentry
                 });
             });
-        }
-
-        // production error.ejs handler
-        // no stacktraces leaked to user
-        app.use((err, req, res, next) => {
-            res.status(err.status || 500);
-            console.error(err.message);
-            console.error(err.stack);
-            if (res.sentry) {
-                console.error('Sentry ID: ' + res.sentry);
-            }
-            res.render('error', {
-                pageTitle: 'An error occured',
-                message: err.message,
-                error: {},
-                navModule: "error",
-                sentryId: res.sentry
+        } else {
+            // production error.ejs handler
+            // no stacktraces leaked to user
+            app.use((err, req, res, next) => {
+                res.status(err.status || 500);
+                console.error(err.message);
+                console.error(err.stack);
+                if (res.sentry) {
+                    console.error('Sentry ID: ' + res.sentry);
+                }
+                res.render('error', {
+                    pageTitle: 'An error occured',
+                    message: err.message,
+                    error: {},
+                    navModule: "error",
+                    sentryId: res.sentry
+                });
             });
-        });
+        }
     }
 
     return app;

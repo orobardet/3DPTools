@@ -74,6 +74,7 @@ Can be run any time on a running instance, after version upgrade.
 - [Tec] Use `version` from package.json (#71)
 - [Tec] Add -h|--help to `cli` script (#72)
 - [Tec] Code refactoring to use ES6/7/8 enhancement (#65)
+- [Tec] Upgrade to latest Sentry library (#132, #133)
 
 # v1.2.1
 

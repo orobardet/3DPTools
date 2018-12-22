@@ -42,6 +42,8 @@
     ]
   },
   "dependencies": {
+    "@sentry/browser": "^4.4.2",
+    "@sentry/node": "^4.4.2",
     "app-module-path": "^2.2.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
@@ -83,7 +85,6 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.0",
     "pkginfo": "^0.4.1",
-    "raven": "^2.4.1",
     "serve-favicon": "^2.4.5",
     "when": "^3.7.8"
   },
