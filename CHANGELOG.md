@@ -4,6 +4,8 @@
 > By default, **email sending and all dependent feature are disabled**.
 > Check README for documentation about email configuration.
 
+> This version bumps to MongoDB **3.6**
+
 - [New] Embedded documentation (#79)
 - [New] Configuration files are now in YAML (#99)
 - [New] Forgotten password feature now available, if a mail send configuration is given (no one by default) (#89)
@@ -32,11 +34,25 @@
 - [Fix] It was possible to delete a brand used by filament. It's no more allowed. (#120)
 - [Fix] It was possible to delete a shop used by filament. It's no more allowed. (#121)
 - [Tec] Upgrade to NodeJS 10 (#107, #122)
+- [Tec] Upgrade to MongoDB 3.6 (#123)
 - [Tec] Add `versionSuffix` config setting (#92)
 - [Tec] Improve Docker image and stack (#80 #81 #82 #85 #86 #88)
 - [Tec] Use Yarn instead of NPM for node dependencies management (#112)
+- [Tec] Upgrade to latest Sentry library (#132, #133)
 
 ## Upgrade notes :
+
+- You need to upgrade your MongoDB version to 3.6. 3DPTools database is compatible without changes:
+  - Backup you data (just in case)
+  - Upgrade 3DPTools 
+  - Stop 3DPTools
+  - Upgrade MongoDB to 3.6
+  - Restart 3DPTools
+  - Although not needed by 3DPTool (for now), it is recommended to enable Mongo's [3.6 feature compatibility](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)**. 
+```javascript
+// In a MongoShell as admin:
+db.adminCommand( { setFeatureCompatibilityVersion: "3.6" } )
+```
 
 - Filament name is now optional. You can clean name for all filament where it match the `material name + color name`
  (e.g. `PLA Black`) with:
@@ -74,7 +90,6 @@ Can be run any time on a running instance, after version upgrade.
 - [Tec] Use `version` from package.json (#71)
 - [Tec] Add -h|--help to `cli` script (#72)
 - [Tec] Code refactoring to use ES6/7/8 enhancement (#65)
-- [Tec] Upgrade to latest Sentry library (#132, #133)
 
 # v1.2.1
 
