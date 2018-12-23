@@ -557,6 +557,27 @@ module.exports = function (app) {
             let user = await User.findById(req.user._id);
 
             user.passwordHash = User.generateHash(req.form.password);
+
+            // For security, logout all other sessions and force login on next visit (remove stay connected if any)
+            // Get all the session ids of the current user, except the current one
+            let sessionIds = await this._getAllCurrentUserSessionIds(req) || [];
+            let otherSessionIds = [];
+            for (let id of sessionIds) {
+                if (id !== req.session.id) {
+                    otherSessionIds.push(id);
+                }
+            }
+
+            // Delete all sessions except the current one, to force a logout on other sessions
+            if (otherSessionIds.length >= 0) {
+                for (let sid of otherSessionIds) {
+                    this._deleteSessionById(req, sid);
+                }
+            }
+
+            // Clear all session keeper (stay connected feature)
+            user.clearSessionKeeperTokens();
+
             await user.save();
 
             const mailer = app.get('mailer');
@@ -626,6 +647,47 @@ module.exports = function (app) {
         } catch (err) {
             return next(err);
         }
+    };
+
+    this._getAllCurrentUserSessionIds = async (req) => {
+        if (!req.sessionStore || typeof req.sessionStore.all != 'function') {
+            return [];
+        }
+
+        let sessions = await new Promise((resolve,reject) =>{
+            req.sessionStore.all((err, keys) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(keys);
+            })
+        });
+
+        let userSessionIds = [];
+
+        let userId = req.user.id;
+        for (let session of sessions) {
+            if (session.id && session.passport && session.passport.user && session.passport.user === userId) {
+                userSessionIds.push(session.id);
+            }
+        }
+
+        return userSessionIds;
+    };
+
+    this._deleteSessionById = async (req, sessionId) => {
+        if (!req.sessionStore || typeof req.sessionStore.destroy != 'function') {
+            return;
+        }
+
+        await new Promise((resolve,reject) =>{
+            req.sessionStore.destroy(sessionId, (err) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve();
+            })
+        });
     };
 
     return this;

@@ -13,6 +13,7 @@
 - [New] "Stay connected"/"Remember me" feature in user authentification (#102)
 - [New] Language selector on non logged in pages (#111)
 - [New] Filament's name is now optional (#110)
+- [New] Changing password disconnect all other sessions and clean stay connected (need login on next visit) (#126)
 - [Imp] Separate internal and overridable settings, and documents them (#98)
 - [Imp] Configuration display in admin: better handling of secret value obfuscation (#93)
 - [Imp] No "Add filament" buttons if there is no materials, brands and shops (#90)

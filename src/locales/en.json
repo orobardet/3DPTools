@@ -391,5 +391,6 @@
   "Material is being used by some filaments.": "Material is being used by some filaments.",
   "Material has variants.": "Material has variants.",
   "A brand used by filament(s) can not be deleted.": "A brand used by filament(s) can not be deleted.",
-  "A shop used by filament(s) can not be deleted.":  "A shop used by filament(s) can not be deleted."
+  "A shop used by filament(s) can not be deleted.":  "A shop used by filament(s) can not be deleted.",
+  "Changing your password will disconnect all sessions other than this one, and you will need to sign in again on your next visit.": "Changing your password will disconnect all sessions other than this one, and you will need to sign in again on your next visit."
 }
