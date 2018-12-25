@@ -729,7 +729,17 @@ module.exports = function (app) {
             let filament = await Filament.findById(filamentId).exec();
 
             if (!req.form.isValid) {
-                return this.leftMaterialForm(req, res, next);
+                res.status(500);
+
+                // Translate error messages
+                let errorMsgs = {};
+                for (let [name, msg] of Object.entries(req.form.getErrors())) {
+                    errorMsgs[name] = msg.map(m => res.__(m));
+                }
+
+                return res.json({
+                    errors: errorMsgs
+                });
             }
 
             const leftLength = req.form.leftLength;

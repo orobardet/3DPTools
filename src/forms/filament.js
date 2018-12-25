@@ -150,7 +150,7 @@ module.exports = function (app) {
             .trim()
             .isNumeric()
             .custom(value => {
-                if (value <= 0) {
+                if (value < 0) {
                     throw new Error('%s must be greater than 0.');
                 }
             }),

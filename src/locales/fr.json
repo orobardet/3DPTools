@@ -504,5 +504,6 @@
   "Material has variants.": "La matière a des variantes.",
   "A brand used by filament(s) can not be deleted.": "Une matière utilisée par des filaments ne peut être supprimée.",
   "A shop used by filament(s) can not be deleted.": "Un magasin utilisé par des filaments ne peut être supprimé.",
-  "Changing your password will disconnect all sessions other than this one, and you will need to sign in again on your next visit.": "Changer votre mot de passe déconnectera toutes les autres sessions que celle-ci, et vous devrez vous re-connecter lors de votre prochaine visite."
+  "Changing your password will disconnect all sessions other than this one, and you will need to sign in again on your next visit.": "Changer votre mot de passe déconnectera toutes les autres sessions que celle-ci, et vous devrez vous re-connecter lors de votre prochaine visite.",
+  "Left length must be greater than 0.": "La longueur restante doit être supérieure à 0."
 }
