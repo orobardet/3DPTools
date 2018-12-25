@@ -289,11 +289,11 @@ module.exports = function (app) {
     };
 
     filamentSchema.statics.getCostPerShops = async function () {
-        let aggregation = this.aggregate([
+        let aggregation = await this.aggregate([
             { $group: {
-                _id: '$shop',
-                cost: { $sum: '$price' }
-            }
+                    _id: '$shop',
+                    cost: { $sum: '$price' }
+                }
             },
             { $sort: { 'cost': -1 } }
         ]).exec();
@@ -407,9 +407,9 @@ module.exports = function (app) {
     filamentSchema.statics.getCountPerShops = async function () {
         let aggregation = await this.aggregate([
             { $group: {
-                _id: '$shop',
-                count: { $sum: 1 }
-            }
+                    _id: '$shop',
+                    count: { $sum: 1 }
+                }
             },
             { $sort: { 'count': -1 } }
         ]).exec();
