@@ -35,6 +35,7 @@
 - [Fix] It was possible to delete a brand used by filament. It's no more allowed. (#120)
 - [Fix] It was possible to delete a shop used by filament. It's no more allowed. (#121)
 - [Fix] Filament stats chart for cost per shop was displaying invalid data (#128)
+- [Fix] Filament stats chart for count per color was not showing pies' percentage (#129)
 - [Tec] Upgrade to NodeJS 10 (#107, #122)
 - [Tec] Upgrade to MongoDB 3.6 (#123)
 - [Tec] Add `versionSuffix` config setting (#92)
