@@ -1,5 +1,9 @@
 # Next
 
+# v1.4.1
+
+- [Fix] Fix docker image run (bash missing + windows EOL in docker_start.sh script)
+
 # v1.4.0
 
 > This version introduce features requiring new application capabilitiy: sending emails. 

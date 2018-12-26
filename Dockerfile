@@ -36,6 +36,10 @@ LABEL maintainer="Olivier Robardet <olivier.robardet@gmail.com>"
 
 ENV APP_USER=3dptools
 
+RUN apk add bash
+SHELL ["/bin/sh", "-c"]
+ENTRYPOINT ["/bin/sh", "-c"]
+
 RUN adduser -D -g "" -G users $APP_USER
 
 COPY --from=builder /3dptools /3dptools
