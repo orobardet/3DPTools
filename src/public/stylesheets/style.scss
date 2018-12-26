@@ -324,6 +324,11 @@ a.anchor {
   }
 }
 
+.form-tips {
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
 .control-label.required:after {
   content: '*';
   margin-left: 5px;

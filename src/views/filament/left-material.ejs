@@ -81,7 +81,10 @@
 <hr>
 <form class="form-filament" method="POST">
     <fieldset>
-        <div class="row ">
+        <div class="form-tips">
+            <%- __("It is possible to tell that the filament is empty by putting '0' as left weight or length. The filament will then be set as finished.") %>
+        </div>
+        <div class="row">
             <div class="col-md-3">
                 <div class="form-group<%= (errors.leftTotalWeight || errors.weighUnit) ? " has-error" : "" %>">
                     <label for="leftTotalWeight"
@@ -193,6 +196,7 @@
                 </div>
             </div>
         </div>
+        <div id="filament-live-message" class="alert alert-info" style="display:none;"></div>
 
         <p class="button-bar">
             <a href="<%- cancelUrl %>" class="btn btn-default"><%- __('Cancel') %></a>
@@ -203,6 +207,7 @@
 
 <script type="text/javascript">
     function filamentLeftMaterialOnChange() {
+        $('#filament-live-message').hide();
         $.ajax({
             method: 'POST',
             url: '/filament/compute-left-material/<%- filament.id %>',
@@ -242,6 +247,10 @@
                     progress.show();
                 } else if (progress) {
                     progress.hide();
+                }
+
+                if (data.message && data.message != "") {
+                    $('#filament-live-message').html(data.message).show();
                 }
             }
         });

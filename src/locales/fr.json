@@ -505,5 +505,8 @@
   "A brand used by filament(s) can not be deleted.": "Une matière utilisée par des filaments ne peut être supprimée.",
   "A shop used by filament(s) can not be deleted.": "Un magasin utilisé par des filaments ne peut être supprimé.",
   "Changing your password will disconnect all sessions other than this one, and you will need to sign in again on your next visit.": "Changer votre mot de passe déconnectera toutes les autres sessions que celle-ci, et vous devrez vous re-connecter lors de votre prochaine visite.",
-  "Left length must be greater than 0.": "La longueur restante doit être supérieure à 0."
+  "Left length must be greater than 0.": "La longueur restante doit être supérieure à 0.",
+  "Filament empty, it will be set as finished.": "Filament vide, il sera marqué comme terminé.",
+  "It is possible to tell that the filament is empty by putting '0' as left weight or length. The filament will then be set as finished.": "Il est possible d'indiquer que le filament est vide en mettant '0' comme poids ou longueur restant. Le filament sera alors marqué comme terminé.",
+  "Add/substract length must be greater than 0.": "La longueur ajoutée ou retirée doit être supérieure à zéro."
 }

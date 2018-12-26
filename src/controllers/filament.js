@@ -680,19 +680,28 @@ module.exports = function (app) {
             const relativeLength = req.form.relativeLength;
 
             if (leftLength) {
-                filament.setLeftLength(req.form.leftLength);
+                filament.setLeftLength(leftLength);
                 filament.setLastUsed();
-
+                if (leftLength == 0) {
+                    filament.finished = true;
+                } else {
+                    filament.finished = false;
+                }
                 await filament.save();
 
                 return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
             } else if (leftTotalWeight) {
-                let weight = req.form.leftTotalWeight;
+                let weight = leftTotalWeight;
                 if (req.form.weighUnit === "g") {
                     weight /= 1000;
                 }
                 filament.setLeftTotalWeight(weight);
                 filament.setLastUsed();
+                if (leftTotalWeight == 0) {
+                    filament.finished = true;
+                } else {
+                    filament.finished = false;
+                }
 
                 await filament.save();
                 return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
@@ -705,8 +714,16 @@ module.exports = function (app) {
                 } else {
                     leftLength -= parseFloat(relativeLength);
                 }
+                if (leftLength < 0) {
+                    leftLength = 0;
+                }
                 filament.setLeftLength(leftLength);
                 filament.setLastUsed();
+                if (leftLength == 0) {
+                    filament.finished = true;
+                } else {
+                    filament.finished = false;
+                }
 
                 await filament.save();
                 return res.redirect(req.getOriginUrl("filament/left-material", "/filament"));
@@ -729,7 +746,7 @@ module.exports = function (app) {
             let filament = await Filament.findById(filamentId).exec();
 
             if (!req.form.isValid) {
-                res.status(500);
+                res.status(400); // Bad request
 
                 // Translate error messages
                 let errorMsgs = {};
@@ -768,6 +785,9 @@ module.exports = function (app) {
                 } else {
                     leftLength -= parseFloat(relativeLength);
                 }
+                if (leftLength < 0) {
+                    leftLength = 0;
+                }
 
                 filament.setLeftLength(leftLength);
                 responseData.weight = filament.leftMaterialWeight();
@@ -778,6 +798,9 @@ module.exports = function (app) {
                 responseData.percentageLeft = filament.materialLeftPercentage;
             }
 
+            if (responseData.percentageLeft === 0) {
+                responseData.message = res.__("Filament empty, it will be set as finished.");
+            }
             return res.json(responseData);
 
         } catch(err) {
