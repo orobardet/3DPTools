@@ -1,5 +1,7 @@
 # Next
 
+# v1.4.0
+
 > This version introduce features requiring new application capabilitiy: sending emails. 
 > By default, **email sending and all dependent feature are disabled**.
 > Check README for documentation about email configuration.
