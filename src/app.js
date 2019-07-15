@@ -283,7 +283,9 @@ module.exports = function(bootstrapOptions) {
                     scope.setExtra("headers", req.headers);
                     scope.setExtra("cookies", req.cookies);
                     scope.setExtra("session", req.session);
-                    scope.setExtra("user", protectData(req.user.toJSON(), [/.*password.*/], '*****'));
+                    if (req.user) {
+                        scope.setExtra("user", protectData(req.user.toJSON(), [/.*password.*/], '*****'));
+                    }
                     scope.setExtra("form", req.form);
                 });
                 next(err);
