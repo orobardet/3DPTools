@@ -1,5 +1,7 @@
 # Next
 
+- [Tec] Upgrade to NodeJS 12 (#137)
+
 # v1.4.1
 
 - [Fix] Fix docker image run (bash missing + windows EOL in docker_start.sh script)

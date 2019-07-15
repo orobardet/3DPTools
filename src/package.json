@@ -1,6 +1,6 @@
 {
   "name": "3DPTools",
-  "version": "1.4.1",
+  "version": "1.4.1+dev",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
@@ -13,7 +13,7 @@
     "coverage-colorless": "nyc --no-color mocha --recursive -R spec -c"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "nyc": {
     "cache": true,
