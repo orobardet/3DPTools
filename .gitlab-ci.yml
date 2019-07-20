@@ -85,23 +85,23 @@ Snyk:
   artifacts:
     paths: [gl-sast-report.json]
 
-Test codequality:
-  <<: *_codequality
-  when: manual
-  only:
-    - branches
-  except:
-    - tags
-    - master
-
-Test sast:
-  <<: *_sast
-  when: manual
-  only:
-    - branches
-  except:
-    - tags
-    - master
+#Test codequality:
+#  <<: *_codequality
+#  when: manual
+#  only:
+#    - branches
+#  except:
+#    - tags
+#    - master
+#
+#Test sast:
+#  <<: *_sast
+#  when: manual
+#  only:
+#    - branches
+#  except:
+#    - tags
+#    - master
 
 Test Docker build:
   image: docker:git
@@ -120,19 +120,19 @@ Test Docker build:
     - tags
     - master
 
-codequality:
-  <<: *_codequality
-  only:
-    - master
-  except:
-    - tags
-
-sast:
-  <<: *_sast
-  only:
-    - master
-  except:
-    - tags
+#codequality:
+#  <<: *_codequality
+#  only:
+#    - master
+#  except:
+#    - tags
+#
+#sast:
+#  <<: *_sast
+#  only:
+#    - master
+#  except:
+#    - tags
 
 Docker build:
   image: docker:git
