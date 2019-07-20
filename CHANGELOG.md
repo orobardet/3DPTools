@@ -1,5 +1,6 @@
 # Next
 
+- [Tec] Compatibility with MongoDB 4.0 (#135)
 - [Tec] Upgrade to NodeJS 12 (#137)
 
 # v1.4.1

@@ -6,7 +6,7 @@ It can be installed manually from source, or using [Docker](https://www.docker.c
 ## Technical stack
 
 - [Node.js](https://nodejs.org/) (12.x or higher) with [Yarn](https://yarnpkg.com)
-- [MongoDB](https://www.mongodb.com/) (3.6 or higher)
+- [MongoDB](https://www.mongodb.com/) (3.6 or higher, OK with 4.0)
 - [Redis](https://redis.io/)
 
 ## Docker

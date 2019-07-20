@@ -99,7 +99,7 @@ The main configuration block is `redis`.
 
 ## Base de données
 
-The database used is MongoDB, **>= v3.6**. 
+La base de donnée utilisée est MongoDB, **>= v3.6**. Compatible avec la version 4.0 
 
 ```yaml
 database:

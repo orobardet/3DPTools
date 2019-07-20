@@ -6,7 +6,7 @@ Elle peut être installé à la main à partir des sources, ou bien via des cont
 ## Stack technique
 
 - [Node.js](https://nodejs.org/) (12.x ou supérieur) avec [Yarn](https://yarnpkg.com)
-- [MongoDB](https://www.mongodb.com/) (3.6 ou supérieur)
+- [MongoDB](https://www.mongodb.com/) (3.6 ou supérieur), compatible avec la 4.0
 - [Redis](https://redis.io/)
 
 ## Docker

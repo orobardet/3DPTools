@@ -508,5 +508,14 @@
   "Left length must be greater than 0.": "La longueur restante doit être supérieure à 0.",
   "Filament empty, it will be set as finished.": "Filament vide, il sera marqué comme terminé.",
   "It is possible to tell that the filament is empty by putting '0' as left weight or length. The filament will then be set as finished.": "Il est possible d'indiquer que le filament est vide en mettant '0' comme poids ou longueur restant. Le filament sera alors marqué comme terminé.",
-  "Add/substract length must be greater than 0.": "La longueur ajoutée ou retirée doit être supérieure à zéro."
+  "Add/substract length must be greater than 0.": "La longueur ajoutée ou retirée doit être supérieure à zéro.",
+  "Bleu": "Bleu",
+  "Vert": "Vert",
+  "Rouge Cerise": "Rouge Cerise",
+  "Bleuet": "Bleuet",
+  "Argent": "Argent",
+  "Sable": "Sable",
+  "Perle": "Perle",
+  "Blanc craie": "Blanc craie",
+  "Orange Fluo": "Orange Fluo"
 }
