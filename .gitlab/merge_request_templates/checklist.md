@@ -1,5 +1,5 @@
 
 ## Checklist
 
-- [ ] [Documentation](doc/) mise à jour
-- [ ] [CHANGELOG.md](CHANGELOG.md) mis à jour
+- [ ] [Documentation](doc/) updated
+- [ ] [CHANGELOG.md](CHANGELOG.md) updated
