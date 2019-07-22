@@ -1,5 +1,7 @@
 # Next
 
+Starting with this version, 3DPTools **runs on NodeJS 12** and is compatible with MongoDB 4.0 (but not required). 
+
 - [Tec] Compatibility with MongoDB 4.0 (#135)
 - [Tec] Upgrade to NodeJS 12 (#137)
 
@@ -9,11 +11,11 @@
 
 # v1.4.0
 
-> This version introduce features requiring new application capabilitiy: sending emails. 
-> By default, **email sending and all dependent feature are disabled**.
-> Check README for documentation about email configuration.
+This version introduce features requiring new application capability: sending emails. 
+By default, **email sending and all dependent feature are disabled**.
+Check README for documentation about email configuration.
 
-> This version bumps to MongoDB **3.6**
+This version bumps to MongoDB **3.6**
 
 - [New] Embedded documentation (#79)
 - [New] Configuration files are now in YAML (#99)
@@ -78,7 +80,7 @@ Can be run any time on a running instance, after version upgrade.
 
 # v1.3.0
 
-> This version **REQUIRES** MongoDB **3.4**, with **[3.4 feature compatibility enabled](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)**!
+This version **REQUIRES** MongoDB **3.4**, with **[3.4 feature compatibility enabled](https://docs.mongodb.com/manual/reference/command/setFeatureCompatibilityVersion/)**!
 
 - [New] Allow creation of material variants (#68)
 - [New] Add master color for filament, to allow searching filament in all color nuances (#60)
