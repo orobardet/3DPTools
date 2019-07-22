@@ -8978,6 +8978,10 @@ table td.not-found {
   color: orange; }
 .changelog .changelog-type-tec {
   color: gray; }
+.changelog .changelog-type-doc {
+  color: purple; }
+.changelog .changelog-type-sec {
+  color: red; }
 
 .system-section #system-information .last-update {
   color: gray;

@@ -7,7 +7,7 @@ module.exports = function (app) {
         res.locals.changelogFormatter = text => {
 
             text = text.replace(/^#/umg, '##');
-            text = text.replace(/^(\s*-\s*)\[(New|Imp|Fix|Tec)\]/umg, (match, p1, p2) => {
+            text = text.replace(/^(\s*-\s*)\[(New|Imp|Fix|Tec|Doc|Sec)\]/umg, (match, p1, p2) => {
                 return p1+'<span class="changelog-type"><span class="changelog-type-'+p2.toLowerCase()+'">'+p2.toUpperCase()+'</span></span>';
             });
 
