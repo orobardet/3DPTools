@@ -145,12 +145,7 @@
         <% filaments.forEach(function (filament) { %>
         <tr data-url="/filament/show/<%- filament.id %>"<% if (filament.finished) { %> class="filament-finished"<% } %>>
             <td class="trg-show-filament" >
-                <div class="color-preview-container">
-                    <div class="color-preview" data-toggle="tooltip" data-placement="left"
-                         title="<%- filament.color.name.replace(" ", "&nbsp;") %>"
-                         style="background-color: <%- filament.color.code %> %>;">
-                    </div>
-                </div>
+                <%- include('../partial/colorPreview.ejs', { primaryColor: filament.color }); %>
             </td>
             <td class="trg-show-filament" >
                 <% if (filament.material ) { %>

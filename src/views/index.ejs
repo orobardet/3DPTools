@@ -315,6 +315,7 @@
 
 <script type="text/javascript">
     $(function () {
+        $('[data-toggle="tooltip"]').tooltip({html:true})
         $('.selectpicker').selectpicker();
 
         $('form#filament-search').on('change', 'input, select', function() {

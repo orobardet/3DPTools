@@ -251,6 +251,7 @@ function scrollToHash() {
 }
 
 $(function() {
+    $('[data-toggle="tooltip"]').tooltip({html:true})
     $('.selectpicker').selectpicker();
 
     updateCancelSearchButtonVisibility();

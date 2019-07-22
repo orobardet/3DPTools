@@ -1,10 +1,6 @@
 <tr>
     <td class="color-cell">
-        <div class="color-preview-container">
-            <div title="<%- filament.color.name %>" class="color-preview"
-                 style="background-color: <%- filament.color.code %> %>;">
-            </div>
-        </div>
+        <%- include('partial/colorPreview.ejs', { primaryColor: filament.color }); %>
     </td>
     <td class="material-cell"><%- filament.material.name %></td>
     <td class="brand-cell">

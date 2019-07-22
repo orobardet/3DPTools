@@ -1,0 +1,11 @@
+<% if (locals.primaryColor && primaryColor.code) { %>
+<div class="color-preview-container">
+    <div class="color-preview"
+         <% if (primaryColor.name) { %>
+         data-toggle="tooltip" data-placement="<% if (locals.tooltipPlacement) { %><%- locals.tooltipPlacement %><% } else { %>left<% } %>"
+         title="<%- primaryColor.name.replace(" ", "&nbsp;") %>"
+         <% } %>
+         style="background-color: <%- primaryColor.code %>;">
+    </div>
+</div>
+<% } %>

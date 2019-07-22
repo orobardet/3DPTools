@@ -2,11 +2,7 @@
 <% filaments.forEach(function (filament) { %>
 <tr class="filament-item" id="filament-<%- filament._id %>" data-id="<%- filament._id %>" data-filament="<%= JSON.stringify(filament.getData(true)); %>" data-left-weight="<%= filament.leftMaterialWeight() %>" data-left-length="<%= filament.getLeftLength() %>">
     <td>
-        <div class="color-preview-container">
-            <div title="<%- filament.color.name %>" class="color-preview"
-                 style="background-color: <%- filament.color.code %>;">
-            </div>
-        </div>
+        <%- include('../partial/colorPreview.ejs', { tooltipPlacement: 'right', primaryColor: filament.color }); %>
     </td>
     <td>
         <span class="material-name" title="<%- filament.material.name %>"><%- filament.material.name %></span>

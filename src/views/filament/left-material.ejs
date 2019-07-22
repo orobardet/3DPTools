@@ -28,8 +28,7 @@
             <tr>
                 <td><%- __('Color:') %></td>
                 <td>
-                    <div class="color-preview-container"><i title="<%- filament.color.name %>" class="color-preview"
-                                                            style="background-color: <%- filament.color.code %> %>;"></i></div>
+                    <%- include('../partial/colorPreview.ejs', { primaryColor: filament.color }); %>
                     <%- filament.color.name %>
                 </td>
             </tr>
