@@ -3,6 +3,7 @@
 Starting with this version, 3DPTools **runs on NodeJS 12** and is compatible with MongoDB 4.0 (but not required). 
 
 - [Doc] French translation for configuration documentation page (#139)
+- [Imp] Log error message if connection to Redis is not possible or broken (#138)
 - [Tec] Compatibility with MongoDB 4.0 (#135)
 - [Tec] Upgrade to NodeJS 12 (#137)
 

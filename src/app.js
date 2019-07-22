@@ -74,16 +74,32 @@ module.exports = function(bootstrapOptions) {
         const RedisSessionStore = require('connect-redis')(session);
         const flash = require('connect-flash');
 
-        let redisStoreOptions = config.get("redis");
-        redisStoreOptions.prefix = config.get('session:name') + ':sessions:';
+        // Create Redis client
+        let redisOptions = config.get("redis");
+        redisOptions.prefix = config.get('session:name') + ':sessions:';
+        const redis = require('redis');
+        if (redisOptions.socket) {
+            redisOptions.client = redis.createClient(redisOptions.socket, options);
+        }
+        else {
+            redisOptions.client = redis.createClient(redisOptions);
+        }
+        let redisDebug = require('debug')('3DPTools:Redis');
+        redisOptions.client.on('error', (err) => {
+            redisDebug(err);
+        });
+        redisOptions.client.on('connect', () => {
+            redisDebug("Redis connected.");
+        });
 
+        // Create and use redis session store
         app.use(session({
             name: config.get('session:name'),
             resave: false,
             secret: config.get('session:secret'),
             saveUninitialized: false,
             unset: 'destroy',
-            store: new RedisSessionStore(redisStoreOptions)
+            store: new RedisSessionStore(redisOptions)
         }));
         app.use(flash());
     }
