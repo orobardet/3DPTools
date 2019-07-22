@@ -7,26 +7,25 @@ process.env.NODE_ENV = 'test';
 module.exports = {
     mongoose:  null,
 
-    connectDB: async function (done) {
+    connectDB: async function () {
         mongoose.Promise = global.Promise;
         if (mongoose.connection.readyState === 0) {
-            await mongoose.connect(process.env.MONGO_URL, {
-                promiseLibrary: global.Promise
+            return await mongoose.connect(process.env.MONGO_URL, {
+                promiseLibrary: global.Promise,
+                useNewUrlParser: true
             });
         }
     },
 
-    disconnectDB: function(done) {
-        mongoose.disconnect();
-
-        if (done) done();
+    disconnectDB: async function() {
+        return await mongoose.disconnect();
     },
 
-    clearDB: function (done) {
+    clearDB: async function () {
+        let collectionClearings = [];
         for (let i in mongoose.connection.collections) {
-            mongoose.connection.collections[i].remove(function () {
-            });
+            collectionClearings.push(mongoose.connection.collections[i].deleteMany())
         }
-        if (done) done();
+        return await Promise.all(collectionClearings);
     }
-}
+};

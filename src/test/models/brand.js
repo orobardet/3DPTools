@@ -177,7 +177,7 @@ describe('Brands', async function () {
     describe('Delete brands', function() {
         it('should delete the "Brand 1" brand', async function() {
             let brand = await Brand.findOne().exec();
-            return Brand.findById(brand._id).remove().exec();
+            return Brand.findByIdAndDelete(brand._id).exec();
         });
         it('should be only 1 brand', async function () {
             let brands = await Brand.find().sort('name').exec();
@@ -185,7 +185,7 @@ describe('Brands', async function () {
         });
         it('should delete the "Brand 2" brand', async function() {
             let brand = await Brand.findOne().exec();
-            return Brand.findById(brand._id).remove().exec();
+            return Brand.findByIdAndDelete(brand._id).exec();
         });
         it('should not be any brands', async function () {
             let brands = await Brand.find().sort('name').exec();
