@@ -26,7 +26,7 @@ All available configuration settings can be found in the internal default config
 > Do **NOT** modify this file! Create a new one with your overrided settings, that will be loaded when starting the application.
 
 Some of theses settings are not interesting to override. You don't need to use all the settings in your configuration file, 
-just add the one you need, but you must respect the structire.  
+just add the one you need, but you must respect the structure.  
 For example, if you want to configure a specific host for Redis and MongoDB, with a user and password for the latter, 
 and set a SMTP server host for sending emails, create a `myconfig.yml` file containing: 
 
@@ -42,7 +42,7 @@ mail:
     host: 'smtp.mailserver.org'
 ``` 
 
-> Beware of the syntax of YAML, which is pretty strict: **2 spaces** intendation (not 3, not 4, not tab), no space between a key name and the following colon, a space after this colon.
+> Beware of the syntax of YAML, which is pretty strict: **2 spaces** indentation (not 3, not 4, not tab), no space between a key name and the following colon, a space after this colon.
 
 Once the file is created, you can use the `-c` option to start the application and have it use your configuration file:
 
@@ -108,7 +108,7 @@ The main configuration block is `database`.
 
 - `host` *Required* (string) Hostname of the MongoDB server
 - `port` *Required* (string|int) Port of the MongoDB server
-- `name` *Required* (string) Name of the MongoDB to use to store 3DPTools data. Will be created if not exists
+- `name` *Required* (string) Name of the MongoDB database to use to store 3DPTools data. Will be created if not exists
 - `user` (string) Username to connect to the MongoDB server, if needed. *It is recommended to enable auth on the MongoDb server* 
 - `pass` (string) Password to connect to the MongoDB server, if needed. *It is recommended to enable auth on the MongoDb server* 
 - `connectOptions` (object) Allow to pass some specific connection options to the MongoDB client driver
@@ -196,7 +196,7 @@ The main configuration block is `mail`.
 
 ## Monitoring
 
-You can enable some monitoring feature, like a Prometheus metrics endpoint.
+You can enable some monitoring feature, like a [Prometheus](https://prometheus.io/) metrics endpoint.
 
 ```yaml
 monitoring:
@@ -220,9 +220,9 @@ accounts:
 
 The main configuration block is `accounts`.
   
-- `recovery` Configure the account recovy feature ("I forgot my password")
+- `recovery` Configure the account recovery feature ("I forgot my password")
   - `ttl` (int) In hours. Number of hours after which the account recovery request will expire.
-  - `tokenLength` (int) Lneght in byte of the random unique recovery token generated for the recovery (will be used in the link sent to the user to recover his account). 
+  - `tokenLength` (int) Lenght in byte of the random unique recovery token generated for the recovery (will be used in the link sent to the user to recover his account). 
 
 ## Filaments
 

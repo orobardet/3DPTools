@@ -2,7 +2,7 @@
 
 Cette application peut être configurée en spécifiant des paramètres au démarrage. La plupart des paramètres ont des 
 valeurs par défaut. Ceux qui n'en ont pas correspondent à des fonctionnalités désactivées par défaut (par exemple 
-l'envoi d'email), ou qui nécessitent des valeur spécifique à l'environnement (par exemple Redis ou MongoDB) et sont donc 
+l'envoi d'email), ou qui nécessitent des valeurs spécifiques à l'environnement (par exemple Redis ou MongoDB) et sont donc 
 des paramètres obligatoires.
 
 Il est recommandée de bien spécifier des valeur à tous les paramètres nécessaires, afin que l'application corresponde à 
@@ -28,14 +28,14 @@ Il faut créer un fichier `.yml`, et y ajouter tous les paramètres de configura
 Tous les paramètres de configurations possibles et leur valeur par défaut sont disponibles dans le fichier 
 [src/config/default.yml](src/config/default.yml).
 
-
 > Ne **PAS** modifier ce fichier ! En créer un nouveau contenant les paramètres que vous voulez définir, et qui sera
 > passé en paramètre en démarrage de l'application. 
 
-Some of theses settings are not interesting to override. You don't need to use all the settings in your configuration file, 
-just add the one you need, but you must respect the structire.  
-For example, if you want to configure a specific host for Redis and MongoDB, with a user and password for the latter, 
-and set a SMTP server host for sending emails, create a `myconfig.yml` file containing: 
+Certains de ces paramètres ne sont pas n'ont pas beaucoup d'utilité à être redéfinis. Vous n'avez pas besoin de déclarer 
+tous les paramètres dans votre fichier de configuration, ajoutez juste ceux qui vous intéressent, mais vous devez 
+respecter la structure des paramètres.   
+Par exemple, si vous voulez configurer un host spécifique pour Redis et MongoDb, avec un utilisateur et un mot de passe 
+pour ce dernier, et voulez configurer un serveur SMTP pour l'envoi d'email, créez un fichier `myconfig.yml` contenant :
 
 ```yaml
 redis:
@@ -49,9 +49,11 @@ mail:
     host: 'smtp.mailserver.org'
 ``` 
 
-> Beware of the syntax of YAML, which is pretty strict: **2 spaces** intendation (not 3, not 4, not tab), no space between a key name and the following colon, a space after this colon.
+> Attention à la syntaxe du YAML, qui est assez stricte: **2 espaces** pour l'indentation (pas 3, pas 4, pas de tabulation),
+> pas d'espace entre le nom d'une clé et les ':' qui suivent, mais un espace après ces ':'.
 
-Once the file is created, you can use the `-c` option to start the application and have it use your configuration file:
+Une fois le fichier créé, vous pouvez utiliser l'option de ligne de commande `-c` pour démarrer l'application en lui 
+indiquant votre fichier de configuration à utiliser : 
 
 ```shell
 yarn start -c path/to/myconfig.yml
@@ -59,10 +61,11 @@ yarn start -c path/to/myconfig.yml
 
 ## Variables d'environnement
 
-Using environment variables is simple: each settings in the YAML configuration file correspond to a variable whose name 
-is the concatenation of each key from the top of the structure, joined by `__` (2 underscores).
+L'utilisation des variables d'environnement obéit à une règle simple : chaque paramètres dans le fichier YAML de 
+configuration correspond à une variable d'environnement dont le nom est la concatenation de chaque clés YAML depuis la 
+racine, joins avec `__` (2 underscores).
 
-So for example, the same configuration than the example above can be set using environment variables like this:
+Donc par exemple, la même configuration que l'exemple ci-dessus avec des variables d'environnement sera :
 
 ```shell
 redis__host="redis.host"
@@ -72,19 +75,22 @@ database__pass="secret_password"
 mail__smtp__host="smtp.mailserver.org"
 ```
 
-> The variable names are **case-sensitive**.
+> Les noms des variables d'environnement sont **sensibles à la casse**.
 
 # Paramètres de configuration
 
-This section will list all available configuration settings with description of how to use them.  
+Cette section liste tous les paramètres de configuration disponible avec une description de leur utilisation.
 
-All examples use the YAML syntax, as root from a `.yml` file (e.g.: you can copy paste the block as is in you config file).  
-All values used in the example are the default values.
-Merge them smartly and convert them in environment variables name if needed.  
+Tous les exemples sont présentés en utilisant le format d'un fichier de configuration YAML en partant de la racine 
+(vous pouvez donc les copier/coller par bloc dans votre fichier de configuration).  
+Tous les valeurs utilisées dans les exemples sont les valeurs par défaut.  
+Combiner les exemples selon vos besoins, et ils peuvent tous être convertis au format variable d'environnement si 
+nécessaire.
 
 ## Redis
 
-Redis is used to store session data, as well as cache storage. It is required for the application to run.
+Redis est utilisé pour stocké les données de session, ainsi que pour du cache. Son usage n'est pas optionnel, il doit 
+y avoir un Redis pour que l'application fonctionne.
 
 ```yaml
 redis:
@@ -92,10 +98,10 @@ redis:
   port: '6379'
 ```
 
-The main configuration block is `redis`.
+Le bloc de configuration principal est `redis`.
 
-- `host` *Required* (string) Hostname of the Redis server
-- `port` *Required* (string|int) Port of the Redis server. Default value will fit most users.
+- `host` *Requis* (string) Hostname du serveur Redis.
+- `port` *Requis* (string|int) Port du serveur Redis. La valeur par défaut est le port Redis standard.
 
 ## Base de données
 
@@ -111,18 +117,18 @@ database:
   connectOptions: {}
 ```
 
-The main configuration block is `database`.
+Le bloc de configuration principal est `database`.
 
-- `host` *Required* (string) Hostname of the MongoDB server
-- `port` *Required* (string|int) Port of the MongoDB server
-- `name` *Required* (string) Name of the MongoDB to use to store 3DPTools data. Will be created if not exists
-- `user` (string) Username to connect to the MongoDB server, if needed. *It is recommended to enable auth on the MongoDb server* 
-- `pass` (string) Password to connect to the MongoDB server, if needed. *It is recommended to enable auth on the MongoDb server* 
-- `connectOptions` (object) Allow to pass some specific connection options to the MongoDB client driver
+- `host` *Requis* (string) Hostname du serveur MongoDB.
+- `port` *Requis* (string|int) Port du serveur MongoDB. La valeur par défaut est le port MongoDB standard.
+- `name` *Requis* (string) Nom de la base MongoDB qui sera utilisée pour stocker les données de 3DPTools. Sera créée par l'application si elle n'existe pas.
+- `user` (string) Nom d'utilisateur pour se connecter au server MongoDB, si nécessaire. *Il est recommandé d'activer l'authentification sur le serveur MongoDB*. 
+- `pass` (string) Mot de passe pour se connecter au server MongoDB, si nécessaire.  *Il est recommandé d'activer l'authentification sur le serveur MongoDB*. 
+- `connectOptions` (object) Permet de passer des options de connexion directement au driver client MongoDB.
 
 ## Session
 
-Settings to configure web session. 
+Paramètres pour configurer les sessions. 
 
 ```yaml
 session:
@@ -135,34 +141,36 @@ session:
     - 068ba006-1cd2-473e-ae39-506c20fa2dc1
 ```
 
-The main configuration block is `session`.
+Le bloc de configuration principal est `session`.
 
-- `name` (string) Then name of the session to use, which is the cookie name. You may safely leave the default value.
-- `secret` *Required* (array of strings) A list of strings used to encrypt session data. *It is highly recommended to replace the default value by specific one for your instance*. [UUID](https://www.uuidgenerator.net/) a great as values. **Do NOT use the value from the example above**.
+- `name` (string) Le nom de session, qui sera le nom du cookie. Vous pouvez conserver la valeur par défaut.
+- `secret` *Requis* (array of strings) Une liste de chaîne de caractères pour chiffrer les données de sessions. **Doit rester secret**. *Il est très fortement recommandé de remplacer les valeurs par défaut par des valeurs spécifiques à votre installation*. Des [UUID](https://www.uuidgenerator.net/) sont de bonnes valeurs. **<u>Ne PAS utiliser les valeurs de l'exemple ci-dessus</u>**.
 
 ## Langue
 
-Used to configure localization.
+Pour configurer la localisation.
 
 ```yaml
 language:
   cookieName: locale
 ```
 
-The main configuration block is `language`.
+Le bloc de configuration principal est `language`.
 
-- `cookieName` (string) Name of the cookie that will contains the locale selected by the user.
+- `cookieName` (string) Nom du cookie qui contiendra la langue choisie par l'utilisateur.
 
 ## Envoyer un email
 
-Some of the feature within the application needs to send email. And sending emails needs a specific configuration.   
-By default there is no configuration.
+Certaine fonctionnalités de l'application ont besoin d'envoyer des emails. L'envoie d'email nécessite d'être configuré.  
+Par défaut il n'y a pas de configuration pour l'envoie d'email.
 
-In case no valid email configuration is found, the application will disable all features requiring to send emails (account recovery)
+Dans le cas où aucune configuration valide n'est présente, l'application désactivera toutes les fonctionnalité nécessitant 
+l'envoie d'email (récupération de compte et changement de mot de passe par exemple).
 
-For now, only one transport method is supported: SMTP.
+Pour le moment, une seule méthode de transport est reconnue : SMTP.
 
-If you need to test your configuration, there is a button to send a test email on the WebUI, in admin -> show configuration section.
+So vous avez besoin de tester si votre configuration fonctionne, il y a un bouton pour tester l'envoie d'un email dans 
+l'interface de l'application, dans la section "Administration" -> "Afficher la configuration".
 
 ```yaml
 mail:
@@ -182,28 +190,28 @@ mail:
     mail: ''
 ```
 
-The main configuration block is `mail`.
+Le bloc de configuration principal est `mail`.
 
-- `enabled` (boolean) Enable or not the mail sending capabilities, and so all the dependent features. If `true` but no valid and working configuration is defined, the application will force this settings to `false` on startup.
-- `debug` (boolean) Enable debug message on console. Helpfull to fix non working email configuration. 
-- `verboseDebug` (boolean) If '`debug` is enabled, setting this to `true` will log even more message on console.
-- `testConnection` (boolean) If enabled, on startup the application will try to "connect" using the transport method (for SMTP, it will try to connect to the SMTP serveur, but *not* to send an email). If the test failed, the application will force the `enabled` setting to `false`.
-- `smtp` *Required* Configure the SMTP transport
-  - `host` *Required*(string) Hostname of the SMTP server
-  - `port` *Required* (string|int) Port of the SMTP server
-  - `secure` (boolean) Set to `true` to enable secured (SSL) connection to the SMTP server
-  - `needAuth` (boolean) Set to `true` it the SMTP server need authentification, and set values to `user` and `pass`.
-  - `user` (string) Only if authentification is enabled, the username (login) for auth
-  - `pass` (string) Only if authentification is enabled, the password for auth
-- `from` *Required* Identity the application will use as sender (*From:*) of all emails
-  - `name` *Required* (string) Name of the sender
-  - `mail` *Required* (string) email address of the sender.  
+- `enabled` (boolean) Active ou non la capacité à envoyer des emails, et donc toutes les fonctionnalités qui en dépendent. Si `true` mais qu'il n'y a pas de configuration valide et fonctionnelle, l'application forcera ce paramètre à `false` au démarrage.
+- `debug` (boolean) Active les messages de debug pour l'envoie des email sur la console (stdout, logs docker). Utile pour corriger des configurations qui ne fonctionnent pas. 
+- `verboseDebug` (boolean) Si '`debug` est activé, mettre ce paramètre à `true` écrira encore plus de message de debug.
+- `testConnection` (boolean) Si activé, au démarrage l'application tentera de se "connecter" au mécanisme de transport configuré (pour SMTP, elle essaiera de se connecter au serveur SMTP, mais n'enverra *aucun* email). Si le test échoue, l'application forcera le paramètre `enabled` à `false`.
+- `smtp` *Requis* Configure le transport SMTP.
+  - `host` *Requis*(string) Hostname du serveur SMTP.
+  - `port` *Requis* (string|int) Port du serveur SMTP.
+  - `secure` (boolean) Mettre à `true` pour activer la connexion sécurisée (SSL) au serveur SMTP.
+  - `needAuth` (boolean) Mettre à `true` si le serveur SMTP requière une authentification, et définir les paramètres `user` et `pass`.
+  - `user` (string) Uniquement si l'authentification SMTP est activée, nom d'utilisateur (login) à utiliser.
+  - `pass` (string) Uniquement si l'authentification SMTP est activée, mot de passe à utiliser.
+- `from` *Requis* Identité que l'application utilisera comme expéditeur (*From:*) de tous les emails.
+  - `name` *Requis* (string) Nom de l'expéditeur
+  - `mail` *Requis* (string) Adresse email de l'expéditeur. 
 
-> Please not that **many** email servers **require** the sender email address to exists (or at least the domain, with a valid and responding email server). So use a real email address.  
+> Merci de noter que **beaucoup** de serveurs d'envoie de mail **imposent**  que l'adresse email de l'expéditeur existe (ou au moins que le domaine existe, avec un serveur d'email qui répond). Donc utiliser une véritable adresse email.
 
 ## Supervision
 
-You can enable some monitoring feature, like a Prometheus metrics endpoint.
+Vous pouvez activer ici les fonctionnalités de supervision, comme l'export de métriques pour [Prometheus](https://prometheus.io/).
 
 ```yaml
 monitoring:
@@ -211,10 +219,10 @@ monitoring:
     enabled: true
 ```
 
-The main configuration block is `monitoring`.
+Le bloc de configuration principal est `monitoring`.
 
-- `prometheus` Configure Prometheus metrics endpoint. It will be accessible on the `http://your.3dptools.fqdn:PORT/metrics` URL.
-  - `enabled` (boolean) Enable the Prometheus metrics endpoint
+- `prometheus` Configure le point de collecte de métriques pour Prometheus. Il sera accessible à l'adresse `http://your.3dptools.fqdn:PORT/metrics`.
+  - `enabled` (boolean) Active le point de collecte de métrique pour Prometheus.
 
 ## Comptes utilisateurs
 
@@ -225,11 +233,11 @@ accounts:
     tokenLength: 32
 ```
 
-The main configuration block is `accounts`.
+Le bloc de configuration principal est `accounts`.
   
-- `recovery` Configure the account recovy feature ("I forgot my password")
-  - `ttl` (int) In hours. Number of hours after which the account recovery request will expire.
-  - `tokenLength` (int) Lneght in byte of the random unique recovery token generated for the recovery (will be used in the link sent to the user to recover his account). 
+- `recovery` Configure la fonctionnalité de récupération de compte ("J'ai oublié mon mot de passe")
+  - `ttl` (int) En heures. Nombre d'heure au bout desquelles une demande de récupération de compte expirera.
+  - `tokenLength` (int) Longueur en octets de token de récupération unique et aléatoire généré pour la récupération (il est utilisé dans le lien envoyé par mail à l'utilisateur pour récupérer son compte). 
 
 ## Filaments
 
@@ -243,14 +251,14 @@ filament:
     almostFinishedPercentThreshold: 25
 ```
 
-The main configuration block is `filament`.
+Le bloc de configuration principal est `filament`.
 
-- `leftThresholds`
-  - `warning` (int) Threshold in percentage under which a filament will be consider as low level (orange color) 
-  - `danger` (int) Threshold in percentage under which a filament will be consider as very low level (red color)
-- `index` Settings for the homepage
-  - `lastUsedCount` (int) Number of last used filaments
-  - `almostFinishedPercentThreshold` (int) Percentage under which a filament is consider as "almost finished".
+- `leftThresholds` Seuils pour la quantité de matières restante par filament.
+  - `warning` (int) Seuil en pourcentage de filament restant en dessous duquel un filament sera considéré comme bas (couleur orange) 
+  - `danger` (int) Seuil en pourcentage de filament restant en dessous duquel un filament sera considéré comme très bas (couleur rouge)
+- `index` Paramètres pour la page d'accueil.
+  - `lastUsedCount` (int) Nombre de filament récemment utilisé à afficher.
+  - `almostFinishedPercentThreshold` (int) Pourcentage de filament restant en dessous duquel un filament sera affiché dans la section "Presque terminés".
 
 ## Divers
 
@@ -259,4 +267,4 @@ upload:
   tmpPath: tmp/uploads
 ```
 
-- `upload.tmpPath` (string) Path where the application will temporary store the file uploaded by the user (images and other attachements) 
+- `upload.tmpPath` (string) Chemin où l'application déposera temporairement les fichiers uploadés par l'utilisateur (images et autres pièces jointes), avant leur stockage définitif. 
