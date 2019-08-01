@@ -21,6 +21,10 @@ module.exports = function (app) {
         field("colorCode", "Color code")
             .trim()
             .required(),
+        field("secondaryColorName", "Secondary color name")
+            .trim(),
+        field("secondaryColorCode", "Secondary color code")
+            .trim(),
         field("masterColor", "Master color")
             .trim()
             .required(),

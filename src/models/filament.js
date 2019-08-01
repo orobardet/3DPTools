@@ -18,6 +18,10 @@ module.exports = function (app) {
             name: String,
             code: String    // CSS compliant #hex color code or rgba
         },
+        secondaryColor: {
+            name: String,
+            code: String    // CSS compliant #hex color code or rgba
+        },
         masterColorCode: String, // CSS compliant #hex color code or rgba
         pictures: [{
             id: Schema.Types.ObjectId,
@@ -68,8 +72,9 @@ module.exports = function (app) {
      * - 5: add pricePerKG
      * - 6: replace speedPercentage with printingSpeed range
      * - 7: add masterColor
+     * - 8: add secondary Color
      */
-    filamentSchema.statics.currentVersion = 7;
+    filamentSchema.statics.currentVersion = 8;
 
     filamentSchema.virtual("displayName").get(function() {
         if (this.name && this.name.trim() != "") {

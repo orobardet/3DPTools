@@ -17,6 +17,7 @@ module.exports = function (app) {
             sort: {
                 'masterColorCode': 1,
                 'color.code': 1,
+                'secondaryColor.code': 1,
                 'material.name': 1,
                 'brand.name': 1
             }
@@ -378,6 +379,12 @@ module.exports = function (app) {
                 materialLeftPercentage: 100,
                 flowPercentage: 100
             });
+            if (req.form.secondaryColorName) {
+                filament.secondaryColor.name = req.form.secondaryColorName;
+            }
+            if (req.form.secondaryColorCode) {
+                filament.secondaryColor.code = req.form.secondaryColorCode;
+            }
             if (req.form.headTempMin) {
                 filament.headTemp.min = req.form.headTempMin;
             }
@@ -505,6 +512,8 @@ module.exports = function (app) {
             filament.color.name = req.form.colorName;
             filament.color.code = req.form.colorCode;
             filament.masterColorCode = req.form.masterColor;
+            filament.secondaryColor.name = req.form.secondaryColorName;
+            filament.secondaryColor.code = req.form.secondaryColorCode;
             filament.shop = req.form.shop;
             filament.buyDate = new Date(req.form.buyDate * 1000);
             filament.price = req.form.price;
@@ -1021,6 +1030,7 @@ module.exports = function (app) {
 
             return res.render('filament/cost-calculator', {
                 navSubModule: 'cost-calculator',
+                pageTitle: 'Cost calculator',
                 docPath: "filaments/cost_calculator.md",
                 cancelUrl: req.getOriginUrl("filament/cost-calculator", "/filament"),
                 materials: materials,

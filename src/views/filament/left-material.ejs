@@ -28,8 +28,7 @@
             <tr>
                 <td><%- __('Color:') %></td>
                 <td>
-                    <%- include('../partial/colorPreview.ejs', { primaryColor: filament.color }); %>
-                    <%- filament.color.name %>
+                    <%- include('../partial/colorPreview.ejs', { size: "large", primaryColor: filament.color, secondaryColor: filament.secondaryColor }); %>
                 </td>
             </tr>
             <tr>

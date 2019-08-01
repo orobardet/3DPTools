@@ -8,11 +8,14 @@ ignore:
         expires: 2018-12-31T17:34:09.936Z
       express-form > validator:
         reason: No remediation
+        expires: '2019-09-14T15:56:29.815Z'
+    - express-form > validator:
+        reason: No remediation
         expires: '2019-08-14T16:34:44.246Z'
   'npm:validator:20160218':
     - express-form > validator:
         reason: No remediation
-        expires: '2019-08-14T16:34:44.246Z'
+        expires: '2019-09-14T15:56:29.815Z'
   'npm:validator:20180218':
     - express-form > validator:
         reason: No possible fix

@@ -8711,11 +8711,14 @@ ul.material-files {
 .color-preview-container {
   display: inline-block;
   height: 16px;
-  vertical-align: text-top;
   width: 16px;
+  vertical-align: text-top;
   background-repeat: repeat;
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAAArSURBVDhPY9iPA/zHAUY1IAOoPAYgXQOUxgBQfRhgVAMygMpjABI17N8PAKcQnR/BFzdFAAAAAElFTkSuQmCC);
   position: relative; }
+  .color-preview-container.large {
+    height: 48px;
+    width: 48px; }
   .color-preview-container .color-preview {
     border: solid 1px #333;
     position: absolute;
@@ -8753,9 +8756,6 @@ ul.material-files {
 
 .filament-section .filament-left-data {
   font-size: small; }
-.filament-section .table.filament-list td .color-preview-container {
-  height: 46px;
-  width: 46px; }
 .filament-section .table.filament-list .brand-logo, .filament-section .table.filament-list .shop-logo {
   max-height: 46px;
   max-width: 130px; }

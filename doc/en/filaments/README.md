@@ -20,12 +20,16 @@ A filament has multiple features.
 - **The [material](doc/en/materials)**. Mandatory.
 - **The diameter**, in mm (*1.75*, *2.85*, *3.0*, ...). Mandatory.
 - **The [brand](doc/en/brands)**. Mandatory. 
-- **The color**. Mandatory. It can be chosen from a list of pre-defined or already used colors, or it is possible to set
+- **The primary color**. Mandatory. It can be chosen from a list of pre-defined or already used colors, or it is possible to set
 a specific color giving:
   - Its name
   - Its color code, using HTML/CSS syntax (`#RRVVBB`, `rgb(<Red>, <Green>, <Blue>)`, 
     `rgba(<Red>, <Green>, <Blue>, <Transparency>)`).
-- **A main color**. Mandatory, with automatique computing of the nearest main color by the application.
+- **The secondary color**. Optional, it can be defined for example for UV or temperature reactive filaments that change their color.    
+  Like the primary color, it can be chosen from a list of pre-defined or already used colors, or is it possible to set a 
+  specific color giving its name and code.  
+  Filaments with a secondary color will use a gradient from primary to secondary color to preview their color. 
+- **A main color**. Mandatory, with automatique computing of the nearest main color by the application from the primary color.
   Main colors list is not customisable. Main color is used to regroup different kind of color behind a global one, 
   allowing easier filtering and search in the application.   
   e.g.: filaments with color *sky blue*, *dark blue* or *turquoise* will all have *blue* as main color.  
@@ -92,7 +96,7 @@ The list of already existing filaments in the application can be viewed in the [
 ![Filaments list](doc/en/filaments/filaments.png "Example of a filaments list in the application")
 
 They are shown as a list, with for each of them:
-- The color
+- Colors
 - The material and the diameter
 - Initial materiel weight and density
 - Buying price, and the extrapolated price per kg
@@ -132,7 +136,7 @@ By default all not finished filament are shown in the filament list.
 
 To filter the filament shown, several selectors are available on the second row of the list headers, allowing to filter 
 on:
-- Color. It is possible to select an exact color, or a master color.
+- Color. It is possible to select an exact primary color, or a master color.
 - Material. By default the filtering is done on the exact material. Toggling the button right after the selector enables
   the material filtering also on variant of the selected material.
 - Shop.
@@ -148,7 +152,7 @@ open the [new filament form](/filament/add).
 
 All features of a filament can be inputed in the form, except for pictures.
 
-When selecting a color (pre-defined, already used or a custom on), the master color is automatically selected by a 
+When selecting a primary color (pre-defined, already used or a custom on), the master color is automatically selected by a 
 nearest color algorithm.  
 Vous can force this computing using the dedicated button: ![](doc/fr/filaments/master-color-button.png)  
 It is also possible to manually select the master color, in case of an error during the nearest color computing (which 

@@ -119,41 +119,45 @@
 
         <div class="row">
             <div class="col-md-8">
-                <label for="colorName" class="control-label required"><%- __('Color:'); %></label>
+                <label for="colorName" class="control-label"><%- __('Colors:'); %></label>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="btn-group btn-block">
-                            <button type="button" class="btn btn-default btn-block dropdown-toggle"
+                            <button type="button" class="btn btn-info btn-block dropdown-toggle required"
                                     data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false"><%- __('Available colors') %> <span
+                                    aria-haspopup="true" aria-expanded="false"><%- __('Primary color') %> <span
                                         class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
                                     <div class="row" style="width: 400px;">
+                                        <div class="col-md-6">
+                                        <div class="dropdown-header"><%- __('Preset colors') %></div>
                                         <% if (Object.keys(predefinedColors).length) { %>
-                                        <ul class="dropdown-menu-col list-unstyled col-md-6">
-                                        <li class="dropdown-header"><%- __('Preset colors') %></li>
+                                        <ul class="dropdown-menu-col list-unstyled">
                                         <% for (var color in predefinedColors) { %>
-                                        <li><a href="#" class="trg-color-select" data-code="<%- predefinedColors[color] %>"
+                                        <li><a href="#" class="trg-color-select" data-type="primary" data-code="<%- predefinedColors[color] %>"
                                                data-name="<%- __(color) %>">
                                                 <div class="color-preview-container"><i class="color-preview"
                                                    style="background-color: <%- predefinedColors[color] %>;"></i></div>&nbsp;<%- __(color) %>
                                             </a></li>
                                         <% } %>
                                         </ul>
+                                        </div>
                                         <% } %>
                                         <% if (Object.keys(usedColors).length) { %>
-                                        <ul class="dropdown-menu-col list-unstyled col-md-6">
-                                        <li class="dropdown-header"><%- __('Already used colors') %></li>
+                                        <div class="col-md-6">
+                                        <div class="dropdown-header"><%- __('Already used colors') %></div>
+                                        <ul class="dropdown-menu-col list-unstyled">
                                         <% for (var color in usedColors) { %>
-                                        <li><a href="#" class="trg-color-select" data-code="<%- usedColors[color] %>"
+                                        <li><a href="#" class="trg-color-select" data-type="primary" data-code="<%- usedColors[color] %>"
                                                data-name="<%- __(color) %>">
                                                 <div class="color-preview-container"><i class="color-preview"
                                                    style="background-color: <%- usedColors[color] %>;"></i></div>&nbsp;<%- __(color) %>
                                             </a></li>
                                         <% } %>
                                         </ul>
+                                        </div>
                                         <% } %>
                                     </div>
                                 </li>
@@ -174,9 +178,9 @@
                             <% } %>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="form-group<%= (errors.colorCode) ? " has-error" : "" %>">
-                            <div class="input-group color-picker">
+                            <div class="input-group color-picker" id="colorPicker">
                                 <input type="text" class="form-control" id="colorCode" name="colorCode"
                                        placeholder="<%- __('Code'); %>"
                                        value="<%- (locals.colorCode) ? colorCode : (locals.sourceFilament) ? sourceFilament.color.code : '' %>"
@@ -189,6 +193,86 @@
                                 <li><%= __(msg) %></li>
                                 <% }); %>
                             </ul>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="btn-group btn-block">
+                            <button type="button" class="btn btn-info btn-block dropdown-toggle"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false"><%- __('Secondary color') %> <span
+                                        class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#" class="trg-color-select" data-type="secondary" data-code="" data-name="">
+                                        <i class="fa fa-ban" style="color:tomato;"></i> <%- __('No color') %>
+                                    </a>
+                                    <div class="row" style="width: 400px;">
+                                        <div class="col-md-6">
+                                            <div class="dropdown-header"><%- __('Preset colors') %></div>
+                                            <% if (Object.keys(predefinedColors).length) { %>
+                                                <ul class="dropdown-menu-col list-unstyled">
+                                                    <% for (var color in predefinedColors) { %>
+                                                        <li><a href="#" class="trg-color-select" data-type="secondary" data-code="<%- predefinedColors[color] %>"
+                                                               data-name="<%- __(color) %>">
+                                                                <div class="color-preview-container"><i class="color-preview"
+                                                                                                        style="background-color: <%- predefinedColors[color] %>;"></i></div>&nbsp;<%- __(color) %>
+                                                            </a></li>
+                                                    <% } %>
+                                                </ul>
+                                        </div>
+                                        <% } %>
+                                        <% if (Object.keys(usedColors).length) { %>
+                                            <div class="col-md-6">
+                                                <div class="dropdown-header"><%- __('Already used colors') %></div>
+                                                <ul class="dropdown-menu-col list-unstyled">
+                                                    <% for (var color in usedColors) { %>
+                                                        <li><a href="#" class="trg-color-select" data-type="secondary" data-code="<%- usedColors[color] %>"
+                                                               data-name="<%- __(color) %>">
+                                                                <div class="color-preview-container"><i class="color-preview"
+                                                                                                        style="background-color: <%- usedColors[color] %>;"></i></div>&nbsp;<%- __(color) %>
+                                                            </a></li>
+                                                    <% } %>
+                                                </ul>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group<%= (errors.secondaryColorName) ? " has-error" : "" %>">
+                            <input type="text" class="form-control" id="secondaryColorName" name="secondaryColorName"
+                                   placeholder="<%- __('Name'); %>" value="<%- (locals.secondaryColorName) ? secondaryColorName : (locals.sourceFilament) ? sourceFilament.secondaryColor.name : '' %>"
+                                   >
+                            <% if (errors.secondaryColorName) { %>
+                                <ul class="help-block with-errors">
+                                    <% errors.secondaryColorName.forEach(function(msg) { %>
+                                        <li><%= __(msg) %></li>
+                                    <% }); %>
+                                </ul>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group<%= (errors.secondaryColorCode) ? " has-error" : "" %>">
+                            <div class="input-group color-picker" id="secondaryColorPicker">
+                                <input type="text" class="form-control" id="secondaryColorCode" name="secondaryColorCode"
+                                       placeholder="<%- __('Code'); %>"
+                                       value="<%- (locals.secondaryColorCode) ? secondaryColorCode : (locals.sourceFilament) ? sourceFilament.secondaryColor.code : '' %>"
+                                       >
+                                <span class="input-group-addon"><div class="color-preview-container"><i class="color-preview"></i></div></span>
+                            </div>
+                            <% if (errors.secondaryColorCode) { %>
+                                <ul class="help-block with-errors">
+                                    <% errors.secondaryColorCode.forEach(function(msg) { %>
+                                        <li><%= __(msg) %></li>
+                                    <% }); %>
+                                </ul>
                             <% } %>
                         </div>
                     </div>
@@ -644,24 +728,48 @@
 
         $('.color-picker').colorpicker();
         $('.trg-color-select').click(function (e) {
-            var $this = $(this);
+            let $this = $(this);
 
             e.preventDefault();
 
-            var name = $this.data('name');
-            var code = $this.data('code');
+            let name = $this.data('name');
+            let code = $this.data('code');
+            let type = $this.data('type');
+
+            let $colorNameField;
+            let $colorCodeField;
+            let $colorPickerField;
+            switch (type) {
+                case "primary":
+                    $colorNameField = $('#colorName');
+                    $colorCodeField = $('#colorCode');
+                    $colorPickerField = $('#colorPicker')
+                    break;
+                case "secondary":
+                    $colorNameField = $('#secondaryColorName');
+                    $colorCodeField = $('#secondaryColorCode');
+                    $colorPickerField = $('#secondaryColorPicker')
+                    break;
+                default:
+                    return;
+            }
             if (name && code) {
-                $('#colorName').val(name);
+                $colorNameField.val(name);
                 var parsedColor = App3DPTools.colorParse(code);
                 var oldFormat = false;
                 if (parsedColor && parsedColor.format) {
-                    oldFormat = $('.color-picker').data('colorpicker').format;
-                    $('.color-picker').data('colorpicker').format = parsedColor.format;
+                    oldFormat = $colorPickerField.data('colorpicker').format;
+                    $colorPickerField.data('colorpicker').format = parsedColor.format;
                 }
-                $('.color-picker').colorpicker('setValue', code);
+                $colorPickerField.colorpicker('setValue', code);
                 if (parsedColor && parsedColor.format) {
-                    $('.color-picker').data('colorpicker').format = oldFormat;
+                    $colorPickerField.data('colorpicker').format = oldFormat;
                 }
+            } else {
+                $colorNameField.val('');
+                $colorPickerField.data('colorpicker').format = false;
+                $colorPickerField.colorpicker('setValue', 'rgba(0, 0, 0, 0)');
+                $colorCodeField.val('');
             }
         });
 

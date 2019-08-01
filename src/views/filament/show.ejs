@@ -1,4 +1,6 @@
-<h1><i class="rs rs-filament" style="color:<%- filament.color.code %>"></i>&nbsp;<%- filament.displayName %></h1>
+<h1><i class="rs rs-filament" style="color:<%- filament.color.code %>"></i>&nbsp<%- filament.displayName %>
+    <%- include('../partial/colorPreview.ejs', { size: "large", primaryColor: filament.color, secondaryColor: filament.secondaryColor }); %>
+</h1>
 
 <div class="filament-show-layout">
     <div class="filament-details<% if (filament.finished) { %> filament-finished<% } %>">
@@ -8,15 +10,28 @@
                 <td><% if (filament.material) { %><%- filament.material.name %><% } %></td>
             </tr>
             <tr>
-                <td><%- __('Color:') %></td>
+                <td>
+                    <%- __('Primary color:') %>
+                </td>
                 <td>
                     <%- include('../partial/colorPreview.ejs', { primaryColor: filament.color }); %>
                     <%- filament.color.name %>
                     <% if (filament.masterColorCode) {%>
-                    (<%- include('../partial/colorPreview.ejs', { primaryColor: { name: ' ', code: filament.masterColorCode }}); %>)
+                    (<%- include('../partial/colorPreview.ejs', { primaryColor: { name: __('Master color'), code: filament.masterColorCode }}); %>)
                     <% } %>
                 </td>
             </tr>
+            <% if (filament.secondaryColor && filament.secondaryColor.code && filament.secondaryColor.code != "") { %>
+            <tr>
+                <td>
+                    <%- __('Secondary color:') %>
+                </td>
+                <td>
+                    <%- include('../partial/colorPreview.ejs', { primaryColor: filament.secondaryColor }); %>
+                    <%- filament.secondaryColor.name %>
+                </td>
+            </tr>
+            <% } // if (filament.secondaryColor) %>
             <tr>
                 <td><%- __('Diameter:') %></td>
                 <td><b>∅</b> <%- filament.diameter %></td>

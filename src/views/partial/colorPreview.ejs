@@ -1,11 +1,15 @@
 <% if (locals.primaryColor && primaryColor.code) { %>
-<div class="color-preview-container">
+<div class="color-preview-container<% if (locals.size == "large") { %> large<% } %>">
     <div class="color-preview"
          <% if (primaryColor.name) { %>
          data-toggle="tooltip" data-placement="<% if (locals.tooltipPlacement) { %><%- locals.tooltipPlacement %><% } else { %>left<% } %>"
          title="<%- primaryColor.name.replace(" ", "&nbsp;") %>"
          <% } %>
-         style="background-color: <%- primaryColor.code %>;">
+        <% if (locals.secondaryColor && secondaryColor.code) { %>
+        style="background: linear-gradient(to bottom right, <%- primaryColor.code %> 40%, <%- secondaryColor.code %> 60%);">
+        <% } else { %>
+        style="background: <%- primaryColor.code %>;">
+        <% } %>
     </div>
 </div>
 <% } %>

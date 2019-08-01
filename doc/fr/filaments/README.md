@@ -22,15 +22,21 @@ Un filament dispose de multiple caractéristiques.
 - **La [matière](doc/fr/materials)**. Obligatoire
 - **Le diamètre**, en mm (*1.75*, *2.85*, *3.0*, ...). Obligatoire.
 - **La [marque](doc/fr/brands)**. Obligatoire. 
-- **La couleur**. Obligatoire. Elle peut être choisi parmi une liste de couleurs pré-définies ou déjà utilisées, ou bien
+- **La couleur principale**. Obligatoire. Elle peut être choisi parmi une liste de couleurs pré-définies ou déjà utilisées, ou bien
   il est possible de définir une couleur particulière en indiquant :  
   - Son nom
   - Son code couleur, exprimé en code HTML (`#RRVVBB`, `rgb(<Rouge>, <Vert>, <Bleu>)`, 
     `rgba(<Rouge>, <Vert>, <Bleu>, <Transparence>)`).
-- **Une couleur maîtresse**. Obligatoire avec calcul de correspondance automatique par l'application.  
-  Non libre, il s'agit de la catégorie de couleur principale, utilisée dans le reste de l'application pour faire des 
+- **La couleur secondaire**. Optionnelle, elle peut être défini par exemple pour les filaments qui changent de couleurs 
+  selon un élément externe (UV, temperature, obscurité, ...). Tout comme le couleur principale, elle peut être choisi 
+  parmi une liste de couleurs pré-définies ou déjà utilisées, ou bien il est possible de définir une couleur particulière 
+  en indiquant son nom et son code couleur.  
+  Les filaments ayant une couleur secondaire utiliseront un dégradé de la couleur principale vers la secondaire pour 
+  illustrer la couleur du filament.
+- **Une couleur maîtresse**. Obligatoire avec calcul de correspondance automatique par l'application sur la couleur principale.  
+  Non libre, il s'agit de la catégorie de couleur primaire, utilisée dans le reste de l'application pour faire des 
   filtrages par couleurs.  
-  Par exemple, des filaments *bleu ciel*, *bleu foncé* et *turquoise* auront pour couleur maîtresse le *bleu*.  
+  Par exemple, des filaments *bleu ciel*, *bleu foncé* et *turquoise* auront pour couleur maîtresse le *bleu*.
 
 ### Caractéristiques d'achat
 
@@ -97,7 +103,7 @@ La liste des filaments déjà présents dans l'application est accessible dès l
 ![Liste des filaments](doc/fr/filaments/filaments.png "Exemple d'une liste de filaments dans l'application")
 
 Ils sont affichés sous forme d'une liste, avec pour chacun d'eux :
-- La couleur
+- Les couleurs
 - La matière et la section (diamètre)
 - Le poids de matière initial et la densité de la matière
 - Le prix d'achat et le prix au kilo calculé
@@ -139,7 +145,7 @@ Il faut utiliser pour cela le sélecteur se trouvant à l'extrême droite de la 
 Par défaut, en arrivant sur la liste, tout les filaments non terminés sont affichés.
 
 Pour filtrer les filaments, plusieurs sélecteurs sont disponibles dans le seconde ligne d'en-tête, pour filtre par :
-- Couleur. Il est possible de sélectionner une couleur exacte, ou une couleur maîtresse.
+- Couleur. Il est possible de sélectionner une couleur primaire exacte, ou une couleur maîtresse.
 - Matière. Par défaut le filtrage se fait sur la matière exacte. En activant le bouton qui suis le sélecteur de filtrage 
   de matières, l'application inclura dans le filtre toutes les variantes de la matière sélectionnée. 
 - Magasin
@@ -155,7 +161,7 @@ qui permet d'accéder au [formulaire d'ajout d'un nouveau filament](/filament/ad
 
 Toutes les caractéristiques d'un filament peuvent être saisies dans ce formulaire, à l'exception des images.
 
-Lors de la sélection d'une couleur (prédéfinie ou personnalisée), la couleur maîtresse est automatiquement sélectionnée 
+Lors de la sélection d'une couleur primaire (prédéfinie ou personnalisée), la couleur maîtresse est automatiquement sélectionnée 
 par calcul de la couleur la plus proche.  
 Vous pouvez forcer ce re-calcul en utilisant le bouton dédié : ![](doc/fr/filaments/master-color-button.png)
 Il est cependant possible de sélectionner manuellement la couleur maîtresse, en cas d'erreur du mécanisme automatique, 
