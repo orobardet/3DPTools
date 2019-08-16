@@ -5,8 +5,10 @@
 /**
  * Module dependencies.
  */
-const app = require('../app')({});
+
 const debug = require('debug')('3DPTools:server');
+debug('Starting server...');
+const app = require('../app')({});
 const http = require('http');
 
 /**
@@ -70,12 +72,17 @@ server.on('listening', () => {
     let bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    console.log('Listening on ' + bind);
-    debug('Listening on ' + bind);
-    app.emit('postListeningInit');
+    const config = app.get('config');
+    const version = config.get('version');
+    let listeningMEssage = `3DPTools v${version} listening on ${bind}`;
+    console.log(listeningMEssage);
+    debug(listeningMEssage);
 });
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port);
+app.on('ready', () => {
+    server.listen(port);
+});
+

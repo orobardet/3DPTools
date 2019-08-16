@@ -5,6 +5,7 @@ Starting with this version, 3DPTools **runs on NodeJS 12** and is compatible wit
 - [New] Secondary color for filaments (#119)
 - [Doc] French translation for configuration documentation page (#139)
 - [Imp] Log error message if connection to Redis is not possible or broken (#138)
+- [Imp] Startup performance improvement and resilience
 - [Tec] Compatibility with MongoDB 4.0 (#135)
 - [Tec] Upgrade to NodeJS 12 (#137)
 

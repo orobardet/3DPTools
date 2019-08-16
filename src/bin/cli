@@ -2,6 +2,8 @@
 
 'use strict';
 
+const debug = require('debug')('3DPTools:server');
+debug('Starting CLI...');
 const app = require('../app')({
     loadConfig:true,
     initCliOptions: false,
@@ -10,17 +12,18 @@ const app = require('../app')({
     initI18n: true,
     initViews: false,
     initLogger: true,
+    initServerTasks: false,
     loadComponents: true,
     loadNavigation: false,
     setupHttpRouting: false
 });
 const mongoose = require('mongoose');
-const debug = require('debug')('3DPTools:server');
 const consign = require('consign');
 
 app.program = require('commander');
 app.cliStop = () => {
     mongoose.connection.close();
+    debug('Done.');
 };
 
 app.program
@@ -32,8 +35,11 @@ consign({
 }).include('cli')
     .into(app);
 
-app.program.parse(process.argv);
+app.on('ready', () => {
+    debug('Executing command...');
+    app.program.parse(process.argv);
 
-if (!app.program.args.length) {
-    app.program.help();
-}
+    if (!app.program.args.length) {
+        app.program.help();
+    }
+});

@@ -42,14 +42,17 @@ module.exports = function (app) {
         // Clean expired users' session keeper tokens ("stay connected" feature) every hours at :47
         schedule.scheduleJob('47 * * * *', () => User.CleanAllExpiredSessionKeeperTokens());
 
-        // Run some tasks in //
-        debug("Running init tasks...");
-        await Promise.all([
-            User.CleanAllExpiredRecovery(),
-            User.CleanAllExpiredSessionKeeperTokens()
-        ]);
-
-        debug("App async init done!");
+        // Run some tasks in background
+        if (process.env['3DPT_SKIP_INIT_TASKS']) {
+            debug("Skipping init tasks (3DPT_SKIP_INIT_TASKS environment variable found).");
+        } else {
+            debug("Running init tasks...");
+            await Promise.all([
+                User.CleanAllExpiredRecovery(),
+                User.CleanAllExpiredSessionKeeperTokens()
+            ]);
+        }
+        debug("Done.");
     };
 
     /**

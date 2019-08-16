@@ -18,6 +18,7 @@ module.exports = function(bootstrapOptions) {
         initViews: true,
         initLogger: true,
         initMailer: true,
+        initServerTasks: true,
         loadComponents: true,
         loadNavigation: true,
         setupHttpRouting: true
@@ -35,6 +36,23 @@ module.exports = function(bootstrapOptions) {
         environment: process.env.NODE_ENV
     };
     app.debug = debug;
+
+    app.services = {};
+    function checkAppReadiness() {
+        let allReady = true;
+        for (let [service, state] of Object.entries(app.services)) {
+            allReady &= state;
+        }
+        if (allReady) {
+            app.emit('ready');
+        }
+    }
+    app.on('service-ready', (service) => {
+        if (app.services[service] !== undefined) {
+            app.services[service] = true;
+            checkAppReadiness();
+        }
+    });
 
     // Load configuration
     if (bootstrapOptions.loadConfig) {
@@ -84,12 +102,15 @@ module.exports = function(bootstrapOptions) {
         else {
             redisOptions.client = redis.createClient(redisOptions);
         }
-        let redisDebug = require('debug')('3DPTools:Redis');
+        let redisDebug = require('debug')('3DPTools:redis');
+        app.services.redis = false;
+        redisDebug("Connecting...");
         redisOptions.client.on('error', (err) => {
             redisDebug(err);
         });
-        redisOptions.client.on('connect', () => {
-            redisDebug("Redis connected.");
+        redisOptions.client.on('ready', () => {
+            redisDebug(`Connected to Redis server v${redisOptions.client.server_info.redis_version}.`);
+            app.emit('service-ready', 'redis');
         });
 
         // Create and use redis session store
@@ -138,9 +159,19 @@ module.exports = function(bootstrapOptions) {
         }
 
         const mongoUrl = `mongodb://${mongoAuth}${mongoServer}/${dbName}`;
-        mongoose.connect(mongoUrl, mongoOptions).catch(function(err) {
+        const mongooDebug = require('debug')('3DPTools:mongo');
+
+        app.services.mongo = false;
+        mongooDebug("Connecting...");
+        mongoose.connect(mongoUrl, mongoOptions).catch((err) => {
             console.error(err);
             process.exit(1);
+        }).then(() => {
+            let admin = new mongoose.mongo.Admin(mongoose.connection.db);
+            admin.buildInfo((err, info) => {
+                mongooDebug(`Connected to MongoDB server v${info.version}.`);
+                app.emit('service-ready', 'mongo');
+            });
         });
     }
 
@@ -294,7 +325,7 @@ module.exports = function(bootstrapOptions) {
                     scope.setTag("url", req.url);
                     scope.setTag("method", req.method);
                     scope.setTag("sessionID", req.sessionID);
-                    scope.setTag("locale", res.getLocale())
+                    scope.setTag("locale", res.getLocale());
                     scope.setExtra("config", protectData(app.config.get(), [/.*secret.*/, /.*pass.*/, /.*password.*/, /dsn/], '*****'));
                     scope.setExtra("headers", req.headers);
                     scope.setExtra("cookies", req.cookies);
@@ -307,10 +338,6 @@ module.exports = function(bootstrapOptions) {
                 next(err);
             });
         }
-
-        app.on('postListeningInit', function() {
-            app.controllers.app.asyncPostListeningInit();
-        });
 
         // catch 404 and forward to error.ejs handler
         app.use((req, res, next) => {
@@ -361,6 +388,14 @@ module.exports = function(bootstrapOptions) {
             });
         }
     }
+
+    app.on('ready', function() {
+        if (bootstrapOptions.initServerTasks) {
+            app.controllers.app.asyncPostListeningInit();
+        }
+    });
+
+    checkAppReadiness();
 
     return app;
 };
