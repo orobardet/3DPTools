@@ -7,8 +7,11 @@ function extractKey(data, separator) {
 
         if (Object.prototype.toString.call(value) === "[object Object]") {
             let subValues = extractKey(value, separator).map(name => key+separator+name);
-            keys = keys.concat(subValues);
-
+            if (subValues.length) {
+                keys = keys.concat(subValues);
+            } else {
+                keys.push(key+".*");
+            }
         } else {
             keys.push(key);
         }
@@ -25,5 +28,4 @@ module.exports = function (config, separator) {
     }
 
     return extractKey(defaultConfig, separator);
-
 };

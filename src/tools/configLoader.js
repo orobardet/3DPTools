@@ -51,6 +51,8 @@ class ConfigLoader {
         const configEnvKeys = require('./extractConfigEnvKeys')(this.jsonDefaultConfig, '__').concat(this.internalConfig.overridableInternals || []);
         this.config.env({
             separator: '__',
+            parseValues: true,
+            match: /^database__connectOptions__.*$/,
             whitelist: configEnvKeys
         });
     }
