@@ -370,6 +370,13 @@ module.exports = function (app) {
                     code: req.form.colorCode
                 },
                 masterColorCode: req.form.masterColor,
+                features: {
+                    glittery: req.form.glittery,
+                    phosphorescent: req.form.phosphorescent,
+                    uvChanging: req.form.uvChanging,
+                    temperatureChanging: req.form.temperatureChanging,
+                    conductive: req.form.conductive
+                },
                 shop: req.form.shop,
                 buyDate: new Date(req.form.buyDate * 1000),
                 price: req.form.price,
@@ -514,6 +521,11 @@ module.exports = function (app) {
             filament.masterColorCode = req.form.masterColor;
             filament.secondaryColor.name = req.form.secondaryColorName;
             filament.secondaryColor.code = req.form.secondaryColorCode;
+            filament.features.glittery = req.form.glittery;
+            filament.features.phosphorescent = req.form.phosphorescent;
+            filament.features.uvChanging = req.form.uvChanging;
+            filament.features.temperatureChanging = req.form.temperatureChanging;
+            filament.features.conductive = req.form.conductive;
             filament.shop = req.form.shop;
             filament.buyDate = new Date(req.form.buyDate * 1000);
             filament.price = req.form.price;

@@ -28,6 +28,11 @@ module.exports = function (app) {
         field("masterColor", "Master color")
             .trim()
             .required(),
+        field("glittery", "Glittery").toBooleanStrict() ,
+        field("phosphorescent", "Phosphorescent").toBooleanStrict(),
+        field("uvChanging", "UV changing").toBooleanStrict(),
+        field("temperatureChanging", "Temperature changing").toBooleanStrict(),
+        field("conductive", "Conductive").toBooleanStrict(),
         field("diameter", "Diameter")
             .trim()
             .required()

@@ -3,7 +3,7 @@
 *3DPTools* est une application web permettant pour le moment de gérer votre stock de filaments pour impression 3D.
 
 A l'avenir, il est prévu d'intégrer une gestion des imprimantes (avec leur consommation électrique), une analyse et une 
-visualisation de fichiers GCode, et peut-être une gestion des résines pour impression stéréolitographique.
+visualisation de fichiers GCode, et peut-être une gestion des résines pour impression stéréolithographique.
 
 L'objectif de 3DPTools est d'être une boite à outils logiciel pour l'impression 3D. Les fonctionnalités se rajouterons 
 donc en fonction des besoins ou des contributions.
@@ -33,9 +33,10 @@ Ces filaments sont en diverses matériaux, principalement du plastique.
 - La matière qui compose le filament.
 - Le diamètre du filament.
 - Sa couleur.
+- Des caractéristiques d'aspect et fonctionnelles (pailleté, phosphorescent, conducteur, ...).
 - La marque du fabriquant du filament.
 - Le magasin, la date et le prix d'achat.
-- Les intervales de température d'extrusion et de lit chauffant.
+- Les intervalles de température d'extrusion et de lit chauffant.
 - La densité.
 - Le poids net le matière et le poids total de la bobine à l'achat (utilisé par l'application pour calculer la quantité de filament restante).
 - Des images.

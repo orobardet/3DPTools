@@ -1,5 +1,5 @@
 <h1><i class="rs rs-filament" style="color:<%- filament.color.code %>"></i>&nbsp<%- filament.displayName %>
-    <%- include('../partial/colorPreview.ejs', { size: "large", primaryColor: filament.color, secondaryColor: filament.secondaryColor }); %>
+    <%- include('../partial/colorPreview.ejs', { size: "large", primaryColor: filament.color, secondaryColor: filament.secondaryColor, features: filament.features }); %>
 </h1>
 
 <div class="filament-show-layout">
@@ -31,7 +31,42 @@
                     <%- filament.secondaryColor.name %>
                 </td>
             </tr>
-            <% } // if (filament.secondaryColor) %>
+            <% } /* if (filament.secondaryColor) */ %>
+            <% if (filament.features.glittery) { %>
+            <tr>
+                <td></td><td>
+                    <i class="fa fa-asterisk"></i> <%- __('Glittery') %>
+                </td>
+            </tr>
+            <% } /* if (glittery) */ %>
+            <% if (filament.features.phosphorescent) { %>
+            <tr>
+                <td></td><td>
+                    <%- __('Phosphorescent') %>
+                </td>
+            </tr>
+            <% } /* if (phosphorescent) */ %>
+            <% if (filament.features.uvChanging) { %>
+                <tr>
+                    <td></td><td>
+                        <i class="fa fa-sun-o"></i> <%- __('UV changing'); %>
+                    </td>
+                </tr>
+            <% } /* if (uvChanging) */ %>
+            <% if (filament.features.temperatureChanging) { %>
+                <tr>
+                    <td></td><td>
+                        <i class="fa fa-thermometer"></i> <%- __('Temperature changing'); %>
+                    </td>
+                </tr>
+            <% } /* if (temperatureChanging) */ %>
+            <% if (filament.features.conductive) { %>
+                <tr>
+                    <td></td><td>
+                        <i class="fa fa-bolt"></i> <%- __('Conductive'); %>
+                    </td>
+                </tr>
+            <% } /* if (conductive) */ %>
             <tr>
                 <td><%- __('Diameter:') %></td>
                 <td><b>∅</b> <%- filament.diameter %></td>

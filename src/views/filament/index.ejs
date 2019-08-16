@@ -145,7 +145,7 @@
         <% filaments.forEach(function (filament) { %>
         <tr data-url="/filament/show/<%- filament.id %>"<% if (filament.finished) { %> class="filament-finished"<% } %>>
             <td class="trg-show-filament" >
-                <%- include('../partial/colorPreview.ejs', { size: "large", primaryColor: filament.color, secondaryColor: filament.secondaryColor }); %>
+                <%- include('../partial/colorPreview.ejs', { size: "large", primaryColor: filament.color, secondaryColor: filament.secondaryColor, features: filament.features }); %>
             </td>
             <td class="trg-show-filament" >
                 <% if (filament.material ) { %>

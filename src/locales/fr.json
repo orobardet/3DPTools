@@ -523,5 +523,11 @@
   "Colors:": "Couleurs :",
   "Primary color:": "Couleur principale :",
   "Secondary color:": "Couleur secondaire :",
-  "No color": "Pas de couleur"
+  "No color": "Pas de couleur",
+  "Features:": "Caractéristiques :",
+  "Glittery": "Pailleté",
+  "Phosphorescent": "Phosphorescent",
+  "UV changing": "Change avec les UV",
+  "Temperature changing": "Change avec la température",
+  "Conductive": "Conducteur"
 }

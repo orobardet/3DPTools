@@ -316,6 +316,51 @@
             </div>
         </div>
 
+        <div class="row form-group filament-features">
+            <div class="col-md-12">
+                <label class="control-label"><%- __('Features:'); %></label>
+                <div class="row form-inline">
+                    <div class="col-md-12">
+                        <label class="checkbox checkbox-inline">
+                            <input type="checkbox" id="glittery" name="glittery" value="true"
+                                <% if (locals.glittery || (filament.features && filament.features.glittery)) { %>
+                                   checked
+                                <% } %>>
+                            <i class="fa fa-asterisk"></i> <%- __('Glittery'); %>
+                        </label>
+                        <label class="checkbox checkbox-inline">
+                            <input type="checkbox" id="phosphorescent" name="phosphorescent" value="true"
+                                <% if (locals.phosphorescent || (filament.features && filament.features.phosphorescent)) { %>
+                                   checked
+                                <% } %>>
+                            <%- __('Phosphorescent'); %>
+                        </label>
+                        <label class="checkbox checkbox-inline">
+                            <input type="checkbox" id="uv-changing" name="uvChanging" value="true"
+                                <% if (locals.uvChanging || (filament.features && filament.features.uvChanging)) { %>
+                                   checked
+                                <% } %>>
+                            <i class="fa fa-sun-o"></i> <%- __('UV changing'); %>
+                        </label>
+                        <label class="checkbox checkbox-inline">
+                            <input type="checkbox" id="temperature-changing" name="temperatureChanging" value="true"
+                                <% if (locals.temperatureChanging || (filament.features && filament.features.temperatureChanging)) { %>
+                                   checked
+                                <% } %>>
+                            <i class="fa fa-thermometer"></i> <%- __('Temperature changing'); %>
+                        </label>
+                        <label class="checkbox checkbox-inline">
+                            <input type="checkbox" id="conductive" name="conductive" value="true"
+                                <% if (locals.conductive || (filament.features && filament.features.conductive)) { %>
+                                   checked
+                                <% } %>>
+                            <i class="fa fa-bolt"></i> <%- __('Conductive'); %>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group<%= (errors.description) ? " has-error" : "" %>">

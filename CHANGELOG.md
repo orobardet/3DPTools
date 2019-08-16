@@ -3,6 +3,7 @@
 Starting with this version, 3DPTools **runs on NodeJS 12** and is compatible with MongoDB 4.0 (but not required). 
 
 - [New] Secondary color for filaments (#119)
+- [New] Filament features, starting with: glittery, phosphorescent, uv or temperature changing, conductive (#136)
 - [Doc] French translation for configuration documentation page (#139)
 - [Imp] Log error message if connection to Redis is not possible or broken (#138)
 - [Imp] Startup performance improvement and resilience

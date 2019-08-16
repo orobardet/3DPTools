@@ -33,6 +33,13 @@ a specific color giving:
   Main colors list is not customisable. Main color is used to regroup different kind of color behind a global one, 
   allowing easier filtering and search in the application.   
   e.g.: filaments with color *sky blue*, *dark blue* or *turquoise* will all have *blue* as main color.  
+- **Appearance and functional features**. Optionals :
+  - Glittery 
+  - Phosphorescent (the secondary color is the filament color in the dark)
+  - UV changing (the secondary color is the filament color on UV)
+  - Temperature changing (the secondary color is the filament color when temperature changes)
+  - Conductive 
+
 
 ### Buying features
 

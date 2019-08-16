@@ -37,6 +37,12 @@ Un filament dispose de multiple caractéristiques.
   Non libre, il s'agit de la catégorie de couleur primaire, utilisée dans le reste de l'application pour faire des 
   filtrages par couleurs.  
   Par exemple, des filaments *bleu ciel*, *bleu foncé* et *turquoise* auront pour couleur maîtresse le *bleu*.
+- **Les caractéristiques d'aspect et fonctionnelles**. Optionnelles :
+  - Pailleté
+  - Phosphorescent (la couleur secondaire indique la couleur que prend le filament dans le noir)
+  - Change avec les UV (la couleur secondaire indique la couleur que prend le filament sous UV)
+  - Change avec la température (la couleur secondaire indique la couleur que prend le filament au changement de température)
+  - Conducteur 
 
 ### Caractéristiques d'achat
 

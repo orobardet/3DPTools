@@ -23,6 +23,13 @@ module.exports = function (app) {
             code: String    // CSS compliant #hex color code or rgba
         },
         masterColorCode: String, // CSS compliant #hex color code or rgba
+        features: {
+            glittery: Boolean,
+            phosphorescent: Boolean,
+            uvChanging: Boolean,
+            temperatureChanging: Boolean,
+            conductive: Boolean
+        },
         pictures: [{
             id: Schema.Types.ObjectId,
             name: String,
@@ -72,7 +79,7 @@ module.exports = function (app) {
      * - 5: add pricePerKG
      * - 6: replace speedPercentage with printingSpeed range
      * - 7: add masterColor
-     * - 8: add secondary Color
+     * - 8: add secondary Color and features (glittery, phosphorescent, uv/temperature changing, conductive)
      */
     filamentSchema.statics.currentVersion = 8;
 

@@ -31,6 +31,7 @@ materials, mainly plastic.
 - The material that makes up the filament
 - The diameter of the filament.
 - Its color.
+- Appearance and functional features (glittering, phosphorescent, conductive, ...).
 - The brand of the manufacturer of the filament.
 - The store, the date and the purchase price.
 - Extrusion and heating bed temperature intervals.

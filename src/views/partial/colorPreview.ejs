@@ -6,9 +6,28 @@
          title="<%- primaryColor.name.replace(" ", "&nbsp;") %>"
          <% } %>
         <% if (locals.secondaryColor && secondaryColor.code) { %>
-        style="background: linear-gradient(to bottom right, <%- primaryColor.code %> 40%, <%- secondaryColor.code %> 60%);">
+            <% if (locals.features && features.phosphorescent) { %>
+                style="background: <%- primaryColor.code %>; box-shadow: 0px 0px 3px 1px <%- secondaryColor.code %>, inset 0px 0px <% if (locals.size == "large") { %>8px 5px<% } else { %>3px 1px<% } %> <%- secondaryColor.code %>; border-color: <%- secondaryColor.code %>;">
+            <% } else { %>
+                style="background: linear-gradient(to bottom right, <%- primaryColor.code %> 40%, <%- secondaryColor.code %> 60%);">
+            <% } %>
         <% } else { %>
-        style="background: <%- primaryColor.code %>;">
+            style="background: <%- primaryColor.code %>;">
+        <% } %>
+        <% if (locals.features && features.glittery) { %>
+            <div class="shinning-star star-small" style="top: 5%; left: 5%; -moz-animation-duration: 4s; -webkit-animation-duration: 4s;"></div>
+            <div class="shinning-star star-small" style="top: 10%; left: 50%; -moz-animation-duration: 3s; -webkit-animation-duration: 3s;"></div>
+            <div class="shinning-star star-medium" style="top: 30%; left: 5%; -moz-animation-duration: 2s; -webkit-animation-duration: 2s;"></div>
+            <div class="shinning-star star-small" style="top: 60%; left: 60%; -moz-animation-duration: 2s; -webkit-animation-duration: 2s;"></div>
+        <% } %>
+        <% if (locals.features && features.uvChanging) { %>
+            <div class="feature feature-uv-changing" title="<%- __('UV changing') %>"><i class="fa fa-sun-o"></i></div>
+        <% } %>
+        <% if (locals.features && features.temperatureChanging) { %>
+            <div class="feature feature-temperature-changing" title="<%- __('Temperature changing') %>"><i class="fa fa-thermometer"></i></div>
+        <% } %>
+        <% if (locals.features && features.conductive) { %>
+            <div class="feature feature-conductive" title="<%- __('Conductive') %>"><i class="fa fa-bolt"></i></div>
         <% } %>
     </div>
 </div>
