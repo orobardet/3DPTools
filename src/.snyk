@@ -6,16 +6,19 @@ ignore:
     - '*':
         reason: None Given
         expires: 2018-12-31T17:34:09.936Z
-      express-form > validator:
-        reason: No remediation
-        expires: '2019-09-14T15:56:29.815Z'
     - express-form > validator:
         reason: No remediation
         expires: '2019-08-14T16:34:44.246Z'
-  'npm:validator:20160218':
     - express-form > validator:
         reason: No remediation
         expires: '2019-09-14T15:56:29.815Z'
+    - express-form > validator:
+        reason: No remediation
+        expires: '2019-11-18T09:31:44.178Z'
+  'npm:validator:20160218':
+    - express-form > validator:
+        reason: No remediation
+        expires: '2019-11-18T09:31:44.179Z'
   'npm:validator:20180218':
     - express-form > validator:
         reason: No possible fix
@@ -24,4 +27,30 @@ ignore:
     - '*':
         reason: None Given
         expires: 2018-12-31T17:34:35.316Z
-patch: {}
+  SNYK-JS-LODASH-450202:
+    - snyk > @snyk/dep-graph > graphlib > lodash:
+        reason: None given
+        expires: '2019-11-18T09:48:38.180Z'
+    - snyk > snyk-go-plugin > graphlib > lodash:
+        reason: None given
+        expires: '2019-11-18T09:48:38.180Z'
+    - snyk > snyk-nodejs-lockfile-parser > graphlib > lodash:
+        reason: None given
+        expires: '2019-11-18T09:48:38.180Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/dep-graph > graphlib > lodash:
+        reason: None given
+        expires: '2019-11-18T09:48:38.180Z'
+    - snyk > @snyk/snyk-cocoapods-plugin > @snyk/cocoapods-lockfile-parser > @snyk/dep-graph > graphlib > lodash:
+        reason: None given
+        expires: '2019-11-18T09:48:38.180Z'
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-HTTPSPROXYAGENT-469131:
+    - pac-proxy-agent > https-proxy-agent:
+        patched: '2019-10-19T09:31:25.237Z'
+    - proxy-agent > https-proxy-agent:
+        patched: '2019-10-19T09:31:25.237Z'
+    - proxy-agent > pac-proxy-agent > https-proxy-agent:
+        patched: '2019-10-19T09:31:25.237Z'
+    - https-proxy-agent:
+        patched: '2019-10-19T09:31:25.237Z'
