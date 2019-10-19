@@ -12,7 +12,8 @@ module.exports = {
         if (mongoose.connection.readyState === 0) {
             return await mongoose.connect(process.env.MONGO_URL, {
                 promiseLibrary: global.Promise,
-                useNewUrlParser: true
+                useNewUrlParser: true,
+                useUnifiedTopology: true
             });
         }
     },

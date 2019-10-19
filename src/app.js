@@ -136,6 +136,7 @@ module.exports = function(bootstrapOptions) {
         let mongoOptions = config.get("database:connectOptions");
         mongoOptions.promiseLibrary = global.Promise;
         mongoOptions.useNewUrlParser = true;
+        mongoOptions.useUnifiedTopology = true;
         mongoose.Promise = global.Promise;
         mongoose.set('useCreateIndex', true);
 
