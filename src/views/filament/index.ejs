@@ -132,7 +132,7 @@
             <th>
                 <div class="input-group pull-right">
                     <span class="input-group-addon" title="<%- __('Sort'); %>"><i class="fa fa-sort"></i></span>
-                    <select class="form-control selectpicker" id="sort" name="sort" data-width="fit" title="<%- __('Sort'); %>">
+                    <select class="form-control selectpicker" id="sort" name="sort" data-width="fit" data-dropdown-align-right="true" title="<%- __('Sort'); %>">
                         <% sortList.forEach(function (sort) { %>
                         <option value="<%- sort.value %>"<% if (sort.value == selectedSort) { %> selected<% } %>><%- __(sort.label) %></option>
                         <% }); %>

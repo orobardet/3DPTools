@@ -59,6 +59,8 @@ module.exports = function (app) {
         initialMaterialWeight: Number,  // in Kgram
         initialTotalWeight: Number,  // in Kgram
         materialLeftPercentage: Number,
+        materialLeftWeight: Number, // in Kgram
+        materialLeftLength: Number, // in meter
         flowPercentage: Number,
         finished: { type: Boolean, default: false },
         finishedDate: { type: Date, default: null },
@@ -80,8 +82,9 @@ module.exports = function (app) {
      * - 6: replace speedPercentage with printingSpeed range
      * - 7: add masterColor
      * - 8: add secondary Color and features (glittery, phosphorescent, uv/temperature changing, conductive)
+     * - 9: material left weight and length
      */
-    filamentSchema.statics.currentVersion = 8;
+    filamentSchema.statics.currentVersion = 9;
 
     filamentSchema.virtual("displayName").get(function() {
         if (this.name && this.name.trim() != "") {
@@ -157,6 +160,8 @@ module.exports = function (app) {
                 this.pricePerKg = pricePerKg;
             }
         }
+
+        this.computeLeftMaterialFields()
 
         this._version = filamentSchema.statics.currentVersion;
 
@@ -926,10 +931,6 @@ module.exports = function (app) {
         return volume / (Math.PI * Math.pow(diameter / 2 / 1000, 2));
     };
 
-    filamentSchema.methods.leftMaterialWeight = function () {
-        return this.initialMaterialWeight * this.materialLeftPercentage / 100;
-    };
-
     filamentSchema.methods.setLeftWeight = function (leftWeight) {
         if (leftWeight > this.initialMaterialWeight) {
             return false;
@@ -947,6 +948,22 @@ module.exports = function (app) {
         this.materialLeftPercentage = 100 * netLeftWeight / this.initialMaterialWeight;
 
         return true;
+    };
+
+    filamentSchema.methods.computeLeftMaterialFields = function() {
+        // Compute left material weight
+        if (this.initialMaterialWeight && this.materialLeftPercentage) {
+            this.materialLeftWeight = (this.initialMaterialWeight * this.materialLeftPercentage) / 100;
+        }
+
+        // Compute left material length
+        if (this.materialLeftWeight && this.density && this.diameter > 0) {
+            this.materialLeftLength = this.constructor.getLength(this.materialLeftWeight, this.density, this.diameter);
+        }
+    }
+
+    filamentSchema.methods.leftMaterialWeight = function () {
+        return this.materialLeftWeight;
     };
 
     filamentSchema.methods.setLastUsed = function(lastDate) {
@@ -975,7 +992,7 @@ module.exports = function (app) {
     };
 
     filamentSchema.methods.getLeftLength = function () {
-        return this.getLength(this.leftMaterialWeight());
+        return this.materialLeftLength;
     };
 
     filamentSchema.methods.addPicture = function (picture) {

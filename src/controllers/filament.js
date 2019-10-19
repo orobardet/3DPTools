@@ -40,8 +40,26 @@ module.exports = function (app) {
                 'brand.name': 1
             }
         },
+        'length_material_left_asc': {
+            label: 'Length of material left - to +',
+            sort: {
+                'materialLeftLength': 1,
+                'material.name': 1,
+                'color.code': 1,
+                'brand.name': 1
+            }
+        },
+        'length_material_left_desc': {
+            label: 'Length of material left + to -',
+            sort: {
+                'materialLeftLength': -1,
+                'material.name': 1,
+                'color.code': 1,
+                'brand.name': 1
+            }
+        },
         'material_left_asc': {
-            label: 'Material left - to +',
+            label: 'Percentage of material left - to +',
             sort: {
                 'materialLeftPercentage': 1,
                 'material.name': 1,
@@ -50,7 +68,7 @@ module.exports = function (app) {
             }
         },
         'material_left_desc': {
-            label: 'Material left + to -',
+            label: 'Percentage of material left + to -',
             sort: {
                 'materialLeftPercentage': -1,
                 'material.name': 1,
