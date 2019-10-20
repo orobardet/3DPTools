@@ -17,7 +17,7 @@ module.exports = function (app) {
     app.use('/doc', router);
     app.use('/doc-statics', express.static(config.get('doc:root') || ''), (req, res, next) => {
         const notFoundPath = '/doc' + req.url;
-        console.error(`Documentation static not found: ${notFoundPath}`);
+        app.logger.error(`Documentation static not found: ${notFoundPath}`);
         return res.status(404).send('Not found: ' + notFoundPath);
     });
 

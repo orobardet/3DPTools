@@ -34,9 +34,8 @@ module.exports = function (app) {
     const Filament = app.models.filament;
 
     this.asyncPostListeningInit = async function() {
-        const debug = require('debug')('3DPTools:asyncInit');
-
-        debug("Setting up scheduled jobs...");
+        let logger = app.logger.child({label: "ASYNCINIT"});
+        logger.debug("Setting up scheduled jobs...");
         // Clean expired token account recovery, every day at 23:23
         schedule.scheduleJob('23 23 * * *', () => User.CleanAllExpiredRecovery());
         // Clean expired users' session keeper tokens ("stay connected" feature) every hours at :47
@@ -44,15 +43,15 @@ module.exports = function (app) {
 
         // Run some tasks in background
         if (process.env['3DPT_SKIP_INIT_TASKS']) {
-            debug("Skipping init tasks (3DPT_SKIP_INIT_TASKS environment variable found).");
+            logger.debug("Skipping init tasks (3DPT_SKIP_INIT_TASKS environment variable found).");
         } else {
-            debug("Running init tasks...");
+            logger.debug("Running init tasks...");
             await Promise.all([
                 User.CleanAllExpiredRecovery(),
                 User.CleanAllExpiredSessionKeeperTokens()
             ]);
         }
-        debug("Done.");
+        logger.debug("Done.");
     };
 
     /**

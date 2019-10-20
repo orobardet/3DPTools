@@ -5,12 +5,13 @@ Starting with this version, 3DPTools **runs on NodeJS 12** and is compatible wit
 - [New] Secondary color for filaments (#119)
 - [New] Filament features, starting with: glittery, phosphorescent, uv or temperature changing, conductive (#136)
 - [New] Sort filaments by percentage *or* length of material left (previously per percentage only) (#143)
-- [New] Compression of http response (#141)
 - [Doc] French translation for configuration documentation page (#139)
 - [Imp] Log error message if connection to Redis is not possible or broken (#138)
 - [Imp] Startup performance improvement and resilience
 - [Tec] Compatibility with MongoDB 4.0 (#135)
 - [Tec] Upgrade to NodeJS 12 (#137)
+- [Tec] Internal logger (#140)
+- [Tec] Compression of http response (#141)
 
 # v1.4.1
 

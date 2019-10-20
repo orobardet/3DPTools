@@ -31,6 +31,9 @@ ignore:
     - snyk > @snyk/dep-graph > graphlib > lodash:
         reason: None given
         expires: '2019-11-18T09:48:38.180Z'
+      express-winston > lodash:
+        reason: None given
+        expires: '2019-11-19T14:57:17.382Z'
     - snyk > snyk-go-plugin > graphlib > lodash:
         reason: None given
         expires: '2019-11-18T09:48:38.180Z'

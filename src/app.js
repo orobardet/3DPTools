@@ -5,8 +5,9 @@ require('app-module-path').addPath(__dirname);
 module.exports = function(bootstrapOptions) {
     const merge = require('merge');
     const sentry = require('@sentry/node');
-    const debug = require('debug')('3DPTools');
     const cookieParser = require('cookie-parser');
+    const winston = require('winston');
+    const expressWinston = require('express-winston');
 
     bootstrapOptions = merge({
         loadConfig: true,
@@ -35,7 +36,6 @@ module.exports = function(bootstrapOptions) {
         showNavbar: true,
         environment: process.env.NODE_ENV
     };
-    app.debug = debug;
 
     app.services = {};
     function checkAppReadiness() {
@@ -58,6 +58,62 @@ module.exports = function(bootstrapOptions) {
     if (bootstrapOptions.loadConfig) {
         const configLoader = require("tools/configLoader");
         config = configLoader(app, bootstrapOptions);
+    }
+
+    // Init logger
+    if (bootstrapOptions.initLogger) {
+        let level = 'info';
+        if (app.get('env') !== 'production') {
+            level = 'debug';
+        }
+
+        var winstonTransports = [
+            new winston.transports.Console({
+                level: level,
+                handleExceptions: true,
+                json: false,
+                colorize: true
+            })
+        ];
+        var winstonFormats = [
+            winston.format.colorize(),
+            winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
+            winston.format.ms(),
+            winston.format.printf(({ level, message, label, timestamp, ms }) => {
+                if (label && label != '') {
+                    return `${timestamp} ${ms}\t[${level}] ${label}: ${message}`;
+                }
+                return `${timestamp} ${ms}\t[${level}] ${message}`;
+            })
+        ];
+
+        let logger = new winston.createLogger({
+            transports: winstonTransports,
+            format: winston.format.combine(...winstonFormats),
+            exitOnError: false
+        });
+        app.set('logger', logger);
+        app.logger = logger;
+        app.logger.info("Starting app...");
+
+        // Expresse request logger middleware
+        app.use(expressWinston.logger({
+            transports: winstonTransports,
+            format: winston.format.combine(
+                // Hide HTTP 304
+                winston.format((info, opts) => {
+                    if (info.meta && info.meta.res && info.meta.res.statusCode && info.meta.res.statusCode == 304) {
+                        return false;
+                    }
+                    return info;
+                })(),
+                winston.format.label({ label: 'HTTP' }),
+                ...winstonFormats
+            ),
+            meta: true,
+            expressFormat: true,
+            colorize: true
+        }));
     }
 
     // Init sentry
@@ -102,14 +158,14 @@ module.exports = function(bootstrapOptions) {
         else {
             redisOptions.client = redis.createClient(redisOptions);
         }
-        let redisDebug = require('debug')('3DPTools:redis');
         app.services.redis = false;
-        redisDebug("Connecting...");
+        let redisLogger = app.logger.child({label: "REDIS"});
+        redisLogger.debug("Connecting...");
         redisOptions.client.on('error', (err) => {
-            redisDebug(err);
+            redisLogger.error("%s", err);
         });
         redisOptions.client.on('ready', () => {
-            redisDebug(`Connected to Redis server v${redisOptions.client.server_info.redis_version}.`);
+            redisLogger.debug(`Connected to Redis server v${redisOptions.client.server_info.redis_version}.`);
             app.emit('service-ready', 'redis');
         });
 
@@ -160,17 +216,17 @@ module.exports = function(bootstrapOptions) {
         }
 
         const mongoUrl = `mongodb://${mongoAuth}${mongoServer}/${dbName}`;
-        const mongooDebug = require('debug')('3DPTools:mongo');
 
         app.services.mongo = false;
-        mongooDebug("Connecting...");
+        let mongoLogger = app.logger.child({label: "MONGO"});
+        mongoLogger.debug("Connecting...");
         mongoose.connect(mongoUrl, mongoOptions).catch((err) => {
-            console.error(err);
+            mongoLogger.error("%s", err);
             process.exit(1);
         }).then(() => {
             let admin = new mongoose.mongo.Admin(mongoose.connection.db);
             admin.buildInfo((err, info) => {
-                mongooDebug(`Connected to MongoDB server v${info.version}.`);
+                mongoLogger.debug(`Connected to MongoDB server v${info.version}.`);
                 app.emit('service-ready', 'mongo');
             });
         });
@@ -258,16 +314,6 @@ module.exports = function(bootstrapOptions) {
             includeMethod: true,
             includePath: true
         }));
-    }
-
-    // Init logger
-    if (bootstrapOptions.initLogger) {
-        const logger = require('morgan');
-        if (app.get('env') === 'production') {
-            app.use(logger('common'));
-        } else {
-            app.use(logger('dev'));
-        }
     }
 
     // Init mailer
@@ -363,10 +409,18 @@ module.exports = function(bootstrapOptions) {
         if (app.get('env') === 'development') {
             app.use((err, req, res, next) => {
                 res.status(err.status || 500);
-                console.error(err.message);
-                console.error(err.stack);
-                if (res.sentry) {
-                    console.error('Sentry ID: ' + res.sentry);
+                if (bootstrapOptions.initLogger) {
+                    app.logger.error(err.message);
+                    app.logger.debug(err.stack);
+                    if (res.sentry) {
+                        app.logger.debug('Sentry ID: %s', res.sentry)
+                    }
+                } else {
+                    console.error(err.message);
+                    console.error(err.stack);
+                    if (res.sentry) {
+                        console.error('Sentry ID: ' + res.sentry);
+                    }
                 }
                 res.render('error', {
                     pageTitle: 'An error occured',
@@ -381,10 +435,18 @@ module.exports = function(bootstrapOptions) {
             // no stacktraces leaked to user
             app.use((err, req, res, next) => {
                 res.status(err.status || 500);
-                console.error(err.message);
-                console.error(err.stack);
-                if (res.sentry) {
-                    console.error('Sentry ID: ' + res.sentry);
+                if (bootstrapOptions.initLogger) {
+                    app.logger.error(err.message);
+                    app.logger.debug(err.stack);
+                    if (res.sentry) {
+                        app.logger.debug('Sentry ID: %s', res.sentry)
+                    }
+                } else {
+                    console.error(err.message);
+                    console.error(err.stack);
+                    if (res.sentry) {
+                        console.error('Sentry ID: ' + res.sentry);
+                    }
                 }
                 res.render('error', {
                     pageTitle: 'An error occured',
@@ -404,6 +466,10 @@ module.exports = function(bootstrapOptions) {
     });
 
     checkAppReadiness();
+
+    if (bootstrapOptions.initLogger) {
+        app.logger.info("App started.");
+    }
 
     return app;
 };
