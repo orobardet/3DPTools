@@ -113,6 +113,19 @@ The main configuration block is `database`.
 - `pass` (string) Password to connect to the MongoDB server, if needed. *It is recommended to enable auth on the MongoDb server* 
 - `connectOptions` (object) Allow to pass some specific connection options to the MongoDB client driver
 
+## HTTP
+
+HTTP server settings.
+
+```yaml
+http:
+  compression: true
+```
+
+The main configuration block is `http`.
+
+- `compression` (boolean) Enables compression of HTTP responses.
+
 ## Session
 
 Settings to configure web session. 

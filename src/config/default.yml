@@ -12,6 +12,10 @@ database:
   pass: 3dpt            # Set empty if no authentification is required
   connectOptions: {}
 
+# HTTP settings
+http:
+  compression: true     # Enable compression
+
 # Session settings
 session:
   name: 3dptools        # Name of the session cookie

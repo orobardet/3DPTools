@@ -126,6 +126,19 @@ Le bloc de configuration principal est `database`.
 - `pass` (string) Mot de passe pour se connecter au server MongoDB, si nécessaire.  *Il est recommandé d'activer l'authentification sur le serveur MongoDB*. 
 - `connectOptions` (object) Permet de passer des options de connexion directement au driver client MongoDB.
 
+## HTTP
+
+Paramètre du serveur HTTP.
+
+```yaml
+http:
+  compression: true
+```
+
+Le bloc de configuration principal est `http`.
+
+- `compression` (boolean) Active la compression des réponses HTTP.
+
 ## Session
 
 Paramètres pour configurer les sessions. 
