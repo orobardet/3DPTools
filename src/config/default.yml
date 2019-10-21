@@ -5,7 +5,7 @@ redis:
 
 # MongoDB settings
 database:
-  host: localhost
+  host: '127.0.0.1'
   port: '27017'
   name: 3dptools        # The name of the database that will contains all the application data. Will be created if not exists
   user: 3dptools        # Set empty if no authentification is required

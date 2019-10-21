@@ -1,0 +1,235 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const parseDuration = require('parse-duration')
+const program = require('commander');
+program
+    .description("Wait for services required by 3DPTools (MongoDB, Redis, ...) to be up and running.")
+    .version("1.0.0")
+    .option("--mongo-max-tries <tries>", "[WAIT_MONGO_MAX_TRIES] maximum number of tries to wait for MongoDB. 0 for infinite wait. Default: 10", parseInt)
+    .option("--mongo-try-interval <ms>", "[WAIT_MONGO_TRY_INTERVAL] interval in ms between each try waiting for MongoDB. Default: 1s", parseDuration)
+    .option("--redis-max-tries <tries>", "[WAIT_REDIS_MAX_TRIES] maximum number of tries to wait for Redis. 0 for infinite wait. Default: 10", parseInt)
+    .option("--redis-try-interval <ms>", "[WAIT_REDIS_TRY_INTERVAL] interval in ms between each try waiting for Redis. Default: 1s", parseDuration);
+program.parse(process.argv);
+
+const app = require('../app')({
+    loadConfig:true,
+    initCliOptions: false,
+    initSentry: false,
+    initSession: false,
+    initDb: false,
+    initI18n: false,
+    initViews: false,
+    initLogger: true,
+    initMailer: false,
+    initServerTasks: false,
+    loadComponents: false,
+    loadNavigation: false,
+    setupHttpRouting: false
+});
+let logger = app.logger.child({label: "WAIT"});
+
+let services = [
+    {
+        name: "redis",
+        config: app.config.get("redis"),
+        checker: checkRedis,
+        getStartMessage: redisStartMessage,
+        interval: program.redisTryInterval || parseDuration(process.env.WAIT_REDIS_TRY_INTERVAL || "1s"),
+        maxTries: program.redisMaxTries || parseInt(process.env.WAIT_REDIS_MAX_TRIES) || 10
+    },
+    {
+        name: "mongodb",
+        config: app.config.get("database"),
+        checker: checkMongo,
+        getStartMessage: mongoStartMessage,
+        interval: program.mongoTryInterval || parseDuration(process.env.WAIT_MONGO_TRY_INTERVAL || "1s"),
+        maxTries: program.mongoMaxTries || parseInt(process.env.WAIT_MONGO_MAX_TRIES) || 10
+    }
+]
+
+function redisStartMessage(service) {
+    let redisOptions = service.config;
+    if (redisOptions.socket) {
+        return redisOptions.socket
+    }
+
+    return `${redisOptions.host}:${redisOptions.port}`;
+}
+
+function mongoStartMessage(service) {
+    let mongoConfig = service.config;
+    let mongoAuth = "";
+    if (mongoConfig.user) {
+        if (mongoConfig.pass) {
+            mongoAuth = `${mongoConfig.user}:XXXXX@`;
+        } else {
+            mongoAuth = `${mongoConfig.user}@`;
+        }
+    }
+    let mongoServer = mongoConfig.host;
+    if (mongoConfig.port) {
+        mongoServer = `${mongoConfig.host}:${mongoConfig.port}`;
+    }
+    return `${mongoAuth}${mongoServer}/${mongoConfig.name}`;
+}
+
+async function checkRedis(service, status) {
+    return new Promise(resolve => {
+        let redisOptions = service.config;
+        const redis = require('redis');
+        let client;
+        if (redisOptions.socket) {
+            client = redis.createClient(redisOptions.socket, redisOptions);
+        }
+        else {
+            client = redis.createClient(redisOptions);
+        }
+        client.on("error", function (err) {
+            client.quit();
+            status.state = false;
+            status.error = err;
+            resolve(status);
+        });
+        client.on("ready", function (err) {
+            client.quit();
+            status.state = true;
+            status.message = `Redis v${client.server_info.redis_version}`;
+            resolve(status);
+        });
+    });
+}
+
+async function checkMongo(service, status) {
+    return new Promise(async resolve => {
+        let mongoConfig = service.config;
+
+        let mongoAuth = "";
+        if (mongoConfig.user) {
+            if (mongoConfig.pass) {
+                mongoAuth = `${mongoConfig.user}:${mongoConfig.pass}@`;
+            } else {
+                mongoAuth = `${mongoConfig.user}@`;
+            }
+        }
+        let mongoServer = mongoConfig.host;
+        if (mongoConfig.port) {
+            mongoServer = `${mongoConfig.host}:${mongoConfig.port}`;
+        }
+        const mongoUrl = `mongodb://${mongoAuth}${mongoServer}/${mongoConfig.name}`;
+
+        const MongoClient = require('mongodb').MongoClient;
+        const client = new MongoClient(
+            mongoUrl,
+            {
+                ...mongoConfig.connectOptions,
+                ...{
+                    promiseLibrary: global.Promise,
+                    useNewUrlParser: true,
+                    useUnifiedTopology: true
+                }
+            }
+        );
+
+        try {
+            // Use connect method to connect to the Server
+            await client.connect();
+            const db = client.db(mongoConfig.name);
+            const dbAdmin = db.admin();
+            let serverInfo = await dbAdmin.serverInfo();
+            client.close();
+            status.state = true;
+            status.message = `Mongo v${serverInfo.version}`;
+            resolve(status);
+        } catch (err) {
+            client.close();
+            status.state = false;
+            status.error = err;
+            resolve(status);
+        }
+    });
+}
+
+app.on('ready', async () => {
+    logger.info(`Waiting for ${services.length} services: ${services.map( x => x.name).join(', ')}...`);
+
+    let waits = [];
+    for (let service of services) {
+        waits.push(waitForService(service));
+    }
+    let status = await Promise.all(waits);
+
+    let failedServices = [];
+    for (let svcStatus of status) {
+        if (!svcStatus.state) {
+            failedServices.push(svcStatus);
+        }
+    }
+
+    if (failedServices.length > 0) {
+        logger.error(`${failedServices.length} service(s) failed to respond: ${failedServices.map( x => { return x.name + " ("+x.error+")"; }).join(', ')}.`);
+        process.exit(1);
+    }
+
+    logger.info("All services responded.");
+    process.exit(0);
+});
+
+function waitMs(milleseconds) {
+    return new Promise(resolve => setTimeout(resolve, milleseconds))
+}
+
+async function waitForService(service) {
+    logger.info(`Start waiting for ${service.name} ${service.getStartMessage(service)} (${service.maxTries} max tries, ${service.interval}ms interval)`);
+
+    let status = {
+        name: service.name,
+        state: false,
+        error: '',
+        message: ''
+    };
+    let tries = 1;
+    while (!status.state) {
+        status = {
+            name: service.name,
+            state: false,
+            error: '',
+            message: ''
+        };
+        logger.info(`Checking ${service.name}, try #${tries}...`);
+        let resStatus = Object.assign(status, await service.checker(service, status));
+        status = resStatus;
+        if (status && status.state) {
+            if (status.message && status.message != '') {
+                logger.info(`${service.name} responded: ${status.message}`);
+            } else {
+                logger.info(`${service.name} responded.`);
+            }
+            // Ensure name of the service is valid
+            status.name = service.name;
+            status.tries = tries;
+            return status;
+        }
+        tries++;
+        if (status.error && status.error != '') {
+            logger.warn(`${service.name} not responding: `, status.error);
+        } else {
+            logger.warn(`${service.name} not responding`);
+        }
+        logger.info(`Will retry ${service.name} in ${service.interval}...`);
+        await waitMs(service.interval)
+
+        if (tries > service.maxTries) {
+            status.state = false;
+            status.error = `Maximum number of tries reach waiting for ${service.name}`;
+            status.tries = service.maxTries
+
+            return status;
+        }
+    }
+
+    status.state = false;
+    status.error = 'Unknown error';
+    return status;
+}

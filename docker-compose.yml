@@ -2,7 +2,7 @@ version: '2'
 
 services:
   mongo:
-    image: mongo
+    image: mongo:4
     networks:
       - backend
     volumes:
@@ -17,14 +17,16 @@ services:
     image: orobardet/3dptools
     networks:
       - backend
+      - frontend
     depends_on:
     - mongo
     - redis
-    #ports:
-    #- "3000:3000"
+    ports:
+    - "3000:3000"
     environment:
       database__user: ""
       database__pass: ""
 
 networks:
   backend:
+  frontend:

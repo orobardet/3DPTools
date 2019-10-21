@@ -2,7 +2,6 @@
 
 'use strict';
 
-app.logger.debug('CLI: Starting CLI...');
 const app = require('../app')({
     loadConfig:true,
     initCliOptions: false,
@@ -16,6 +15,7 @@ const app = require('../app')({
     loadNavigation: false,
     setupHttpRouting: false
 });
+app.logger.debug('CLI: Starting CLI...');
 const mongoose = require('mongoose');
 const consign = require('consign');
 

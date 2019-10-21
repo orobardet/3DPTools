@@ -49,12 +49,17 @@ RUN chown -R $APP_USER:users /3dptools /docker_start.sh && chmod +x /docker_star
 USER $APP_USER
 WORKDIR /3dptools
 
-ENV PORT=3000
-ENV NODE_ENV=production
+ENV PORT=3000 \
+    NODE_ENV=production
 
-ENV database__host=mongo
-ENV redis__host=redis
-ENV sentry__dsn="https://88009fc2f595471ea9808336a43e42cd@sentry.io/148531"
+ENV database__host=mongo \
+    redis__host=redis \
+    sentry__dsn="https://88009fc2f595471ea9808336a43e42cd@sentry.io/148531"
+# wait for 10 minutes max (120 * 5s) for required services
+ENV WAIT_REDIS_MAX_TRIES=120 \
+    WAIT_REDIS_TRY_INTERVAL="5s" \
+    WAIT_MONGO_MAX_TRIES=120 \
+    WAIT_MONGO_TRY_INTERVAL="5s"
 
 EXPOSE $PORT
 

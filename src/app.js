@@ -38,7 +38,7 @@ module.exports = function(bootstrapOptions) {
     };
 
     app.services = {};
-    function checkAppReadiness() {
+    async function checkAppReadiness() {
         let allReady = true;
         for (let [service, state] of Object.entries(app.services)) {
             allReady &= state;
@@ -153,7 +153,7 @@ module.exports = function(bootstrapOptions) {
         redisOptions.prefix = config.get('session:name') + ':sessions:';
         const redis = require('redis');
         if (redisOptions.socket) {
-            redisOptions.client = redis.createClient(redisOptions.socket, options);
+            redisOptions.client = redis.createClient(redisOptions.socket, redisOptions);
         }
         else {
             redisOptions.client = redis.createClient(redisOptions);
@@ -465,7 +465,7 @@ module.exports = function(bootstrapOptions) {
         }
     });
 
-    checkAppReadiness();
+    setTimeout(() => checkAppReadiness(), 1);
 
     if (bootstrapOptions.initLogger) {
         app.logger.info("App started.");

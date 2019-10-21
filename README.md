@@ -1,6 +1,11 @@
 # 3DPTools
 
-Web-based 3DPrinting tools
+Web-based 3DPrinting tools. For now it allow you to manage your 3D printing filament collection.
+
+![3DPTools homepage](doc/en/homepage.png "3DPTools homepage")
+
+The following features may be added in the future: resin collection management, 3D printers collection management, 
+loading, visualisation and analyse of gcode file...
 
 # Requirements
 
@@ -61,24 +66,34 @@ A [docker-compose.yml](docker-compose.yml) file is provided to run this image us
 It start a Redis and a MongoDB (both in very basic and minimalist mode).
 
 So you can start a instance with just :
+
 ```shell
 docker-compose up -d
 ```
 
-Once start, you can access to 3DPTools using the url http://localhost:3000/. 
+When the main container starts, it first wait for redis and mongo to be up and running.
+If these required services are not available within the allowed time (10 minutes by default), the container fails. 
+
+Once the application has successfully start, you can access to 3DPTools using the url http://localhost:3000/. 
 If no valid data is already found, the 3DPTools will start in setup mode. Just follow the instructions.
 
-By default, the docker-compose environment will create a `docker-volumes` folder that will hold data for persitence: 
+By default, the docker-compose environment will create a `docker-volumes` folder that will hold data for persistence: 
 you can stop, kill and restart the Docker environment and still retreive all your data, as long as the `docker-volumes` is kept.
 
 > Backup note: copying the `docker-volumes` directory to make a backup is acceptable 
 > **only if done when the Docker environment is stopped**. To make a live backup (which is certainly what you want), 
 > please use [the backup features of MongoDB](https://docs.mongodb.com/v3.2/core/backups/) directly
 
-You can change some parameters of the docker-compose environment by creating a `docker-compose.override.yml` file. Common changes can be :
+You can change some parameters of the docker-compose environment by creating a `docker-compose.override.yml` file. 
+Common changes can be :
 - the access port: override the `ports` mapping of the `3dptools` service
 - the mapped volumes for data: override the `volumes` of the `mongo` service
 - start 3dptools in development mode: add the environment variable `NODE_ENV=dev` in the `3dptools` service
+- parameters for waiting for redis and mongo in the `3dptools` service using the following environment variables:
+  - `WAIT_REDIS_MAX_TRIES`, `120` by default
+  - `WAIT_REDIS_TRY_INTERVAL`, `5s` by default
+  - `WAIT_MONGO_MAX_TRIES`, `120` by default
+  - `WAIT_MONGO_TRY_INTERVAL`, `5s` by default
 
 Some `docker-compose.override.yml` sample are provided in the files `docker-compose.override.dist.*.yml`
 
@@ -88,8 +103,3 @@ This application can be configured by giving it some parameters on startup. Most
 
 You can find configuration instructions and all available configuration settings [in the documentation](doc/en/configuration.md).
 
-# FAQ
-
-## Error `req.flash() requires sessions`
-
-Is Redis installed, running and correctly configured in 3DPTools?
