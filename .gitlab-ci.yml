@@ -52,22 +52,30 @@ Snyk:
   except:
     - tags
 
-Test Docker build:
+Test Docker build: &_test_docker_build
   image: docker:git
   stage: build
+  variables:
+    UPLOAD_DEV_IMAGE: 0
   services:
     - docker:dind
   script:
     - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
-    - docker pull $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME || true
-    - docker pull $CI_REGISTRY_IMAGE || true
-    - docker build -t $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME --cache-from $CI_REGISTRY_IMAGE --cache-from $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME .
+    - docker pull ${CI_REGISTRY_IMAGE}/dev:$CI_BUILD_REF_NAME || true
+    - docker pull ${CI_REGISTRY_IMAGE}/dev || true
+    - docker build -t ${CI_REGISTRY_IMAGE}/dev:$CI_BUILD_REF_NAME --cache-from ${CI_REGISTRY_IMAGE}/dev --cache-from ${CI_REGISTRY_IMAGE}/dev:$CI_BUILD_REF_NAME .
+    - "[[ $UPLOAD_DEV_IMAGE -ne 0 ]] && docker push ${CI_REGISTRY_IMAGE}/dev:$CI_BUILD_REF_NAME"
   when: manual
   only:
     - branches
   except:
     - tags
     - master
+
+Dev Docker build:
+  <<: *_test_docker_build
+  variables:
+    UPLOAD_DEV_IMAGE: 1
 
 #codequality:
 #  <<: *_codequality
