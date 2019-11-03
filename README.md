@@ -65,11 +65,24 @@ NODE_ENV=production npm start
 A [docker-compose.yml](docker-compose.yml) file is provided to run this image using Docker. 
 It start a Redis and a MongoDB (both in very basic and minimalist mode).
 
+For Linux, MacOS, Window 10 1803+ or any OS having curl:
+
+```shell
+curl -o "docker-compose.yml" "https://gitlab.com/orobardet/3DPTools/raw/master/docker-compose.yml"
+```
+
 So you can start a instance with just :
 
 ```shell
 docker-compose up -d
+# (You can view logs with: docker-compose logs -f)
 ```
+
+> ⚠ Warning: in this setup, the MongoDB instance **has not security enabled**.
+> It is highly recommended to the MongoDB serveur by enabling auth. If so, you'll need to create a Mongo user with 
+> access to the `3dptools` database (do **NOT** use the Mongo admin user), and configure the 3dptools container to use
+> these credential. See [configuration of database](doc/en/configuration.md#database) documentation. You can use
+> [environment variables](doc/en/configuration.md#environment-variables) in your local `docker-compose.yml` file.
 
 When the main container starts, it first wait for redis and mongo to be up and running.
 If these required services are not available within the allowed time (10 minutes by default), the container fails. 
