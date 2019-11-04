@@ -152,20 +152,23 @@ module.exports = function(bootstrapOptions) {
         let redisOptions = config.get("redis");
         redisOptions.prefix = config.get('session:name') + ':sessions:';
         const redis = require('redis');
+        let redisConnectionLogString = 'unknown';
         if (redisOptions.socket) {
+            redisConnectionLogString = redisOptions.socket;
             redisOptions.client = redis.createClient(redisOptions.socket, redisOptions);
         }
         else {
+            redisConnectionLogString = `${redisOptions.host}:${redisOptions.port}`
             redisOptions.client = redis.createClient(redisOptions);
         }
         app.services.redis = false;
         let redisLogger = app.logger.child({label: "REDIS"});
-        redisLogger.debug("Connecting...");
+        redisLogger.info(`Connecting (${redisConnectionLogString})...`);
         redisOptions.client.on('error', (err) => {
-            redisLogger.error("%s", err);
+            redisLogger.error(err);
         });
         redisOptions.client.on('ready', () => {
-            redisLogger.debug(`Connected to Redis server v${redisOptions.client.server_info.redis_version}.`);
+            redisLogger.info(`Connected to Redis server v${redisOptions.client.server_info.redis_version}.`);
             app.emit('service-ready', 'redis');
         });
 
@@ -203,11 +206,14 @@ module.exports = function(bootstrapOptions) {
         const dbName = config.get("database:name");
 
         let mongoAuth = "";
+        let mongoAuthLog = "";
         if (dbUser) {
             if (dbPass) {
                 mongoAuth = `${dbUser}:${dbPass}@`;
+                mongoAuthLog = `${dbUser}:*****@`;
             } else {
                 mongoAuth = `${dbUser}@`;
+                mongoAuthLog = mongoAuth;
             }
         }
         let mongoServer = dbHost;
@@ -215,18 +221,19 @@ module.exports = function(bootstrapOptions) {
             mongoServer = `${dbHost}:${dbPort}`;
         }
 
+        const mongoConnectionLogString = `mongodb://${mongoAuthLog}${mongoServer}/${dbName}`;
         const mongoUrl = `mongodb://${mongoAuth}${mongoServer}/${dbName}`;
 
         app.services.mongo = false;
         let mongoLogger = app.logger.child({label: "MONGO"});
-        mongoLogger.debug("Connecting...");
+        mongoLogger.info(`Connecting (${mongoConnectionLogString})...`);
         mongoose.connect(mongoUrl, mongoOptions).catch((err) => {
-            mongoLogger.error("%s", err);
+            mongoLogger.error(err);
             process.exit(1);
         }).then(() => {
             let admin = new mongoose.mongo.Admin(mongoose.connection.db);
             admin.buildInfo((err, info) => {
-                mongoLogger.debug(`Connected to MongoDB server v${info.version}.`);
+                mongoLogger.info(`Connected to MongoDB server v${info.version}.`);
                 app.emit('service-ready', 'mongo');
             });
         });
@@ -413,7 +420,7 @@ module.exports = function(bootstrapOptions) {
                     app.logger.error(err.message);
                     app.logger.debug(err.stack);
                     if (res.sentry) {
-                        app.logger.debug('Sentry ID: %s', res.sentry)
+                        app.logger.debug(`Sentry ID: ${res.sentry}`)
                     }
                 } else {
                     console.error(err.message);
@@ -439,13 +446,13 @@ module.exports = function(bootstrapOptions) {
                     app.logger.error(err.message);
                     app.logger.debug(err.stack);
                     if (res.sentry) {
-                        app.logger.debug('Sentry ID: %s', res.sentry)
+                        app.logger.debug(`Sentry ID: ${res.sentry}`)
                     }
                 } else {
                     console.error(err.message);
                     console.error(err.stack);
                     if (res.sentry) {
-                        console.error('Sentry ID: ' + res.sentry);
+                        console.error(`Sentry ID: ${res.sentry}`);
                     }
                 }
                 res.render('error', {
