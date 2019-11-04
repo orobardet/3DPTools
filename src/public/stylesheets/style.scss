@@ -399,13 +399,15 @@ a.anchor {
   }
 }
 
-.login-section {
+.login-section, .setup-section {
   .navbar-anonymous {
     .navbar-brand {
       display: none;
     }
   }
+}
 
+.login-section {
   > .container {
     margin-top: 100px;
     max-width: 400px;
@@ -417,6 +419,9 @@ a.anchor {
 }
 
 .setup-section {
+  > .container {
+    margin-top: 50px;
+  }
 
   > h1 {
     margin: 20px;

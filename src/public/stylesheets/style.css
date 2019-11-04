@@ -10727,9 +10727,10 @@ a.anchor {
   margin-left: 10px;
 }
 
-.login-section .navbar-anonymous .navbar-brand {
+.login-section .navbar-anonymous .navbar-brand, .setup-section .navbar-anonymous .navbar-brand {
   display: none;
 }
+
 .login-section > .container {
   margin-top: 100px;
   max-width: 400px;
@@ -10738,6 +10739,9 @@ a.anchor {
   text-align: right;
 }
 
+.setup-section > .container {
+  margin-top: 50px;
+}
 .setup-section > h1 {
   margin: 20px;
 }

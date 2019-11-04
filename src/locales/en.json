@@ -417,5 +417,9 @@
   "Sable": "Sable",
   "Bleu": "Bleu",
   "Vert": "Vert",
-  "Blanc craie": "Blanc craie"
+  "Blanc craie": "Blanc craie",
+  "Create a user": "Create a user",
+  "You need to create a first user, who'll be a administrator.": "You need to create a first user, who'll be a administrator.",
+  "Create user": "Create user",
+  "Setup": "Setup"
 }
