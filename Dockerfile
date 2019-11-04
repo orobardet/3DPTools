@@ -2,9 +2,9 @@
 
 FROM node:12-alpine AS builder
 
-RUN apk --update add ruby imagemagick ca-certificates git && \
-    apk --update add --virtual sass-dev build-base ruby-dev libffi-dev && \
-	gem install -N sass
+RUN apk --update add ruby imagemagick ca-certificates git
+
+RUN npm install -g sass
 
 ENV APP_USER=3dptools
 
@@ -26,7 +26,7 @@ USER $APP_USER
 
 RUN yarn run bower install --production && \
     yarn run bower cache clean
-RUN scss -C -f public/stylesheets/style.scss public/stylesheets/style.css
+RUN sass public/stylesheets/style.scss public/stylesheets/style.css
 
 # Real image
 
@@ -42,9 +42,9 @@ ENTRYPOINT ["/bin/sh", "-c"]
 
 RUN adduser -D -g "" -G users $APP_USER
 
-COPY --from=builder /3dptools /3dptools
-COPY docker/docker_start.sh /docker_start.sh
-RUN chown -R $APP_USER:users /3dptools /docker_start.sh && chmod +x /docker_start.sh
+COPY --from=builder --chown=$APP_USER:users /3dptools /3dptools
+COPY --chown=$APP_USER:users docker/docker_start.sh /docker_start.sh
+RUN chmod +x /docker_start.sh
 
 USER $APP_USER
 WORKDIR /3dptools

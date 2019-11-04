@@ -13,6 +13,7 @@ Starting with this version, 3DPTools **runs on NodeJS 12** and is compatible wit
 - [Tec] Upgrade to NodeJS 12 (#137)
 - [Tec] Internal logger (#140)
 - [Tec] Compression of http response (#141)
+- [Tec] Replace [end-of-life Ruby Sass](http://sass.logdown.com/posts/7828841) by dart-sass and npm sass (#144)
 
 # v1.4.1
 

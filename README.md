@@ -24,7 +24,7 @@ loading, visualisation and analyse of gcode file...
 
 - Bower (`sudo npm install -g bower`)
 - build-essential (as know on Debian-like OS, or any other equivalent on your OS ; needed to build some dependencies)
-- SASS (`sudo apt-get install ruby-sass`)
+- SASS ([install dart-sass](https://sass-lang.com/install) or with npm: `sudo npm install -g sass`)
 - Any OS where the previous requirements runs. Has been proven to work for development on Linux (Ubuntu and Debian tested) and Windows (Windows 10 tested).
 - Docker (only to build docker image or run the development environment as Docker containers)
 
