@@ -38,7 +38,7 @@ app.on('ready', () => {
     app.logger.debug('CLI: Executing command...');
     app.program.parse(process.argv);
 
-    if (!app.program.args.length) {
+    if (app.program.rawArgs.length < 3) {
         app.program.help();
     }
 });
