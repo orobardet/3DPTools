@@ -13,6 +13,9 @@ stages:
 #  - src/node_modules
 #  - src/public/vendor
 
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
 include:
   template: Dependency-Scanning.gitlab-ci.yml
 
@@ -59,6 +62,8 @@ Test Docker build: &_test_docker_build
     UPLOAD_DEV_IMAGE: 0
   services:
     - docker:dind
+  before_script:
+    - docker info
   script:
     - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     - docker pull ${CI_REGISTRY_IMAGE}/dev:$CI_BUILD_REF_NAME || true
@@ -96,6 +101,8 @@ Docker build:
   stage: build
   services:
     - docker:dind
+  before_script:
+    - docker info
   script:
     - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME || true
@@ -113,6 +120,8 @@ Docker release:
   stage: release
   services:
     - docker:dind
+  before_script:
+    - docker info  
   script:
     - echo -n "$CI_BUILD_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     - export IMG_TAG=$CI_BUILD_TAG
