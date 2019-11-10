@@ -66,6 +66,12 @@ module.exports = function (app) {
             const lastUsedCount = config.get("filament:index:lastUsedCount") || 5;
             const almostFinishedThreshold = config.get("filament:index:almostFinishedPercentThreshold") || 25;
 
+            const predefinedColors = res.app.get('config').get('filament:colors');
+            let predefinedColorsIndex = {};
+            for (let [name, code] of Object.entries(predefinedColors)) {
+                predefinedColorsIndex[code] = name;
+            }
+
             req.setOriginUrl([
                 'filament/add',
                 'material/add',
@@ -86,7 +92,8 @@ module.exports = function (app) {
                 filamentTotalLength,            // Total length (in Kg) of filaments (including used ones) in the database
                 countPerMaterials,              // Number of filament in the database for each material (array of int)
                 lastUsedFilaments,              // List of the ${lastUsedCount} last used filament (array of Filaments)
-                almostFinishedFilaments,        // List of the ${lastUsedCount) last filaments below ${almostFinishedThreshold}% left (array of Filaments)
+                almostFinishedFilaments,        // List of the ${lastUsedCount) filaments below ${almostFinishedThreshold}% left (array of Filaments)
+                almostFinishedFilamentsByMaterialAndColor,        // List of the ${lastUsedCount) filaments grouped by master color and material
                 materials,                      // List of all materials (array of Materials)
                 usedColors;                         // List of all colors (array of objects)
 
@@ -107,6 +114,7 @@ module.exports = function (app) {
                     countPerMaterials,
                     lastUsedFilaments,
                     almostFinishedFilaments,
+                    almostFinishedFilamentsByMaterialAndColor,
                     materials,
                     usedColors
                 ] = await Promise.all([
@@ -130,6 +138,7 @@ module.exports = function (app) {
                         finished: false,
                         materialLeftPercentage: {$lt: almostFinishedThreshold}
                     }).sort({materialLeftPercentage: 1}).populate('material brand shop').exec(),
+                    Filament.getRemainingByMaterialAndColor(predefinedColorsIndex),
                     Material.list({tree: true, locale: res.getLocale()}),
                     Filament.getColors()
                 ]);
@@ -137,7 +146,6 @@ module.exports = function (app) {
                 next(err);
             }
 
-            const predefinedColors = res.app.get('config').get('filament:colors');
             usedColors = app.controllers.filament.filterPredefinedColors(usedColors, predefinedColors);
             let colors = [];
             for (let [name, code] of Object.entries(predefinedColors)) {
@@ -170,7 +178,8 @@ module.exports = function (app) {
                         countPerMaterials: countPerMaterials
                     },
                     lastUsed: lastUsedFilaments,
-                    almostFinished: almostFinishedFilaments
+                    almostFinished: almostFinishedFilaments,
+                    almostFinishedByMaterialAndColor: almostFinishedFilamentsByMaterialAndColor
                 },
                 materials: materials,
                 colors: colors,

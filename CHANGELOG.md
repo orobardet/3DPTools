@@ -5,6 +5,7 @@ Starting with this version, 3DPTools **runs on NodeJS 12** and is compatible wit
 - [New] Secondary color for filaments (#119)
 - [New] Filament features, starting with: glittery, phosphorescent, uv or temperature changing, conductive (#136)
 - [New] Sort filaments by percentage *or* length of material left (previously per percentage only) (#143)
+- [New] View for filaments, per master material, master color for which there is a little material left (#106)
 - [Doc] French translation for configuration documentation page (#139)
 - [Imp] Log error message if connection to Redis is not possible or broken (#138)
 - [Imp] Startup performance improvement and resilience

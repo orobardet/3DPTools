@@ -1,5 +1,5 @@
 <% if (locals.primaryColor && primaryColor.code) { %>
-<div class="color-preview-container<% if (locals.size == "large") { %> large<% } %>">
+<div class="color-preview-container<% if (locals.size == "large") { %> large<% } else if (locals.size == "medium") { %> medium<% } %>">
     <div class="color-preview"
          <% if (primaryColor.name) { %>
          data-toggle="tooltip" data-placement="<% if (locals.tooltipPlacement) { %><%- locals.tooltipPlacement %><% } else { %>left<% } %>"

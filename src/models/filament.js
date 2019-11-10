@@ -558,7 +558,7 @@ module.exports = function (app) {
             };
             if (predefinedColorsIndex && predefinedColorsIndex[doc._id.code]) {
                 doc._id.name = predefinedColorsIndex[doc._id.code];
-            };
+            }
             doc.label = doc._id.name;
             return doc;
         });
@@ -878,53 +878,174 @@ module.exports = function (app) {
     };
 
     filamentSchema.statics.getStatsCostPerKg = async function () {
-        return await this.aggregate([
-            { $project: {
-                material: "$material",
-                initialMaterialWeight: '$initialMaterialWeight',
-                price: '$price',
-            }},
-            { $lookup: {
-                from: "materials",
-                localField: "material",
-                foreignField: "_id",
-                as: "materialData"
-            }},
+        return this.aggregate([
+            {
+                $project: {
+                    material: "$material",
+                    initialMaterialWeight: '$initialMaterialWeight',
+                    price: '$price',
+                }
+            },
+            {
+                $lookup: {
+                    from: "materials",
+                    localField: "material",
+                    foreignField: "_id",
+                    as: "materialData"
+                }
+            },
             // Use parent material ID if there is one
-            { $project: {
-                materialId: {
-                    $cond: {
-                        if : { $gt: [ { $size : "$materialData.parentMaterial" },  0] } ,
-                        then: { $arrayElemAt: [ "$materialData.parentMaterial", 0 ] },
-                        else: "$material"
-                    }
-                },
-                materialWeight: '$initialMaterialWeight',
-                price: '$price',
-                pricePerKg: { $divide : [ '$price', '$initialMaterialWeight'] }
-            }
+            {
+                $project: {
+                    materialId: {
+                        $cond: {
+                            if: {$gt: [{$size: "$materialData.parentMaterial"}, 0]},
+                            then: {$arrayElemAt: ["$materialData.parentMaterial", 0]},
+                            else: "$material"
+                        }
+                    },
+                    materialWeight: '$initialMaterialWeight',
+                    price: '$price',
+                    pricePerKg: {$divide: ['$price', '$initialMaterialWeight']}
+                }
             },
-            { $group: {
-                _id: '$materialId',
-                count: { $sum: 1 },
-                materialWeight: { $sum: '$materialWeight' },
-                totalCost: { $sum: '$price' },
-                pricePerKg: { $avg: '$pricePerKg'}
-            }
+            {
+                $group: {
+                    _id: '$materialId',
+                    count: {$sum: 1},
+                    materialWeight: {$sum: '$materialWeight'},
+                    totalCost: {$sum: '$price'},
+                    pricePerKg: {$avg: '$pricePerKg'}
+                }
             },
-            { $lookup: {
-                from: 'materials',
-                localField: '_id',
-                foreignField: '_id',
-                as: 'material'
-            }
+            {
+                $lookup: {
+                    from: 'materials',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'material'
+                }
             },
             {
                 $unwind: '$material'
             },
-            { $sort: { 'pricePerKg': 1 } }
-        ]).exec();
+            {$sort: {'pricePerKg': 1}}
+        ]).exec()
     };
+
+    filamentSchema.statics.getRemainingByMaterialAndColor = async function (predefinedColorsIndex) {
+        let results = await this.aggregate([
+            {
+                $match: { finished: false }
+            },
+            {
+                $project: {
+                    filamentId: "$_id",
+                    material: "$material",
+                    masterColorCode: "$masterColorCode",
+                    initialMaterialWeight: '$initialMaterialWeight',
+                    materialLeftWeight: '$materialLeftWeight',
+                }
+            },
+            {
+                $lookup: {
+                    from: "materials",
+                    localField: "material",
+                    foreignField: "_id",
+                    as: "materialData"
+                }
+            },
+            {
+                $project: {
+                    materialId: {
+                        $cond: {
+                            if: {$gt: [{$size: "$materialData.parentMaterial"}, 0]},
+                            then: {$arrayElemAt: ["$materialData.parentMaterial", 0]},
+                            else: "$material"
+                        }
+                    },
+                    filamentId: "$filamentId",
+                    masterColor: "$masterColorCode",
+                    initialMaterialWeight: '$initialMaterialWeight',
+                    materialLeftWeight: '$materialLeftWeight',
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        materialId: '$materialId',
+                        masterColor: "$masterColor",
+                    },
+                    count: {$sum: 1},
+                    filaments: {
+                        $addToSet: "$filamentId"
+                    },
+                    initialMaterialWeight: {$sum: '$initialMaterialWeight'},
+                    materialLeftWeight: {$sum: '$materialLeftWeight'},
+                    averageMaterialLeftWeight: {$avg: '$materialLeftWeight'}
+                }
+            },
+            {
+                $sort: {
+                    'averageMaterialLeftWeight': 1,
+                    'materialLeftWeight': 1
+                }
+            },
+            {
+                $group: {
+                    _id: "$_id.materialId",
+                    count: {$sum: "$count"},
+                    colors: {
+                        $push: {
+                            filaments: "$filaments",
+                            masterColor: "$_id.masterColor",
+                            count: "$count",
+                            initialMaterialWeight: {$sum: '$initialMaterialWeight'},
+                            materialLeftWeight: '$materialLeftWeight',
+                            averageMaterialLeftWeight: '$averageMaterialLeftWeight',
+                        }
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'materials',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'material'
+                }
+            },
+            {
+                $unwind: '$material'
+            },
+            {
+                $sort: {'count': -1}
+            }
+        ]).exec();
+
+        // Inject master color names and filaments
+        return await Promise.all(results.map(async materialGroup => {
+            materialGroup.colors = await Promise.all(materialGroup.colors.map(async colorGroup => {
+                let colorCode = colorGroup.masterColor;
+                colorGroup.masterColor = {
+                    code: colorCode,
+                    name: ""
+                };
+                if (predefinedColorsIndex && predefinedColorsIndex[colorGroup.masterColor.code]) {
+                    colorGroup.masterColor.name = predefinedColorsIndex[colorGroup.masterColor.code];
+                }
+
+                const filamentsId = colorGroup.filaments;
+                colorGroup.filaments = await this.find({
+                    '_id': {$in: filamentsId}
+                }).populate('material brand shop').exec();
+
+                return colorGroup;
+            }));
+
+            return materialGroup;
+        }));
+    }
 
     filamentSchema.statics.getLength = function (weight, density, diameter) {
         let volume = weight / density;

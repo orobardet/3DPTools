@@ -5,6 +5,7 @@
 @import "flag-icon-alias";
 @import "rs-font.css";
 @import "p3dfont.css";
+@import "bootstrap-override";
 
 body {
   padding-top: 50px;
@@ -337,6 +338,10 @@ a.anchor {
 
 .button-bar {
   text-align: right;
+
+  &.center {
+    text-align: center;
+  }
 }
 
 .overlay-container {
@@ -484,6 +489,13 @@ table.table {
   > tr, tbody > tr {
     td.table-actions {
       text-align: right;
+    }
+  }
+  &.table-no-top-border {
+    > tr, tbody > tr:first-child {
+      td {
+        border-top: 0;
+      }
     }
   }
 }
@@ -721,30 +733,95 @@ ul.material-files {
     padding-top: 30px;
   }
 
-  .side-info .panel-body {
-    h3 {
-      margin: 0;
-      font-size: small;
-    }
-    .shop-block, .brand-block, .material-block {
-      margin: 10px 0;
-      display: block;
-      text-align: center;
+  #filament-info > .panel-body {
+    #filament-almost-finished {
+      tbody + tbody {
+        border-top-width: 1px;
+      }
+      tbody.parent-group {
+        td:first-of-type {
+          white-space: nowrap;
+          .caret {
+            color: $text-color;
+            margin-top: 12px;
+            margin-right: 4px;
+            transform: rotate(-90deg);
+          }
+        }
+        &.deployed {
+          td:first-of-type .caret {
+            transform: rotate(0deg);
+          }
+        }
+      }
 
-      .shop-logo, .brand-logo, .material-logo {
-        max-height: 100px;
-        max-width: 100%;
+      tbody.child-group {
+        box-shadow: inset 0px 10px 10px -10px darken($table-border-color, 50%);
+        border-bottom: 2px solid $table-border-color;
+        background: lighten($gray-base, 98%);
+
+        td:first-of-type {
+          padding-left: 26px;
+        }
+        &:not(.deployed) {
+          display: none;
+        }
       }
-      .shop-name, .brand-name, .material-name {
-        margin: 5px 0;
-        font-size: larger;
-        font-weight: bold;
+
+      .tab-content {
+        max-height: 425px;
+        overflow-x: auto;
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: $nav-tabs-link-hover-border-color;
+          border-radius: 3px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+          background: $nav-tabs-border-color;
+        }
       }
     }
-    .material-block {
-      text-align: left;
-      .material-description {
-        margin-top: 5px;
+  }
+
+  #filament-data-info {
+    .panel-info {
+      width: 100%;
+      .panel-body {
+        h3 {
+          margin: 0;
+          font-size: small;
+        }
+        .shop-block, .brand-block, .material-block {
+          margin: 10px 0;
+          display: block;
+          text-align: center;
+
+          .shop-logo, .brand-logo, .material-logo {
+            max-height: 100px;
+            max-width: 100%;
+          }
+          .shop-name, .brand-name, .material-name {
+            margin: 5px 0;
+            font-size: larger;
+            font-weight: bold;
+          }
+        }
+        .material-block {
+          text-align: left;
+          .material-description {
+            margin-top: 5px;
+          }
+        }
       }
     }
   }
@@ -814,6 +891,17 @@ ul.material-files {
     border-radius: 3px;
   }
 
+  &.medium {
+    height: 32px;
+    width: 32px;
+    &, & .color-preview {
+      border-radius: 4px;
+      .feature {
+        display: block;
+      }
+    }
+  }
+
   &.large {
     height: 48px;
     width: 48px;
@@ -877,7 +965,12 @@ ul.material-files {
 }
 
 .home-section {
+  #main-container {
+    width: 100%;
+  }
+
   .table.filament-list {
+    margin-bottom: 0;
     td.color-cell {
       width: 32px;
     }
@@ -897,6 +990,10 @@ ul.material-files {
     }
     .progress {
       margin-bottom: 0;
+    }
+    .filament-group-left-data {
+      float: left;
+      margin-right: 5px;
     }
     .filament-left-data {
       float: right;

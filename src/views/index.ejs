@@ -38,56 +38,56 @@
     });
 </script>
 
-<div class="row">
-    <div class="col-md-8">
+<div class="panel panel-default" id="filament-info">
+    <div class="panel-heading with-button">
+        <% if (filaments.stats.totalCount) { %>
+        <a href="/filament/cost-calculator" class="btn btn-default"><i class="fa fa-calculator"></i> <%- __('Cost calculator'); %></a>
 
-        <div class="panel panel-default">
-            <div class="panel-heading with-button">
-                <% if (filaments.stats.totalCount) { %>
-                <a href="/filament/cost-calculator" class="btn btn-default"><i class="fa fa-calculator"></i> <%- __('Cost calculator'); %></a>
-
-                <form id="filament-search" method="GET" class="form-inline" action="/filament">
-                    <% if (locals.colors && colors.length) { %>
-                    <select class="selectpicker" data-style="btn-default btn-sm" id="color" name="color" data-width="60px" title="<%- __('Color'); %>">
-                        <optgroup label="">
-                            <% for (let color of colors) { %>
-                            <% if (color === false) {%>
-                        </optgroup><optgroup label="">
-                            <% } else {%>
-                            <option value="<%- color.code %>"
-                                    <% if (color.code) { %>
-                                    data-content="<div class='color-preview-container'><i class='color-preview' style='background-color: <%- color.code %>;'></i></div> <span class='name'><%- __(color.name) %></span>"
-                                    <% } else { %>
-                                    data-content="<span class='name'><%- __(color.name) %></span>"
-                                    <% } %>
-                            ><%- __(color.name) %></option>
+        <form id="filament-search" method="GET" class="form-inline" action="/filament">
+            <% if (locals.colors && colors.length) { %>
+            <select class="selectpicker" data-style="btn-default btn-sm" id="color" name="color" data-width="60px" title="<%- __('Color'); %>">
+                <optgroup label="">
+                    <% for (let color of colors) { %>
+                    <% if (color === false) {%>
+                </optgroup><optgroup label="">
+                    <% } else {%>
+                    <option value="<%- color.code %>"
+                            <% if (color.code) { %>
+                            data-content="<div class='color-preview-container'><i class='color-preview' style='background-color: <%- color.code %>;'></i></div> <span class='name'><%- __(color.name) %></span>"
+                            <% } else { %>
+                            data-content="<span class='name'><%- __(color.name) %></span>"
                             <% } %>
-                            <% } %>
-                        </optgroup>
-                    </select>
+                    ><%- __(color.name) %></option>
                     <% } %>
+                    <% } %>
+                </optgroup>
+            </select>
+            <% } %>
 
 
-                    <input type="hidden" name="materialVariants" id="material-variants" value="on">
-                    <select class="selectpicker" data-style="btn-default btn-sm" id="material" name="material" data-width="auto"  title="<%- __('Material'); %>">
-                        <% if (locals.materials && materials.length) { %>
-                        <% for (let material of materials) { %>
-                        <option value="<%- material._id %>"
-                                title="<%- material.name %>"><%- material.name %></option>
-                        <% if (material.variants && material.variants.length) { %>
-                        <% for (let variant of material.variants) { %>
-                        <option value="<%- variant._id %>"
-                                title="<%- variant.name %>">&nbsp;&nbsp;&nbsp;<%- variant.name %></option>
-                        <% } %>
-                        <% } %>
-                        <% } %>
-                        <% } %>
-                    </select>
-                </form>
+            <input type="hidden" name="materialVariants" id="material-variants" value="on">
+            <select class="selectpicker" data-style="btn-default btn-sm" id="material" name="material" data-width="auto"  title="<%- __('Material'); %>">
+                <% if (locals.materials && materials.length) { %>
+                <% for (let material of materials) { %>
+                <option value="<%- material._id %>"
+                        title="<%- material.name %>"><%- material.name %></option>
+                <% if (material.variants && material.variants.length) { %>
+                <% for (let variant of material.variants) { %>
+                <option value="<%- variant._id %>"
+                        title="<%- variant.name %>">&nbsp;&nbsp;&nbsp;<%- variant.name %></option>
                 <% } %>
-                <h2 class="panel-title"><i class="rs rs-filament"></i>&nbsp;<%- __('Filaments'); %></h2>
-            </div>
-            <div class="panel-body">
+                <% } %>
+                <% } %>
+                <% } %>
+            </select>
+        </form>
+        <% } %>
+        <h2 class="panel-title"><i class="rs rs-filament"></i>&nbsp;<%- __('Filaments'); %></h2>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+
                 <% if (filaments.stats.totalCount) { %>
                 <div class="row-fluid filament-stats">
                     <div class="col-sm-4">
@@ -178,6 +178,18 @@
                     </div>
                 </div>
 
+                <div class="button-bar center">
+                    <a href="/filament" class="btn btn-default"><i
+                                class="rs rs-filament"></i>&nbsp;<%- __('View all filaments'); %></a>
+                </div>
+                <% } else { %>
+                    <div class="center">
+                        <%- __('No filament found.') %><br><br>
+                        <% let filamentCount = filaments.stats.totalCount; %>
+                        <% include partial/addFilamentButton.ejs %>
+                    </div>
+                <% } %>
+
                 <% if (filaments.lastUsed && filaments.lastUsed.length) { %>
                 <h3><%- __('Last used'); %></h3>
                 <table class="table table-hover filament-list">
@@ -187,32 +199,98 @@
                 </table>
                 <% } %>
 
-                <% if (filaments.almostFinished && filaments.almostFinished.length) { %>
-                <h3><%- __('Almost finished'); %></h3>
-                <table class="table table-hover filament-list">
-                    <% filaments.almostFinished.forEach(function (filament) { %>
-                    <% include partial/indexFilamentList.ejs %>
-                    <% }); %>
-                </table>
-                <% } %>
+            </div>
+            <div class="col-md-6" id="filament-almost-finished">
 
-                <div class="button-bar">
-                    <a href="/filament" class="btn btn-default"><i
-                                class="rs rs-filament"></i>&nbsp;<%- __('View all filaments'); %></a>
-                </div>
-                <% } else { %>
-                    <center>
-                        <%- __('No filament found.') %><br><br>
-                        <% let filamentCount = filaments.stats.totalCount; %>
-                        <% include partial/addFilamentButton.ejs %>
-                    </center>
+                <% if ((filaments.almostFinished && filaments.almostFinished.length) ||
+                        (filaments.almostFinishedByMaterialAndColor && filaments.almostFinishedByMaterialAndColor.length)) { %>
+                    <h3><%- __('Almost finished'); %></h3>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#almost-finished-global" aria-controls="almost-finished-global" role="tab" data-toggle="tab"><%- __('Global') %></a></li>
+                        <% if (filaments.almostFinishedByMaterialAndColor && filaments.almostFinishedByMaterialAndColor.length) { %>
+                            <% for (let materialGroup of filaments.almostFinishedByMaterialAndColor) { %>
+                                <% let id = stringToCSSID(materialGroup.material.name); %>
+                                <li role="presentation"><a href="#almost-finished-<%- id %>" aria-controls="almost-finished-<%- id %>" role="tab" data-toggle="tab"><%- materialGroup.material.name %></a></li>
+                            <% } %>
+                        <% } %>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="almost-finished-global">
+                            <table class="table table-no-top-border table-hover filament-list">
+                                <% for (let filament of filaments.almostFinished) { %>
+                                    <% include partial/indexFilamentList.ejs %>
+                                <% } %>
+                            </table>
+                        </div>
+                        <% if (filaments.almostFinishedByMaterialAndColor && filaments.almostFinishedByMaterialAndColor.length) { %>
+                            <% for (let materialGroup of filaments.almostFinishedByMaterialAndColor) { %>
+                                <% let materialCssId = stringToCSSID(materialGroup.material.name); %>
+                                <div role="tabpanel" class="tab-pane" id="almost-finished-<%- materialCssId %>">
+                                    <table class="table table-no-top-border table-hover filament-list">
+                                        <% for (let colorGroup of materialGroup.colors) { %>
+                                            <% let colorGroupCssId = materialCssId+"-"+stringToCSSID(colorGroup.masterColor.name); %>
+                                            <tbody class="parent-group" data-id="<%- colorGroupCssId %>">
+                                            <tr>
+                                                <td style="vertical-align:middle;">
+                                                    <a href="#" class="deploy-button"><span class="caret"></span></a>
+                                                    <%- include('partial/colorPreview.ejs', { size: "medium", primaryColor: colorGroup.masterColor }); %>
+                                                </td>
+                                                <td style="vertical-align:middle;">
+                                                    <%- __(colorGroup.masterColor.name) %>
+                                                </td>
+                                                <td colspan="3" style="vertical-align:middle;">
+                                                    <div class="filament-group-left-data">
+                                                        <%- __n("%s filament", "%s filaments", colorGroup.count) %>
+                                                    </div>
+                                                    <div class="filament-left-data">
+                                                        <%- __('~ %.2f Kg', colorGroup.materialLeftWeight) %>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <%
+                                                            const leftPercentage = 100 * colorGroup.averageMaterialLeftWeight / colorGroup.initialMaterialWeight;
+                                                            let progressbarClass = 'progress-bar-success';
+                                                            if (leftPercentage <= config.get('filament:leftThresholds:warning')) {
+                                                                progressbarClass = 'progress-bar-warning'
+                                                            }
+                                                            if (leftPercentage <= config.get('filament:leftThresholds:danger')) {
+                                                                progressbarClass = 'progress-bar-danger'
+                                                            }
+                                                        %>
+                                                        <div title="<%- leftPercentage %>%" class="progress-bar <%- progressbarClass %>"
+                                                             role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                                             style="width: <%- leftPercentage %>%;">
+                                                            <% if (leftPercentage > 50) { %>
+                                                                <%- sprintf('%.2f', leftPercentage) %>%
+                                                            <% } %>
+                                                        </div>
+                                                        <% if (leftPercentage <= 50) { %>
+                                                            <div class="progress-text" style="padding-left:<%- leftPercentage%>%"><%- sprintf('%.2f', leftPercentage) %>%</div>
+                                                        <% } %>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                            <tbody class="child-group" id="almost-finished-color-children-<%- colorGroupCssId%>">
+                                            <% for (let filament of colorGroup.filaments) { %>
+                                                <% include partial/indexFilamentList.ejs %>
+                                            <% } %>
+                                            </tbody>
+                                        <% } %>
+                                    </table>
+                                </div>
+                            <% } %>
+                        <% } %>
+                    </div>
                 <% } %>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4 side-info">
+</div>
 
+<div class="row" id="filament-data-info">
+    <div class="col-md-4">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h2 class="panel-title"><i class="fa fa-shopping-bag"></i>&nbsp;<%- __n("%s shop", shopCount); %></h2>
@@ -222,9 +300,9 @@
                     <% if (locals.randomShop) { var shop = randomShop %>
                     <a href="<%- shop.url %>" target="_blank" class="shop-block">
                         <% if (shop.logo && shop.logo.size) { %>
-                        <img class="shop-logo" src="/shop/get-logo/<%- shop.id %>">
+                            <img class="shop-logo" src="/shop/get-logo/<%- shop.id %>">
                         <% } else { %>
-                        <div class="shop-name"><%- shop.name %></div>
+                            <div class="shop-name"><%- shop.name %></div>
                         <% } %>
                     </a>
                     <% } %>
@@ -233,14 +311,16 @@
                                     class="fa fa-shopping-bag"></i>&nbsp;<%- __('View all shops'); %></a>
                     </div>
                 <% } else { %>
-                <center>
-                    <%- __('No shop found.') %><br><br>
-                    <a href="/shop/add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<%- __('Add shop') %></a>
-                </center>
+                    <center>
+                        <%- __('No shop found.') %><br><br>
+                        <a href="/shop/add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<%- __('Add shop') %></a>
+                    </center>
                 <% } %>
             </div>
         </div>
+    </div>
 
+    <div class="col-md-4">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h2 class="panel-title"><i class="fa fa-trademark"></i>&nbsp;<%- __n("%s brand", brandCount); %></h2>
@@ -250,9 +330,9 @@
                     <% if (locals.randomBrand) { var brand = randomBrand %>
                     <a href="<%- brand.url %>" target="_blank" class="brand-block">
                         <% if (brand.logo && brand.logo.size) { %>
-                        <img class="brand-logo" src="/brand/get-logo/<%- brand.id %>">
+                            <img class="brand-logo" src="/brand/get-logo/<%- brand.id %>">
                         <% } else { %>
-                        <div class="brand-name"><%- brand.name %></div>
+                            <div class="brand-name"><%- brand.name %></div>
                         <% } %>
                     </a>
                     <% } %>
@@ -261,14 +341,16 @@
                                     class="fa fa-trademark"></i>&nbsp;<%- __('View all brands'); %></a>
                     </div>
                 <% } else { %>
-                <center>
-                    <%- __('No brand found.') %><br><br>
-                    <a href="/brand/add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<%- __('Add brand') %></a>
-                </center>
+                    <center>
+                        <%- __('No brand found.') %><br><br>
+                        <a href="/brand/add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<%- __('Add brand') %></a>
+                    </center>
                 <% } %>
             </div>
         </div>
+    </div>
 
+    <div class="col-md-4">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h2 class="panel-title"><i class="fa fa-leaf"></i>&nbsp;<%- __n("%s material", materialCount); %></h2>
@@ -302,20 +384,19 @@
                                     class="fa fa-leaf"></i>&nbsp;<%- __('View all materials'); %></a>
                     </div>
                 <% } else { %>
-                <center>
-                    <%- __('No material found.') %><br><br>
-                    <a href="/material/add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<%- __('Add material') %></a>
-                </center>
+                    <center>
+                        <%- __('No material found.') %><br><br>
+                        <a href="/material/add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;<%- __('Add material') %></a>
+                    </center>
                 <% } %>
             </div>
         </div>
     </div>
-
 </div>
 
 <script type="text/javascript">
     $(function () {
-        $('[data-toggle="tooltip"]').tooltip({html:true})
+        $('[data-toggle="tooltip"]').tooltip({html:true, placement: "right"})
         $('.selectpicker').selectpicker();
 
         $('form#filament-search').on('change', 'input, select', function() {
@@ -346,6 +427,24 @@
             });
             $(':input', $(this)).prop('readonly', true);
             $('button', $(this)).prop('disabled', true);
+        });
+
+        $('.deploy-button').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            let parentGroup = $(this).closest('.parent-group');
+            let childGroup = parentGroup.next('.child-group');
+            if (parentGroup.hasClass('deployed')) {
+                parentGroup.removeClass('deployed');
+            } else {
+                parentGroup.addClass('deployed');
+            }
+            if (childGroup.hasClass('deployed')) {
+                childGroup.removeClass('deployed');
+            } else {
+                childGroup.addClass('deployed');
+            }
         });
     });
 </script>

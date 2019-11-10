@@ -10389,6 +10389,21 @@ td.visible-print {
   background-image: url(../vendor/flags/1x1/gb.svg);
 }
 
+.col-xs-1 h3:first-child, .col-sm-1 h3:first-child, .col-md-1 h3:first-child, .col-lg-1 h3:first-child,
+.col-xs-2 h3:first-child, .col-sm-2 h3:first-child, .col-md-2 h3:first-child, .col-lg-2 h3:first-child,
+.col-xs-3 h3:first-child, .col-sm-3 h3:first-child, .col-md-3 h3:first-child, .col-lg-3 h3:first-child,
+.col-xs-4 h3:first-child, .col-sm-4 h3:first-child, .col-md-4 h3:first-child, .col-lg-4 h3:first-child,
+.col-xs-5 h3:first-child, .col-sm-5 h3:first-child, .col-md-5 h3:first-child, .col-lg-5 h3:first-child,
+.col-xs-6 h3:first-child, .col-sm-6 h3:first-child, .col-md-6 h3:first-child, .col-lg-6 h3:first-child,
+.col-xs-7 h3:first-child, .col-sm-7 h3:first-child, .col-md-7 h3:first-child, .col-lg-7 h3:first-child,
+.col-xs-8 h3:first-child, .col-sm-8 h3:first-child, .col-md-8 h3:first-child, .col-lg-8 h3:first-child,
+.col-xs-9 h3:first-child, .col-sm-9 h3:first-child, .col-md-9 h3:first-child, .col-lg-9 h3:first-child,
+.col-xs-10 h3:first-child, .col-sm-10 h3:first-child, .col-md-10 h3:first-child, .col-lg-10 h3:first-child,
+.col-xs-11 h3:first-child, .col-sm-11 h3:first-child, .col-md-11 h3:first-child, .col-lg-11 h3:first-child,
+.col-xs-12 h3:first-child, .col-sm-12 h3:first-child, .col-md-12 h3:first-child, .col-lg-12 h3:first-child {
+  margin-top: 0;
+}
+
 body {
   padding-top: 50px;
 }
@@ -10670,6 +10685,9 @@ a.anchor {
 .button-bar {
   text-align: right;
 }
+.button-bar.center {
+  text-align: center;
+}
 
 .overlay-container {
   z-index: 9999;
@@ -10801,6 +10819,9 @@ a.anchor {
 
 table.table > tr td.table-actions, table.table tbody > tr td.table-actions {
   text-align: right;
+}
+table.table.table-no-top-border > tr td, table.table.table-no-top-border tbody > tr:first-child td {
+  border-top: 0;
 }
 
 .filament-finished {
@@ -11020,28 +11041,75 @@ ul.material-files > li:hover > a.delete {
 .home-section > .container {
   padding-top: 30px;
 }
-.home-section .side-info .panel-body h3 {
+.home-section #filament-info > .panel-body #filament-almost-finished tbody + tbody {
+  border-top-width: 1px;
+}
+.home-section #filament-info > .panel-body #filament-almost-finished tbody.parent-group td:first-of-type {
+  white-space: nowrap;
+}
+.home-section #filament-info > .panel-body #filament-almost-finished tbody.parent-group td:first-of-type .caret {
+  color: #333333;
+  margin-top: 12px;
+  margin-right: 4px;
+  transform: rotate(-90deg);
+}
+.home-section #filament-info > .panel-body #filament-almost-finished tbody.parent-group.deployed td:first-of-type .caret {
+  transform: rotate(0deg);
+}
+.home-section #filament-info > .panel-body #filament-almost-finished tbody.child-group {
+  box-shadow: inset 0px 10px 10px -10px #5e5e5e;
+  border-bottom: 2px solid #ddd;
+  background: #fafafa;
+}
+.home-section #filament-info > .panel-body #filament-almost-finished tbody.child-group td:first-of-type {
+  padding-left: 26px;
+}
+.home-section #filament-info > .panel-body #filament-almost-finished tbody.child-group:not(.deployed) {
+  display: none;
+}
+.home-section #filament-info > .panel-body #filament-almost-finished .tab-content {
+  max-height: 425px;
+  overflow-x: auto;
+  overflow-y: scroll;
+}
+.home-section #filament-info > .panel-body #filament-almost-finished .tab-content::-webkit-scrollbar {
+  width: 6px;
+}
+.home-section #filament-info > .panel-body #filament-almost-finished .tab-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.home-section #filament-info > .panel-body #filament-almost-finished .tab-content::-webkit-scrollbar-thumb {
+  background: #eeeeee;
+  border-radius: 3px;
+}
+.home-section #filament-info > .panel-body #filament-almost-finished .tab-content::-webkit-scrollbar-thumb:hover {
+  background: #ddd;
+}
+.home-section #filament-data-info .panel-info {
+  width: 100%;
+}
+.home-section #filament-data-info .panel-info .panel-body h3 {
   margin: 0;
   font-size: small;
 }
-.home-section .side-info .panel-body .shop-block, .home-section .side-info .panel-body .brand-block, .home-section .side-info .panel-body .material-block {
+.home-section #filament-data-info .panel-info .panel-body .shop-block, .home-section #filament-data-info .panel-info .panel-body .brand-block, .home-section #filament-data-info .panel-info .panel-body .material-block {
   margin: 10px 0;
   display: block;
   text-align: center;
 }
-.home-section .side-info .panel-body .shop-block .shop-logo, .home-section .side-info .panel-body .shop-block .brand-logo, .home-section .side-info .panel-body .shop-block .material-logo, .home-section .side-info .panel-body .brand-block .shop-logo, .home-section .side-info .panel-body .brand-block .brand-logo, .home-section .side-info .panel-body .brand-block .material-logo, .home-section .side-info .panel-body .material-block .shop-logo, .home-section .side-info .panel-body .material-block .brand-logo, .home-section .side-info .panel-body .material-block .material-logo {
+.home-section #filament-data-info .panel-info .panel-body .shop-block .shop-logo, .home-section #filament-data-info .panel-info .panel-body .shop-block .brand-logo, .home-section #filament-data-info .panel-info .panel-body .shop-block .material-logo, .home-section #filament-data-info .panel-info .panel-body .brand-block .shop-logo, .home-section #filament-data-info .panel-info .panel-body .brand-block .brand-logo, .home-section #filament-data-info .panel-info .panel-body .brand-block .material-logo, .home-section #filament-data-info .panel-info .panel-body .material-block .shop-logo, .home-section #filament-data-info .panel-info .panel-body .material-block .brand-logo, .home-section #filament-data-info .panel-info .panel-body .material-block .material-logo {
   max-height: 100px;
   max-width: 100%;
 }
-.home-section .side-info .panel-body .shop-block .shop-name, .home-section .side-info .panel-body .shop-block .brand-name, .home-section .side-info .panel-body .shop-block .material-name, .home-section .side-info .panel-body .brand-block .shop-name, .home-section .side-info .panel-body .brand-block .brand-name, .home-section .side-info .panel-body .brand-block .material-name, .home-section .side-info .panel-body .material-block .shop-name, .home-section .side-info .panel-body .material-block .brand-name, .home-section .side-info .panel-body .material-block .material-name {
+.home-section #filament-data-info .panel-info .panel-body .shop-block .shop-name, .home-section #filament-data-info .panel-info .panel-body .shop-block .brand-name, .home-section #filament-data-info .panel-info .panel-body .shop-block .material-name, .home-section #filament-data-info .panel-info .panel-body .brand-block .shop-name, .home-section #filament-data-info .panel-info .panel-body .brand-block .brand-name, .home-section #filament-data-info .panel-info .panel-body .brand-block .material-name, .home-section #filament-data-info .panel-info .panel-body .material-block .shop-name, .home-section #filament-data-info .panel-info .panel-body .material-block .brand-name, .home-section #filament-data-info .panel-info .panel-body .material-block .material-name {
   margin: 5px 0;
   font-size: larger;
   font-weight: bold;
 }
-.home-section .side-info .panel-body .material-block {
+.home-section #filament-data-info .panel-info .panel-body .material-block {
   text-align: left;
 }
-.home-section .side-info .panel-body .material-block .material-description {
+.home-section #filament-data-info .panel-info .panel-body .material-block .material-description {
   margin-top: 5px;
 }
 
@@ -11104,6 +11172,16 @@ ul.material-files > li:hover > a.delete {
 .color-preview-container, .color-preview-container .color-preview {
   border-radius: 3px;
 }
+.color-preview-container.medium {
+  height: 32px;
+  width: 32px;
+}
+.color-preview-container.medium, .color-preview-container.medium .color-preview {
+  border-radius: 4px;
+}
+.color-preview-container.medium .feature, .color-preview-container.medium .color-preview .feature {
+  display: block;
+}
 .color-preview-container.large {
   height: 48px;
   width: 48px;
@@ -11160,6 +11238,12 @@ ul.material-files > li:hover > a.delete {
   right: 1px;
 }
 
+.home-section #main-container {
+  width: 100%;
+}
+.home-section .table.filament-list {
+  margin-bottom: 0;
+}
 .home-section .table.filament-list td.color-cell {
   width: 32px;
 }
@@ -11179,6 +11263,10 @@ ul.material-files > li:hover > a.delete {
 }
 .home-section .table.filament-list .progress {
   margin-bottom: 0;
+}
+.home-section .table.filament-list .filament-group-left-data {
+  float: left;
+  margin-right: 5px;
 }
 .home-section .table.filament-list .filament-left-data {
   float: right;

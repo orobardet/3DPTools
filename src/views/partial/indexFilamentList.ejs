@@ -29,11 +29,11 @@
             <div title="<%- leftPercentage %>%" class="progress-bar <%- progressbarClass %>"
                  role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
                  style="width: <%- leftPercentage %>%;">
-                <% if (filament.materialLeftPercentage > 50) { %>
+                <% if (leftPercentage > 50) { %>
                 <%- sprintf('%.2f', leftPercentage) %>%
                 <% } %>
             </div>
-            <% if (filament.materialLeftPercentage <= 50) { %>
+            <% if (leftPercentage <= 50) { %>
             <div class="progress-text" style="padding-left:<%- leftPercentage%>%"><%- sprintf('%.2f', leftPercentage) %>%</div>
             <% } %>
         </div>
