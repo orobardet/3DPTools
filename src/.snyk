@@ -6,6 +6,9 @@ ignore:
     - '*':
         reason: None Given
         expires: 2018-12-31T17:34:09.936Z
+      express-form > validator:
+        reason: No remediation
+        expires: '2020-05-19T16:24:37.707Z'
     - express-form > validator:
         reason: No remediation
         expires: '2019-08-14T16:34:44.246Z'
@@ -18,7 +21,7 @@ ignore:
   'npm:validator:20160218':
     - express-form > validator:
         reason: No remediation
-        expires: '2019-11-18T09:31:44.179Z'
+        expires: '2020-05-19T16:24:37.707Z'
   'npm:validator:20180218':
     - express-form > validator:
         reason: No possible fix
@@ -30,22 +33,42 @@ ignore:
   SNYK-JS-LODASH-450202:
     - snyk > @snyk/dep-graph > graphlib > lodash:
         reason: None given
-        expires: '2019-11-18T09:48:38.180Z'
-      express-winston > lodash:
-        reason: None given
-        expires: '2019-11-19T14:57:17.382Z'
+        expires: '2020-05-19T16:24:37.706Z'
     - snyk > snyk-go-plugin > graphlib > lodash:
         reason: None given
-        expires: '2019-11-18T09:48:38.180Z'
+        expires: '2020-05-19T16:24:37.706Z'
     - snyk > snyk-nodejs-lockfile-parser > graphlib > lodash:
         reason: None given
-        expires: '2019-11-18T09:48:38.180Z'
+        expires: '2020-05-19T16:24:37.706Z'
     - snyk > @snyk/snyk-cocoapods-plugin > @snyk/dep-graph > graphlib > lodash:
         reason: None given
-        expires: '2019-11-18T09:48:38.180Z'
+        expires: '2020-05-19T16:24:37.706Z'
     - snyk > @snyk/snyk-cocoapods-plugin > @snyk/cocoapods-lockfile-parser > @snyk/dep-graph > graphlib > lodash:
         reason: None given
-        expires: '2019-11-18T09:48:38.180Z'
+        expires: '2020-05-19T16:24:37.707Z'
+    - express-winston > lodash:
+        reason: None given
+        expires: '2019-11-19T14:57:17.382Z'
+  SNYK-JS-MINIMIST-559764:
+    - i18n > messageformat > make-plural > minimist:
+        reason: None given
+        expires: '2020-05-19T16:24:37.706Z'
+    - multer > mkdirp > minimist:
+        reason: None given
+        expires: '2020-05-19T16:24:37.706Z'
+    - snyk > @snyk/update-notifier > latest-version > package-json > registry-auth-token > rc > minimist:
+        reason: None given
+        expires: '2020-05-19T16:24:37.707Z'
+    - snyk > @snyk/update-notifier > latest-version > package-json > registry-url > rc > minimist:
+        reason: None given
+        expires: '2020-05-19T16:24:37.707Z'
+  SNYK-JS-BSON-561052:
+    - mongoose > bson:
+        reason: None given
+        expires: '2020-05-19T16:24:37.706Z'
+    - mongoose > mongodb > bson:
+        reason: None given
+        expires: '2020-05-19T16:24:37.706Z'
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   SNYK-JS-HTTPSPROXYAGENT-469131:
