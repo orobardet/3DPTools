@@ -4,16 +4,16 @@
     <div class="panel-heading with-button">
         <a href="/material/add" class="btn btn-primary trg-add-material"><i
                     class="fa fa-plus"></i>&nbsp;<%- __('Add material') %></a>
-        <% if (materials && materials.length) { %>
+        <% if (locals.materials && materials.length) { %>
         <h3 class="panel-title"><%- __n("%s material", "%s materials", materials.length || 0); %></h3>
         <% } else { %>
         <%- __('No material found.') %>
         <% } %>
     </div>
-    <% if (materials && materials.length) { %>
+    <% if (locals.materials && materials.length) { %>
     <table class="table material-list">
         <% for (let material of materials) { %>
-        <% include partial/root-list-item.ejs %>
+        <%- include('partial/root-list-item.ejs', {material: material}) %>
         <% } %>
     </table>
     <% } %>

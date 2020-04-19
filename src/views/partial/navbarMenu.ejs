@@ -1,3 +1,5 @@
-<% navigation.mainMenu.forEach(function (page, idx) { %>
-<% include navbarMenu/page.ejs %>
-<% }); %>
+<% if (locals.navigation && navigation.mainMenu && navigation.mainMenu.length) { %>
+<% for (let page of navigation.mainMenu) { %>
+<%- include('navbarMenu/page.ejs', {page}) %>
+<% } %>
+<% } %>

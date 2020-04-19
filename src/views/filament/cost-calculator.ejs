@@ -89,7 +89,7 @@
 
             <div class="filament-list-static-container">
                 <table id="filament-list" class="table filament-list cost-calculator">
-                    <%- include partial/cost-calculator-filament-list.ejs %>
+                    <%- include('partial/cost-calculator-filament-list.ejs', {filaments: locals.filaments}) %>
                 </table>
             </div>
         </div>
@@ -193,7 +193,12 @@
 <% } else { %>
 <center>
 <%- __('No filament found.') %><br><br>
-<% include ../partial/addFilamentButton.ejs %>
+<%- include('../partial/addFilamentButton.ejs', {
+    filamentCount: locals.filamentCount,
+    materialCount: locals.materialCount,
+    brandCount: locals.brandCount,
+    shopCount: locals.shopCount
+}) %>
 </center>
 <% } %>
 

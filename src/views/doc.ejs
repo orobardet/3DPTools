@@ -5,13 +5,13 @@
         <div class="affix" data-offset-top="0">
             <% if (locals.toc) { %>
             <nav class="nav-sidemenu hidden-print hidden-sm hidden-xs" id="doc-global-toc">
-                <% let headersList = headersNavigation; let toc = locals.toc; %>
-                <% include partial/doc-header-main-toc.ejs %>
+                <% let headersList = headersNavigation; %>
+                <%- include('partial/doc-header-main-toc.ejs', {toc: locals.toc}) %>
             </nav>
             <% } %>
             <nav class="nav-sidemenu hidden-print hidden-sm hidden-xs" data-spy="affix" id="doc-local-toc">
-                <% let headersList = headersNavigation; let headersLevel = 1; %>
-                <% include partial/doc-header-nav-list.ejs %>
+                <% let headersList = headersNavigation; %>
+                <%- include('partial/doc-header-nav-list.ejs', {headersList: headersList}) %>
             </nav>
         </div>
     </div>

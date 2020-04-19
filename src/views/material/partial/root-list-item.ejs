@@ -1,9 +1,7 @@
-<% include list-item.ejs %>
+<%- include('list-item.ejs', {material, isMaterialVariant: false}) %>
 
 <% if (material.variants && material.variants.length) { %>
 <% for (let variant of material.variants) { %>
-<% let material = variant %>
-<% var isMaterialVariant = true; %>
-<% include list-item.ejs %>
+<%- include('list-item.ejs', {material: variant, isMaterialVariant: true}) %>
 <% } %>
 <% } %>

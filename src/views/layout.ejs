@@ -38,7 +38,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <% include partial/navbarMenu.ejs %>
+                <%- include('partial/navbarMenu.ejs', {navigation: locals.navigation}) %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown language-selector">

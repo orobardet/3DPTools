@@ -252,7 +252,12 @@
                 <%- __('No filament found.') %>
                 <% if (!filamentCount) {%>
                 <br><br>
-                <% include ../partial/addFilamentButton.ejs %>
+                <%- include('../partial/addFilamentButton.ejs', {
+                    filamentCount: locals.filamentCount,
+                    materialCount: locals.materialCount,
+                    brandCount: locals.brandCount,
+                    shopCount: locals.shopCount
+                }) %>
                 <% } %>
             </td>
         </tr>

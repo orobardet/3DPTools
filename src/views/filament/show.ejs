@@ -111,9 +111,7 @@
             <tr>
                 <td><%- __('Extrusion temperature:') %></td>
                 <td>
-                    <% temp = filament.headTemp;
-                    iconClass = "rs rs-extruder"; %>
-                    <% include ../material/partial/tempRange.ejs %>
+                    <%- include('../material/partial/tempRange.ejs', {temp: filament.headTemp, iconClass: "rs rs-extruder"}) %>
                     <% if (filament.headTemp.experienced) { %>
                     <br/>
                     <i class="fa fa-check"></i>
@@ -124,9 +122,7 @@
             <tr>
                 <td><%- __('Bed temperature:') %></td>
                 <td>
-                    <% temp = filament.bedTemp;
-                    iconClass = "rs rs-heated-bed"; %>
-                    <% include ../material/partial/tempRange.ejs %>
+                    <%- include('../material/partial/tempRange.ejs', {temp: filament.bedTemp, iconClass: "rs rs-heated-bed"}) %>
                     <% if (filament.bedTemp.experienced) { %>
                     <br/>
                     <i class="fa fa-check"></i>
@@ -271,7 +267,7 @@
     <% if (filament.material) { %>
     <div class="filament-material">
     <div><b><%- __("Material: %s", filament.material.name) %></b></div>
-    <% material = filament.material; %><% include ../material/partial/files.ejs %>
+    <%- include('../material/partial/files.ejs', {material: filament.material}) %>
     <%- marked(filament.material.description) %>
     </div>
     <% } %>

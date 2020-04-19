@@ -30,16 +30,12 @@
         </div>
         <% if (material.headTemp && (material.headTemp.min || material.headTemp.max)) { %>
         <div>
-            <% temp = material.headTemp;
-                iconClass = "rs rs-extruder"; %>
-            <% include tempRange.ejs %>
+            <%- include('tempRange.ejs', {temp: material.headTemp, iconClass: "rs rs-extruder"}) %>
         </div>
         <% } %>
         <% if (material.bedTemp && (material.bedTemp.min || material.bedTemp.max)) { %>
         <div>
-            <% temp = material.bedTemp;
-                iconClass = "rs rs-heated-bed"; %>
-            <% include tempRange.ejs %>
+            <%- include('tempRange.ejs', {temp: material.bedTemp, iconClass: "rs rs-heated-bed"}) %>
         </div>
         <% } %>
         <% if (material.printingSpeed && (material.printingSpeed.min || material.printingSpeed.max)) { %>
@@ -58,7 +54,7 @@
         <% } %>
     </td>
     <td class="material-description">
-        <% include files.ejs %>
+        <%- include('files.ejs', {material}) %>
         <% if (material.description) { %>
         <%- marked(material.description) %>
         <% } %>

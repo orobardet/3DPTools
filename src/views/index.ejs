@@ -185,8 +185,12 @@
                 <% } else { %>
                     <div class="center">
                         <%- __('No filament found.') %><br><br>
-                        <% let filamentCount = filaments.stats.totalCount; %>
-                        <% include partial/addFilamentButton.ejs %>
+                        <%- include('partial/addFilamentButton.ejs', {
+                            filamentCount: filaments.stats.totalCount,
+                            materialCount: locals.materialCount,
+                            brandCount: locals.brandCount,
+                            shopCount: locals.shopCount
+                        }) %>
                     </div>
                 <% } %>
 
@@ -194,7 +198,7 @@
                 <h3><%- __('Last used'); %></h3>
                 <table class="table table-hover filament-list">
                 <% filaments.lastUsed.forEach(function (filament) { %>
-                    <% include partial/indexFilamentList.ejs %>
+                    <%- include('partial/indexFilamentList.ejs', {filament: filament}) %>
                 <% }); %>
                 </table>
                 <% } %>
@@ -219,7 +223,7 @@
                         <div role="tabpanel" class="tab-pane active" id="almost-finished-global">
                             <table class="table table-no-top-border table-hover filament-list">
                                 <% for (let filament of filaments.almostFinished) { %>
-                                    <% include partial/indexFilamentList.ejs %>
+                                    <%- include('partial/indexFilamentList.ejs', {filament:filament}) %>
                                 <% } %>
                             </table>
                         </div>
@@ -273,7 +277,7 @@
                                             </tbody>
                                             <tbody class="child-group" id="almost-finished-color-children-<%- colorGroupCssId%>">
                                             <% for (let filament of colorGroup.filaments) { %>
-                                                <% include partial/indexFilamentList.ejs %>
+                                                <%- include('partial/indexFilamentList.ejs', {filament: filament}) %>
                                             <% } %>
                                             </tbody>
                                         <% } %>
@@ -362,17 +366,13 @@
                         <div class="material-name"><%- material.name %></div>
                         <div class="row">
                             <div class="col-md-6">
-                                <% if (material.headTemp) {
-                                    temp = material.headTemp;
-                                    iconClass = "rs rs-extruder"; %>
-                                <% include material/partial/tempRange.ejs %>
+                                <% if (material.headTemp) { %>
+                                <%- include('material/partial/tempRange.ejs', {temp: material.headTemp, iconClass: "rs rs-extruder"}) %>
                                 <% } %>
                             </div>
                             <div class="col-md-6">
-                                <% if (material.bedTemp) {
-                                    temp = material.bedTemp;
-                                    iconClass = "rs rs-heated-bed"; %>
-                                <% include material/partial/tempRange.ejs %>
+                                <% if (material.bedTemp) { %>
+                                <%- include('material/partial/tempRange.ejs', {temp: material.bedTemp, iconClass: "rs rs-heated-bed"}) %>
                                 <% } %>
                             </div>
                         </div>
