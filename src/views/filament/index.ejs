@@ -35,11 +35,18 @@
         <tr class="filter-row">
             <th>
                 <% if (locals.colors && colors.length) { selected = (locals.search && search.color) ? search.color : ''; %>
+                <span class="filament-color-selectpicker">
                 <select class="form-control selectpicker" id="color" name="color" data-width="60px" title="<%- __('Color'); %>">
-                    <optgroup label="">
+                    <option value=""
+                        data-content="<span class='name'>&nbsp;</span>"
+                        <% if (selected == null) { %>
+                            selected
+                        <% } %>
+                    >&nbsp;</option>
+                    <optgroup label="<%- __('Preset colors') %>">
                     <% for (let color of colors) { %>
                         <% if (color === false) {%>
-                    </optgroup><optgroup label="">
+                    </optgroup><optgroup label="<%- __('Already used colors') %>">
                         <% } else {%>
                         <option value="<%- color.code %>"
                                 <% if (color.code) { %>
@@ -55,6 +62,7 @@
                     <% } %>
                     </optgroup>
                 </select>
+                </span>
                 <% } %>
             </th>
             <th colspan="4">

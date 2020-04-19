@@ -11476,6 +11476,10 @@ ul.material-files > li:hover > a.delete {
   margin-top: 10px;
 }
 
+.filament-color-selectpicker .bootstrap-select .dropdown-menu .divider {
+  display: none;
+}
+
 .progress .progress-text {
   text-align: center;
   vertical-align: middle;

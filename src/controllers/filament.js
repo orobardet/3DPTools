@@ -177,7 +177,6 @@ module.exports = function (app) {
             materials.unshift({name: '&nbsp;', id: null});
             shops.unshift({name: '&nbsp;', id: null});
             brands.unshift({name: '&nbsp;', id: null});
-            colors.unshift({name: '&nbsp;', code: null});
 
             let formSearchData = filamentFilter;
             if (typeof formSearchData.finished !== 'undefined' && formSearchData.finished === false) {
@@ -1056,7 +1055,6 @@ module.exports = function (app) {
             // Add an empty entry at the beginning of each filter list (which means 'no filtering on this field')
             materials.unshift({name:'&nbsp;', id:null});
             brands.unshift({name:'&nbsp;', id:null});
-            colors.unshift({name:'&nbsp;', code: null});
 
             return res.render('filament/cost-calculator', {
                 navSubModule: 'cost-calculator',

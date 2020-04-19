@@ -15,12 +15,19 @@
 
             <form id="filament-search" method="GET" class="panel-body form-inline" style="padding: 8px;">
                 <button id="clear-search" class="btn btn-danger pull-right" style="display:none;"><i class="fa fa-eraser"></i>&nbsp;<%- __('Clear search') %></button>
+                <span class="filament-color-selectpicker">
                 <select class="form-control selectpicker" id="color" name="color" data-width="60px" title="<%- __('Color'); %>">
                     <% if (locals.colors && colors.length) { selected = (locals.search && search.color) ? search.color : ''; %>
-                    <optgroup label="">
-                        <% for (let color of colors) { %>
+                    <option value=""
+                            data-content="<span class='name'>&nbsp;</span>"
+                    <% if (selected == null) { %>
+                            selected
+                            <% } %>
+                    >&nbsp;</option>
+                    <optgroup label="<%- __('Preset colors') %>">
+                    <% for (let color of colors) { %>
                         <% if (color === false) {%>
-                    </optgroup><optgroup label="">
+                    </optgroup><optgroup label="<%- __('Already used colors') %>">
                         <% } else {%>
                         <option value="<%- color.code %>"
                                 <% if (color.code) { %>
@@ -37,6 +44,7 @@
                         <% } %>
                     </optgroup>
                 </select>
+                </span>
 
                 <span style="margin-right: 10px;">
                     <select class="form-control selectpicker" id="material" name="material" data-width="220px"  title="<%- __('Material'); %>">

@@ -45,11 +45,13 @@
 
         <form id="filament-search" method="GET" class="form-inline" action="/filament">
             <% if (locals.colors && colors.length) { %>
-            <select class="selectpicker" data-style="btn-default btn-sm" id="color" name="color" data-width="60px" title="<%- __('Color'); %>">
-                <optgroup label="">
+            <span class="filament-color-selectpicker">
+                <select class="selectpicker" data-style="btn-default btn-sm" id="color" name="color" data-width="60px" title="<%- __('Color'); %>">
+                    <option value="" data-content="<span class='name'>&nbsp;</span>">&nbsp;</option>
+                    <optgroup label="<%- __('Preset colors') %>">
                     <% for (let color of colors) { %>
                     <% if (color === false) {%>
-                </optgroup><optgroup label="">
+                    </optgroup><optgroup label="<%- __('Already used colors') %>">
                     <% } else {%>
                     <option value="<%- color.code %>"
                             <% if (color.code) { %>
@@ -60,8 +62,9 @@
                     ><%- __(color.name) %></option>
                     <% } %>
                     <% } %>
-                </optgroup>
-            </select>
+                    </optgroup>
+                </select>
+            </span>
             <% } %>
 
 

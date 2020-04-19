@@ -157,7 +157,6 @@ module.exports = function (app) {
             }
 
             materials.unshift({name: '&nbsp;', id: null});
-            colors.unshift({name: '&nbsp;', code: null});
 
             return res.render('index', {
                 pageTitle: 'Home',
