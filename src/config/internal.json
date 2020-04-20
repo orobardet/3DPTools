@@ -4,6 +4,14 @@
     "doc__root",
     "versionSuffix"
   ],
+  "log": {
+    "ignore304Path": [
+      "^\\/favicon\\.(ico|png)",
+      "^\\/(vendor|javascripts|stylesheets|images)\\/.*\\.(css|js|png|jpg|jpeg|gif|ico|ttf|woff|woff2)$",
+      "\\.(ttf|woff|woff2)$",
+      "\\/get-logo\\/"
+    ]
+  },
   "version": "",
   "versionSuffix": "",
   "sourceCode": {

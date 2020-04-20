@@ -103,14 +103,49 @@ module.exports = function(bootstrapOptions) {
         app.logger = logger;
         app.logger.info("Starting app...");
 
+        // For performance, precompile regular expressions for filtering express request logger
+        const ignore304PathLog = [];
+        const ignore304PathLogPatterns = config.get('log:ignore304Path');
+        if (ignore304PathLogPatterns && ignore304PathLogPatterns.length) {
+            for (let pattern of ignore304PathLogPatterns) {
+                ignore304PathLog.push(new RegExp(pattern));
+            }
+        }
         // Expresse request logger middleware
         app.use(expressWinston.logger({
+            ignoreRoute: function (req, res) {
+                if (req.path) {
+                    for (let re of ignore304PathLog) {
+                        if (req.path.match(re)) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            },
+            level: function (req, res) {
+                let level = "";
+                if (res.statusCode >= 100) {
+                    level = "info";
+                }
+                if (res.statusCode >= 400) {
+                    level = "warn";
+                }
+                if (res.statusCode >= 500) {
+                    level = "error";
+                }
+                // Ops is worried about hacking attempts so make Unauthorized and Forbidden critical
+                if (res.statusCode == 401 || res.statusCode == 403) {
+                    level = "error";
+                }
+                return level;
+            },
             transports: winstonTransports,
             format: winston.format.combine(
                 // Hide HTTP 304
                 winston.format((info, opts) => {
                     if (info.meta && info.meta.res && info.meta.res.statusCode && info.meta.res.statusCode == 304) {
-                        return false;
+                        //return false;
                     }
                     return info;
                 })(),
