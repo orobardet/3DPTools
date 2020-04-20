@@ -39,6 +39,7 @@ Un filament dispose de multiple caractéristiques.
   Par exemple, des filaments *bleu ciel*, *bleu foncé* et *turquoise* auront pour couleur maîtresse le *bleu*.
 - **Les caractéristiques d'aspect et fonctionnelles**. Optionnelles :
   - Pailleté
+  - Marbré/granite
   - Phosphorescent (la couleur secondaire indique la couleur que prend le filament dans le noir)
   - Change avec les UV (la couleur secondaire indique la couleur que prend le filament sous UV)
   - Change avec la température (la couleur secondaire indique la couleur que prend le filament au changement de température)

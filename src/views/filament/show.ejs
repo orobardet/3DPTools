@@ -39,12 +39,19 @@
                 </td>
             </tr>
             <% } /* if (glittery) */ %>
-            <% if (filament.features.phosphorescent) { %>
+            <% if (filament.features.marble) { %>
             <tr>
                 <td></td><td>
-                    <%- __('Phosphorescent') %>
+                    <%- __('Marble/granite') %>
                 </td>
             </tr>
+            <% } /* if (marble) */ %>
+            <% if (filament.features.phosphorescent) { %>
+                <tr>
+                    <td></td><td>
+                        <%- __('Phosphorescent') %>
+                    </td>
+                </tr>
             <% } /* if (phosphorescent) */ %>
             <% if (filament.features.uvChanging) { %>
                 <tr>

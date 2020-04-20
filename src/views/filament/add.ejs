@@ -332,6 +332,13 @@
                             <i class="fa fa-asterisk"></i> <%- __('Glittery'); %>
                         </label>
                         <label class="checkbox checkbox-inline">
+                            <input type="checkbox" id="marble" name="marble" value="true"
+                            <% if ((locals.features && features.marble) || (locals.sourceFilament && sourceFilament.features && sourceFilament.features.marble)) { %>
+                                   checked
+                                    <% } %>>
+                            <%- __('Marble/granite'); %>
+                        </label>
+                        <label class="checkbox checkbox-inline">
                             <input type="checkbox" id="phosphorescent" name="phosphorescent" value="true"
                                 <% if ((locals.features && features.phosphorescent) || (locals.sourceFilament && sourceFilament.features && sourceFilament.features.phosphorescent)) { %>
                                    checked

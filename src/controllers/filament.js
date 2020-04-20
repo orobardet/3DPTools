@@ -392,7 +392,8 @@ module.exports = function (app) {
                     phosphorescent: req.form.phosphorescent,
                     uvChanging: req.form.uvChanging,
                     temperatureChanging: req.form.temperatureChanging,
-                    conductive: req.form.conductive
+                    conductive: req.form.conductive,
+                    marble: req.form.marble
                 },
                 shop: req.form.shop,
                 buyDate: new Date(req.form.buyDate * 1000),
@@ -543,6 +544,7 @@ module.exports = function (app) {
             filament.features.uvChanging = req.form.uvChanging;
             filament.features.temperatureChanging = req.form.temperatureChanging;
             filament.features.conductive = req.form.conductive;
+            filament.features.marble = req.form.marble;
             filament.shop = req.form.shop;
             filament.buyDate = new Date(req.form.buyDate * 1000);
             filament.price = req.form.price;

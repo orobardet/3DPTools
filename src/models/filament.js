@@ -28,7 +28,8 @@ module.exports = function (app) {
             phosphorescent: Boolean,
             uvChanging: Boolean,
             temperatureChanging: Boolean,
-            conductive: Boolean
+            conductive: Boolean,
+            marble: Boolean
         },
         pictures: [{
             id: Schema.Types.ObjectId,
@@ -83,8 +84,9 @@ module.exports = function (app) {
      * - 7: add masterColor
      * - 8: add secondary Color and features (glittery, phosphorescent, uv/temperature changing, conductive)
      * - 9: material left weight and length
+     * - 10: add material feature marble
      */
-    filamentSchema.statics.currentVersion = 9;
+    filamentSchema.statics.currentVersion = 10;
 
     filamentSchema.virtual("displayName").get(function() {
         if (this.name && this.name.trim() != "") {

@@ -8,11 +8,37 @@
         <% if (locals.secondaryColor && secondaryColor.code) { %>
             <% if (locals.features && features.phosphorescent) { %>
                 style="background: <%- primaryColor.code %>; box-shadow: 0px 0px 3px 1px <%- secondaryColor.code %>, inset 0px 0px <% if (locals.size == "large") { %>8px 5px<% } else { %>3px 1px<% } %> <%- secondaryColor.code %>; border-color: <%- secondaryColor.code %>;">
+            <% } else if (locals.features && features.marble) { %>
+                style="background: <%- primaryColor.code %>;">
             <% } else { %>
                 style="background: linear-gradient(to bottom right, <%- primaryColor.code %> 40%, <%- secondaryColor.code %> 60%);">
             <% } %>
         <% } else { %>
             style="background: <%- primaryColor.code %>;">
+        <% } %>
+        <%  if (locals.features && features.marble) { %>
+            <div class="feature-marble-container" style="background-color: <%- secondaryColor.code %>">
+                <div class="feature-marble-dot" style="top: 5%; left: 5%; width: 2px;"></div>
+                <div class="feature-marble-dot" style="top: 10%; left: 50%; height: 3px;"></div>
+                <div class="feature-marble-dot" style="top: 30%; left: 5%; width: 3px;"></div>
+                <div class="feature-marble-dot" style="top: 60%; left: 60%; height: 2px;"></div>
+
+
+                <div class="feature-marble-dot" style="top: 70%; left: 30%; width: 2px;"></div>
+                <div class="feature-marble-dot" style="top: 90%; left: 10%; height: 3px;"></div>
+                <div class="feature-marble-dot" style="top: 50%; left: 10%; width: 3px;"></div>
+                <div class="feature-marble-dot" style="top: 5%; left: 30%; height: 2px;"></div>
+
+                <div class="feature-marble-dot" style="top: 95%; left: 95%; width: 2px;"></div>
+                <div class="feature-marble-dot" style="top: 90%; left: 50%; height: 3px;"></div>
+                <div class="feature-marble-dot" style="top: 70%; left: 95%; width: 3px;"></div>
+                <div class="feature-marble-dot" style="top: 40%; left: 40%; height: 2px; width:2px;"></div>
+
+                <div class="feature-marble-dot" style="top: 30%; left: 70%; width: 2px;"></div>
+                <div class="feature-marble-dot" style="top: 10%; left: 90%; height: 3px;"></div>
+                <div class="feature-marble-dot" style="top: 50%; left: 90%; width: 3px;"></div>
+                <div class="feature-marble-dot" style="top: 75%; left: 70%; height: 2px;"></div>
+            </div>
         <% } %>
         <% if (locals.features && features.glittery) { %>
             <div class="shinning-star star-small" style="top: 5%; left: 5%; -moz-animation-duration: 4s; -webkit-animation-duration: 1s;"></div>

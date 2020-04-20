@@ -11215,6 +11215,21 @@ ul.material-files > li:hover > a.delete {
   font-size: smaller;
   word-wrap: break-word;
 }
+.color-preview-container .color-preview .feature-marble-container {
+  z-index: -1;
+}
+.color-preview-container .color-preview .feature-marble-dot {
+  mix-blend-mode: normal;
+  z-index: 3;
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  top: 50%;
+  left: 50%;
+  overflow: hidden;
+  background-color: inherit;
+}
 .color-preview-container .color-preview .feature {
   z-index: 4;
   display: none;
@@ -11222,19 +11237,9 @@ ul.material-files > li:hover > a.delete {
   mix-blend-mode: exclusion;
   color: white;
 }
-.color-preview-container .color-preview .feature.feature-uv-changing {
+.color-preview-container .color-preview .feature.feature-uv-changing, .color-preview-container .color-preview .feature.feature-temperature-changing, .color-preview-container .color-preview .feature.feature-conductive {
   position: absolute;
   top: 0;
-  right: 1px;
-}
-.color-preview-container .color-preview .feature.feature-temperature-changing {
-  position: absolute;
-  bottom: 0;
-  left: 1px;
-}
-.color-preview-container .color-preview .feature.feature-conductive {
-  position: absolute;
-  bottom: 0;
   right: 1px;
 }
 

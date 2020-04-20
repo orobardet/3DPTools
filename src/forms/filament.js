@@ -29,6 +29,7 @@ module.exports = function (app) {
             .trim()
             .required(),
         field("glittery", "Glittery").toBooleanStrict() ,
+        field("marble", "Marble").toBooleanStrict(),
         field("phosphorescent", "Phosphorescent").toBooleanStrict(),
         field("uvChanging", "UV changing").toBooleanStrict(),
         field("temperatureChanging", "Temperature changing").toBooleanStrict(),

@@ -35,6 +35,7 @@ a specific color giving:
   e.g.: filaments with color *sky blue*, *dark blue* or *turquoise* will all have *blue* as main color.  
 - **Appearance and functional features**. Optionals :
   - Glittery 
+  - Marble/granite
   - Phosphorescent (the secondary color is the filament color in the dark)
   - UV changing (the secondary color is the filament color on UV)
   - Temperature changing (the secondary color is the filament color when temperature changes)

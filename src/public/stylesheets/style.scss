@@ -938,6 +938,22 @@ ul.material-files {
       word-wrap: break-word;
     }
 
+    .feature-marble-container {
+      z-index: -1;
+    }
+    .feature-marble-dot {
+      mix-blend-mode: normal;
+      z-index: 3;
+      display: block;
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      top: 50%;
+      left: 50%;
+      overflow: hidden;
+      background-color: inherit;
+    }
+
     .feature {
       z-index: 4;
       display: none;
@@ -945,19 +961,11 @@ ul.material-files {
       mix-blend-mode: exclusion;
       color: white;
 
-      &.feature-uv-changing {
-        position: absolute;
-        top: 0;
-        right: 1px;
-      }
-      &.feature-temperature-changing {
-        position: absolute;
-        bottom: 0;
-        left: 1px;
-      }
+      &.feature-uv-changing,
+      &.feature-temperature-changing,
       &.feature-conductive {
         position: absolute;
-        bottom: 0;
+        top: 0;
         right: 1px;
       }
     }
