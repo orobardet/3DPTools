@@ -8,6 +8,7 @@ module.exports = function(bootstrapOptions) {
     const cookieParser = require('cookie-parser');
     const winston = require('winston');
     const expressWinston = require('express-winston');
+    const colors = require('colors/safe');
 
     bootstrapOptions = merge({
         loadConfig: true,
@@ -80,10 +81,16 @@ module.exports = function(bootstrapOptions) {
             winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
             winston.format.ms(),
             winston.format.printf(({ level, message, label, timestamp, ms }) => {
+                // To ensure levels a right aligned:
+                //  - strip color code from level value, to be able to compute its length in characters
+                let colorlessLevel = level.replace(
+                  /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+                //  - Prefix the label string [level] with N spaces, depending on the length of the level (7 in the length of the longest level)
+                let paddedlLevel = ' '.repeat(7 - colorlessLevel.length) + `[${level}]`
                 if (label && label != '') {
-                    return `${timestamp} ${ms}\t[${level}] ${label}: ${message}`;
+                    return `${timestamp} ${ms.padEnd(6, ' ')} ${paddedlLevel} ${colors.bold(label)}: ${message}`;
                 }
-                return `${timestamp} ${ms}\t[${level}] ${message}`;
+                return `${timestamp} ${ms.padEnd(6, ' ')} ${paddedlLevel} ${message}`;
             })
         ];
 
