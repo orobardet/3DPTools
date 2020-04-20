@@ -11124,7 +11124,7 @@ ul.material-files > li:hover > a.delete {
   background-size: 100% 100%;
   overflow: hidden;
   color: transparent;
-  opacity: 0.3;
+  opacity: 0.8;
   animation: glitter 2s linear 0s infinite normal;
   -webkit-animation: glitter 2s linear 0s infinite normal;
   -moz-animation: glitter 2s linear 0s infinite normal;
@@ -11148,15 +11148,15 @@ ul.material-files > li:hover > a.delete {
 @-webkit-keyframes glitter {
   0% {
     -webkit-transform: scale(0.8);
-    opacity: 0.1;
+    opacity: 0.3;
   }
   50% {
     -webkit-transform: scale(1);
-    opacity: 0.3;
+    opacity: 0.8;
   }
   100% {
     -webkit-transform: scale(0.8);
-    opacity: 0.1;
+    opacity: 0.3;
   }
 }
 .color-preview-container {
