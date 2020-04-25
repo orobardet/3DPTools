@@ -10689,6 +10689,62 @@ a.anchor {
   text-align: center;
 }
 
+/* The switch - the box around the slider */
+.control-switch {
+  position: relative;
+  display: inline-block;
+  width: 28px;
+  height: 16px;
+  margin: 0px;
+  /* Hide default HTML checkbox */
+  /* The slider */
+  /* Rounded sliders */
+}
+.control-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.control-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+.control-switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+.control-switch input:checked + .slider {
+  background-color: #2196F3;
+}
+.control-switch input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+.control-switch input:checked + .slider:before {
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
+}
+.control-switch .slider.round {
+  border-radius: 12px;
+}
+.control-switch .slider.round:before {
+  border-radius: 50%;
+}
+
 .overlay-container {
   z-index: 9999;
   position: absolute;
@@ -11545,12 +11601,17 @@ ul.material-files > li:hover > a.delete {
 }
 
 .filament-stats-vertical-stack .panel-body > .filament-stats-graph {
+  position: relative;
   border-top: 1px solid #ddd;
   padding-top: 10px;
 }
 .filament-stats-vertical-stack .panel-body > .filament-stats-graph:first-of-type {
   border-top: 0px;
   padding-top: 0px;
+}
+.filament-stats-vertical-stack .panel-body > .filament-stats-graph .graph-controls {
+  width: auto;
+  height: auto;
 }
 
 #cost-calculator-message-container > .alert {

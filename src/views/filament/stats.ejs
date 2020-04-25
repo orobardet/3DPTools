@@ -1027,8 +1027,31 @@
                     <% if (stats.count.byColors) { %>
                     <a name="count-per-color" id="count-per-color" class="anchor"></a>
                     <div class="filament-stats-graph">
+                        <div class="graph-controls">
+                            <%- __('Sort by color'); %>
+                            <label class="control-switch">
+                                <input type="checkbox" id="count-per-color-color-sorted">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
                         <div id="filament-stats-count-by-colors"></div>
                         <script type="text/javascript">
+                            const chartsCountByColors = {
+                                colorSorted: <%- sprintf('%-j', stats.count.byColors.colorSorted.map(function(doc) {
+                                    doc.y = doc.count;
+                                    doc.name = doc.label;
+                                    doc.color = doc._id.code;
+                                    doc.id = doc.color;
+                                    return doc;
+                                })); %>,
+                                valueSorted: <%- sprintf('%-j', stats.count.byColors.valueSorted.map(function(doc) {
+                                    doc.y = doc.count;
+                                    doc.name = doc.label;
+                                    doc.color = doc._id.code;
+                                    doc.id = doc.color;
+                                    return doc;
+                                })); %>
+                            }
                             $(function () {
                                 $('#filament-stats-count-by-colors').highcharts({
                                     chart: {
@@ -1053,12 +1076,7 @@
                                     },
                                     series: [{
                                         name: '<%- __('Cost'); %>',
-                                        data: <%- sprintf('%-j', stats.count.byColors.map(function(doc) {
-                                            doc.y = doc.count;
-                                            doc.name = doc.label;
-                                            doc.color = doc._id.code;
-                                            return doc;
-                                        })); %>
+                                        data: chartsCountByColors.valueSorted
                                     }]
                                 });
                             });
@@ -1201,8 +1219,31 @@
                     <% if (stats.costs.byColors) { %>
                     <a name="cost-per-color" id="cost-per-color" class="anchor"></a>
                     <div class="filament-stats-graph">
+                        <div class="graph-controls">
+                            <%- __('Sort by color'); %>
+                            <label class="control-switch">
+                                <input type="checkbox" id="cost-per-color-color-sorted">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
                         <div id="filament-stats-cost-by-colors"></div>
                         <script type="text/javascript">
+                            const chartsCostByColors = {
+                                colorSorted: <%- sprintf('%-j', stats.costs.byColors.colorSorted.map(function(doc) {
+                                      doc.y = doc.cost;
+                                      doc.name = doc.label;
+                                      doc.color = doc._id.code;
+                                      doc.id = doc.color;
+                                      return doc;
+                                  })); %>,
+                                valueSorted: <%- sprintf('%-j', stats.costs.byColors.valueSorted.map(function(doc) {
+                                      doc.y = doc.cost;
+                                      doc.name = doc.label;
+                                      doc.color = doc._id.code;
+                                      doc.id = doc.color;
+                                      return doc;
+                                  })); %>
+                            };
                             $(function () {
                                 $('#filament-stats-cost-by-colors').highcharts({
                                     chart: {
@@ -1227,12 +1268,7 @@
                                     },
                                     series: [{
                                         name: '<%- __('Cost'); %>',
-                                        data: <%- sprintf('%-j', stats.costs.byColors.map(function(doc) {
-                                            doc.y = doc.cost;
-                                            doc.name = doc.label;
-                                            doc.color = doc._id.code;
-                                            return doc;
-                                        })); %>
+                                        data: chartsCostByColors.valueSorted
                                     }]
                                 });
                             });
@@ -1258,5 +1294,24 @@
 <script type="text/javascript">
     $(function() {
         $('body').scrollspy({ target: '#stats-menu' });
+
+        $('#count-per-color-color-sorted,#cost-per-color-color-sorted').on('click', function(e) {
+            let $this = $(this);
+            let $other;
+            if ($this.prop("id") == 'count-per-color-color-sorted') {
+                $other = $('#cost-per-color-color-sorted');
+            } else {
+                $other = $('#count-per-color-color-sorted');
+            }
+            $other.prop("checked", $this.prop("checked"));
+
+            if ($this.prop("checked")) {
+                  $('#filament-stats-count-by-colors').highcharts().series[0].setData(chartsCountByColors.colorSorted, true, false, false);
+                  $('#filament-stats-cost-by-colors').highcharts().series[0].setData(chartsCostByColors.colorSorted, true, false, false);
+            } else {
+                  $('#filament-stats-count-by-colors').highcharts().series[0].setData(chartsCountByColors.valueSorted, true, false, false);
+                  $('#filament-stats-cost-by-colors').highcharts().series[0].setData(chartsCostByColors.valueSorted, true, false, false);
+            }
+        });
     });
 </script>

@@ -234,10 +234,12 @@ module.exports = function (app) {
                 countPerBrands,
                 countPerShops,
                 countPerMaterials,
+                countPerColorsColorSorted,
                 countPerColors,
                 costPerBrands,
                 costPerShops,
                 costPerMaterials,
+                costPerColorsColorSorted,
                 costPerColors,
                 boughtTimeline,
                 purchaseInterval,
@@ -253,11 +255,13 @@ module.exports = function (app) {
                 Filament.getCountPerBrands(),
                 Filament.getCountPerShops(),
                 Filament.getCountPerMasterMaterials(),
-                Filament.getCountPerMasterColors(predefinedColorsIndex),
+                Filament.getCountPerMasterColors(predefinedColorsIndex, true),
+                Filament.getCountPerMasterColors(predefinedColorsIndex, false),
                 Filament.getCostPerBrands(),
                 Filament.getCostPerShops(),
                 Filament.getCostPerMasterMaterials(),
-                Filament.getCostPerMasterColors(predefinedColorsIndex),
+                Filament.getCostPerMasterColors(predefinedColorsIndex, true),
+                Filament.getCostPerMasterColors(predefinedColorsIndex, false),
                 Filament.getBoughtTimeline(),
                 Filament.getPurchaseIntervalStats(),
                 Filament.getUsagePerMasterColors(predefinedColorsIndex),
@@ -282,14 +286,20 @@ module.exports = function (app) {
                         byBrands: countPerBrands,
                         byShops: countPerShops,
                         byMaterials: countPerMaterials,
-                        byColors: countPerColors
+                        byColors: {
+                            colorSorted: countPerColorsColorSorted,
+                            valueSorted: countPerColors
+                        }
                     },
                     costs: {
                         total: filamentTotalCost,
                         byBrands: costPerBrands,
                         byShops: costPerShops,
                         byMaterials: costPerMaterials,
-                        byColors: costPerColors
+                        byColors: {
+                            colorSorted: costPerColorsColorSorted,
+                            valueSorted: costPerColors
+                        }
                     },
                     usage: {
                         weight: {

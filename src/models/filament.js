@@ -380,15 +380,20 @@ module.exports = function (app) {
         });
     };
 
-    filamentSchema.statics.getCostPerMasterColors = async function (predefinedColorsIndex) {
-        let results = await this.aggregate([
+    filamentSchema.statics.getCostPerMasterColors = async function (predefinedColorsIndex, sortByColor) {
+        let aggregation = [
             { $group: {
-                _id: '$masterColorCode',
-                cost: { $sum: '$price' }
+                    _id: '$masterColorCode',
+                    cost: { $sum: '$price' }
+                }
             }
-            },
-            { $sort: { '_id': 1 } }
-        ]).exec();
+        ];
+        if (sortByColor) {
+            aggregation.push({ $sort: { '_id': 1 } })
+        } else {
+            aggregation.push({ $sort: { 'cost': -1 } })
+        }
+        let results = await this.aggregate(aggregation).exec();
 
         return results.map(doc => {
             let colorCode = doc._id;
@@ -542,15 +547,20 @@ module.exports = function (app) {
         });
     };
 
-    filamentSchema.statics.getCountPerMasterColors = async function (predefinedColorsIndex) {
-        let results = await this.aggregate([
+    filamentSchema.statics.getCountPerMasterColors = async function (predefinedColorsIndex, sortByColor) {
+        let aggregation = [
             { $group: {
                     _id: '$masterColorCode',
                     count: { $sum: 1 }
                 }
             },
-            { $sort: { '_id': 1 } }
-        ]).exec();
+        ];
+        if (sortByColor) {
+            aggregation.push({ $sort: { '_id': 1 } });
+        } else {
+            aggregation.push({ $sort: { 'count': -1 } },);
+        }
+        let results = await this.aggregate(aggregation).exec();
 
         return results.map(doc => {
             let colorCode = doc._id;
