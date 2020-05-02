@@ -3,7 +3,7 @@
 Starting with this version, 3DPTools **runs on NodeJS 12** and is compatible with MongoDB 4.0 (but not required). 
 
 - [New] Secondary color for filaments (#119)
-- [New] Filament features, starting with: glittery, marble/granite, phosphorescent, uv or temperature changing, conductive (#136, #146)
+- [New] Filament features, starting with: glittery, marble/granite, phosphorescent, uv or temperature changing, conductive (#136, #146, #148)
 - [New] Sort filaments by percentage *or* length of material left (previously per percentage only) (#143)
 - [New] View for filaments, per master material, master color for which there is a little material left (#106)
 - [Doc] French translation for configuration documentation page (#139)
