@@ -1,5 +1,7 @@
 # Next
 
+# v1.5.0
+
 Starting with this version, 3DPTools **runs on NodeJS 12** and is compatible with MongoDB 4.0 (but not required). 
 
 - [New] Secondary color for filaments (#119)

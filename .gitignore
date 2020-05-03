@@ -88,3 +88,4 @@ docker-compose.override.yml
 .yarn-integrity
 /node_modules/
 /src/build/
+/src/yarn-error.log
