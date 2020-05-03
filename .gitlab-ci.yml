@@ -148,6 +148,7 @@ Github mirror:
     - git fetch github
     - git push --mirror -f github
   environment: github
+  allow_failure: true
   only:
     - tags
 
@@ -158,6 +159,7 @@ Docker Hub:
   script:
     - "curl -H \"Content-Type: application/json\" --data '{\"source_type\": \"Tag\", \"source_name\": \"$CI_BUILD_TAG\"}' -X POST https://registry.hub.docker.com/u/orobardet/3dptools/trigger/5342d440-a38f-4510-b0a2-15aa1e59f339/"
   environment: github
+  allow_failure: true
   only:
     - tags
 
