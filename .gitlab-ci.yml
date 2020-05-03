@@ -144,7 +144,7 @@ Github mirror:
     - echo "$GITHUB_SSH_KEY" > ~/.ssh/id_rsa
     - ssh-keyscan -H github.com > ~/.ssh/known_hosts
     - chmod -R 0600 ~/.ssh/
-    - git remote | grep github > /dev/null && git remote set-url github git@github.com:orobardet/3dptools.git || git remote add github git@github.com:orobardet/3dptools.git
+    - git remote | grep github > /dev/null && git remote set-url github git@github.com:orobardet/3DPTools.git || git remote add git@github.com:orobardet/3DPTools.git
     - git fetch github
     - git push --mirror -f github
   environment: github
