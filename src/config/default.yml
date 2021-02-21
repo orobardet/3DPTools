@@ -1,3 +1,9 @@
+# HTTP settings
+http:
+  host: 0.0.0.0         # Bind to address
+  port: 3000            # Port to listen to
+  compression: true     # Enable compression
+
 # Redis settings. Used for session data and cache
 redis:
   host: localhost
@@ -11,10 +17,6 @@ database:
   user: 3dptools        # Set empty if no authentification is required
   pass: 3dpt            # Set empty if no authentification is required
   connectOptions: {}
-
-# HTTP settings
-http:
-  compression: true     # Enable compression
 
 # Session settings
 session:

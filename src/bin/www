@@ -7,6 +7,7 @@
  */
 
 const app = require('../app')({});
+const config = app.get('config');
 app.logger.debug("Starting HTTP server...")
 const http = require('http');
 
@@ -32,8 +33,10 @@ function normalizePort(val) {
 /**
  * Get port from environment and store in Express.
  */
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || config.get('http:port') || '3000');
+const bindAddress = process.env.HOST || config.get('http:host') || '0.0.0.0';
 app.set('port', port);
+app.set('bindAddress', bindAddress);
 
 /**
  * Create HTTP server.
@@ -49,7 +52,7 @@ server.on('error', error => {
     }
 
     let bind = typeof port === 'string'
-        ? 'Pipe ' + port
+        ? 'Socket ' + port
         : 'Port ' + port;
 
     // handle specific listen errors with friendly messages
@@ -67,19 +70,29 @@ server.on('error', error => {
     }
 });
 server.on('listening', () => {
-    let addr = server.address();
-    let bind = typeof addr === 'string'
-        ? 'pipe ' + addr
-        : 'port ' + addr.port;
-    const config = app.get('config');
     const version = config.get('version');
-    app.logger.info(`3DPTools v${version} listening on ${bind}`)
+    const addr = server.address();
+    if (typeof addr === 'string') {
+        app.logger.info(`3DPTools v${version} listening on socket ${addr}`);
+    } else {
+        let address = 'localhost';
+        switch (addr.family.toLowerCase()) {
+            case 'ipv6':
+                address = addr.address == '::'?'[::1]':`[${addr.address}]`;
+                break;
+            default:
+                address = (addr.address == '0.0.0.0'||addr.address == '127.0.0.1')?'localhost':`${addr.address}`;
+                break;
+        }
+        app.logger.info(`3DPTools v${version} listening on http://${address}:${addr.port} (${addr.family})`);
+    }
 });
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 app.on('ready', () => {
-    server.listen(port);
+    app.logger.info(`Binding to ${bindAddress}:${port}...`);
+    server.listen(port, bindAddress);
 });
 

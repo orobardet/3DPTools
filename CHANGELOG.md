@@ -1,5 +1,6 @@
 # Next
 
+- [New] HTTP server port and bind address are now configurable (#151)
 - [Tec] Upgrade to latest NPM & Bower dependencies versions (#152)
 
 # v1.5.0

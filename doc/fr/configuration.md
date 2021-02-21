@@ -87,6 +87,25 @@ Tous les valeurs utilisées dans les exemples sont les valeurs par défaut.
 Combiner les exemples selon vos besoins, et ils peuvent tous être convertis au format variable d'environnement si 
 nécessaire.
 
+## HTTP
+
+Paramètre du serveur HTTP.
+
+```yaml
+http:
+  host: 0.0.0.0
+  port: 3000
+  compression: true
+```
+
+Le bloc de configuration principal est `http`.
+
+- `host` (string) Adresse de bind du serveur web. IPV6 accepté. La variable d'environnement `HOST` est également 
+  acceptée et prioritaire sur la variable d'environnement par défaut `http__host`. 
+- `port` (integer) Port sur le lequel le serveur web doit écouter. La variable d'environnement `PORT` est également
+  acceptée et prioritaire sur la variable d'environnement par défaut `http__port`.
+- `compression` (boolean) Active la compression des réponses HTTP.
+
 ## Redis
 
 Redis est utilisé pour stocké les données de session, ainsi que pour du cache. Son usage n'est pas optionnel, il doit 
@@ -125,19 +144,6 @@ Le bloc de configuration principal est `database`.
 - `user` (string) Nom d'utilisateur pour se connecter au server MongoDB, si nécessaire. *Il est recommandé d'activer l'authentification sur le serveur MongoDB*. 
 - `pass` (string) Mot de passe pour se connecter au server MongoDB, si nécessaire.  *Il est recommandé d'activer l'authentification sur le serveur MongoDB*. 
 - `connectOptions` (object) Permet de passer des options de connexion directement au driver client MongoDB.
-
-## HTTP
-
-Paramètre du serveur HTTP.
-
-```yaml
-http:
-  compression: true
-```
-
-Le bloc de configuration principal est `http`.
-
-- `compression` (boolean) Active la compression des réponses HTTP.
 
 ## Session
 

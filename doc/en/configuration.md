@@ -75,6 +75,25 @@ All examples use the YAML syntax, as root from a `.yml` file (e.g.: you can copy
 All values used in the example are the default values.
 Merge them smartly and convert them in environment variables name if needed.  
 
+## HTTP
+
+HTTP server settings.
+
+```yaml
+http:
+  host: 0.0.0.0
+  port: 3000
+  compression: true
+```
+
+The main configuration block is `http`.
+
+- `host` (string) Bind address of the web server. IPV6 allowed. The environment variable `HOST` is also allowed and 
+  has precedence over the default environment variable `http__host`.
+- `port` (integer) Port of the web server. The environment variable `PORT` is also allowed and has precedence over the 
+  default environment variable `http__port`.
+- `compression` (boolean) Enables compression of HTTP responses.
+
 ## Redis
 
 Redis is used to store session data, as well as cache storage. It is required for the application to run.
@@ -112,19 +131,6 @@ The main configuration block is `database`.
 - `user` (string) Username to connect to the MongoDB server, if needed. *It is recommended to enable auth on the MongoDb server* 
 - `pass` (string) Password to connect to the MongoDB server, if needed. *It is recommended to enable auth on the MongoDb server* 
 - `connectOptions` (object) Allow to pass some specific connection options to the MongoDB client driver
-
-## HTTP
-
-HTTP server settings.
-
-```yaml
-http:
-  compression: true
-```
-
-The main configuration block is `http`.
-
-- `compression` (boolean) Enables compression of HTTP responses.
 
 ## Session
 
